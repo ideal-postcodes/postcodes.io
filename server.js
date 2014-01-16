@@ -5,7 +5,7 @@ var express = require("express"),
 		path = require("path");
 
 var env = process.env.NODE_ENV || "development",
-		config = JSON.parse(fs.readFileSync(path.join(__dirname, "config/config.json")))[env];
+		config = require(path.join(__dirname, "config/config.json"))[env];
 
 // Start logging
 require(path.join(__dirname, "/config/logger"))(config);

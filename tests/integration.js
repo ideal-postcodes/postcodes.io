@@ -18,3 +18,7 @@ describe("Pages routes", function () {
 		});
 	});
 });
+
+describe("Misc", function () {
+	it ("should return a favicon");
+})
