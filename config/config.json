@@ -1,11 +1,26 @@
 {
 	"development" : {
-		"env" : "development"
+		"env" : "development",
+		"log" : {
+			"name" : "postcodes.io",
+			"file" : "",
+			"stdout" : true
+		}
 	},
 	"test" : {
-		"env" : "development"
+		"env" : "test",
+		"log" : {
+			"name" : "postcodes.io",
+			"file" : "",
+			"stdout" : true
+		}
 	},
 	"production" : {
-		"env" : "development"
+		"env" : "production",
+		"log" : {
+			"name" : "postcodes.io",
+			"file" : "",
+			"stdout" : true
+		}
 	}
 }

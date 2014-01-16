@@ -7,6 +7,9 @@ var express = require("express"),
 var env = process.env.NODE_ENV || "development",
 		config = JSON.parse(fs.readFileSync(path.join(__dirname, "config/config.json")))[env];
 
+// Start logging
+require(path.join(__dirname, "/config/logger"))(config);
+
 // Load in middleware
 require(path.join(__dirname, "/config/express"))(app, config);
 
