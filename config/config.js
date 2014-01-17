@@ -5,6 +5,13 @@ module.exports = {
 	development : {
 		env : "development",
 		root: rootPath,
+		postgres: {
+			user: "idealpostcodes",
+			password: "",
+			database: "postcodeio",
+			host: "localhost",
+			port: 5313
+		},
 		log : {
 			name : "postcodes.io",
 			file : "",
@@ -14,6 +21,13 @@ module.exports = {
 	test : {
 		env : "test",
 		root: rootPath,
+		postgres: {
+			user: "idealpostcodes",
+			password: "",
+			database: "postcodeio",
+			host: "localhost",
+			port: 5313
+		},
 		log : {
 			name : "postcodes.io",
 			file : "",
@@ -23,6 +37,13 @@ module.exports = {
 	production : {
 		env : "production",
 		root: rootPath,
+		postgres: {
+			user: "idealpostcodes",
+			password: "",
+			database: "postcodeio",
+			host: "localhost",
+			port: 5313
+		},
 		log : {
 			name : "postcodes.io",
 			file : "",

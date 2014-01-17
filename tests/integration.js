@@ -44,6 +44,21 @@ describe("Pages routes", function () {
 	});
 });
 
+describe("Postcodes resource", function () {
+	describe("Show", function () {
+		it ("should return 200 and json", function (done) {
+			request(app)
+				.get("/postcodes/NW19HZ")
+				.expect("Content-Type", /json/)
+				.expect(200)
+				.end(function (err, res) {
+					if (err) throw err;
+					done();
+				});	
+		});
+	});
+});
+
 describe("Errors", function () {
 	describe("404", function () {
 		it ("should return a 404 if page does not exist", function (done) {

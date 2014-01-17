@@ -31,7 +31,8 @@
     "express": "~3.4.8",
     "jade": "~1.1.4",
     "bunyan": "~0.22.1",
-    "commonlog-bunyan": "~0.2.1"
+    "commonlog-bunyan": "~0.2.1",
+    "supertest": "~0.8.3"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

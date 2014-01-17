@@ -19,7 +19,11 @@ module.exports = function (app, config) {
 		app.use(app.router);
 		app.use(function (error, request, response, next) {
 			var message = "Something went wrong: " + error.message;
-			console.log(error.stack);
+			
+			if (config.env !== "test") {
+				console.log(error.stack);	
+			}
+			
 			if (config.env === "production") {
 				message = "500 Error! Something broke )-:";
 			}
