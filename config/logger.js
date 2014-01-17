@@ -15,7 +15,7 @@ module.exports = function (config) {
 	}
 
 	return logger.init({
-		name: config.name
+		name: config.log.name,
 		streams: streams
 	});
 }

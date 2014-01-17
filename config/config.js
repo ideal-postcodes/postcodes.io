@@ -4,6 +4,7 @@ var path = require("path"),
 module.exports = {
 	development : {
 		env : "development",
+		root: rootPath,
 		log : {
 			name : "postcodes.io",
 			file : "",
@@ -12,6 +13,7 @@ module.exports = {
 	},
 	test : {
 		env : "test",
+		root: rootPath,
 		log : {
 			name : "postcodes.io",
 			file : "",
@@ -20,6 +22,7 @@ module.exports = {
 	},
 	production : {
 		env : "production",
+		root: rootPath,
 		log : {
 			name : "postcodes.io",
 			file : "",

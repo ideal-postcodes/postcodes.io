@@ -1,7 +1,7 @@
-module.home = function (request, response) {
-
+exports.home = function (request, response) {
+	response.render("pages/home");
 }
 
-module.documentation = function (request, response) {
+exports.documentation = function (request, response) {
 
 }
