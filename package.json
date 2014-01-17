@@ -1,0 +1,41 @@
+{
+  "name": "postcodes.io",
+  "version": "0.1.0",
+  "description": "A postcode lookup API",
+  "main": "server.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "mocha tests/",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ideal-postcodes/postcodes.io.git"
+  },
+  "keywords": [
+    "postcode",
+    "api",
+    "uk",
+    "ordnance",
+    "survey"
+  ],
+  "author": "Chris Blanchard",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ideal-postcodes/postcodes.io/issues"
+  },
+  "dependencies": {
+    "pg": "~2.11.0",
+    "express": "~3.4.8",
+    "jade": "~1.1.4",
+    "bunyan": "~0.22.1",
+    "commonlog-bunyan": "~0.2.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.0",
+    "chai": "~1.8.1",
+    "supertest": "~0.8.3"
+  }
+}

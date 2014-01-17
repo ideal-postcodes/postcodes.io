@@ -5,4 +5,6 @@ var pagesController = require(path.join(__dirname, "../app/controllers/pages_con
 
 module.exports = function (app) {
 	app.get("/", pagesController.home);
+	app.get("/docs", pagesController.documentation);
+	app.get("/about", pagesController.about)
 }

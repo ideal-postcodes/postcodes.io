@@ -3,5 +3,9 @@ exports.home = function (request, response) {
 }
 
 exports.documentation = function (request, response) {
+	response.render("pages/documentation");
+}
 
+exports.about = function (request, response) {
+	response.render("pages/about");
 }
