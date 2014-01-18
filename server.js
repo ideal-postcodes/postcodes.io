@@ -5,7 +5,7 @@ var express = require("express"),
 		path = require("path");
 
 var env = process.env.NODE_ENV || "development",
-		config = require(path.join(__dirname, "config/config"))[env];
+		config = require(path.join(__dirname, "config/config"))(config);
 
 // Start logging
 require(path.join(__dirname, "/config/logger"))(config);

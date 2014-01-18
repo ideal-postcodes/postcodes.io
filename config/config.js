@@ -1,53 +1,58 @@
 var path = require("path"),
-		rootPath = path.normalize(__dirname + '/..');
+		extend = require('node.extend'),
+		rootPath = path.normalize(__dirname + '/..'),
+		config;
 
-module.exports = {
+// Extend general config here (config that applies to all environments)
+var defaultConfig = {
+	root: rootPath,
+	postgres: {
+		user: "idealpostcodes",
+		password: "",
+		database: "postcodeio",
+		host: "localhost",
+		port: 5313
+	},
+	log : {
+		name : "postcodes.io",
+		file : "",
+		stdout : true
+	}
+};
+
+// Extend environment specific config here, overrides above if clash
+var envConfig = {
+	// Development env only config
 	development : {
-		env : "development",
-		root: rootPath,
-		postgres: {
-			user: "idealpostcodes",
-			password: "",
-			database: "postcodeio",
-			host: "localhost",
-			port: 5313
-		},
-		log : {
-			name : "postcodes.io",
-			file : "",
-			stdout : true
-		}
+		env : "development"
 	},
-	test : {
-		env : "test",
-		root: rootPath,
-		postgres: {
-			user: "idealpostcodes",
-			password: "",
-			database: "postcodeio",
-			host: "localhost",
-			port: 5313
-		},
-		log : {
-			name : "postcodes.io",
-			file : "",
-			stdout : true
-		}
+
+	// Test env only config
+	test: {
+		env : "test"	
 	},
+
+	// Production env only config
 	production : {
 		env : "production",
-		root: rootPath,
 		postgres: {
-			user: "idealpostcodes",
+			user: "",
 			password: "",
-			database: "postcodeio",
-			host: "localhost",
+			database: "",
+			host: "",
 			port: 5313
 		},
 		log : {
 			name : "postcodes.io",
-			file : "",
+			file : "/var/postcodesio/logs/production.log",
 			stdout : true
 		}
 	}
 }
+
+
+module.exports = function (env) {
+	if (config) return config;
+	return config = extend(true, defaultConfig, envConfig[env]);
+};
+
