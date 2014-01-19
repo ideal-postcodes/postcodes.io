@@ -8,7 +8,7 @@ var defaultConfig = {
 	root: rootPath,
 	postgres: {
 		user: "idealpostcodes",
-		password: "",
+		password: "MuchSecretSoWow",
 		database: "postcodeio",
 		host: "localhost",
 		port: 5313
