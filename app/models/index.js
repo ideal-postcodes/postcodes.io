@@ -1,5 +1,5 @@
 var pg = require("pg"),
-		conString;
+		config;
 
 // All models inherit from base
 function Base () {
@@ -8,11 +8,11 @@ function Base () {
 
 // To implement 'parameterised' queries
 Base.prototype._query = function (query, callback) {
-	if (!conString) {
+	if (!config) {
 		var err = new Error("Database connection not yet configured.");
 		callback(err, null);
 	}
-	pg.connect(conString, function (error, client, done) {
+	pg.connect(config, function (error, client, done) {
 		if (error) callback(error, null);
 		client.query(query, function (error, result) {
 			if (error) throw error;
@@ -23,16 +23,13 @@ Base.prototype._query = function (query, callback) {
 }
 
 module.exports = {
-	// Connect to DB
-	connect: function (config, callback) {
-		var pgConfig = config.postgres;
-
-		conString = ["pg://", pgConfig.user, ":", pgConfig.port, "@", pgConfig.host, "/", pgConfig.database];
+	connect: function (configObj, callback) {
+		config = configObj.postgres;
 			
 		if (callback) {
-			pg.connect(conString.join(""), callback);	
+			pg.connect(config, callback);	
 		} else {
-			pg.connect(conString.join(""));	
+			pg.connect(config);	
 			return pg;	
 		}
 	},

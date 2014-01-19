@@ -11,7 +11,7 @@ var defaultConfig = {
 		password: "MuchSecretSoWow",
 		database: "postcodeio",
 		host: "localhost",
-		port: 5313
+		port: 5432
 	},
 	log : {
 		name : "postcodes.io",
@@ -43,7 +43,7 @@ var envConfig = {
 			password: "",
 			database: "",
 			host: "",
-			port: 5313
+			port: 5432
 		},
 		log : {
 			name : "postcodes.io",

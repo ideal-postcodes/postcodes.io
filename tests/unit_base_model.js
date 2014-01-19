@@ -14,11 +14,19 @@ describe("Base model", function () {
 				done();
 			});
 		});
+		it ("should cache connection for each request");
 	});
 	describe("Base model instance methods", function () {
 		describe("#_query", function () {
-			it ("should execute a query");
+			it ("should execute a query", function (done) {
+				var base = new Base.Base();
+				base._query("SELECT * FROM postcodes LIMIT 1", function (error, result) {
+					if (error) throw error;
+					assert.isArray(result);
+					done();
+				});
+			});
 			it ("should throw an error if not configured");
 		});
-	})
+	});
 });
