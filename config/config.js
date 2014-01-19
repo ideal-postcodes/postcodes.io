@@ -29,7 +29,10 @@ var envConfig = {
 
 	// Test env only config
 	test: {
-		env : "test"	
+		env : "test",
+		log: {
+			stdout: false
+		}
 	},
 
 	// Production env only config
@@ -48,11 +51,11 @@ var envConfig = {
 			stdout : true
 		}
 	}
-}
+};
 
 
-module.exports = function (env) {
+module.exports = function (environment) {
 	if (config) return config;
-	return config = extend(true, defaultConfig, envConfig[env]);
+	return config = extend(true, defaultConfig, envConfig[environment]);
 };
 
