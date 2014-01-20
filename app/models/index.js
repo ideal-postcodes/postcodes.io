@@ -22,6 +22,11 @@ Base.prototype._query = function (query, callback) {
 	});
 }
 
+Base.prototype._createDatabase = function (callback) {
+	var query = "CREATE TABLE"
+	this._query(query, callback);
+}
+
 module.exports = {
 	connect: function (configObj, callback) {
 		config = configObj.postgres;

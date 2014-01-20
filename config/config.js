@@ -7,8 +7,8 @@ var path = require("path"),
 var defaultConfig = {
 	root: rootPath,
 	postgres: {
-		user: "idealpostcodes",
-		password: "MuchSecretSoWow",
+		user: "postgres",
+		password: "",
 		database: "postcodeio",
 		host: "localhost",
 		port: 5432
