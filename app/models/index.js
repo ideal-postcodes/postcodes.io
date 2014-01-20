@@ -22,7 +22,12 @@ Base.prototype._query = function (query, callback) {
 	});
 }
 
-Base.prototype._createDatabase = function (callback) {
+Base.prototype._create = function () {};
+Base.prototype._read = function () {};
+Base.prototype._update = function () {};
+Base.prototype._destroy = function () {};
+
+Base.prototype._createRelation = function (callback) {
 	var query = "CREATE TABLE"
 	this._query(query, callback);
 }

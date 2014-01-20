@@ -29,4 +29,19 @@ describe("Base model", function () {
 			it ("should throw an error if not configured");
 		});
 	});
+	describe("#_create", function () {
+
+	});
+	describe("#_read", function () {
+
+	});
+	describe("#_update", function () {
+
+	});
+	describe("#_destroy", function () {
+
+	});
+	describe("#_createRelation", function () {
+
+	});
 });
