@@ -16,13 +16,9 @@ var postcodeSchema = {
 }
 
 function Postcode () {
-	Base.call(this);
-	this.relation = "postcodes";
-	this.schema = postcodeSchema;
+	Base.call(this, "postcodes", postcodeSchema);
 }
 
 util.inherits(Postcode, Base);
 
 module.exports = new Postcode();
-
-
