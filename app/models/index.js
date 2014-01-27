@@ -1,4 +1,6 @@
 var pg = require("pg"),
+		copyFrom = require("pg-copy-streams").from,
+		csv = require("csv"),
 		config;
 
 // All models inherit from base
@@ -81,8 +83,22 @@ module.exports = {
 };
 
 Base.prototype._csvSeed = function (filePath, columns, callback) {
-	var query = "COPY " + this.relation + " (" + columns + ") FROM '" + filePath + "' DELIMITER ',' CSV";
-	this._query(query, callback);
+
+	var query = "COPY " + this.relation + " (" + columns + ") FROM STDIN DELIMITER ',' CSV",
+			pgStream;
+
+	pg.connect(config, function (error, client, done) {
+		pgStream = client.query(copyFrom(query));
+		csv().from.path(filePath).pipe(pgStream);
+		pgStream.on("end", function () {
+			done();
+			return callback();
+		});
+		pgStream.on("error", function (error) {
+			done();
+			return callback(error);
+		});
+	});
 }
 
 Base.prototype._destroyAll = function (callback) {

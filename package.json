@@ -34,7 +34,9 @@
     "commonlog-bunyan": "~0.2.1",
     "supertest": "~0.8.3",
     "node.extend": "~1.0.9",
-    "random-string": "~0.1.1"
+    "random-string": "~0.1.1",
+    "pg-copy-streams": "~0.2.1",
+    "csv": "~0.3.6"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

@@ -5,7 +5,8 @@ var assert = require("chai").assert,
 		util = require("util"),
 		env = process.env.NODE_ENV || "development",
 		config = require(rootPath + "/config/config")(env),
-		Base = require(path.join(rootPath, "app/models"));
+		Base = require(path.join(rootPath, "app/models")),
+		Postcode = require(path.join(rootPath, "app/models/postcode"));
 
 var getCustomRelation = function () {
 	var relationName = randomString({
@@ -32,6 +33,7 @@ module.exports = {
 	rootPath: rootPath,
 	config: config,
 	Base: Base,
+	Postcode: Postcode,
 	getCustomRelation: getCustomRelation,
 	seedPaths: {
 		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv"),
