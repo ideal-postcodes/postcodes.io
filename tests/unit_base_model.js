@@ -21,7 +21,7 @@ describe("Base model", function () {
 				var base = new Base.Base();
 				base._query("SELECT * FROM pg_tables", function (error, result) {
 					if (error) throw error;
-					assert.isArray(result);
+					assert.isArray(result.rows);
 					done();
 				});
 			});
@@ -30,7 +30,7 @@ describe("Base model", function () {
 	});
 
 	describe("#_create", function () {
-
+		
 	});
 
 	describe("#_read", function () {
@@ -89,5 +89,28 @@ describe("Base model", function () {
 			});
 		});
 
+	});
+
+	describe("#_csvSeed", function (done) {
+		var customRelation;
+
+		before(function (done) {
+			customRelation = helper.getCustomRelation();
+			customRelation._createRelation(done);
+		});
+
+		it ("should seed the relation table with data", function (done) {
+			customRelation._csvSeed(helper.seedPaths.customRelation, "someField", function (error, result) {
+				if (error) throw error;
+				customRelation.all(function (error, data) {
+					if (error) throw error;
+					var hasLorem = data.rows.some(function (elem) {
+						return elem.somefield === "Lorem";
+					});
+					assert.isTrue(hasLorem);
+					done();
+				});
+			});		
+		});
 	});
 });

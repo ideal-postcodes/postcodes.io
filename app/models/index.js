@@ -18,7 +18,7 @@ Base.prototype._query = function (query, callback) {
 		if (error) callback(error, null);
 		client.query(query, function (error, result) {
 			if (error) throw error;
-			callback(null, result.rows);
+			callback(null, result);
 			done();
 		});
 	});
@@ -63,5 +63,22 @@ module.exports = {
 	},
 	Base: Base
 };
+
+Base.prototype._csvSeed = function (filePath, columns, callback) {
+	var query = "COPY " + this.relation + " (" + columns + ") FROM '" + filePath + "' DELIMITER ',' CSV";
+	this._query(query, callback);
+}
+
+Base.prototype._destroyAll = function (callback) {
+	if (process.env.NODE_ENV !== "test") {
+		throw new Error("Tried to wipe database outside of testing environment. " + 
+										"Now go stand in a corner and think about what you've done");
+	}
+	this._query("drop schema public cascade", function (error, result) {
+		if (error) return callback(error, null);
+		this._query("create public schema", callback);
+	});
+}
+
 
 

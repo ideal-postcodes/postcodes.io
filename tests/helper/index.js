@@ -15,8 +15,8 @@ var getCustomRelation = function () {
 			  special: false
 			}),
 			schema = {
-				id : "integer PRIMARY KEY",
-				someField: "varchar(255)"
+				"id" : "serial PRIMARY KEY",
+				"someField": "varchar(255)"
 			};
 
 	function CustomRelation() {
@@ -32,5 +32,8 @@ module.exports = {
 	rootPath: rootPath,
 	config: config,
 	Base: Base,
-	getCustomRelation: getCustomRelation
+	getCustomRelation: getCustomRelation,
+	seedPaths: {
+		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv")
+	}
 }
