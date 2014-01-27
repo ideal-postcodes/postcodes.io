@@ -9,14 +9,19 @@ function Base (relation, schema) {
 }
 
 // To implement 'parameterised' queries
-Base.prototype._query = function (query, callback) {
+Base.prototype._query = function (query, params, callback) {
+	if (typeof params === "function") {
+		callback = params;
+		params = [];
+	}
+
 	if (!config) {
 		var err = new Error("Database connection not yet configured.");
 		callback(err, null);
 	}
 	pg.connect(config, function (error, client, done) {
 		if (error) callback(error, null);
-		client.query(query, function (error, result) {
+		client.query(query, params, function (error, result) {
 			if (error) throw error;
 			callback(null, result);
 			done();
@@ -32,12 +37,12 @@ Base.prototype._create = function (newRecord, callback) {
 	for (col in newRecord) {
 		if (!this.schema[col]) return callback(new Error("Could not create record.", col, "does not exist"), null);
 		cols.push(col);
-		values.push(typeof newRecord[col] === "string" ? "'"+newRecord[col]+"'" : newRecord[col]);
+		values.push(newRecord[col]);
 	}
 	
 	query.push("(" + cols.join(", ") + ")");
-	query.push("VALUES (" + values.join(", ") + ")");
-	this._query(query.join(" "), callback);
+	query.push("VALUES (" + dollarise(values) + ")");
+	this._query(query.join(" "), values,callback);
 };
 
 Base.prototype._read = function () {};
@@ -95,5 +100,10 @@ Base.prototype._destroyAll = function (callback) {
 	});
 }
 
-
-
+var dollarise = function (values) {
+	var result = [];
+	values.forEach(function (elem, index) {
+		result.push("$" + index + 1);
+	});
+	return result.join(", ");
+}
