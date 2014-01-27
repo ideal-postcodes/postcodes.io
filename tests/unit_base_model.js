@@ -13,7 +13,6 @@ describe("Base model", function () {
 				done();
 			});
 		});
-		it ("should cache connection for each request");
 	});
 	describe("Base model instance methods", function () {
 		describe("#_query", function () {
@@ -25,7 +24,6 @@ describe("Base model", function () {
 					done();
 				});
 			});
-			it ("should throw an error if not configured");
 		});
 	});
 
@@ -62,20 +60,18 @@ describe("Base model", function () {
 			});
 		});
 
-		describe("#_find", function () {
-			it ("should retrieve a specified record");
-		});
-
-		describe("#_update", function () {
-
-		});
-
-		describe("#_destroy", function () {
-
-		});
-
 		describe("#all", function () {
-
+			it ("should return list of all records", function (done) {
+				customRelation.all(function (error, result) {
+					if (error) throw error;
+					var containsUnique = result.rows.some(function (elem) {
+						return elem.somefield === "unique";
+					});
+					assert.isTrue(result.rows.length > 0);
+					assert.isTrue(containsUnique);
+					done();
+				});
+			});
 		});
 	});
 

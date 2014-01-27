@@ -45,10 +45,6 @@ Base.prototype._create = function (newRecord, callback) {
 	this._query(query.join(" "), values,callback);
 };
 
-Base.prototype._read = function () {};
-Base.prototype._update = function () {};
-Base.prototype._destroy = function () {};
-
 Base.prototype.all = function (callback) {
 	this._query("SELECT * FROM " + this.relation, callback);
 }
