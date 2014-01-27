@@ -29,24 +29,54 @@ describe("Base model", function () {
 		});
 	});
 
-	describe("#_create", function () {
-		
-	});
+	describe("CRUD methods", function () {
+		var customRelation;
 
-	describe("#_read", function () {
+		before(function (done) {
+			customRelation = helper.getCustomRelation();
+			customRelation._createRelation(done);
+		});
 
-	});
+		after(function (done) {
+			customRelation._destroyRelation(done);
+		});
 
-	describe("#_update", function () {
+		describe("#_create", function () {
+			it ("should return an error if property no in schema", function (done) {
+				customRelation._create({
+					"bogus" : "bogusfield"
+				}, function (error, result) {
+					assert.throws(function () {
+						if (error) throw error;
+					}, /Could not create record/);
+					done();
+				});
+			});
+			it ("should create a new record", function (done) {
+				customRelation._create({
+					somefield: "unique"
+				}, function (error, result) {
+					if (error) throw error;
+					done();
+				});
+			});
+		});
 
-	});
+		describe("#_find", function () {
+			it ("should retrieve a specified record");
+		});
 
-	describe("#_destroy", function () {
+		describe("#_update", function () {
 
-	});
+		});
 
-	describe("#all", function () {
+		describe("#_destroy", function () {
 
+		});
+
+		describe("#all", function () {
+
+		});
 	});
 
 	describe("#_createRelation", function () {
@@ -97,6 +127,10 @@ describe("Base model", function () {
 		before(function (done) {
 			customRelation = helper.getCustomRelation();
 			customRelation._createRelation(done);
+		});
+
+		after(function (done) {
+			customRelation._destroyRelation(done);
 		});
 
 		it ("should seed the relation table with data", function (done) {

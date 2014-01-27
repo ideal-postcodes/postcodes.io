@@ -24,7 +24,22 @@ Base.prototype._query = function (query, callback) {
 	});
 }
 
-Base.prototype._create = function () {};
+Base.prototype._create = function (newRecord, callback) {
+	var query = ["INSERT INTO", this.relation],
+			cols = [], 
+			values = [];
+
+	for (col in newRecord) {
+		if (!this.schema[col]) return callback(new Error("Could not create record.", col, "does not exist"), null);
+		cols.push(col);
+		values.push(typeof newRecord[col] === "string" ? "'"+newRecord[col]+"'" : newRecord[col]);
+	}
+	
+	query.push("(" + cols.join(", ") + ")");
+	query.push("VALUES (" + values.join(", ") + ")");
+	this._query(query.join(" "), callback);
+};
+
 Base.prototype._read = function () {};
 Base.prototype._update = function () {};
 Base.prototype._destroy = function () {};
