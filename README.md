@@ -17,11 +17,11 @@ A work in progress
 
 **Download it**
 ```bash
-git clone https://github.com/ideal-postcodes/postcodes.io.git
+$ git clone https://github.com/ideal-postcodes/postcodes.io.git
 
-cd postcodes.io/
+$ cd postcodes.io/
 
-npm install
+$ npm install
 ```
 
 **Configure it**
@@ -33,9 +33,9 @@ Update `config/config.js` with your Postgres credentials. Note that in order to 
 Download Codepoint Open Data ([link here](https://www.ordnancesurvey.co.uk/opendatadownload/products.html)) and run the following commands in postcodes.io/ to seed your database with postcode data
 
 ```bash
-preparedb # Creates required relations in your specified DB path
+$ preparedb # Creates required relations in your specified DB path
 
-importcpo /path/to/csv/data/ # Point to a local copy of Codepoint Open CSV Data folder
+$ importcpo /path/to/csv/data/ # Point to a local copy of Codepoint Open CSV Data folder
 ```
 
 **Run it**
