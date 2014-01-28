@@ -69,27 +69,17 @@ Base.prototype._destroyRelation = function (callback) {
 	this._query("DROP TABLE " + this.relation, callback);
 }
 
-module.exports = {
-	connect: function (configObj, callback) {
-		config = configObj.postgres;
-		if (callback) {
-			pg.connect(config, callback);	
-		} else {
-			pg.connect(config);	
-			return pg;	
-		}
-	},
-	Base: Base
-};
+Base.prototype._csvSeed = function (filePath, columns, transform, callback) {
+	if (arguments.length !== 4) throw new Error("Insufficient number of arguments specified");
 
-Base.prototype._csvSeed = function (filePath, columns, callback) {
+	transform = transform || function (row, index) {return row;};
 
 	var query = "COPY " + this.relation + " (" + columns + ") FROM STDIN DELIMITER ',' CSV",
 			pgStream;
 
 	pg.connect(config, function (error, client, done) {
 		pgStream = client.query(copyFrom(query));
-		csv().from.path(filePath).pipe(pgStream);
+		csv().from.path(filePath).transform(transform).pipe(pgStream);
 		pgStream.on("end", function () {
 			done();
 			return callback();
@@ -119,3 +109,13 @@ var dollarise = function (values) {
 	});
 	return result.join(", ");
 }
+
+module.exports = {
+	connect: function (configObj, callback) {
+		var cb = callback || function(){};
+		config = configObj.postgres;
+		pg.connect(config, cb);	
+		return pg;
+	},
+	Base: Base
+};

@@ -4,6 +4,52 @@
 
 # Postcodes.io
 
-Open source postcode API server
+Open source postcode API server using [Codepoint Open](https://www.ordnancesurvey.co.uk/opendatadownload/products.html) addressing Data
 
-Just a skeleton for now
+A work in progress
+
+## Requirements
+
+- Node.js (>=0.10)
+- Postgres with PostGIS extension
+
+## Installation
+
+**Download it**
+```bash
+git clone https://github.com/ideal-postcodes/postcodes.io.git
+
+cd postcodes.io/
+
+npm install
+```
+
+**Configure it**
+
+Update `config/config.js` with your Postgres credentials. Note that in order to import Code
+
+**Import Codepoint Open Data**
+
+Download Codepoint Open Data ([link here](https://www.ordnancesurvey.co.uk/opendatadownload/products.html)) and run the following commands in postcodes.io/ to seed your database with postcode data
+
+```bash
+preparedb # Creates required relations in your specified DB path
+
+importcpo /path/to/csv/data/ # Point to a local copy of Codepoint Open CSV Data folder
+```
+
+**Run it**
+
+```
+node server.js
+```
+
+## Testing
+
+```
+npm test
+```
+
+## License 
+
+MIT

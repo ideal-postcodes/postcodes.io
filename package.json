@@ -10,6 +10,10 @@
     "test": "NODE_ENV=test mocha tests/",
     "start": "node server.js"
   },
+  "bin": {
+    "importcpo": "./bin/import.js",
+    "preparedb": "./bin/db_prepare.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ideal-postcodes/postcodes.io.git"
@@ -36,7 +40,8 @@
     "node.extend": "~1.0.9",
     "random-string": "~0.1.1",
     "pg-copy-streams": "~0.2.1",
-    "csv": "~0.3.6"
+    "csv": "~0.3.6",
+    "async": "~0.2.10"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

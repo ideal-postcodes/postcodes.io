@@ -130,7 +130,7 @@ describe("Base model", function () {
 		});
 
 		it ("should seed the relation table with data", function (done) {
-			customRelation._csvSeed(helper.seedPaths.customRelation, "someField", function (error, result) {
+			customRelation._csvSeed(helper.seedPaths.customRelation, "someField", null, function (error, result) {
 				if (error) throw error;
 				customRelation.all(function (error, data) {
 					if (error) throw error;
