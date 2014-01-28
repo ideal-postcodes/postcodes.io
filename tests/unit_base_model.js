@@ -114,7 +114,6 @@ describe("Base model", function () {
 				done();
 			});
 		});
-
 	});
 
 	describe("#_csvSeed", function (done) {
@@ -141,6 +140,40 @@ describe("Base model", function () {
 					done();
 				});
 			});		
+		});
+	});
+
+	describe("#clear", function (done) {
+		var customRelation;
+
+		before(function (done) {
+			customRelation = helper.getCustomRelation();
+			customRelation._createRelation(function (error, result) {
+				if (error) throw error;
+				customRelation._csvSeed(helper.seedPaths.customRelation, "someField", null, function (error, result) {
+					if (error) throw error;
+					customRelation.all(function (error, data) {
+						if (error) throw error;
+						assert.isTrue(data.rows.length > 0);
+						done();
+					});
+				});
+			});
+		});
+
+		after(function (done) {
+			customRelation._destroyRelation(done);
+		});
+
+		it ("should clear the table", function (done) {
+			customRelation.clear(function (error, result) {
+				if (error) throw error;
+				customRelation.all(function (error, data) {
+					if (error) throw error;
+					assert.equal(data.rows.length, 0);
+					done();
+				});
+			});
 		});
 	});
 });

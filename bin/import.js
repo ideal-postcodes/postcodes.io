@@ -7,38 +7,59 @@ var env = process.env.NODE_ENV || "development",
 		Base = require(path.join(__dirname, "../app/models")),
 		Postcode = require(path.join(__dirname, "../app/models/postcode.js")),
 		sourceFolder = process.argv[2],
-		pg = Base.connect(config);
+		pg = Base.connect(config),
+		start = process.hrtime();
+
+// Performing checks
 
 if (!sourceFolder) {
 	throw new Error("Aborting Import. No folder specified");
 }
 
-var csvFiles = fs.readdirSync(sourceFolder).filter(function (elem) {
-	return elem.match(/\.csv$/);
-});
+function clearPostcodes (callback) {
+	console.log("Clearing existing data.");
+	Postcode.clear(callback);
+}
 
-var executionQueue = [];
+function dropIndexes (callback) {
+	console.log("Dropping indexes.");
+	Postcode.destroyIndexes(callback);
+}
 
-csvFiles.forEach(function (file) {
-	executionQueue.push(function (callback) {
-		console.log("Streaming source file:", path.join(sourceFolder, file), "to Postgres");
-		Postcode.seedPostcodes(path.join(sourceFolder, file), callback);
+function importRawCsv (callback) {
+	console.log("Importing CSV data from", sourceFolder);
+	var importQueue = [],
+			csvFiles = fs.readdirSync(sourceFolder).filter(function (elem) {
+				return elem.match(/\.csv$/);
+			});
+
+	csvFiles.forEach(function (file) {
+		importQueue.push(function (callback) {
+			console.log("Streaming source file:", path.join(sourceFolder, file), "to Postgres");
+			Postcode.seedPostcodes(path.join(sourceFolder, file), callback);
+		});
 	});
-});
 
-// Todo remove and add back indexes
+	async.series(importQueue, function (error, result) {
+		if (error) {
+			console.log("Unabled to import data due to error:", error);
+		}
+		callback(error, result);
+	});
+}
 
-async.series(executionQueue, function (error, result) {
+function recreateIndexes(callback) {
+	console.log("Rebuilding indexes.");
+	Postcode.createIndexes(callback);
+}
+
+var executionStack = [clearPostcodes, dropIndexes, importRawCsv, recreateIndexes];
+
+async.series(executionStack, function (error, result) {
 	if (error) {
-		console.log("Unable to import data due to error", error);
-		console.log("Cleaning up data");
-		Postcode._query("DELETE FROM postcodes", function (error, result) {
-			if (error) throw error;
-			console.log("Cleared Postcodes table");
-			process.exit(1);	
-		})
-	} else {
-		console.log("Successfully imported data");
-		process.exit(0);
+		console.log("Cancelling import process due to error", error);
+		process.exit(1);
 	}
+	console.log("Finished import process in", process.hrtime(start)[0], "seconds");
+	process.exit(0);
 });

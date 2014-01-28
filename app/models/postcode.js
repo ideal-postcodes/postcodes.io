@@ -1,5 +1,6 @@
 var Base = require("./index").Base,
 		fs = require("fs"),
+		async = require("async"),
 		util = require("util");
 
 var postcodeSchema = {
@@ -16,7 +17,9 @@ var postcodeSchema = {
 	admin_ward : "VARCHAR(255)",
 };
 
-var indexes = {};
+var indexes = {
+	"postcode_index" : "CREATE UNIQUE INDEX postcode_index ON postcodes (postcode)"
+};
 
 function Postcode () {
 	Base.call(this, "postcodes", postcodeSchema);
@@ -44,12 +47,28 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	this._csvSeed(filePath, csvColumns, transform, callback);
 }
 
-Postcode.prototype.createIndexes = function () {
-	
+Postcode.prototype.createIndexes = function (callback) {
+	var self = this,
+			indexExecution = [];
+
+	for (indexName in indexes) {
+		indexExecution.push(function (callback) {
+			self._query(indexes[indexName], callback);
+		});
+	}		
+	async.series(indexExecution, callback);
 }
 
-Postcode.prototype.destroyIndexes = function () {
+Postcode.prototype.destroyIndexes = function (callback) {
+	var self = this,
+			indexExecution = [];
 
+	for (indexName in indexes) {
+		indexExecution.push(function (callback) {
+			self._query("DROP INDEX IF EXISTS " + indexName, callback);
+		});
+	}		
+	async.series(indexExecution, callback);
 }
 
 module.exports = new Postcode();

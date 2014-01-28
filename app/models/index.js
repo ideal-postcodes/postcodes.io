@@ -24,8 +24,7 @@ Base.prototype._query = function (query, params, callback) {
 	pg.connect(config, function (error, client, done) {
 		if (error) callback(error, null);
 		client.query(query, params, function (error, result) {
-			if (error) throw error;
-			callback(null, result);
+			callback(error, result);
 			done();
 		});
 	});
@@ -49,6 +48,10 @@ Base.prototype._create = function (newRecord, callback) {
 
 Base.prototype.all = function (callback) {
 	this._query("SELECT * FROM " + this.relation, callback);
+}
+
+Base.prototype.clear = function (callback) {
+	this._query("DELETE FROM " + this.relation, callback);
 }
 
 Base.prototype._createRelation = function (callback) {

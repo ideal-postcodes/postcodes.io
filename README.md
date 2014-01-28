@@ -32,6 +32,8 @@ Update `config/config.js` with your Postgresql credentials. Note that in order t
 
 Download Codepoint Open Data ([link here](https://www.ordnancesurvey.co.uk/opendatadownload/products.html)) and run the following commands in postcodes.io/ to seed your database with postcode data
 
+Import process takes about 5 minutes to complete
+
 ```bash
 $ preparedb # Creates required relations in your specified DB path
 
