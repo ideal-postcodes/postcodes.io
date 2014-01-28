@@ -41,7 +41,8 @@
     "random-string": "~0.1.1",
     "pg-copy-streams": "~0.2.1",
     "csv": "~0.3.6",
-    "async": "~0.2.10"
+    "async": "~0.2.10",
+    "postcode": "~0.1.2"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

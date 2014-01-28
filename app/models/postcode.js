@@ -1,12 +1,13 @@
 var Base = require("./index").Base,
 		fs = require("fs"),
+		pc = require("postcode"),
 		async = require("async"),
 		util = require("util");
 
 var postcodeSchema = {
 	id: "SERIAL PRIMARY KEY",
 	postcode : "VARCHAR(255)",
-	positional_quality_indicator : "INTEGER",
+	quality : "INTEGER",
 	eastings : "INTEGER",
 	northings : "INTEGER",
 	country : "VARCHAR(255)",
@@ -14,7 +15,7 @@ var postcodeSchema = {
 	nhs_ha : "VARCHAR(255)",
 	admin_county : "VARCHAR(255)",
 	admin_district : "VARCHAR(255)",
-	admin_ward : "VARCHAR(255)",
+	admin_ward : "VARCHAR(255)"
 };
 
 var indexes = {
@@ -27,14 +28,20 @@ function Postcode () {
 
 util.inherits(Postcode, Base);
 
-Postcode.prototype.getPostcode = function (postcode, callback) {
-	
+Postcode.prototype.find = function (postcode, callback) {
+	postcode = new pc(postcode);
+	this._query("SELECT * FROM " + this.relation + " WHERE postcode=$1", [postcode.normalise()], function(error, result) {
+		if (error) return callback(error, null);
+		if (result.rows.length === 0) {
+			return callback(null, null);
+		}
+		callback(null, result.rows[0]);
+	});
 }
 
 Postcode.prototype.seedPostcodes = function (filePath, callback) {
-	var csvColumns = 	"postcode, positional_quality_indicator, eastings, northings," + 
-									" country_code, nhs_regional_ha_code, nhs_ha_code, admin_county_code," +
-									" admin_district_code, admin_ward_code",
+	var csvColumns = 	"postcode, quality, eastings, northings, country," + 
+										" nhs_regional_ha, nhs_ha, admin_county, admin_district, admin_ward",
 			denormalisationData = JSON.parse(fs.readFileSync(__dirname + "/postcodeDenormData.json")),
 			columnsToDenormalise = [4, 5, 6, 7, 8, 9];
 
@@ -69,6 +76,11 @@ Postcode.prototype.destroyIndexes = function (callback) {
 		});
 	}		
 	async.series(indexExecution, callback);
+}
+
+Postcode.prototype.toJson = function (address) {
+	delete address.id;
+	return address;
 }
 
 module.exports = new Postcode();

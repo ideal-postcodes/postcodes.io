@@ -27,9 +27,17 @@ var envConfig = {
 		env : "development"
 	},
 
+
 	// Test env only config
 	test: {
 		env : "test",
+		postgres: {
+			user: "postgres",
+			password: "",
+			database: "postcodeio_test",
+			host: "localhost",
+			port: 5432
+		},
 		log: {
 			stdout: false
 		}

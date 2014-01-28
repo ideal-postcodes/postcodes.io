@@ -10,8 +10,8 @@ describe("Pages routes", function () {
 				.get("/")
 			  .expect('Content-Type', /html/)
 			  .expect(200)
-			  .end(function(err, res){
-			    if (err) throw err;
+			  .end(function(error, response){
+			    if (error) throw error;
 			    done();
 			  });
 		});
@@ -23,8 +23,8 @@ describe("Pages routes", function () {
 				.get("/docs")
 			  .expect('Content-Type', /html/)
 			  .expect(200)
-			  .end(function(err, res){
-			    if (err) throw err;
+			  .end(function(error, response){
+			    if (error) throw error;
 			    done();
 			  });
 		});
@@ -44,21 +44,6 @@ describe("Pages routes", function () {
 	});
 });
 
-describe("Postcodes resource", function () {
-	describe("Show", function () {
-		it ("should return 200 and json", function (done) {
-			request(app)
-				.get("/postcodes/NW19HZ")
-				.expect("Content-Type", /json/)
-				.expect(200)
-				.end(function (err, res) {
-					if (err) throw err;
-					done();
-				});	
-		});
-	});
-});
-
 describe("Errors", function () {
 	describe("404", function () {
 		it ("should return a 404 if page does not exist", function (done) {
@@ -66,8 +51,8 @@ describe("Errors", function () {
 				.get("/surely/this/pagewouldn/ot/exist")
 				.expect('Content-Type', /html/)
 			  .expect(404)
-			  .end(function(err, res){
-			    if (err) throw err;
+			  .end(function(error, response){
+			    if (error) throw error;
 			    done();
 			  });
 		});
@@ -79,8 +64,8 @@ describe("Misc", function () {
 		request(app)
 				.get("/favicon.ico")
 			  .expect(200)
-			  .end(function(err, res){
-			    if (err) throw err;
+			  .end(function(error, response){
+			    if (error) throw error;
 			    done();
 			  });
 	});

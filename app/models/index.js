@@ -55,7 +55,7 @@ Base.prototype.clear = function (callback) {
 }
 
 Base.prototype._createRelation = function (callback) {
-	var query = ["CREATE TABLE", this.relation].join(" "),
+	var query = ["CREATE TABLE IF NOT EXISTS", this.relation].join(" "),
 			columns = [],
 			schema = this.schema;
 
@@ -69,7 +69,7 @@ Base.prototype._createRelation = function (callback) {
 };
 
 Base.prototype._destroyRelation = function (callback) {
-	this._query("DROP TABLE " + this.relation, callback);
+	this._query("DROP TABLE IF EXISTS " + this.relation + " CASCADE", callback);
 }
 
 Base.prototype._csvSeed = function (filePath, columns, transform, callback) {
@@ -120,5 +120,6 @@ module.exports = {
 		pg.connect(config, cb);	
 		return pg;
 	},
-	Base: Base
+	Base: Base,
+	Postcode: require("./postcode")
 };
