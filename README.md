@@ -26,7 +26,7 @@ $ npm install
 
 **Configure it**
 
-Update `config/config.js` with your Postgres credentials. Note that in order to import Code
+Update `config/config.js` with your Postgresql credentials. Note that in order to import Code, Postgresql user must also be superuser (at least when importing Codepoint Open to Postgresql).
 
 **Import Codepoint Open Data**
 
