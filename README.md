@@ -6,6 +6,8 @@
 
 Open source postcode API server using [Codepoint Open](https://www.ordnancesurvey.co.uk/opendatadownload/products.html) addressing Data
 
+Currently still a work in progress.
+
 ## API Methods
 
 ### GET postcodes.io/v1/postcodes/:postcode 
@@ -27,8 +29,6 @@ Retrieve random postcode
 ### GET postcodes.io/v1/random/postcodes?lonlat= (TODO)
 
 Nearest postcodes within location 
-
-A work in progress
 
 ## Requirements
 
