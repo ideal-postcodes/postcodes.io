@@ -1,6 +1,6 @@
 var Base = require("./index").Base,
 		fs = require("fs"),
-		pc = require("postcode"),
+		Pc = require("postcode"),
 		async = require("async"),
 		util = require("util");
 
@@ -29,7 +29,12 @@ function Postcode () {
 util.inherits(Postcode, Base);
 
 Postcode.prototype.find = function (postcode, callback) {
-	postcode = new pc(postcode);
+	postcode = new Pc(postcode);
+
+	if (!postcode.valid()) {
+		return callback(null, null);
+	}
+
 	this._query("SELECT * FROM " + this.relation + " WHERE postcode=$1", [postcode.normalise()], function(error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {

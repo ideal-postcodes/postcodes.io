@@ -8,10 +8,25 @@ Open source postcode API server using [Codepoint Open](https://www.ordnancesurve
 
 ## API Methods
 
-- **postcodes.io/v1/postcodes/:postcode** Lookup postcode
-- **postcodes.io/v1/postcodes/:postcode/valid** Convenience method to check for valid postcode
-- **postcodes.io/v1/random/postcodes/:postcode** Retrieve random postcode (TODO)
-- **postcodes.io/v1/random/postcodes?lonlat=** Nearest postcodes within location (TODO)
+### GET postcodes.io/v1/postcodes/:postcode 
+
+Lookup postcode
+
+### POST postcodes.io/v1/postcodes (TODO)
+
+Bulk postcode lookup by posting JSON array of postcodes
+
+### GET postcodes.io/v1/postcodes/:postcode/valid 
+
+Convenience method to validate a postcode against Ordance Survey's Data set
+
+### GET postcodes.io/v1/random/postcodes/:postcode 
+
+Retrieve random postcode
+
+### GET postcodes.io/v1/random/postcodes?lonlat= (TODO)
+
+Nearest postcodes within location 
 
 A work in progress
 

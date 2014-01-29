@@ -52,6 +52,79 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
+		describe("bulk lookups", function () {
+			var	bulkLength = 10,
+					testPostcodes;
+			
+			beforeEach(function () {
+				testPostcodes = [];
+				for (var i = 0; i < bulkLength; i++) {
+					testPostcodes.push(helper.randomPostcode());
+				}
+			});
+
+			it ("should return addresses for postcodes", function (done) {
+				request(app)
+				.post("/v1/postcodes")
+				.send(testPostcodes)
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end(function (error, response) {
+					if (error) throw error;
+					assert.isArray(response.body.result);
+					assert.equal(response.body.result.length, bulkLength);
+					response.body.result.forEach(function (lookup) {
+						assert.property(lookup, "query");
+						assert.property(lookup, "result");
+						assert.property(lookup.result, "postcode");
+					});
+					done();
+				});
+			});
+			it ("should return a null if postcode not found", function (done) {
+				testPostcodes.push("B0GUS");
+				request(app)
+				.post("/v1/postcodes")
+				.send(testPostcodes)
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end(function (error, response) {
+					if (error) throw error;
+					assert.equal(response.body.result.length, bulkLength + 1);
+					var hasNull = response.body.result.some(function (lookup) {
+						return lookup.result === null;
+					});
+					assert.isTrue(hasNull);
+					done();
+				});
+			});
+			it ("should refuse requests if lookups number over 100", function (done) {
+				testPostcodes = [];
+				for (var i = 0; i < 101; i++) {
+					testPostcodes.push("bogus");
+				}
+				request(app)
+				.post("/v1/postcodes")
+				.send(testPostcodes)
+				.expect('Content-Type', /json/)
+				.expect(400)
+				.end(function (error, response) {
+					if (error) throw error;
+					done();
+				});
+			});
+			it ("should return a 400 error if array not submitted", function (done) {
+				request(app)
+				.post("/v1/postcodes")
+				.send({"wrong" : "dataType"})
+				.expect('Content-Type', /json/)
+				.expect(400)
+				.end(function (error, response) {
+					if (error) throw error;
+					done();
+				});
+			});
+		});
 	});
 	describe("/:postcode/valid", function () {
 		it ("should return true if postcode found", function (done) {
@@ -81,7 +154,6 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should provide suggestion if postcode not found");
 	});
 	describe("/random/postcode", function () {
 		it ("should return a random postcode", function (done) {

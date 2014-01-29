@@ -53,7 +53,7 @@ describe("Postcode Model", function () {
 			});
 		});
 	});
-	
+
 	describe("#random", function () {
 		it ("should return a random postcode", function (done) {
 			Postcode.random(function (error, randomPostcode) {
