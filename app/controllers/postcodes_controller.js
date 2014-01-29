@@ -105,3 +105,59 @@ exports.bulk = function (request, response, next) {
 		});
 	});
 }
+
+exports.query = function (request, response, next) {
+	var searchTerm = request.query.q || request.query.query;
+
+	if (!searchTerm) {
+		response.jsonp(200, {
+			status: 400,
+			error: "No psotcode query submitted. Remember to include query parameter"
+		});
+	}
+
+	Postcode.search(searchTerm, 10, function (error, results) {
+		if (error) return next(error);
+		if (!result) {
+			response.jsonp(200, {
+				status: 200,
+				result: null
+			});
+		} else {
+			response.jsonp(200, {
+				status: 200,
+				result: results.map(function (elem) {
+					return Postcode.toJson(elem);
+				})
+			});
+		}
+	});
+}
+
+exports.autocomplete = function (request, response, next) {
+	var searchTerm = request.query.q || request.query.query;
+
+	if (!searchTerm) {
+		response.jsonp(200, {
+			status: 400,
+			error: "No psotcode query submitted. Remember to include query parameter"
+		});
+	}
+
+	Postcode.search(searchTerm, 10, function (error, results) {
+		if (error) return next(error);
+		if (!result) {
+			response.jsonp(200, {
+				status: 200,
+				result: null
+			});
+		} else {
+			response.jsonp(200, {
+				status: 200,
+				result: results.map(function (elem) {
+					return elem.postcode;
+				})
+			});
+		}
+	});
+}

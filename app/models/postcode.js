@@ -94,6 +94,27 @@ Postcode.prototype.destroyIndexes = function (callback) {
 	async.series(indexExecution, callback);
 }
 
+Postcode.prototype.search = function (postcode, options, callback) {
+	var limit;
+	if (typeof options === 'function') {
+		callback = options;
+		limit = 10;
+	} else {
+		limit = options.limit || 10;
+	}
+	
+	var	query = "SELECT * FROM postcodes WHERE postcode ~ $1 LIMIT " + limit,
+			re = "^" + postcode.toUpperCase().replace(/\s/, "\\s") + ".*";
+			
+	this._query(query, [re], function (error, result) {
+		if (error) return callback(error, null);
+		if (result.rows.length === 0) {
+			return callback(null, null);
+		}
+		return callback(null, result.rows);
+	});
+}
+
 Postcode.prototype.toJson = function (address) {
 	delete address.id;
 	return address;

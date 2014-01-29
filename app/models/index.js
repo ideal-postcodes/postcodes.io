@@ -22,7 +22,7 @@ Base.prototype._query = function (query, params, callback) {
 		callback(err, null);
 	}
 	pg.connect(config, function (error, client, done) {
-		if (error) callback(error, null);
+		if (error) return callback(error, null);
 		client.query(query, params, function (error, result) {
 			callback(error, result);
 			done();

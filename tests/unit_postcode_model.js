@@ -54,6 +54,27 @@ describe("Postcode Model", function () {
 		});
 	});
 
+	describe("#search", function () {
+		var testPostcode;
+
+		beforeEach(function () {
+			testPostcode = helper.randomPostcode();
+		});
+
+
+		it ("should return a list of candidate postcodes for given search term", function (done) {
+			testPostcode = testPostcode.slice(0,2);
+			Postcode.search(testPostcode, function (error, result) {
+				if (error) throw error;
+				assert.notEqual(result.length, 0);
+				assert.property(result[0], "postcode");
+				done()
+			});
+		});
+		it ("should be case insensitive");
+		it ("should work regardless of spaces");
+	});
+
 	describe("#random", function () {
 		it ("should return a random postcode", function (done) {
 			Postcode.random(function (error, randomPostcode) {
