@@ -2,7 +2,7 @@ var logger = require("commonlog-bunyan"),
 		Pc = require("postcode"),
 		Postcode = require("../models/postcode");
 
-exports.show = function (request, response) {
+exports.show = function (request, response, next) {
 	var postcode = new Pc(request.params.postcode);
 
 	if (!postcode.valid()) {
@@ -13,6 +13,9 @@ exports.show = function (request, response) {
 	}
 	
 	Postcode.find(postcode.normalise(), function (error, address) {
+		if (error) {
+			return next(error);
+		}
 		if (address) {
 			response.json(200, {
 				status: 200,
@@ -28,7 +31,7 @@ exports.show = function (request, response) {
 	
 }
 
-exports.valid = function (request, response) {
+exports.valid = function (request, response, next) {
 	var postcode = new Pc(request.params.postcode);
 
 	if (!postcode.valid()) {
@@ -39,6 +42,10 @@ exports.valid = function (request, response) {
 	}
 	
 	Postcode.find(postcode.normalise(), function (error, address) {
+		if (error) {
+			return next(error);
+		}
+
 		if (address) {
 			response.json(200, {
 				status: 200,
@@ -51,4 +58,17 @@ exports.valid = function (request, response) {
 			});		
 		}
 	});	
+}
+
+exports.random = function (request, response, next) {
+	Postcode.random(function (error, address) {
+		if (error) {
+			return next(error);
+		}
+
+		response.json(200, {
+			status: 200,
+			result: Postcode.toJson(address)
+		});
+	});
 }

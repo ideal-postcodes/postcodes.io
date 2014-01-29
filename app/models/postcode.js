@@ -39,6 +39,17 @@ Postcode.prototype.find = function (postcode, callback) {
 	});
 }
 
+Postcode.prototype.random = function (callback) {
+	var query = "SELECT * FROM postcodes OFFSET random() * (SELECT count(postcode) from postcodes) LIMIT 1";
+	this._query(query, function (error, result) {
+		if (error) return callback(error, null);
+		if (result.rows.length === 0) {
+			return callback(null, null);
+		}
+		callback(null, result.rows[0]);
+	});
+}
+
 Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	var csvColumns = 	"postcode, quality, eastings, northings, country," + 
 										" nhs_regional_ha, nhs_ha, admin_county, admin_district, admin_ward",

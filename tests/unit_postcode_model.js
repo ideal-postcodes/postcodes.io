@@ -53,4 +53,23 @@ describe("Postcode Model", function () {
 			});
 		});
 	});
+	
+	describe("#random", function () {
+		it ("should return a random postcode", function (done) {
+			Postcode.random(function (error, randomPostcode) {
+				if (error) throw error;
+				assert.property(randomPostcode, "postcode");
+				assert.property(randomPostcode, "quality");
+				assert.property(randomPostcode, "eastings");
+				assert.property(randomPostcode, "northings");
+				assert.property(randomPostcode, "country");
+				assert.property(randomPostcode, "nhs_regional_ha");
+				assert.property(randomPostcode, "nhs_ha");
+				assert.property(randomPostcode, "admin_county");
+				assert.property(randomPostcode, "admin_district");
+				assert.property(randomPostcode, "admin_ward");
+				done();
+			});
+		});
+	});
 });

@@ -83,4 +83,19 @@ describe("Postcodes routes", function () {
 		});
 		it ("should provide suggestion if postcode not found");
 	});
+	describe("/random/postcode", function () {
+		it ("should return a random postcode", function (done) {
+			var path = "/v1/random/postcodes";
+			request(app)
+			.get(path)
+			.expect('Content-Type', /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.property(response.body.result, "postcode");
+				assert.notProperty(response.body.result, "id");
+				done();
+			});
+		});
+	});
 });

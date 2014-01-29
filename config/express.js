@@ -25,9 +25,12 @@ module.exports = function (app, config) {
 			}
 			
 			if (config.env === "production") {
-				message = "500 Error! Something broke )-:";
+				message = "500 Error. Oooomph!";
 			}
+
 			response.send(500, message);
+			
+			logger.error({error: error, stack: error.stack});
 		});
 		app.use(function (request, response) {
 			response.status(404).render("404");
