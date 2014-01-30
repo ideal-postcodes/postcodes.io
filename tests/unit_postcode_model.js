@@ -6,6 +6,8 @@ var	path = require("path"),
 var Postcode = helper.Postcode;
 
 describe("Postcode Model", function () {
+	var testPostcode;
+
 	before(function (done) {
 		helper.seedPostcodeDb(function (error, result) {
 			if (error) throw error;
@@ -13,30 +15,20 @@ describe("Postcode Model", function () {
 		});
 	});
 
+	beforeEach(function () {
+		testPostcode = helper.randomPostcode();
+	});
+
 	after(function (done) {
 		helper.clearPostcodeDb(done);
 	});
 
 	describe("#find", function () {
-		var testPostcode;
-
-		beforeEach(function () {
-			testPostcode = helper.randomPostcode();
-		})
-
 		it ("should return postcode with the right attributes", function (done) {
 			Postcode.find(testPostcode, function (error, result) {
 				if (error) throw error;
 				assert.equal(result.postcode, testPostcode);
-				assert.property(result, "quality");
-				assert.property(result, "eastings");
-				assert.property(result, "northings");
-				assert.property(result, "country");
-				assert.property(result, "nhs_regional_ha");
-				assert.property(result, "nhs_ha");
-				assert.property(result, "admin_county");
-				assert.property(result, "admin_district");
-				assert.property(result, "admin_ward");
+				helper.isRawPostcodeObject(result);
 				done();
 			});
 		});
@@ -57,19 +49,14 @@ describe("Postcode Model", function () {
 	});
 
 	describe("#search", function () {
-		var testPostcode;
-
-		beforeEach(function () {
-			testPostcode = helper.randomPostcode();
-		});
-
-
 		it ("should return a list of candidate postcodes for given search term", function (done) {
 			testPostcode = testPostcode.slice(0, 2);
 			Postcode.search(testPostcode, function (error, result) {
 				if (error) throw error;
 				assert.notEqual(result.length, 0);
-				assert.property(result[0], "postcode");
+				result.forEach(function (postcode) {
+					helper.isRawPostcodeObject(postcode);
+				});
 				done();
 			});
 		});
@@ -78,7 +65,9 @@ describe("Postcode Model", function () {
 			Postcode.search(testPostcode, function (error, result) {
 				if (error) throw error;
 				assert.notEqual(result.length, 0);
-				assert.property(result[0], "postcode");
+				result.forEach(function (postcode) {
+					helper.isRawPostcodeObject(postcode);
+				});
 				done();
 			});
 		});
@@ -87,7 +76,9 @@ describe("Postcode Model", function () {
 			Postcode.search(testPostcode, function (error, result) {
 				if (error) throw error;
 				assert.notEqual(result.length, 0);
-				assert.property(result[0], "postcode");
+				result.forEach(function (postcode) {
+					helper.isRawPostcodeObject(postcode);
+				});
 				done();
 			});
 		});
@@ -95,20 +86,76 @@ describe("Postcode Model", function () {
 
 	describe("#random", function () {
 		it ("should return a random postcode", function (done) {
-			Postcode.random(function (error, randomPostcode) {
+			Postcode.random(function (error, postcode) {
 				if (error) throw error;
-				assert.property(randomPostcode, "postcode");
-				assert.property(randomPostcode, "quality");
-				assert.property(randomPostcode, "eastings");
-				assert.property(randomPostcode, "northings");
-				assert.property(randomPostcode, "country");
-				assert.property(randomPostcode, "nhs_regional_ha");
-				assert.property(randomPostcode, "nhs_ha");
-				assert.property(randomPostcode, "admin_county");
-				assert.property(randomPostcode, "admin_district");
-				assert.property(randomPostcode, "admin_ward");
+				helper.isRawPostcodeObject(postcode);
 				done();
+			});
+		});
+
+		describe("#nearestPostcodes", function () {
+			var randomPostcode;
+
+			beforeEach(function (done) {
+				helper.lookupRandomPostcode(function (postcode) {
+					randomPostcode = postcode;
+					done();
+				});
+			});
+
+			it ("should return a list of nearby postcodes", function (done) {
+				var params = {
+					longitude: randomPostcode.longitude,
+					latitude: randomPostcode.latitude
+				}
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) throw error;
+					assert.isArray(postcodes);
+					assert.isTrue(postcodes.length <= 10);
+					postcodes.forEach(function (postcode) {
+						helper.isRawPostcodeObject(postcode);
+					});
+					done();
+				});
+			});
+			it ("should be sensitive to limit", function (done) {
+				var params = {
+					longitude: randomPostcode.longitude,
+					latitude: randomPostcode.latitude,
+					limit: 1
+				}
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) throw error;
+					assert.isArray(postcodes);
+					assert.equal(postcodes.length, 1);
+					postcodes.forEach(function (postcode) {
+						helper.isRawPostcodeObject(postcode);
+					});
+					done();
+				});
+			});
+			it ("should be sensitive to distance param", function (done) {
+				var nearby = {
+						longitude: randomPostcode.longitude,
+						latitude: randomPostcode.latitude,
+					},
+					farAway = {
+						longitude: randomPostcode.longitude,
+						latitude: randomPostcode.latitude,
+						distance: 2000
+					};
+
+				Postcode.nearestPostcodes(nearby, function (error, postcodes) {
+					if (error) throw error;
+					Postcode.nearestPostcodes(farAway, function (error, farawayPostcodes) {
+						if (error) throw error;
+						assert.isTrue(farawayPostcodes.length >= postcodes.length);
+						done();
+					});
+				});
 			});
 		});
 	});
 });
+
+

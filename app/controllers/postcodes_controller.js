@@ -154,3 +154,7 @@ exports.autocomplete = function (request, response, next) {
 		}
 	});
 }
+
+exports.lonlat = function (request, response, next) {
+	
+}

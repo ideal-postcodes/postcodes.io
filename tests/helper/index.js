@@ -1,13 +1,12 @@
-var assert = require("chai").assert,
-		csv = require("csv"),
+var	csv = require("csv"),
+		util = require("util"),
 		path = require("path"),
 		assert = require("chai").assert,
 		randomString = require("random-string"),
 		rootPath = path.join(__dirname, "../../"),
-		util = require("util"),
 		env = process.env.NODE_ENV || "development",
-		config = require(rootPath + "/config/config")(env),
 		Base = require(path.join(rootPath, "app/models")),
+		config = require(path.join(rootPath + "/config/config"))(env),
 		Postcode = require(path.join(rootPath, "app/models/postcode")),
 		seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv"),
 		testPostcodes, testPostcodesLength;
@@ -69,22 +68,49 @@ function randomPostcode() {
 	return testPostcodes[getRandom()][0];
 }
 
+function lookupRandomPostcode(callback) {
+	Postcode.random(function (error, result) {
+		if (error) {
+			throw error;
+		}
+		callback(result);
+	});
+}
+
 function isPostcodeObject(o) {
-	assert.property(o, "postcode");
-	assert.property(o, "quality");
-	assert.property(o, "eastings");
-	assert.property(o, "northings");
-	assert.property(o, "country");
-	assert.property(o, "nhs_regional_ha");
+	assert.notProperty(o, "id");
 	assert.property(o, "nhs_ha");
+	assert.property(o, "country");
+	assert.property(o, "quality");
+	assert.property(o, "postcode");
+	assert.property(o, "eastings");
+	assert.property(o, "latitude");
+	assert.property(o, "northings");
+	assert.property(o, "longitude");
+	assert.property(o, "admin_ward");
+	assert.notProperty(o, "location");
+	assert.property(o, "admin_county");
+	assert.notProperty(o, "pc_compact");
+	assert.property(o, "admin_district");
+	assert.property(o, "nhs_regional_ha");
+}
+
+function isRawPostcodeObject(o) {
+	assert.property(o, "id");
+	assert.property(o, "nhs_ha");
+	assert.property(o, "country");
+	assert.property(o, "quality");
+	assert.property(o, "postcode");
+	assert.property(o, "eastings");
+	assert.property(o, "latitude");
+	assert.property(o, "location");
+	assert.property(o, "northings");
+	assert.property(o, "longitude");
+	assert.property(o, "pc_compact");
+	assert.property(o, "admin_ward");
 	assert.property(o, "admin_county");
 	assert.property(o, "admin_district");
-	assert.property(o, "admin_ward");
-	assert.property(o, "longitude");
-	assert.property(o, "latitude");
-	assert.notProperty(o, "location");
-	assert.notProperty(o, "id");
-	assert.notProperty(o, "pc_compact");
+	assert.property(o, "nhs_regional_ha");
 }
 
 module.exports = {
@@ -98,9 +124,11 @@ module.exports = {
 	clearPostcodeDb: clearPostcodeDb,
 	isPostcodeObject: isPostcodeObject,
 	getCustomRelation: getCustomRelation,
+	isRawPostcodeObject: isRawPostcodeObject, 
+	lookupRandomPostcode: lookupRandomPostcode,
 	seedPaths: {
-		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv"),
-		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv")
+		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
+		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv")
 	}
 }
 

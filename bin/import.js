@@ -32,13 +32,6 @@ function dropIndexes (callback) {
 	Postcode.destroyIndexes(callback);
 }
 
-function createLocationData(callback) {
-	console.log("Loading location data into database...")
-	var query = "UPDATE postcodes SET location =" 
-					 + " ST_GeogFromText('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')";
-	Postcode._query(query, callback);
-}
-
 function recreateIndexes(callback) {
 	console.log("Rebuilding indexes...");
 	Postcode.createIndexes(callback);
@@ -82,7 +75,6 @@ var executionStack = [createPostgisExtension,
 											createRelation, 
 											dropIndexes, 
 											importRawCsv, 
-											createLocationData,
 											recreateIndexes];
 
 async.series(executionStack, function (error, result) {

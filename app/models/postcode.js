@@ -61,7 +61,8 @@ Postcode.prototype.random = function (callback) {
 }
 
 Postcode.prototype.seedPostcodes = function (filePath, callback) {
-	var csvColumns = 	"postcode, quality, eastings, northings, country, nhs_regional_ha, nhs_ha," + 
+	var self = this,
+			csvColumns = 	"postcode, quality, eastings, northings, country, nhs_regional_ha, nhs_ha," + 
 										" admin_county, admin_district, admin_ward, longitude, latitude, pc_compact",
 			denormalisationData = JSON.parse(fs.readFileSync(__dirname + "/postcodeDenormData.json")),
 			columnsToDenormalise = [4, 5, 6, 7, 8, 9],
@@ -83,7 +84,12 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 
 		return row;
 	}
-	this._csvSeed(filePath, csvColumns, transform, callback);
+	self._csvSeed(filePath, csvColumns, transform, function (error) {
+		if (error) throw error;
+		var query = "UPDATE postcodes SET location =" 
+					 + " ST_GeogFromText('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')";
+		self._query(query, callback);
+	});
 }
 
 Postcode.prototype.createIndexes = function (callback) {
@@ -129,6 +135,24 @@ Postcode.prototype.search = function (postcode, options, callback) {
 			re = "^" + postcode.toUpperCase().replace(" ", "") + ".*";
 			
 	this._query(query, [re], function (error, result) {
+		if (error) return callback(error, null);
+		if (result.rows.length === 0) {
+			return callback(null, null);
+		}
+		return callback(null, result.rows);
+	});
+}
+
+Postcode.prototype.nearestPostcodes = function (params, callback) {
+	var limit, radius;
+	radius = params.radius || 100;
+	limit = params.limit || 100;
+	var query = "SELECT *, ST_Distance(location, " + 
+							" ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance " + 
+							"FROM postcodes " + 
+							"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
+							"ORDER BY distance LIMIT $4";
+	this._query(query, [params.longitude, params.latitude, radius, limit], function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
