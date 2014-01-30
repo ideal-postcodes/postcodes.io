@@ -75,15 +75,15 @@ Update `config/config.js` with your Postgresql credentials. Note that in order t
 
 **Import Codepoint Open Data**
 
-Download Codepoint Open Data ([link here](https://www.ordnancesurvey.co.uk/opendatadownload/products.html)) and run the following commands in postcodes.io/ to seed your database with postcode data
+Download Codepoint Open Data ([in CSV format here](https://www.ordnancesurvey.co.uk/opendatadownload/products.html)). Unzip the data locally. Navigate to `postcodes.io/` and run `importcpo` passing  directory containing the CSV data.
 
-Import process takes about 5 minutes to complete
+It should look something like this:
 
 ```bash
-$ preparedb # Creates required relations in your specified DB path
-
-$ importcpo /path/to/csv/data/ # Point to a local copy of Codepoint Open CSV Data folder
+$ importcpo /path/to/data/codepo_gb/Data/CSV
 ```
+
+Import process takes about 5 minutes to complete. You need to have the [PostGIS extension availble for it to work](http://postgis.net/install).
 
 **Run it**
 

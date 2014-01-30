@@ -8,7 +8,7 @@ var	fs = require("fs"),
 var postcodeSchema = {
 	id: "SERIAL PRIMARY KEY",
 	postcode : "VARCHAR(10)",
-	pc_compact : "VARCHAR(9)"
+	pc_compact : "VARCHAR(9)",
 	quality : "INTEGER",
 	eastings : "INTEGER",
 	northings : "INTEGER",
@@ -26,7 +26,7 @@ var postcodeSchema = {
 var indexes = {
 	"postcode_index" : "CREATE UNIQUE INDEX postcode_index ON postcodes (postcode)",
 	"pc_compact_index" : "CREATE UNIQUE INDEX pc_compact_index ON postcodes (pc_compact)",
-	"postcode_location_index" : "CREATE INDEX postcode_location_index ON postcodes USING GIST (location)"
+	"location_index" : "CREATE INDEX location_index ON postcodes USING GIST (location)"
 };
 
 function Postcode () {
@@ -90,11 +90,14 @@ Postcode.prototype.createIndexes = function (callback) {
 			indexExecution = [];
 
 	for (indexName in indexes) {
-		indexExecution.push(function (callback) {
-			self._query(indexes[indexName], callback);
-		});
-	}		
-	async.series(indexExecution, callback);
+		indexExecution.push(indexes[indexName]);
+	}	
+
+	async.series(indexExecution.map(function (instruction) {
+			return function (callback) {
+				self._query(instruction, callback);
+			}
+	}), callback);
 }
 
 Postcode.prototype.destroyIndexes = function (callback) {
@@ -102,11 +105,14 @@ Postcode.prototype.destroyIndexes = function (callback) {
 			indexExecution = [];
 
 	for (indexName in indexes) {
-		indexExecution.push(function (callback) {
-			self._query("DROP INDEX IF EXISTS " + indexName, callback);
-		});
-	}		
-	async.series(indexExecution, callback);
+		indexExecution.push("DROP INDEX IF EXISTS " + indexName);
+	}	
+
+	async.series(indexExecution.map(function (instruction) {
+		return function (callback) {
+			self._query(instruction, callback);
+		};
+	}), callback);	
 }
 
 Postcode.prototype.search = function (postcode, options, callback) {

@@ -120,6 +120,5 @@ module.exports = {
 		pg.connect(config, cb);	
 		return pg;
 	},
-	Base: Base,
-	Postcode: require("./postcode")
+	Base: Base
 };

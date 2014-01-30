@@ -4,13 +4,13 @@ var	fs = require("fs"),
 		path = require("path"),
 		async = require("async"),
 		start = process.hrtime(),
-		pg = Base.connect(config),
 		sourceFolder = process.argv[2],
 		env = process.env.NODE_ENV || "development",
 		Base = require(path.join(__dirname, "../app/models")),
 		config = require(path.join(__dirname, "../config/config"))(env),
 		Postcode = require(path.join(__dirname, "../app/models/postcode.js"));
 
+var pg = Base.connect(config);
 // Performing checks
 
 if (!sourceFolder) {
@@ -19,11 +19,12 @@ if (!sourceFolder) {
 
 function dropRelation (callback) {
 	console.log("Nuking old postcode database...");
-	Postcode.clear(callback);
+	Postcode._destroyRelation(callback);
 }
 
 function createRelation (callback) {
 	console.log("Creaing new postcode database...");
+	Postcode._createRelation(callback);
 }
 
 function dropIndexes (callback) {
@@ -34,12 +35,12 @@ function dropIndexes (callback) {
 function compactPostcodes(callback) {
 	console.log("Compacting postcodes...");
 	var query = "UPDATE postcodes SET pc_compact = replace(postcode, ' ', '')";
-	Postcode._query("", callback);
+	Postcode._query(query, callback);
 }
 
 function createLocationData(callback) {
 	console.log("Loading location data into database...")
-	var query = "UPDATE postcode_locations SET location =" 
+	var query = "UPDATE postcodes SET location =" 
 					 + " ST_GeogFromText('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')";
 	Postcode._query(query, callback);
 }
@@ -71,7 +72,19 @@ function importRawCsv (callback) {
 	});
 }
 
-var executionStack = [dropRelation, 
+function createPostgisExtension(callback) {
+	console.log("Enabling POSTGIS extension...")
+	Postcode._query("CREATE EXTENSION IF NOT EXISTS postgis", function (error, result) {
+		if (error) {
+			throw new Error("Unabled to create extension. This may be because you" +
+											" don't have PostGIS installed. Error", error);
+		}
+		callback(null, result);
+	});
+}
+
+var executionStack = [createPostgisExtension,
+											dropRelation, 
 											createRelation, 
 											dropIndexes, 
 											importRawCsv, 
