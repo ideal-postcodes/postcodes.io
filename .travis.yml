@@ -5,5 +5,3 @@ node_js:
 before_script:
   - psql -c 'create database postcodeio_test;' -U postgres
   - psql -c 'CREATE EXTENSION postgis;' -U postgres -d postcodeio_test
-  - psql -c 'CREATE EXTENSION postgis_topology;' -U postgres -d postcodeio_test
-  - psql -f test_data.sql -U postgres -d postcodeio_test
