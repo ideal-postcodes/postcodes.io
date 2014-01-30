@@ -1,12 +1,14 @@
-var Base = require("./index").Base,
-		fs = require("fs"),
+var	fs = require("fs"),
+		util = require("util"),
 		Pc = require("postcode"),
 		async = require("async"),
-		util = require("util");
+		OSPoint = require("ospoint"),
+		Base = require("./index").Base;
 
 var postcodeSchema = {
 	id: "SERIAL PRIMARY KEY",
-	postcode : "VARCHAR(255)",
+	postcode : "VARCHAR(10)",
+	pc_compact : "VARCHAR(9)"
 	quality : "INTEGER",
 	eastings : "INTEGER",
 	northings : "INTEGER",
@@ -15,11 +17,16 @@ var postcodeSchema = {
 	nhs_ha : "VARCHAR(255)",
 	admin_county : "VARCHAR(255)",
 	admin_district : "VARCHAR(255)",
-	admin_ward : "VARCHAR(255)"
+	admin_ward : "VARCHAR(255)",
+	longitude : "DOUBLE PRECISION",
+	latitude : "DOUBLE PRECISION",
+	location : "GEOGRAPHY(Point, 4326)"
 };
 
 var indexes = {
-	"postcode_index" : "CREATE UNIQUE INDEX postcode_index ON postcodes (postcode)"
+	"postcode_index" : "CREATE UNIQUE INDEX postcode_index ON postcodes (postcode)",
+	"pc_compact_index" : "CREATE UNIQUE INDEX pc_compact_index ON postcodes (pc_compact)",
+	"postcode_location_index" : "CREATE INDEX postcode_location_index ON postcodes USING GIST (location)"
 };
 
 function Postcode () {
@@ -56,15 +63,23 @@ Postcode.prototype.random = function (callback) {
 }
 
 Postcode.prototype.seedPostcodes = function (filePath, callback) {
-	var csvColumns = 	"postcode, quality, eastings, northings, country," + 
-										" nhs_regional_ha, nhs_ha, admin_county, admin_district, admin_ward",
+	var csvColumns = 	"postcode, quality, eastings, northings, country, nhs_regional_ha, nhs_ha," + 
+										" admin_county, admin_district, admin_ward, longitude, latitude",
 			denormalisationData = JSON.parse(fs.readFileSync(__dirname + "/postcodeDenormData.json")),
-			columnsToDenormalise = [4, 5, 6, 7, 8, 9];
+			columnsToDenormalise = [4, 5, 6, 7, 8, 9],
+			location;
 
 	var transform = function (row, index) {
+		// Replace codes with data (denormalisation process)
 		columnsToDenormalise.forEach(function (elem) {
 			row[elem] = denormalisationData[row[elem]];
 		});
+
+		// Translate Northings and Eastings to longitude and latitude
+		location = new OSPoint("" + row[3] , "" + row[2]).toWGS84();
+		row.push(location.longitude);
+		row.push(location.latitude);
+
 		return row;
 	}
 	this._csvSeed(filePath, csvColumns, transform, callback);
