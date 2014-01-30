@@ -36,13 +36,11 @@ function Postcode () {
 util.inherits(Postcode, Base);
 
 Postcode.prototype.find = function (postcode, callback) {
-	postcode = new Pc(postcode);
-
-	if (!postcode.valid()) {
+	if (!new Pc(postcode).valid()) {
 		return callback(null, null);
 	}
 
-	this._query("SELECT * FROM " + this.relation + " WHERE postcode=$1", [postcode.normalise()], function(error, result) {
+	this._query("SELECT * FROM " + this.relation + " WHERE pc_compact=$1", [postcode.replace(" ", "")], function(error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
@@ -64,7 +62,7 @@ Postcode.prototype.random = function (callback) {
 
 Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	var csvColumns = 	"postcode, quality, eastings, northings, country, nhs_regional_ha, nhs_ha," + 
-										" admin_county, admin_district, admin_ward, longitude, latitude",
+										" admin_county, admin_district, admin_ward, longitude, latitude, pc_compact",
 			denormalisationData = JSON.parse(fs.readFileSync(__dirname + "/postcodeDenormData.json")),
 			columnsToDenormalise = [4, 5, 6, 7, 8, 9],
 			location;
@@ -79,6 +77,9 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		location = new OSPoint("" + row[3] , "" + row[2]).toWGS84();
 		row.push(location.longitude);
 		row.push(location.latitude);
+
+		// Push pc_compact
+		row.push(row[0].replace(" ", ""));
 
 		return row;
 	}
@@ -124,7 +125,7 @@ Postcode.prototype.search = function (postcode, options, callback) {
 		limit = options.limit || 10;
 	}
 	
-	var	query = "SELECT * FROM postcodes WHERE postcode ~ $1 LIMIT " + limit,
+	var	query = "SELECT * FROM postcodes WHERE pc_compact ~ $1 LIMIT " + limit,
 			re = "^" + postcode.toUpperCase().replace(/\s/, "\\s") + ".*";
 			
 	this._query(query, [re], function (error, result) {
