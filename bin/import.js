@@ -32,12 +32,6 @@ function dropIndexes (callback) {
 	Postcode.destroyIndexes(callback);
 }
 
-function compactPostcodes(callback) {
-	console.log("Compacting postcodes...");
-	var query = "UPDATE postcodes SET pc_compact = replace(postcode, ' ', '')";
-	Postcode._query(query, callback);
-}
-
 function createLocationData(callback) {
 	console.log("Loading location data into database...")
 	var query = "UPDATE postcodes SET location =" 
@@ -88,7 +82,6 @@ var executionStack = [createPostgisExtension,
 											createRelation, 
 											dropIndexes, 
 											importRawCsv, 
-											compactPostcodes,
 											createLocationData,
 											recreateIndexes];
 
