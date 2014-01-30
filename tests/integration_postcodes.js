@@ -24,9 +24,59 @@ describe("Postcodes routes", function () {
 	});
 
 	describe("GET /", function () {
-		it ("should return a list of matching postcode objects");
-		it ("should be insensitive to case");
-		it ("should be insensitive to space");
+		var uri;
+
+		it ("should return a list of matching postcode objects", function (done) {
+			uri = encodeURI("/postcodes?q=" + testPostcode.replace(" ", "").slice(0, 2));
+
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 10);
+				response.body.result.forEach(function (postcode) {
+					helper.isPostcodeObject(postcode);
+				});
+				done();
+			});
+		});
+		it ("should be insensitive to case", function (done) {
+			uri = encodeURI("/postcodes?q=" + testPostcode.slice(0, 2).toLowerCase());
+
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 10);
+				response.body.result.forEach(function (postcode) {
+					helper.isPostcodeObject(postcode);
+				});
+				done();
+			});
+		});
+		it ("should be insensitive to space", function (done) {
+			uri = encodeURI("/postcodes?q=" + testPostcode.slice(0, 2).split("").join(" "));
+
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 10);
+				response.body.result.forEach(function (postcode) {
+					helper.isPostcodeObject(postcode);
+				});
+				done();
+			});
+		});
 	});
 
 	describe("Post /", function () {
@@ -42,7 +92,7 @@ describe("Postcodes routes", function () {
 
 		it ("should return addresses for postcodes", function (done) {
 			request(app)
-			.post("/v1/postcodes")
+			.post("/postcodes")
 			.send(testPostcodes)
 			.expect('Content-Type', /json/)
 			.expect(200)
@@ -53,7 +103,7 @@ describe("Postcodes routes", function () {
 				response.body.result.forEach(function (lookup) {
 					assert.property(lookup, "query");
 					assert.property(lookup, "result");
-					assert.property(lookup.result, "postcode");
+					helper.isPostcodeObject(lookup.result);
 				});
 				done();
 			});
@@ -61,7 +111,7 @@ describe("Postcodes routes", function () {
 		it ("should return a null if postcode not found", function (done) {
 			testPostcodes.push("B0GUS");
 			request(app)
-			.post("/v1/postcodes")
+			.post("/postcodes")
 			.send(testPostcodes)
 			.expect('Content-Type', /json/)
 			.expect(200)
@@ -81,7 +131,7 @@ describe("Postcodes routes", function () {
 				testPostcodes.push("bogus");
 			}
 			request(app)
-			.post("/v1/postcodes")
+			.post("/postcodes")
 			.send(testPostcodes)
 			.expect('Content-Type', /json/)
 			.expect(400)
@@ -92,7 +142,7 @@ describe("Postcodes routes", function () {
 		});
 		it ("should return a 400 error if array not submitted", function (done) {
 			request(app)
-			.post("/v1/postcodes")
+			.post("/postcodes")
 			.send({"wrong" : "dataType"})
 			.expect('Content-Type', /json/)
 			.expect(400)
@@ -105,7 +155,7 @@ describe("Postcodes routes", function () {
 
 	describe("/:postcode", function () {
 		it ("should return 200 if postcode found", function (done) {
-			var path = ["/v1/postcodes/", encodeURI(testPostcode)].join("");
+			var path = ["/postcodes/", encodeURI(testPostcode)].join("");
 			request(app)
 			.get(path)
 			.expect('Content-Type', /json/)
@@ -114,13 +164,13 @@ describe("Postcodes routes", function () {
 				if (error) throw error;
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.postcode, testPostcode);
-				assert.notProperty(response.body.result, "id");
+				helper.isPostcodeObject(response.body.result);
 				done();
 			});
 		});
 		it ("should return 404 if not found", function (done) {
 			testPostcode = "ID11QE";
-			var path = ["/v1/postcodes/", encodeURI(testPostcode)].join("");
+			var path = ["/postcodes/", encodeURI(testPostcode)].join("");
 			request(app)
 			.get(path)
 			.expect('Content-Type', /json/)
@@ -136,7 +186,7 @@ describe("Postcodes routes", function () {
 
 	describe("/:postcode/validate", function () {
 		it ("should return true if postcode found", function (done) {
-			var path = ["/v1/postcodes/", encodeURI(testPostcode), "/validate"].join("");
+			var path = ["/postcodes/", encodeURI(testPostcode), "/validate"].join("");
 			request(app)
 			.get(path)
 			.expect('Content-Type', /json/)
@@ -150,7 +200,7 @@ describe("Postcodes routes", function () {
 		});
 		it ("should return false if postcode not found", function (done) {
 			testPostcode = "ID11QE";
-			var path = ["/v1/postcodes/", encodeURI(testPostcode), "/validate"].join("");
+			var path = ["/postcodes/", encodeURI(testPostcode), "/validate"].join("");
 			request(app)
 			.get(path)
 			.expect('Content-Type', /json/)
@@ -163,9 +213,10 @@ describe("Postcodes routes", function () {
 			});
 		});
 	});
+
 	describe("/random/postcode", function () {
 		it ("should return a random postcode", function (done) {
-			var path = "/v1/random/postcodes";
+			var path = "/random/postcodes";
 			request(app)
 			.get(path)
 			.expect('Content-Type', /json/)
@@ -173,15 +224,65 @@ describe("Postcodes routes", function () {
 			.end(function (error, response) {
 				if (error) throw error;
 				assert.property(response.body.result, "postcode");
-				assert.notProperty(response.body.result, "id");
+				helper.isPostcodeObject(response.body.result);
 				done();
 			});
 		});
 	});
 
-	describe("/:postcode/autocomplete", function (done) {
-		it ("should return a list of matching postcodes only");
-		it ("should be insensitive to case");
-		it ("should be insensitive to space");
+	describe("/:postcode/autocomplete", function () {
+		var uri;
+
+		it ("should return a list of matching postcodes only", function (done) {
+			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2) + "/autocomplete");
+
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 10);
+				response.body.result.forEach(function (postcode) {
+					assert.isString(postcode);
+				});
+				done();
+			});
+		});
+		it ("should be insensitive to case", function (done) {
+			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2).toLowerCase() + "/autocomplete");
+
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 10);
+				response.body.result.forEach(function (postcode) {
+					assert.isString(postcode);
+				});
+				done();
+			});
+		});
+		it ("should be insensitive to space", function (done) {
+			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2).split("").join(" ") + "/autocomplete");
+
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 10);
+				response.body.result.forEach(function (postcode) {
+					assert.isString(postcode);
+				});
+				done();
+			});
+		});
 	})
 });

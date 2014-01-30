@@ -112,13 +112,13 @@ exports.query = function (request, response, next) {
 	if (!searchTerm) {
 		response.jsonp(200, {
 			status: 400,
-			error: "No psotcode query submitted. Remember to include query parameter"
+			error: "No postcode query submitted. Remember to include query parameter"
 		});
 	}
 
 	Postcode.search(searchTerm, 10, function (error, results) {
 		if (error) return next(error);
-		if (!result) {
+		if (!results) {
 			response.jsonp(200, {
 				status: 200,
 				result: null
@@ -135,18 +135,11 @@ exports.query = function (request, response, next) {
 }
 
 exports.autocomplete = function (request, response, next) {
-	var searchTerm = request.query.q || request.query.query;
-
-	if (!searchTerm) {
-		response.jsonp(200, {
-			status: 400,
-			error: "No psotcode query submitted. Remember to include query parameter"
-		});
-	}
+	var searchTerm = request.params.postcode;
 
 	Postcode.search(searchTerm, 10, function (error, results) {
 		if (error) return next(error);
-		if (!result) {
+		if (!results) {
 			response.jsonp(200, {
 				status: 200,
 				result: null

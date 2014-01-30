@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "NODE_ENV=test mocha tests/",
+    "test": "NODE_ENV=test mocha tests/ -R spec",
     "start": "node server.js"
   },
   "bin": {

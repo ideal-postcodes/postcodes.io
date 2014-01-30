@@ -1,7 +1,9 @@
-var assert = require("chai").assert,
-		path = require("path"),
-		helper = require(__dirname + "/helper"),
-		Postcode = helper.Postcode;
+var	path = require("path"),
+		async = require("async"),
+		assert = require("chai").assert,
+		helper = require(__dirname + "/helper");
+		
+var Postcode = helper.Postcode;
 
 describe("Postcode Model", function () {
 	before(function (done) {
@@ -63,16 +65,32 @@ describe("Postcode Model", function () {
 
 
 		it ("should return a list of candidate postcodes for given search term", function (done) {
-			testPostcode = testPostcode.slice(0,2);
+			testPostcode = testPostcode.slice(0, 2);
 			Postcode.search(testPostcode, function (error, result) {
 				if (error) throw error;
 				assert.notEqual(result.length, 0);
 				assert.property(result[0], "postcode");
-				done()
+				done();
 			});
 		});
-		it ("should be case insensitive");
-		it ("should work regardless of spaces");
+		it ("should be case insensitive", function (done) {
+			testPostcode = testPostcode.slice(0, 2).toLowerCase();
+			Postcode.search(testPostcode, function (error, result) {
+				if (error) throw error;
+				assert.notEqual(result.length, 0);
+				assert.property(result[0], "postcode");
+				done();
+			});
+		});
+		it ("should work regardless of spaces", function (done) {
+			testPostcode = testPostcode.slice(0, 4).replace(" ", "");
+			Postcode.search(testPostcode, function (error, result) {
+				if (error) throw error;
+				assert.notEqual(result.length, 0);
+				assert.property(result[0], "postcode");
+				done();
+			});
+		});
 	});
 
 	describe("#random", function () {

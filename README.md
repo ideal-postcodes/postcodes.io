@@ -25,31 +25,31 @@ As you can see, these methods aren't designed so much to be RESTful. It's design
 
 The end result is less data fiddling as methods are tuned for a specific job and less documentation as the URIs are allowed to be more descriptive.
 
-### GET postcodes.io/v1/postcodes
+#### GET api.postcodes.io/postcodes
 
-Requires a query parameter, q (e.g. /v1/postcodes?q=NG228TX). Returns a list of matching or nearest matching postcodes with associated data
+Requires a query parameter, q (e.g. /postcodes?q=NG228TX). Returns a list of matching or nearest matching postcodes with associated data
 
-### GET postcodes.io/v1/postcodes/:postcode 
+#### GET api.postcodes.io/postcodes/:postcode 
 
 Lookup a postcode, returning associated data.
 
-### POST postcodes.io/v1/postcodes
+#### POST api.postcodes.io/postcodes
 
 Bulk postcode lookup by posting JSON array of postcodes.
 
-### GET postcodes.io/v1/postcodes/:postcode/validate
+#### GET api.postcodes.io/postcodes/:postcode/validate
 
 Convenience method to validate a postcode against Ordance Survey's Data set. Returns True or False.
 
-### GET postcodes.io/v1/postcodes/:postcode/autocomplete
+#### GET api.postcodes.io/postcodes/:postcode/autocomplete
 
 Convenience method to autocomplete a postcode (default limit of 10). Returns an array of postcode strings.
 
-### GET postcodes.io/v1/random/postcodes/:postcode 
+#### GET api.postcodes.io/random/postcodes/:postcode 
 
 Retrieve random postcode with associated data.
 
-### GET postcodes.io/v1/random/postcodes?lonlat= (TODO)
+#### GET api.postcodes.io/random/postcodes?lonlat= (TODO)
 
 Nearest postcodes within location specified.
 

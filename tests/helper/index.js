@@ -1,6 +1,7 @@
 var assert = require("chai").assert,
 		csv = require("csv"),
 		path = require("path"),
+		assert = require("chai").assert,
 		randomString = require("random-string"),
 		rootPath = path.join(__dirname, "../../"),
 		util = require("util"),
@@ -68,15 +69,34 @@ function randomPostcode() {
 	return testPostcodes[getRandom()][0];
 }
 
+function isPostcodeObject(o) {
+	assert.property(o, "postcode");
+	assert.property(o, "quality");
+	assert.property(o, "eastings");
+	assert.property(o, "northings");
+	assert.property(o, "country");
+	assert.property(o, "nhs_regional_ha");
+	assert.property(o, "nhs_ha");
+	assert.property(o, "admin_county");
+	assert.property(o, "admin_district");
+	assert.property(o, "admin_ward");
+	assert.property(o, "longitude");
+	assert.property(o, "latitude");
+	assert.notProperty(o, "location");
+	assert.notProperty(o, "id");
+	assert.notProperty(o, "pc_compact");
+}
+
 module.exports = {
 	Base: Base,
 	config: config,
-	Postcode: Postcode,
 	rootPath: rootPath,
+	Postcode: Postcode,
 	connectToDb: connectToDb,
+	randomPostcode: randomPostcode,
 	seedPostcodeDb: seedPostcodeDb,
 	clearPostcodeDb: clearPostcodeDb,
-	randomPostcode: randomPostcode,
+	isPostcodeObject: isPostcodeObject,
 	getCustomRelation: getCustomRelation,
 	seedPaths: {
 		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv"),

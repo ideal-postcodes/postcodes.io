@@ -126,7 +126,7 @@ Postcode.prototype.search = function (postcode, options, callback) {
 	}
 	
 	var	query = "SELECT * FROM postcodes WHERE pc_compact ~ $1 LIMIT " + limit,
-			re = "^" + postcode.toUpperCase().replace(/\s/, "\\s") + ".*";
+			re = "^" + postcode.toUpperCase().replace(" ", "") + ".*";
 			
 	this._query(query, [re], function (error, result) {
 		if (error) return callback(error, null);
@@ -139,6 +139,8 @@ Postcode.prototype.search = function (postcode, options, callback) {
 
 Postcode.prototype.toJson = function (address) {
 	delete address.id;
+	delete address.location;
+	delete address.pc_compact;
 	return address;
 }
 
