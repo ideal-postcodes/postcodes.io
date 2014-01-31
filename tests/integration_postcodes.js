@@ -284,5 +284,106 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-	})
+	});
+
+	describe("#/lon/:longitude/lat/latitude", function () {
+		var loc;
+
+		beforeEach(function (done) {
+			helper.lookupRandomPostcode(function (postcode) {
+				loc = postcode;
+				done();
+			});
+		});
+
+		it ("should return a list of nearby postcodes", function (done) {
+			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
+
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.isTrue(response.body.result.length > 0);
+				response.body.result.forEach(function (postcode) {
+					helper.isPostcodeObject(postcode);
+				});
+				assert.isTrue(response.body.result.some(function (elem) {
+					return elem.postcode === loc.postcode;
+				}));
+				done();
+			});
+		});
+		it ("should be sensitive to distance query", function (done) {
+			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
+
+			request(app)
+			.get(uri)
+			.expect(200)
+			.end(function (error, firstResponse) {
+				if (error) throw error;
+				request(app)
+				.get(uri + encodeURI("?radius=2000"))
+				.expect(200)
+				.end(function (error, secondResponse) {
+					if (error) throw error;
+					assert.isTrue(secondResponse.body.result.length >= firstResponse.body.result.length);
+					done();
+				});
+			});
+		});
+		it ("should be sensitive to limit query", function (done) {
+			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude + "?limit=1");
+			request(app)
+			.get(uri)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.equal(response.body.result.length, 1);
+				done();
+			});
+		});
+		it ("should throw a 400 error if invalid longitude", function (done) {
+			var uri = encodeURI("/postcodes/lon/" + "BOGUS" + "/lat/" + loc.latitude + "?limit=1");
+			request(app)
+			.get(uri)
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				done();
+			});
+		});
+		it ("should throw a 400 error if invalid latitude", function (done) {
+			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + "BOGUS");
+			request(app)
+			.get(uri)
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				done();
+			});
+		});
+		it ("should throw a 400 error if invalid limit", function (done) {
+			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude + "?limit=bogus");
+			request(app)
+			.get(uri)
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				done();
+			});
+		});
+		it ("should throw a 400 error if invalid distance", function (done) {
+			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude + "?radius=bogus");
+			request(app)
+			.get(uri)
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				done();
+			});
+		});
+	});
 });

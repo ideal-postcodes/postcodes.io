@@ -156,5 +156,59 @@ exports.autocomplete = function (request, response, next) {
 }
 
 exports.lonlat = function (request, response, next) {
+	var longitude = parseFloat(request.params.longitude),
+			latitude = parseFloat(request.params.latitude),
+			limit, radius, params = {};
+
+	if (isNaN(longitude) || isNaN(latitude)) {
+		return response.jsonp(400, {
+			status: 404,
+			error: "Invalid longitude/latitude submitted"
+		});
+	} else {
+		params.longitude = longitude;
+		params.latitude = latitude;
+	}
+
 	
+	if (request.query.limit) {
+		limit = parseInt(request.query.limit, 10);
+		if (isNaN(limit)) {
+			return response.jsonp(400, {
+				status: 404,
+				error: "Invalid result limit submitted"
+			});
+		} else {
+			params.limit = limit;
+		}
+	}
+
+	if (request.query.radius) {
+		radius = parseInt(request.query.radius, 10);
+		if (isNaN(radius)) {
+			return response.jsonp(400, {
+				status: 404,
+				error: "Invalid lookups radius submitted"
+			});
+		} else {
+			params.radius = radius;
+		}
+	}
+
+	Postcode.nearestPostcodes(params, function (error, results) {
+		if (error) return next(error);
+		if (!results) {
+			response.jsonp(200, {
+				status: 200,
+				result: null
+			});
+		} else {
+			response.jsonp(200, {
+				status: 200,
+				result: results.map(function (postcode) {
+					return Postcode.toJson(postcode);
+				})
+			});
+		}
+	});
 }
