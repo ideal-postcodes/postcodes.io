@@ -5,7 +5,10 @@ var express = require("express"),
 		path = require("path");
 
 var env = process.env.NODE_ENV || "development",
-	config = require(path.join(__dirname, "config/config"))(env);
+		config = require(path.join(__dirname, "config/config"))(env);
+
+// Load DB connection
+require(path.join(__dirname, "config/db"))(config);
 
 // Start logging
 require(path.join(__dirname, "/config/logger"))(config);
@@ -20,4 +23,4 @@ var port = config.port || 8000;
 app.listen(port);
 console.log("Postcode API listening on port", port);
 
-exports = module.exports = app
+exports = module.exports = app;

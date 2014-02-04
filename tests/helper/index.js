@@ -48,9 +48,12 @@ function seedPostcodeDb (callback) {
 			if (error) return callback(error, null)
 			Postcode.seedPostcodes(seedPostcodePath, function (error, result) {
 				if (error) return callback(error, null)
-				Postcode.createIndexes(function (error, result) {
-					if (error) return callback(error, null)
-					callback(null, result);
+				Postcode.populateLocation(function (error, result) {
+					if (error) throw error;
+					Postcode.createIndexes(function (error, result) {
+						if (error) return callback(error, null)
+						callback(null, result);
+					});
 				});
 			});
 		});

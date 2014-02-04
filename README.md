@@ -83,7 +83,7 @@ It should look something like this:
 $ importcpo /path/to/data/codepo_gb/Data/CSV
 ```
 
-Import process takes about 5 minutes to complete. You need to have the [PostGIS extension availble for it to work](http://postgis.net/install).
+Import process takes around 5 minutes to complete. You also the [PostGIS extension availble](http://postgis.net/install).
 
 **Run it**
 

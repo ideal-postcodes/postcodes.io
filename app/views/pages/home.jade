@@ -1,3 +1,92 @@
-html
-	body
-		h1 Hello there
+extends ../layouts/default
+
+block main
+	.mast
+		.container
+			.row
+				.col-lg-12
+					h1.mast-text Free Postcode API
+					h3. Postcode and Geolocation lookups for Great Britain using Open Data
+					.gitlinks
+						iframe(src="http://ghbtns.com/github-btn.html?user=ideal-postcodes&repo=postcodes.io&type=watch&count=true", allowtransparency="true", frameborder="0", scrolling="0", width="62", height="20")
+						iframe(src="http://ghbtns.com/github-btn.html?user=ideal-postcodes&repo=postcodes.io&type=fork&count=true", allowtransparency="true", frameborder="0", scrolling="0", width="62", height="20")
+
+block content
+	.header					
+		.container
+			.row
+				.col-lg-4
+					.points
+						img(src="images/github.png",alt="github")
+						h4 Open Source Project
+						p Licensed under MIT. Maintained and freely available on 
+							a(href="https://github.com/ideal-postcodes/postcodes.io") Github. 
+							| Host your own Ordnance Survey postcode API quickly and easily
+				.col-lg-4
+					.points
+						img(src="images/map.png",alt="map")
+						h4 Regularly Updated Data
+						p Updated with the latest data from Ordnance Survey when it becomes available. 
+				.col-lg-4
+					.points
+						img(src="images/cloud.png",alt="cloud")
+						h4 Convenient Endpoints
+						p Postcodes.io is a not so RESTful API allowing for more convenient methods like postcode autocomplete, validation and geocoding
+	.container
+		.row
+			.col-lg-12
+				h1.api-header API Endpoint & Methods
+				.api-demo
+					.api-method
+						h4 
+							.http-method GET 
+							| api.postcodes.io/postcodes/
+							input.rest-resource(value=":postcode")#single-postcode-input
+							a(href="#")#single-postcode Request
+						pre.code-box#single-postcode-result
+					.api-method
+						h4
+							.http-method GET 
+							| api.postcodes.io/random/postcodes
+							a(href="#")#random-postcode Request
+						pre.code-box#random-postcode-result
+					.api-method
+						h4
+							.http-method GET  
+							| api.postcodes.io/postcodes/
+							input.rest-resource(value=":postcode")#validate-postcode-input
+							| /validate
+							a(href="#")#validate-postcode Request
+						pre.code-box#validate-postcode-result
+					.api-method
+						h4
+							.http-method POST
+							| api.postcodes.io/postcodes
+							a(href="#")#bulk-postcode Request
+						pre.code-box#bulk-postcode-result
+					.api-method
+						h4
+							.http-method GET
+							| api.postcodes.io/postcodes/
+							input.rest-resource(value=":postcode")#autocomplete-postcode-input
+							| /autocomplete
+							a(href="#")#autocomplete-postcode Request
+						pre.code-box#autocomplete-postcode-result
+					.api-method
+						h4
+							.http-method GET
+							| api.postcodes.io/postcodes/lon/
+							input.rest-resource(value=":longitude")#lon-input
+							| /lat/
+							input.rest-resource(value=":latitude")#lat-input
+							a(href="#")#geocode-postcode Request
+						pre.code-box#geocode-postcode-result
+					.api-method
+						h4
+							.http-method GET
+							| api.postcodes.io/postcodes?q=
+							input.rest-resource(value=":postcode")#query-postcode-input
+							a(href="#")#query-postcode Request
+						pre.code-box#query-postcode-result
+
+

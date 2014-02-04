@@ -59,6 +59,11 @@ function importRawCsv (callback) {
 	});
 }
 
+function populateLocation (callback) {
+	console.log("Populating location data...");
+	Postcode.populateLocation(callback);
+}
+
 function createPostgisExtension(callback) {
 	console.log("Enabling POSTGIS extension...")
 	Postcode._query("CREATE EXTENSION IF NOT EXISTS postgis", function (error, result) {
@@ -74,7 +79,8 @@ var executionStack = [createPostgisExtension,
 											dropRelation, 
 											createRelation, 
 											dropIndexes, 
-											importRawCsv, 
+											importRawCsv,
+											populateLocation, 
 											recreateIndexes];
 
 async.series(executionStack, function (error, result) {

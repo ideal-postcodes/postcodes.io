@@ -1,36 +1,27 @@
 var path = require("path"),
-		extend = require('node.extend'),
-		rootPath = path.normalize(__dirname + '/..'),
-		config;
+		rootPath = path.join(__dirname, '../');
 
-// Extend general config here (config that applies to all environments)
-var defaultConfig = {
-	root: rootPath,
-	postgres: {
-		user: "postgres",
-		password: "",
-		database: "postcodeio",
-		host: "localhost",
-		port: 5432
-	},
-	log : {
-		name : "postcodes.io",
-		file : "",
-		stdout : true
-	}
-};
-
-// Extend environment specific config here, overrides above if clash
-var envConfig = {
-	// Development env only config
+var config = {
 	development : {
-		env : "development"
+		env : "development",
+		root: rootPath,
+		postgres: {
+			user: "postgres",
+			password: "",
+			database: "postcodeio",
+			host: "localhost",
+			port: 5432
+		},
+		log : {
+			name : "postcodes.io",
+			file : "",
+			stdout : true
+		}
 	},
 
-
-	// Test env only config
 	test: {
 		env : "test",
+		root: rootPath,
 		postgres: {
 			user: "postgres",
 			password: "",
@@ -39,13 +30,15 @@ var envConfig = {
 			port: 5432
 		},
 		log: {
-			stdout: false
+			name : "postcodes.io",
+			file : "",
+			stdout : false
 		}
 	},
 
-	// Production env only config
 	production : {
 		env : "production",
+		root: rootPath,
 		postgres: {
 			user: "",
 			password: "",
@@ -61,9 +54,6 @@ var envConfig = {
 	}
 };
 
-
 module.exports = function (environment) {
-	if (config) return config;
-	return config = extend(true, defaultConfig, envConfig[environment]);
+	return config[environment];
 };
-

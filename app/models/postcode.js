@@ -80,16 +80,17 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		row.push(location.latitude);
 
 		// Push pc_compact
-		row.push(row[0].replace(" ", ""));
+		row.push(row[0].replace(/\s/g, ""));
 
 		return row;
 	}
-	self._csvSeed(filePath, csvColumns, transform, function (error) {
-		if (error) throw error;
-		var query = "UPDATE postcodes SET location =" 
+	self._csvSeed(filePath, csvColumns, transform, callback);
+}
+
+Postcode.prototype.populateLocation = function (callback) {
+	var query = "UPDATE postcodes SET location =" 
 					 + " ST_GeogFromText('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')";
-		self._query(query, callback);
-	});
+	this._query(query, callback);
 }
 
 Postcode.prototype.createIndexes = function (callback) {

@@ -4,11 +4,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
   body
     #wrap
       include ../includes/header
-      .container
-        .main-content
-          include ../includes/messages
-          .main-head
-            block main
-          block content
-    include ../includes/footer
-    include ../includes/foot
+      block main
+      block content
+  include ../includes/footer
+  include ../includes/foot
