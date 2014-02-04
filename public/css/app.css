@@ -57,8 +57,12 @@ h1.mast-text {
 }
 
 .header {
-  /*color: #fff;*/
   background-color: #dee7f5;
+}
+
+.sub-header {
+  background-color: #dee7f5; 
+  padding: 5em 0 3em;
 }
 
 .points {
@@ -135,8 +139,39 @@ h1.api-header {
   margin-top: 2em;
 }
 
-.api-method{
+.api-method {
   text-align: left;
   max-width: 68%;
   margin: 0 auto;
+}
+
+ul.doc-menu {
+  margin-top: 1em;
+}
+
+ul.doc-menu a {
+  color: #111;
+  line-height: 100%;
+}
+
+li.doc-header {
+  font-weight: bold;
+}
+
+h2.doc-header:first-child {
+  margin-top: 1em;
+}
+
+h2.doc-header {
+  margin-top: 3em;
+}
+
+.documentation {
+  margin-bottom: 3em;
+}
+
+.documentation h3 {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.3em;
+  margin-top: 2em;
 }

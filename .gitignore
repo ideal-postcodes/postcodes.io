@@ -1,3 +1,5 @@
 node_modules
 codepo_gb/
 .DS_Store
+Capfile
+config/deploy.rb

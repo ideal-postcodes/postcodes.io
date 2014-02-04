@@ -1,8 +1,141 @@
 extends ../layouts/default
 
 block main
+	.sub-header
+		.container
+			.row
+				.col-lg-12
+					h1.mast-text Documentation
 
 block content
-	p Rate limiting
-	p End point
-	p Installation notes
+	.container
+			.row
+				.col-md-9.documentation
+					h2#Overview.doc-header Overview
+
+					h4 Postcodes.io is a free Postcode lookup API and geocoder for Great Britain
+
+					h3#Endpoint Endpoint
+
+					p All services is accessed from the following HTTP endpoint
+
+					pre http://api.postcodes.io
+
+					h3#Responses Responses
+					p Each response comes with an appropriate HTTP Status code. These include 200 for success, 400 bad request, 404 not found, 500 error. HTTP Status code is also included in the response body.
+
+					h3#Authentication Authentication
+
+					p Postcodes.io does not require any authentication to be used.
+
+					h3#Error-Handling Error Handling
+
+					p To check for errors, simply examine the HTTP response code. 200 response indicates success while any other code will provide important information about why an error occured. 
+
+					p The HTTP Status code is also available as a 'code' property in the result body in case of JSONP requests
+
+					h3#JSONP JSONP
+					p JSONP requests are supported. Simply appended the URI with a callback name. E.g.
+
+					pre http://api.postcodes.io/postcodes/GU50BD?callback=foo
+
+					h3#Rate-Limiting Rate Limiting
+
+					p Postcodes.io is limited to 10 requests per second
+
+
+
+					h2#Methods.doc-header Methods
+
+					h4 The following is a list of available API methods
+
+					h3#Postcode-Query Postcode Query
+
+					p Submit a postcode query and receive a complete list of matches and all available data.
+
+					pre
+						h4 http://api.postcodes.io/postcodes?q=[query]
+
+					h3#Postcode-Lookup Postcode Lookup
+
+					p Lookup a postcode. Returns all available data if found. Returns 404 if postcode does not exist.
+
+					pre
+						h4 http://api.postcodes.io/postcodes/:postcode
+
+					h3#Postcode-Validation Postcode Validation
+
+					p Convenience method to validate a postcode. Returns true or false (meaning valid or invalid respectively)
+
+					pre
+						h4 http://api.postcodes.io/postcodes/:postcode/validate
+
+					h3#Postcode-Autocomplete Postcode Autocomplete
+
+					p Convenience method to return an list of matching postcodes.
+
+					pre
+						h4 http://api.postcodes.io/postcodes/:postcode/autocomplete
+
+					h3#Random-Postcode Random Postcode
+
+					p Returns a random postcode and all available data for that postcode
+
+					pre
+						h4 http://api.postcodes.io/random/postcodes
+
+					h3#Bulk-Postcode-Lookup Bulk Postcode Lookup
+
+					p Accepts a JSON array of postcodes. Returns a list of matching postcodes and respective available data.
+
+					pre
+						h4 POST http://api.postcodes.io/postcodes?q=[postcode]
+
+					h3#Geocode-Postcode Geocode Postcode
+
+					p Returns nearest postcodes for a given longitude and latitude.
+
+					pre
+						h4 http://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
+
+					h3#Bulk-Geocode-Postcode Bulk Geocode Postcode
+
+					p Not yet implemented
+
+					
+				.col-md-3
+					.bs-sidebar#affix
+						ul.nav.bs-sidebar.doc-menu
+							li.doc-header
+								a(href="#Overview") Overview
+							li
+								a(href="#Endpoint") HTTP Endpoint
+							li
+								a(href="#Responses") Responses
+							li
+								a(href="#Authentication") Authentication
+							li
+								a(href="#Error-Handling") Error Handling
+							li
+								a(href="#JSONP") JSONP
+							li
+								a(href="#Rate-Limiting") Rate Limiting
+							li.doc-header
+								a(href="#Methods") Methods
+							li
+								a(href="#Postcode-Query") Postcode Query
+							li
+								a(href="#Postcode-Lookup") Postcode Lookup
+							li
+								a(href="#Postcode-Validation") Postcode Validation
+							li
+								a(href="#Postcode-Autocomplete") Postcode Autocomplete
+							li
+								a(href="#Random-Postcode") Random Postcode
+							li
+								a(href="#Bulk-Postcode-Lookup") Bulk Postcode Lookup
+							li
+								a(href="#Geocode-Postcode") Geocode Postcode
+							li
+								a(href="#Bulk-Geocode-Postcode") Bulk Geocode Postcode
+		

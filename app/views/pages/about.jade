@@ -1,9 +1,37 @@
 extends ../layouts/default
 
 block main
+	.sub-header
+		.container
+			.row
+				.col-lg-12
+					h1.mast-text About
+					h5 Postcodes.io is maintained by 
+						a(href="https://ideal-postcodes.co.uk") Ideal-Postcodes.co.uk
 
 block content
-p License
-p Support
-p Installation notes
-p Data
+	.container
+		.row
+			.col-lg-12
+				h3 Why?
+				p 
+
+				h3 Github
+				p If you found any bugs or have any requests please create an issue on our 
+					a(href="https://github.com/ideal-postcodes/postcodes.io") Github repository 
+					| or make a pull request. We'll be happy to take a look
+
+				h3 Support
+				p Got questions or want to get in contact with us?
+				p Chat: 
+					a(href="http://webchat.freenode.net/?channels=ideal-postcodes", target="_blank") irc.Freenode.net #ideal-postcodes
+				p Email: team@postcodes.io
+				p Twitter: 
+					a(href="https://twitter.com/idealpostcodes") @IdealPostcodes
+
+				h3 Data
+				p Contains Ordnance Survey Data © Crown Copyright & Database Right 2014
+				
+				h3 License
+				p Postcodes.io is available under the MIT License
+				p The Ordnance Survey data upon which this API is built can be used under the terms of the OS OpenData licence
