@@ -66,7 +66,5 @@ $(function () {
 		$.post("/postcodes", data, function (data) {
 			$result.html(JSON.stringify(data, null, 4)).slideDown();
 		});
-
 	});
-  
 });

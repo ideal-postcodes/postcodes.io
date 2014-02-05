@@ -186,11 +186,15 @@ h4.method-title {
   margin-bottom: 1em;
 }
 
+h5.json-post {
+  margin-left: 9%;
+}
+
 #bulk-postcodes-input {
   border: 0;
   color: #888;
   font-size: 19px;
   border-bottom: 1px solid #ccc;
-  width: 68%;
-  margin-left: 5px;
+  width: 65%;
+  margin-left: 0px;
 }

@@ -5,8 +5,8 @@ block main
 		.container
 			.row
 				.col-lg-12
-					h1.mast-text Free Postcode API
-					h3. Postcode and Geolocation lookups for Great Britain using Open Data
+					h1.mast-text Great Britain Postcode &amp; Geolcation API
+					h3. Free, Open Source and based on solely Open Data
 					.gitlinks
 						iframe(src="http://ghbtns.com/github-btn.html?user=ideal-postcodes&repo=postcodes.io&type=watch&count=true", allowtransparency="true", frameborder="0", scrolling="0", width="62", height="20")
 						iframe(src="http://ghbtns.com/github-btn.html?user=ideal-postcodes&repo=postcodes.io&type=fork&count=true", allowtransparency="true", frameborder="0", scrolling="0", width="62", height="20")
@@ -26,17 +26,18 @@ block content
 					.points
 						img(src="images/map.png",alt="map")
 						h4 Regularly Updated Data
-						p Updated with the latest data from Ordnance Survey when it becomes available. 
+						p Updated with the latest data from Ordnance Survey when it becomes available
 				.col-lg-4
 					.points
 						img(src="images/cmd.png",alt="cmd")
 						h4 Convenient Methods
-						p Loaded with intuitive and self-descriptive methods like postcode autocomplete, validation and bulk geocoding
+						p Simple, useful and self-explanatory API methods like bulk geocoding, autocomplete and validation
 	.container
 		.row
 			.col-lg-12
 				h1.api-header API Endpoint & Methods
 				.api-demo
+
 					.api-method
 						h4.method-title Lookup a postcode
 						h4 
@@ -45,6 +46,7 @@ block content
 							input.rest-resource(value=":postcode")#single-postcode-input
 							a(href="#")#single-postcode Request
 						pre.code-box#single-postcode-result
+
 					.api-method
 						h4.method-title Get a random postcode
 						h4
@@ -52,6 +54,7 @@ block content
 							| api.postcodes.io/random/postcodes
 							a(href="#")#random-postcode Request
 						pre.code-box#random-postcode-result
+
 					.api-method
 						h4.method-title Validate a postcode
 						h4
@@ -61,6 +64,7 @@ block content
 							| /validate
 							a(href="#")#validate-postcode Request
 						pre.code-box#validate-postcode-result
+
 					.api-method
 						h4.method-title Autocomplete a postcode partial
 						h4
@@ -70,6 +74,7 @@ block content
 							| /autocomplete
 							a(href="#")#autocomplete-postcode Request
 						pre.code-box#autocomplete-postcode-result
+
 					.api-method
 						h4.method-title Get nearest postcodes for a given longitude &amp; latitude
 						h4
@@ -80,6 +85,7 @@ block content
 							input.rest-resource(value=":latitude")#lat-input
 							a(href="#")#geocode-postcode Request
 						pre.code-box#geocode-postcode-result
+
 					.api-method
 						h4.method-title Query for postcode
 						h4
@@ -88,14 +94,19 @@ block content
 							input.rest-resource(value=":postcode")#query-postcode-input
 							a(href="#")#query-postcode Request
 						pre.code-box#query-postcode-result
+
 					.api-method
 						h4.method-title Bulk lookup postcodes
 						h4
 							.http-method POST
 							| api.postcodes.io/postcodes
 							a(href="#")#bulk-postcodes Request
-						input#bulk-postcodes-input(value="OX49 5NU, M32 0JG, NE30 1DP")
+						h5.json-post 
+							| { "postcodes" : [
+							input#bulk-postcodes-input(value="OX49 5NU, M32 0JG, NE30 1DP")
+							| ] }
 						pre.code-box#bulk-postcodes-result
+
 					.api-method
 						h4.method-title Bulk reverse geocoding (to be implemented)
 						h4

@@ -23,7 +23,9 @@ block content
 						h4 http://api.postcodes.io
 
 					h3#Responses Responses
-					p Each response comes with an appropriate HTTP Status code. These include 200 for success, 400 bad request, 404 not found, 500 error. HTTP Status code is also included in the response body.
+					p JSON only (for the moment)
+
+					p Each response comes with an appropriate HTTP Status code. These include 200 for success, 400 for bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.
 
 					h3#Authentication Authentication
 
@@ -40,29 +42,34 @@ block content
 
 					pre http://api.postcodes.io/postcodes/GU50BD?callback=foo
 
-					h3#Rate-Limiting Rate Limiting
-
-					p Postcodes.io is limited to 10 requests per second
-
-
 
 					h2#Methods.doc-header Methods
 
 					h4 The following is a list of available API methods
 
-					h3#Postcode-Query Postcode Query
-
-					p Submit a postcode query and receive a complete list of matches and all available data.
-
-					pre
-						h4 http://api.postcodes.io/postcodes?q=[query]
 
 					h3#Postcode-Lookup Postcode Lookup
 
 					p Lookup a postcode. Returns all available data if found. Returns 404 if postcode does not exist.
-
 					pre
 						h4 http://api.postcodes.io/postcodes/:postcode
+
+
+					h3#Postcode-Query Postcode Query
+
+					p Submit a postcode query and receive a complete list of postcode matches and all associated postcode data.
+					pre
+						h4 http://api.postcodes.io/postcodes?q=[query]
+
+					h4 Optional Query Parameters
+					ul
+						li 
+							code query
+							|  (not required) aliases to q
+						li
+							code limit
+							|  (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+
 
 					h3#Postcode-Validation Postcode Validation
 
@@ -71,12 +78,14 @@ block content
 					pre
 						h4 http://api.postcodes.io/postcodes/:postcode/validate
 
+
 					h3#Postcode-Autocomplete Postcode Autocomplete
 
 					p Convenience method to return an list of matching postcodes.
 
 					pre
 						h4 http://api.postcodes.io/postcodes/:postcode/autocomplete
+
 
 					h3#Random-Postcode Random Postcode
 
@@ -85,6 +94,7 @@ block content
 					pre
 						h4 http://api.postcodes.io/random/postcodes
 
+
 					h3#Bulk-Postcode-Lookup Bulk Postcode Lookup
 
 					p Accepts a JSON array of postcodes. Returns a list of matching postcodes and respective available data.
@@ -92,12 +102,14 @@ block content
 					pre
 						h4 POST http://api.postcodes.io/postcodes?q=[postcode]
 
+
 					h3#Geocode-Postcode Geocode Postcode
 
 					p Returns nearest postcodes for a given longitude and latitude.
 
 					pre
 						h4 http://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
+
 
 					h3#Bulk-Geocode-Postcode Bulk Geocode Postcode
 
@@ -119,8 +131,7 @@ block content
 								a(href="#Error-Handling") Error Handling
 							li
 								a(href="#JSONP") JSONP
-							li
-								a(href="#Rate-Limiting") Rate Limiting
+
 							li.doc-header
 								a(href="#Methods") Methods
 							li
