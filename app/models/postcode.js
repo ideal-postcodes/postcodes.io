@@ -131,7 +131,9 @@ Postcode.prototype.search = function (postcode, options, callback) {
 		callback = options;
 		limit = 10;
 	} else {
-		limit = options.limit || 10;
+		limit = parseInt(options.limit, 10);
+		if (isNaN(limit)) limit = 10;
+		if (limit > 100) limit = 100;
 	}
 	
 	var	query = "SELECT * FROM postcodes WHERE pc_compact ~ $1 LIMIT " + limit,

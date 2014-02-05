@@ -108,10 +108,7 @@ exports.bulk = function (request, response, next) {
 
 exports.query = function (request, response, next) {
 	var searchTerm = request.query.q || request.query.query,
-			limit = parseInt(request.query.limit, 10);
-
-	if (isNaN(limit)) limit = 10;
-	if (limit > 100) limit = 100;
+			limit = request.query.limit;
 
 	if (!searchTerm) {
 		response.jsonp(200, {
