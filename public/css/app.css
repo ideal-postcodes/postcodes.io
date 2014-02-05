@@ -175,3 +175,12 @@ h2.doc-header {
   padding-bottom: 0.3em;
   margin-top: 2em;
 }
+
+.pull-right {
+  float: right; 
+}
+
+h4.method-title {
+  color: #888;
+  margin-bottom: 1em;
+}

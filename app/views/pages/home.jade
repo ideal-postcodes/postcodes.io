@@ -38,6 +38,7 @@ block content
 				h1.api-header API Endpoint & Methods
 				.api-demo
 					.api-method
+						h4.method-title Lookup a postcode
 						h4 
 							.http-method GET 
 							| api.postcodes.io/postcodes/
@@ -45,12 +46,14 @@ block content
 							a(href="#")#single-postcode Request
 						pre.code-box#single-postcode-result
 					.api-method
+						h4.method-title Get a random postcode
 						h4
 							.http-method GET 
 							| api.postcodes.io/random/postcodes
 							a(href="#")#random-postcode Request
 						pre.code-box#random-postcode-result
 					.api-method
+						h4.method-title Validate a postcode
 						h4
 							.http-method GET  
 							| api.postcodes.io/postcodes/
@@ -59,12 +62,7 @@ block content
 							a(href="#")#validate-postcode Request
 						pre.code-box#validate-postcode-result
 					.api-method
-						h4
-							.http-method POST
-							| api.postcodes.io/postcodes
-							a(href="#")#bulk-postcode Request
-						pre.code-box#bulk-postcode-result
-					.api-method
+						h4.method-title Autocomplete a postcode partial
 						h4
 							.http-method GET
 							| api.postcodes.io/postcodes/
@@ -73,6 +71,7 @@ block content
 							a(href="#")#autocomplete-postcode Request
 						pre.code-box#autocomplete-postcode-result
 					.api-method
+						h4.method-title Get nearest postcodes for a given longitude &amp; latitude
 						h4
 							.http-method GET
 							| api.postcodes.io/postcodes/lon/
@@ -82,11 +81,19 @@ block content
 							a(href="#")#geocode-postcode Request
 						pre.code-box#geocode-postcode-result
 					.api-method
+						h4.method-title Query for postcode
 						h4
 							.http-method GET
 							| api.postcodes.io/postcodes?q=
 							input.rest-resource(value=":postcode")#query-postcode-input
 							a(href="#")#query-postcode Request
 						pre.code-box#query-postcode-result
+					.api-method
+						h4.method-title Bulk lookup postcodes
+						h4
+							.http-method POST
+							| api.postcodes.io/postcodes
+							a(href="#")#bulk-postcode Request
+						pre.code-box#bulk-postcode-result
 
 
