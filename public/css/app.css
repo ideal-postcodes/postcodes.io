@@ -121,7 +121,7 @@ h1.api-header {
   display: inline-block;
 }
 
-.api-method input {
+.api-method h4 input {
   border: 0;
   color: #888;
   font-size: 19px;
@@ -137,6 +137,7 @@ h1.api-header {
 
 .api-method pre {
   margin-top: 2em;
+  display: none;
 }
 
 .api-method {
@@ -183,4 +184,13 @@ h2.doc-header {
 h4.method-title {
   color: #888;
   margin-bottom: 1em;
+}
+
+#bulk-postcodes-input {
+  border: 0;
+  color: #888;
+  font-size: 19px;
+  border-bottom: 1px solid #ccc;
+  width: 68%;
+  margin-left: 5px;
 }

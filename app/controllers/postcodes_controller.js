@@ -60,7 +60,7 @@ exports.random = function (request, response, next) {
 }
 
 exports.bulk = function (request, response, next) {
-	var postcodes = request.body;
+	var postcodes = request.body.postcodes;
 
 	if (!Array.isArray(postcodes)) {
 		return response.jsonp(400, {

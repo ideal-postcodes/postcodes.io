@@ -3,8 +3,6 @@ $(function () {
 		$(this).val("");
 	});
 
-	$("pre.code-box").hide();
-
 	$("#single-postcode").click(function (event) {
 		event.preventDefault();
 		var $result = $("#single-postcode-result").slideUp(),
@@ -59,5 +57,16 @@ $(function () {
 		});
 	});
 
+	$("#bulk-postcodes").click(function (event) {
+		event.preventDefault();
+		var $result = $("#bulk-postcodes-result"),
+				data = {
+					postcodes: $("#bulk-postcodes-input").val().split(",")
+				};
+		$.post("/postcodes", data, function (data) {
+			$result.html(JSON.stringify(data, null, 4)).slideDown();
+		});
+
+	});
   
 });
