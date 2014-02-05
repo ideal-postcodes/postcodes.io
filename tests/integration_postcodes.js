@@ -93,7 +93,7 @@ describe("Postcodes routes", function () {
 		it ("should return addresses for postcodes", function (done) {
 			request(app)
 			.post("/postcodes")
-			.send(testPostcodes)
+			.send({postcodes: testPostcodes})
 			.expect('Content-Type', /json/)
 			.expect(200)
 			.end(function (error, response) {
@@ -112,7 +112,7 @@ describe("Postcodes routes", function () {
 			testPostcodes.push("B0GUS");
 			request(app)
 			.post("/postcodes")
-			.send(testPostcodes)
+			.send({postcodes: testPostcodes})
 			.expect('Content-Type', /json/)
 			.expect(200)
 			.end(function (error, response) {
