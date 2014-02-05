@@ -3,8 +3,6 @@
 
 # Postcodes.io
 
-**Fast, Easy to Use, and not-so-RESTful**
-
 Open source postcode API server using [Codepoint Open](https://www.ordnancesurvey.co.uk/opendatadownload/products.html) addressing Data
 
 Currently still a work in progress.
@@ -43,7 +41,7 @@ Convenience method to autocomplete a postcode (default limit of 10). Returns an 
 
 Retrieve random postcode with associated data.
 
-#### GET api.postcodes.io/random/postcodes?lonlat= (TODO)
+#### GET api.postcodes.io/random/postcodes/lon/:longitude/lat/:latitude
 
 Nearest postcodes within location specified.
 
