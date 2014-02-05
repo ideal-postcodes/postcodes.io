@@ -107,7 +107,11 @@ exports.bulk = function (request, response, next) {
 }
 
 exports.query = function (request, response, next) {
-	var searchTerm = request.query.q || request.query.query;
+	var searchTerm = request.query.q || request.query.query,
+			limit = parseInt(request.query.limit, 10);
+
+	if (isNaN(limit)) limit = 10;
+	if (limit > 100) limit = 100;
 
 	if (!searchTerm) {
 		response.jsonp(200, {
@@ -116,7 +120,7 @@ exports.query = function (request, response, next) {
 		});
 	}
 
-	Postcode.search(searchTerm, 10, function (error, results) {
+	Postcode.search(searchTerm, {limit: limit}, function (error, results) {
 		if (error) return next(error);
 		if (!results) {
 			response.jsonp(200, {

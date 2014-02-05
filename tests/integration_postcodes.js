@@ -24,11 +24,10 @@ describe("Postcodes routes", function () {
 	});
 
 	describe("GET /", function () {
-		var uri;
+		var uri, limit;
 
 		it ("should return a list of matching postcode objects", function (done) {
 			uri = encodeURI("/postcodes?q=" + testPostcode.replace(" ", "").slice(0, 2));
-
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
@@ -45,7 +44,6 @@ describe("Postcodes routes", function () {
 		});
 		it ("should be insensitive to case", function (done) {
 			uri = encodeURI("/postcodes?q=" + testPostcode.slice(0, 2).toLowerCase());
-
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
@@ -62,7 +60,57 @@ describe("Postcodes routes", function () {
 		});
 		it ("should be insensitive to space", function (done) {
 			uri = encodeURI("/postcodes?q=" + testPostcode.slice(0, 2).split("").join(" "));
-
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 10);
+				response.body.result.forEach(function (postcode) {
+					helper.isPostcodeObject(postcode);
+				});
+				done();
+			});
+		});
+		it ("should be sensitive to limit", function (done) {
+			limit = 11;
+			uri = encodeURI("/postcodes?q=" + testPostcode.slice(0, 2).split("").join(" ") + "&limit=" + limit);
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 11);
+				response.body.result.forEach(function (postcode) {
+					helper.isPostcodeObject(postcode);
+				});
+				done();
+			});
+		});
+		it ("should max out limit at 100", function (done) {
+			limit = 101;
+			uri = encodeURI("/postcodes?q=" + testPostcode.slice(0, 2).split("").join(" ") + "&limit=" + limit);
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 100);
+				response.body.result.forEach(function (postcode) {
+					helper.isPostcodeObject(postcode);
+				});
+				done();
+			});
+		});
+		it ("should set limit to 10 if invalid", function (done) {
+			limit = "BOGUS";
+			uri = encodeURI("/postcodes?q=" + testPostcode.slice(0, 2).split("").join(" ") + "&limit=" + limit);
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
