@@ -279,7 +279,7 @@ describe("Postcodes routes", function () {
 	});
 
 	describe("/:postcode/autocomplete", function () {
-		var uri;
+		var uri, limit;
 
 		it ("should return a list of matching postcodes only", function (done) {
 			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2) + "/autocomplete");
@@ -317,6 +317,60 @@ describe("Postcodes routes", function () {
 		});
 		it ("should be insensitive to space", function (done) {
 			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2).split("").join(" ") + "/autocomplete");
+
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 10);
+				response.body.result.forEach(function (postcode) {
+					assert.isString(postcode);
+				});
+				done();
+			});
+		});
+		it("should be sensitive to limit", function (done) {
+			limit = 11;
+			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2).split("").join(" ") + "/autocomplete" + "?limit=" + limit);
+
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, limit);
+				response.body.result.forEach(function (postcode) {
+					assert.isString(postcode);
+				});
+				done();
+			});
+		});
+		it("should max limit out at 100", function (done) {
+			limit = 101;
+			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2).split("").join(" ") + "/autocomplete" + "?limit=" + limit);
+
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.equal(response.body.result.length, 100);
+				response.body.result.forEach(function (postcode) {
+					assert.isString(postcode);
+				});
+				done();
+			});
+		});
+		it("should set limit to 10 if invalid", function (done) {
+			limit = "BOGUS";
+			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2).split("").join(" ") + "/autocomplete" + "?limit=" + limit);
 
 			request(app)
 			.get(uri)

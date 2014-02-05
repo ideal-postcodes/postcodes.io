@@ -136,9 +136,10 @@ exports.query = function (request, response, next) {
 }
 
 exports.autocomplete = function (request, response, next) {
-	var searchTerm = request.params.postcode;
+	var searchTerm = request.params.postcode,
+			limit = request.query.limit;
 
-	Postcode.search(searchTerm, 10, function (error, results) {
+	Postcode.search(searchTerm, {limit: limit}, function (error, results) {
 		if (error) return next(error);
 		if (!results) {
 			response.jsonp(200, {
