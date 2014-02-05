@@ -1,4 +1,5 @@
 var path = require("path"),
+		bsyslog = require("bunyan-syslog"),
 		rootPath = path.join(__dirname, '../');
 
 var config = {
@@ -14,8 +15,11 @@ var config = {
 		},
 		log : {
 			name : "postcodes.io",
-			file : path.join(rootPath, "/logs/development.log"),
-			stdout : true
+			streams: [{
+				path : path.join(rootPath, "/logs/development.log")	
+			}, {
+				stream: process.stdout
+			}]
 		}
 	},
 
@@ -31,8 +35,9 @@ var config = {
 		},
 		log: {
 			name : "postcodes.io",
-			file : path.join(rootPath, "/logs/test.log"),
-			stdout : false
+			streams: [{
+				path : path.join(rootPath, "/logs/test.log")	
+			}]
 		}
 	},
 
@@ -48,8 +53,9 @@ var config = {
 		},
 		log : {
 			name : "postcodes.io",
-			file : path.join(rootPath, "/logs/production.log"),
-			stdout : true
+			streams: [{
+				path : path.join(rootPath, "/logs/production.log")	
+			}]
 		}
 	}
 };

@@ -1,21 +1,8 @@
-var logger = require("commonlog-bunyan"),
-		streams = [];
+var logger = require("commonlog-bunyan");
 
 module.exports = function (config) {
-	if (config.log.stdout) {
-		streams.push({
-			stream: process.stdout
-		})
-	}
-
-	if (config.log.file.length !== 0) {
-		streams.push({
-			path: config.log.file
-		})
-	}
-
 	return logger.init({
 		name: config.log.name,
-		streams: streams
+		streams: config.log.streams
 	});
 }

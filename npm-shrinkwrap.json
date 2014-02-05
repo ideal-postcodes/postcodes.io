@@ -426,6 +426,17 @@
     "ospoint": {
       "version": "0.1.2",
       "from": "ospoint@~0.1.2"
+    },
+    "bunyan-syslog": {
+      "version": "0.2.2",
+      "from": "bunyan-syslog@",
+      "dependencies": {
+        "assert-plus": {
+          "version": "0.1.4",
+          "from": "assert-plus@0.1.4",
+          "resolved": "https://registry.npmjs.org/assert-plus/-/assert-plus-0.1.4.tgz"
+        }
+      }
     }
   }
 }
