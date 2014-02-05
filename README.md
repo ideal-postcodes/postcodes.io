@@ -9,12 +9,6 @@ Open source postcode API server using [Codepoint Open](https://www.ordnancesurve
 
 Currently still a work in progress.
 
-## Design & Intent for this Project
-
-1. **Make this thing *FAST* on low-end [virtual] machines.** 
-2. **Make it *EASY* to setup and deploy.** 
-3. **Make API methods more *USEFUL* at the expense of being RESTFUL.** 
-
 Contributions are welcome. Please ensure pull requests come with tests.
 
 Something wrong? Please do create a Github issue and I'll take a look when I can.
