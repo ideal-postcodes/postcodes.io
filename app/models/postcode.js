@@ -36,6 +36,8 @@ function Postcode () {
 util.inherits(Postcode, Base);
 
 Postcode.prototype.find = function (postcode, callback) {
+	postcode = postcode.trim().toUpperCase();
+
 	if (!new Pc(postcode).valid()) {
 		return callback(null, null);
 	}
