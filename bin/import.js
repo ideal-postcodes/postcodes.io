@@ -66,13 +66,7 @@ function populateLocation (callback) {
 
 function createPostgisExtension(callback) {
 	console.log("Enabling POSTGIS extension...")
-	Postcode._query("CREATE EXTENSION IF NOT EXISTS postgis", function (error, result) {
-		if (error) {
-			throw new Error("Unabled to create extension. This may be because you" +
-											" don't have PostGIS installed. Error", error);
-		}
-		callback(null, result);
-	});
+	Postcode._query("CREATE EXTENSION IF NOT EXISTS postgis", callback);
 }
 
 var executionStack = [createPostgisExtension,
@@ -85,7 +79,7 @@ var executionStack = [createPostgisExtension,
 
 async.series(executionStack, function (error, result) {
 	if (error) {
-		console.log("Cancelling import process due to error", error);
+		console.log("Unable to complete import process due to error", error);
 		process.exit(1);
 	}
 	console.log("Finished import process in", process.hrtime(start)[0], "seconds");
