@@ -14,7 +14,7 @@ var config = {
 		},
 		log : {
 			name : "postcodes.io",
-			file : "",
+			file : path.join(rootPath, "/logs/development.log"),
 			stdout : true
 		}
 	},
@@ -31,7 +31,7 @@ var config = {
 		},
 		log: {
 			name : "postcodes.io",
-			file : "",
+			file : path.join(rootPath, "/logs/test.log"),
 			stdout : false
 		}
 	},
@@ -48,7 +48,7 @@ var config = {
 		},
 		log : {
 			name : "postcodes.io",
-			file : "/var/postcodesio/logs/production.log",
+			file : path.join(rootPath, "/logs/production.log"),
 			stdout : true
 		}
 	}

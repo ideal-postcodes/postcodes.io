@@ -1,4 +1,5 @@
 var express = require("express"),
+		path = require("path"),
 		logger = require("commonlog-bunyan").logger,
 		logStream = {
 			write: function (message, encoding) {
@@ -10,10 +11,10 @@ module.exports = function (app, config) {
 	app.enable('trust proxy');
 	app.disable('x-powered-by');
 	app.use(express.favicon("public/favicon.ico"));
-	app.use(express.static(config.root + '/public'));
+	app.use(express.static(path.join(config.root, '/public')));
 	app.use(express.logger({ stream: logStream }));
 	app.use(express.bodyParser());
-	app.set('views', config.root + '/app/views')
+	app.set('views', path.join(config.root, 'app/views'))
   app.set('view engine', 'jade')	
 	app.use(app.router);
 	app.use(function (error, request, response, next) {
