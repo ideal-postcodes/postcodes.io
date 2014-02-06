@@ -57,14 +57,71 @@ $(function () {
 		});
 	});
 
+	var bulkTimeout,
+	$bulkPostcodeInput = $("#bulk-postcodes-input")
+	.keyup(function (event) {
+		clearTimeout(bulkTimeout);
+		bulkTimeout = setTimeout(function () {
+			var data;
+			try {
+				data = JSON.parse($bulkPostcodeInput.val());
+				if (Object.keys(data).length > 1) throw "Invalid"
+				if (!data['postcodes'])	throw "Invalid"
+				if (!Array.isArray(data['postcodes'])) throw "Invalid"
+				$bulkPostcodeInput.removeClass("invalid");
+			} catch (e) {
+				$bulkPostcodeInput.addClass("invalid");
+			}
+		}, 1000);
+	});
+
 	$("#bulk-postcodes").click(function (event) {
 		event.preventDefault();
 		var $result = $("#bulk-postcodes-result"),
-				data = {
-					postcodes: $("#bulk-postcodes-input").val().split(",")
-				};
-		$.post("/postcodes", data, function (data) {
-			$result.html(JSON.stringify(data, null, 4)).slideDown();
-		});
+				data = $bulkPostcodeInput.val(),
+				postcodes;
+
+		try {
+			postcodes = JSON.parse(data);
+			$.post("/postcodes", postcodes, function (data) {
+				$result.html(JSON.stringify(data, null, 4)).slideDown();
+			});
+		} catch (e) {
+			$bulkPostcodeInput.addClass("invalid");
+		}
+	});
+
+	var bulkGeocodeTimeout,
+	$bulkGeocodeInput = $("#bulk-reverse-input")
+	.keyup(function (event) {
+		clearTimeout(bulkTimeout);
+		bulkGeocodeTimeout = setTimeout(function () {
+			var data;
+			try {
+				data = JSON.parse($bulkGeocodeInput.val());
+				if (Object.keys(data).length > 1) throw "Invalid"
+				if (!data['geolocations'])	throw "Invalid"
+				if (!Array.isArray(data['geolocations'])) throw "Invalid"
+				$bulkGeocodeInput.removeClass("invalid");
+			} catch (e) {
+				$bulkGeocodeInput.addClass("invalid");
+			}
+		}, 1000);
+	});
+
+	$("#bulk-reverse").click(function (event) {
+		event.preventDefault();
+		var $result = $("#bulk-reverse-result"),
+				data = $bulkGeocodeInput.val(),
+				locations;
+
+		try {
+			locations = JSON.parse(data);
+			$.post("/postcodes", locations, function (data) {
+				$result.html(JSON.stringify(data, null, 4)).slideDown();
+			});
+		} catch (e) {
+			$bulkGeocodeInput.addClass("invalid");
+		}
 	});
 });

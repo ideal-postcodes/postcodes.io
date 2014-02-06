@@ -186,16 +186,26 @@ h4.method-title {
   margin-bottom: 1em;
 }
 
-h5.json-post {
-  margin-left: 9%;
+.json-post textarea {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  resize: none;
+  margin-top: 1em;
+  border: 1px solid #aca;
+  outline:none;
 }
 
 #bulk-postcodes-input {
-  border: 0;
-  color: #888;
-  font-size: 19px;
-  border-bottom: 1px solid #ccc;
-  width: 65%;
-  margin-left: 0px;
+  height: 6em;  
+}
+
+#bulk-reverse-input {
+  height: 18em;
+}
+
+.invalid {
+  border: 1px solid #c22 !important;
+  background-color: #fcc
 }
 

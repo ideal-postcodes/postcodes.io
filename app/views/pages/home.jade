@@ -19,7 +19,7 @@ block content
 					.points
 						img(src="images/github.png",alt="github")
 						h4 Open Source Project
-						p Licensed under MIT. Maintained and freely available on 
+						p MIT licensed. Maintained and freely available on 
 							a(href="https://github.com/ideal-postcodes/postcodes.io") Github. 
 							| Fork it, make a contribution or even set up your own
 				.col-lg-4
@@ -31,7 +31,7 @@ block content
 					.points
 						img(src="images/cmd.png",alt="cmd")
 						h4 Convenient Methods
-						p Simple, useful and self-explanatory API methods like bulk geocoding, autocomplete and validation
+						p Simple, useful and self-explanatory API methods like bulk reverse geocoding, autocomplete and validation
 	.container
 		.row
 			.col-lg-12
@@ -46,6 +46,51 @@ block content
 							input.rest-resource(value=":postcode")#single-postcode-input
 							a(href="#")#single-postcode Request
 						pre.code-box#single-postcode-result
+
+					.api-method
+						h4.method-title Bulk lookup postcodes
+						h4
+							.http-method POST
+							| api.postcodes.io/postcodes
+							a(href="#")#bulk-postcodes Request
+						.json-post
+							textarea#bulk-postcodes-input
+								| { 
+								|   "postcodes" : ["OX49 5NU", "M32 0JG", "NE30 1DP"]
+								| }
+						pre.code-box#bulk-postcodes-result
+
+					.api-method
+						h4.method-title Get nearest postcodes for a given longitude &amp; latitude
+						h4
+							.http-method GET
+							| api.postcodes.io/postcodes/lon/
+							input.rest-resource(value=":longitude")#lon-input
+							| /lat/
+							input.rest-resource(value=":latitude")#lat-input
+							a(href="#")#geocode-postcode Request
+						pre.code-box#geocode-postcode-result
+
+					.api-method
+						h4.method-title Bulk Reverse Geocoding
+						h4
+							.http-method POST
+							| api.postcodes.io/postcodes
+							a(href="#")#bulk-reverse Request
+						.json-post
+							textarea#bulk-reverse-input
+								| { 
+								|   "geolocations" : [{
+								|   	"longitude":  0.629834723775309,
+								|   	"latitude": 51.7923246977375
+								|   }, {
+								|   	"longitude": -2.49690382054704,
+								|   	"latitude": 53.5351312861402,
+								|   	"radius": 1000,
+								|   	"limit": 5
+								|   }]
+								| }
+						pre.code-box#bulk-reverse-result
 
 					.api-method
 						h4.method-title Get a random postcode
@@ -76,17 +121,6 @@ block content
 						pre.code-box#autocomplete-postcode-result
 
 					.api-method
-						h4.method-title Get nearest postcodes for a given longitude &amp; latitude
-						h4
-							.http-method GET
-							| api.postcodes.io/postcodes/lon/
-							input.rest-resource(value=":longitude")#lon-input
-							| /lat/
-							input.rest-resource(value=":latitude")#lat-input
-							a(href="#")#geocode-postcode Request
-						pre.code-box#geocode-postcode-result
-
-					.api-method
 						h4.method-title Query for postcode
 						h4
 							.http-method GET
@@ -94,25 +128,4 @@ block content
 							input.rest-resource(value=":postcode")#query-postcode-input
 							a(href="#")#query-postcode Request
 						pre.code-box#query-postcode-result
-
-					.api-method
-						h4.method-title Bulk lookup postcodes
-						h4
-							.http-method POST
-							| api.postcodes.io/postcodes
-							a(href="#")#bulk-postcodes Request
-						h5.json-post 
-							| { "postcodes" : [
-							input#bulk-postcodes-input(value="OX49 5NU, M32 0JG, NE30 1DP")
-							| ] }
-						pre.code-box#bulk-postcodes-result
-
-					.api-method
-						h4.method-title Bulk reverse geocoding (to be implemented)
-						h4
-							.http-method POST
-							| api.postcodes.io/postcodes
-							a(href="#")#bulk-reverse Request
-						pre.code-box#bulk-reverse-result
-
 

@@ -128,7 +128,7 @@ block content
 							| http://api.postcodes.io/random/postcodes
 
 
-					h3#Geocode-Postcode Geocode Postcode
+					h3#Geocode-Postcode Reverse Geocoding
 
 					p Returns nearest postcodes for a given longitude and latitude.
 
@@ -146,7 +146,7 @@ block content
 						|  (not required) Limits number of postcodes matches to return. Defaults to 100 meteres. Needs to be less than 1,000m.
 
 
-					h3#Bulk-Geocode-Postcode Bulk Geocode Postcode
+					h3#Bulk-Geocode-Postcode Bulk Reverse Geocoding
 
 					p Bulk translates into geolocations into Postcodes. Accepts up to 100 geolocations.
 
@@ -171,40 +171,3 @@ block content
 						|   	"radius" : 500
 						|   }]
 						| }
-
-					
-				.col-md-3
-					.bs-sidebar#affix
-						ul.nav.bs-sidebar.doc-menu
-							li.doc-header
-								a(href="#Overview") Overview
-							li
-								a(href="#Endpoint") HTTP Endpoint
-							li
-								a(href="#Responses") Responses
-							li
-								a(href="#Authentication") Authentication
-							li
-								a(href="#Error-Handling") Error Handling
-							li
-								a(href="#JSONP") JSONP
-
-							li.doc-header
-								a(href="#Methods") Methods
-							li
-								a(href="#Postcode-Query") Postcode Query
-							li
-								a(href="#Postcode-Lookup") Postcode Lookup
-							li
-								a(href="#Postcode-Validation") Postcode Validation
-							li
-								a(href="#Postcode-Autocomplete") Postcode Autocomplete
-							li
-								a(href="#Random-Postcode") Random Postcode
-							li
-								a(href="#Bulk-Postcode-Lookup") Bulk Postcode Lookup
-							li
-								a(href="#Geocode-Postcode") Geocode Postcode
-							li
-								a(href="#Bulk-Geocode-Postcode") Bulk Geocode Postcode
-		
