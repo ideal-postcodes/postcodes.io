@@ -5,11 +5,7 @@
 
 Open source postcode API server using [Codepoint Open](https://www.ordnancesurvey.co.uk/opendatadownload/products.html) addressing Data
 
-Currently still a work in progress.
-
-Contributions are welcome. Please ensure pull requests come with tests.
-
-Something wrong? Please do create a Github issue and I'll take a look when I can.
+Contributions and Github issues are welcome.
 
 Documentation can be found at [postcodes.io](http://postcodes.io)
 
