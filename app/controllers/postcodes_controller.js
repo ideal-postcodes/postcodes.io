@@ -60,6 +60,71 @@ exports.random = function (request, response, next) {
 }
 
 exports.bulk = function (request, response, next) {
+	if (request.body.postcodes) {
+		return bulkLookupPostcodes(request, response, next);
+	} else if (request.body.geolocations) {
+		return bulkGeocode(request, response, next);
+	} else {
+		response.jsonp(400, {
+			status: 400,
+			error: "Invalid JSON submitted. You need to submit a JSON object with an array of postcodes or geolocation objects"
+		});
+	}
+}
+
+function bulkGeocode (request, response, next) {
+	var geolocations = request.body.geolocations;
+
+	if (!Array.isArray(geolocations)) {
+		return response.jsonp(400, {
+			status: 400,
+			error: "Invalid data submitted. You need to provide a JSON array"
+		});
+	}
+
+	if (geolocations.length > 100) {
+		return response.jsonp(400, {
+			status: 400,
+			error: "Too many locations submitted. Up to 100 locations can be bulk requested at a time"
+		});
+	}
+
+	var result = [],
+			execution = [];
+
+	geolocations.forEach(function (location) {
+		execution.push(function (callback) {
+			var params = location;
+
+			Postcode.nearestPostcodes(params, function (error, postcodes) {
+				if (error || !postcodes) {
+					result.push({
+						query: location,
+						result: null
+					});
+				} else {
+					result.push({
+						query: location,
+						result: postcodes.map(function (postcode) {
+							return Postcode.toJson(postcode)
+						})
+					});
+				}
+				callback();
+			});
+
+		});
+	});
+
+	async.parallel(execution, function () {
+		response.jsonp(200, {
+			status: 200,
+			result: result
+		});
+	});	
+}
+
+function bulkLookupPostcodes (request, response, next) {
 	var postcodes = request.body.postcodes;
 
 	if (!Array.isArray(postcodes)) {
@@ -164,7 +229,7 @@ exports.lonlat = function (request, response, next) {
 
 	if (isNaN(longitude) || isNaN(latitude)) {
 		return response.jsonp(400, {
-			status: 404,
+			status: 400,
 			error: "Invalid longitude/latitude submitted"
 		});
 	} else {
@@ -186,7 +251,7 @@ exports.lonlat = function (request, response, next) {
 	}
 
 	if (request.query.radius) {
-		radius = parseInt(request.query.radius, 10);
+		radius = parseFloat(request.query.radius);
 		if (isNaN(radius)) {
 			return response.jsonp(400, {
 				status: 404,

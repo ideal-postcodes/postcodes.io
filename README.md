@@ -11,43 +11,11 @@ Contributions are welcome. Please ensure pull requests come with tests.
 
 Something wrong? Please do create a Github issue and I'll take a look when I can.
 
-## API Methods
-
-As you can see, these methods aren't designed so much to be RESTful. It's designed to be **useful** with endpoints tailored to use cases I see most often in my day-to-day work.
-
-The end result is less data fiddling as methods are tuned for a specific job and less documentation as the URIs are allowed to be more descriptive.
-
-#### GET api.postcodes.io/postcodes
-
-Requires a query parameter, q (e.g. /postcodes?q=NG228TX). Returns a list of matching or nearest matching postcodes with associated data
-
-#### GET api.postcodes.io/postcodes/:postcode 
-
-Lookup a postcode, returning associated data.
-
-#### POST api.postcodes.io/postcodes
-
-Bulk postcode lookup by posting JSON array of postcodes.
-
-#### GET api.postcodes.io/postcodes/:postcode/validate
-
-Convenience method to validate a postcode against Ordance Survey's Data set. Returns True or False.
-
-#### GET api.postcodes.io/postcodes/:postcode/autocomplete
-
-Convenience method to autocomplete a postcode (default limit of 10). Returns an array of postcode strings.
-
-#### GET api.postcodes.io/random/postcodes/:postcode 
-
-Retrieve random postcode with associated data.
-
-#### GET api.postcodes.io/random/postcodes/lon/:longitude/lat/:latitude
-
-Nearest postcodes within location specified.
+Documentation can be found at [postcodes.io](http://postcodes.io)
 
 ## Requirements
 
-- Node.js (>=0.10)
+- Node 0.10
 - Postgres (>9.1) with PostGIS extension
 
 ## Installation

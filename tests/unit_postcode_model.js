@@ -142,7 +142,7 @@ describe("Postcode Model", function () {
 				farAway = {
 					longitude: randomPostcode.longitude,
 					latitude: randomPostcode.latitude,
-					distance: 2000
+					radius: 1000
 				};
 
 			Postcode.nearestPostcodes(nearby, function (error, postcodes) {
@@ -152,6 +152,61 @@ describe("Postcode Model", function () {
 					assert.isTrue(farawayPostcodes.length >= postcodes.length);
 					done();
 				});
+			});
+		});
+		it ("should default limit to 10 if invalid", function (done) {
+			var params = {
+				longitude: randomPostcode.longitude,
+				latitude: randomPostcode.latitude,
+				limit: "Bogus"
+			};
+			Postcode.nearestPostcodes(params, function (error, postcodes) {
+				if (error) throw error;
+				assert.isTrue(postcodes.length <= 10);
+				done();
+			});
+		});
+		it ("should default radius to 100 if invalid", function (done) {
+			var nearby = {
+					longitude: randomPostcode.longitude,
+					latitude: randomPostcode.latitude,
+					radius: "BOGUS"
+				},
+				farAway = {
+					longitude: randomPostcode.longitude,
+					latitude: randomPostcode.latitude,
+					radius: 1000
+				};
+
+			Postcode.nearestPostcodes(nearby, function (error, postcodes) {
+				if (error) throw error;
+				Postcode.nearestPostcodes(farAway, function (error, farawayPostcodes) {
+					if (error) throw error;
+					assert.isTrue(farawayPostcodes.length >= postcodes.length);
+					done();
+				});
+			});
+		});
+		it ("should raise an error if invalid longitude", function (done) {
+			var params = {
+				longitude: "Bogus",
+				latitude: randomPostcode.latitude,
+			};
+			Postcode.nearestPostcodes(params, function (error, postcodes) {
+				assert.isNotNull(error);
+				assert.match(error.message, /invalid longitude/i);
+				done();
+			});
+		});
+		it ("should raise an error if invalid latitude", function (done) {
+			var params = {
+				longitude: randomPostcode.longitude,
+				latitude: "Bogus",
+			};
+			Postcode.nearestPostcodes(params, function (error, postcodes) {
+				assert.isNotNull(error);
+				assert.match(error.message, /invalid latitude/i);
+				done();
 			});
 		});
 	});

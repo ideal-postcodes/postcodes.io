@@ -1,6 +1,7 @@
 var	csv = require("csv"),
 		util = require("util"),
 		path = require("path"),
+		OSPoint = require("ospoint"),
 		assert = require("chai").assert,
 		randomString = require("random-string"),
 		rootPath = path.join(__dirname, "../../"),
@@ -64,11 +65,18 @@ function clearPostcodeDb(callback) {
 	Postcode._destroyRelation(callback);
 }
 
+var getRandom = function (max) {
+	return Math.floor(Math.random() * max);
+}
+
 function randomPostcode() {
-	var getRandom = function () {
-		return Math.floor(Math.random() * testPostcodesLength);
-	}
-	return testPostcodes[getRandom()][0];
+	return testPostcodes[getRandom(testPostcodesLength)][0];
+}
+
+function randomLocation() {
+	var postcode = testPostcodes[getRandom(testPostcodesLength)]
+	var ospoint = new OSPoint(postcode[3], postcode[2])
+	return ospoint.toWGS84();
 }
 
 function lookupRandomPostcode(callback) {
@@ -123,6 +131,7 @@ module.exports = {
 	Postcode: Postcode,
 	connectToDb: connectToDb,
 	randomPostcode: randomPostcode,
+	randomLocation: randomLocation,
 	seedPostcodeDb: seedPostcodeDb,
 	clearPostcodeDb: clearPostcodeDb,
 	isPostcodeObject: isPostcodeObject,

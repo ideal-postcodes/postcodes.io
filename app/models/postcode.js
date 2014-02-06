@@ -149,15 +149,24 @@ Postcode.prototype.search = function (postcode, options, callback) {
 }
 
 Postcode.prototype.nearestPostcodes = function (params, callback) {
-	var limit, radius;
-	radius = params.radius || 100;
-	limit = params.limit || 100;
+	var radius = parseFloat(params.radius) || 100;
+	if (radius > 1000) radius = 1000;
+
+	var limit = parseInt(params.limit, 10) || 10;
+	if (limit > 100) limit = 100;
+
+	var longitude = parseFloat(params.longitude);
+	if (isNaN(longitude)) return callback(new Error("Invalid longitude"), null);
+
+	var latitude = parseFloat(params.latitude);
+	if (isNaN(latitude)) return callback(new Error("Invalid latitude"), null);
+
 	var query = "SELECT *, ST_Distance(location, " + 
 							" ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance " + 
 							"FROM postcodes " + 
 							"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
 							"ORDER BY distance LIMIT $4";
-	this._query(query, [params.longitude, params.latitude, radius, limit], function (error, result) {
+	this._query(query, [longitude, latitude, radius, limit], function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);

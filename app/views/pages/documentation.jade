@@ -54,12 +54,34 @@ block content
 					pre
 						h4 http://api.postcodes.io/postcodes/:postcode
 
+					h3#Bulk-Postcode-Lookup Bulk Postcode Lookup
+
+					p Accepts a JSON object containing an array of postcodes. Returns a list of matching postcodes and respective available data.
+
+					p Accepts up to 100 postcodes.
+
+					pre
+						h4
+							.http-method POST
+							| http://api.postcodes.io/postcodes?q=[postcode]
+
+					h4 Post Data
+
+					p This method requires a JSON object containing an array of postcodes to be POSTed. E.g.
+
+					pre
+						| {
+						|   "postcodes" : ["PR3 0SG", "M45 6GN", "EX165BL"]
+						| }
+
 
 					h3#Postcode-Query Postcode Query
 
 					p Submit a postcode query and receive a complete list of postcode matches and all associated postcode data.
 					pre
-						h4 http://api.postcodes.io/postcodes?q=[query]
+						h4 
+							.http-method GET 
+							| http://api.postcodes.io/postcodes?q=[query]
 
 					h4 Optional Query Parameters
 					p 
@@ -76,7 +98,9 @@ block content
 					p Convenience method to validate a postcode. Returns true or false (meaning valid or invalid respectively)
 
 					pre
-						h4 http://api.postcodes.io/postcodes/:postcode/validate
+						h4 
+							.http-method GET 
+							| http://api.postcodes.io/postcodes/:postcode/validate
 
 
 					h3#Postcode-Autocomplete Postcode Autocomplete
@@ -84,7 +108,9 @@ block content
 					p Convenience method to return an list of matching postcodes.
 
 					pre
-						h4 http://api.postcodes.io/postcodes/:postcode/autocomplete
+						h4 
+							.http-method GET 
+							| http://api.postcodes.io/postcodes/:postcode/autocomplete
 
 					h4 Optional Query Parameters
 					p
@@ -97,15 +123,9 @@ block content
 					p Returns a random postcode and all available data for that postcode
 
 					pre
-						h4 http://api.postcodes.io/random/postcodes
-
-
-					h3#Bulk-Postcode-Lookup Bulk Postcode Lookup
-
-					p Accepts a JSON array of postcodes. Returns a list of matching postcodes and respective available data.
-
-					pre
-						h4 POST http://api.postcodes.io/postcodes?q=[postcode]
+						h4 
+							.http-method GET 
+							| http://api.postcodes.io/random/postcodes
 
 
 					h3#Geocode-Postcode Geocode Postcode
@@ -113,12 +133,44 @@ block content
 					p Returns nearest postcodes for a given longitude and latitude.
 
 					pre
-						h4 http://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
+						h4 
+							.http-method GET 
+							| http://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
+
+					h4 Optional Query Parameters
+					p
+						code limit=
+						|  (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+					p
+						code radius=
+						|  (not required) Limits number of postcodes matches to return. Defaults to 100 meteres. Needs to be less than 1,000m.
 
 
 					h3#Bulk-Geocode-Postcode Bulk Geocode Postcode
 
-					p Not yet implemented
+					p Bulk translates into geolocations into Postcodes. Accepts up to 100 geolocations.
+
+					pre
+						h4 
+							.http-method POST 
+							| http://api.postcodes.io/postcodes
+
+					h4 Post Data
+
+					p This method requires a JSON object containing an array of geolocation objects to be POSTed. Each geolocation object accepts an optional radius (meters) and limit argument. Both default to 100m and 10 respectively. E.g.
+
+					pre
+						| {
+						|   "geolocations" : [{
+						|   	"longitude" : -3.15807731271522,
+						|   	"latitude" : 51.4799900627036
+						|   },{
+						| 		"longitude" : -1.12935802905177,
+						|   	"latitude" : 50.7186356978817,
+						|   	"limit" : 100,
+						|   	"radius" : 500
+						|   }]
+						| }
 
 					
 				.col-md-3
