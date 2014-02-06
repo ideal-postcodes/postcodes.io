@@ -220,33 +220,6 @@ describe("Postcodes routes", function () {
 					done();
 				});
 			});
-			it ("should be sensitive to radius", function (done) {
-				var testLocation = helper.randomLocation();
-				request(app)
-				.post("/postcodes")
-				.send({geolocations: [
-					{
-						longitude: testLocation.longitude,
-						latitude: testLocation.latitude
-					},
-					{
-						longitude: testLocation.longitude,
-						latitude: testLocation.latitude,
-						radius: 500
-					}
-				]})
-				.expect("Content-Type", /json/)
-				.expect(200)
-				.end(function (error, response) {
-					if (error) throw error;
-					assert.equal(response.body.result.length, 2);
-					var firstResult = response.body.result[0],
-							secondResult = response.body.result[1];
-
-					assert.notEqual(firstResult.result.length, secondResult.result.length)
-					done();
-				});
-			});
 		});
 
 		describe("Bulk postcode lookup", function () {
