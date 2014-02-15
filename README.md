@@ -3,7 +3,7 @@
 
 # Postcodes.io
 
-Open source postcode API server using [Codepoint Open](https://www.ordnancesurvey.co.uk/opendatadownload/products.html) addressing Data
+Open source postcode API server using Codepoint Open and ONS addressing Data
 
 Contributions and Github issues are welcome.
 

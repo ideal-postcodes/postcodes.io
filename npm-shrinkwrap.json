@@ -1,11 +1,10 @@
 {
   "name": "postcodes.io",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "dependencies": {
     "pg": {
       "version": "2.11.1",
       "from": "pg@~2.11.0",
-      "resolved": "https://registry.npmjs.org/pg/-/pg-2.11.1.tgz",
       "dependencies": {
         "generic-pool": {
           "version": "2.0.3",
@@ -97,6 +96,11 @@
                       "version": "1.0.1",
                       "from": "core-util-is@~1.0.0"
                     },
+                    "string_decoder": {
+                      "version": "0.10.25-1",
+                      "from": "string_decoder@~0.10.x",
+                      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.25-1.tgz"
+                    },
                     "debuglog": {
                       "version": "0.0.2",
                       "from": "debuglog@0.0.2",
@@ -130,8 +134,7 @@
         },
         "mkdirp": {
           "version": "0.3.5",
-          "from": "mkdirp@~0.3.5",
-          "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.3.5.tgz"
+          "from": "mkdirp@0.3.5"
         },
         "cookie": {
           "version": "0.1.0",
@@ -150,8 +153,7 @@
         },
         "methods": {
           "version": "0.1.0",
-          "from": "methods@0.1.0",
-          "resolved": "https://registry.npmjs.org/methods/-/methods-0.1.0.tgz"
+          "from": "methods@0.1.0"
         },
         "send": {
           "version": "0.1.4",
@@ -183,7 +185,6 @@
     "jade": {
       "version": "1.1.5",
       "from": "jade@~1.1.4",
-      "resolved": "https://registry.npmjs.org/jade/-/jade-1.1.5.tgz",
       "dependencies": {
         "commander": {
           "version": "2.1.0",
@@ -192,8 +193,7 @@
         },
         "mkdirp": {
           "version": "0.3.5",
-          "from": "mkdirp@~0.3.5",
-          "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.3.5.tgz"
+          "from": "mkdirp@~0.3.5"
         },
         "transformers": {
           "version": "2.1.0",
@@ -231,8 +231,9 @@
               "from": "uglify-js@~2.2.5",
               "dependencies": {
                 "source-map": {
-                  "version": "0.1.31",
+                  "version": "0.1.32",
                   "from": "source-map@~0.1.7",
+                  "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.1.32.tgz",
                   "dependencies": {
                     "amdefine": {
                       "version": "0.1.0",
@@ -296,8 +297,9 @@
               "resolved": "https://registry.npmjs.org/uglify-js/-/uglify-js-2.4.0.tgz",
               "dependencies": {
                 "source-map": {
-                  "version": "0.1.31",
+                  "version": "0.1.32",
                   "from": "source-map@~0.1.7",
+                  "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.1.32.tgz",
                   "dependencies": {
                     "amdefine": {
                       "version": "0.1.0",
@@ -316,8 +318,9 @@
                   }
                 },
                 "uglify-to-browserify": {
-                  "version": "1.0.1",
-                  "from": "uglify-to-browserify@~1.0.0"
+                  "version": "1.0.2",
+                  "from": "uglify-to-browserify@~1.0.0",
+                  "resolved": "https://registry.npmjs.org/uglify-to-browserify/-/uglify-to-browserify-1.0.2.tgz"
                 }
               }
             }
@@ -330,11 +333,11 @@
             "uglify-js": {
               "version": "2.4.12",
               "from": "uglify-js@~2.4.0",
-              "resolved": "https://registry.npmjs.org/uglify-js/-/uglify-js-2.4.12.tgz",
               "dependencies": {
                 "source-map": {
-                  "version": "0.1.31",
+                  "version": "0.1.32",
                   "from": "source-map@~0.1.7",
+                  "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.1.32.tgz",
                   "dependencies": {
                     "amdefine": {
                       "version": "0.1.0",
@@ -353,8 +356,9 @@
                   }
                 },
                 "uglify-to-browserify": {
-                  "version": "1.0.1",
-                  "from": "uglify-to-browserify@~1.0.0"
+                  "version": "1.0.2",
+                  "from": "uglify-to-browserify@~1.0.0",
+                  "resolved": "https://registry.npmjs.org/uglify-to-browserify/-/uglify-to-browserify-1.0.2.tgz"
                 }
               }
             }
@@ -412,8 +416,7 @@
     },
     "csv": {
       "version": "0.3.7",
-      "from": "csv@~0.3.6",
-      "resolved": "https://registry.npmjs.org/csv/-/csv-0.3.7.tgz"
+      "from": "csv@~0.3.6"
     },
     "async": {
       "version": "0.2.10",
@@ -424,12 +427,12 @@
       "from": "postcode@~0.1.2"
     },
     "ospoint": {
-      "version": "0.1.2",
-      "from": "ospoint@~0.1.2"
+      "version": "0.2.0",
+      "from": "ospoint@~0.2.0"
     },
     "bunyan-syslog": {
       "version": "0.2.2",
-      "from": "bunyan-syslog@",
+      "from": "bunyan-syslog@~0.2.2",
       "dependencies": {
         "assert-plus": {
           "version": "0.1.4",
