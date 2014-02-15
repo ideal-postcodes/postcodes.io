@@ -52,11 +52,11 @@ function createPostgisExtension(callback) {
 	Postcode._query("CREATE EXTENSION IF NOT EXISTS postgis", callback);
 }
 
-var executionStack = [//createPostgisExtension,
-											// dropRelation, 
-											// createRelation, 
-											// dropIndexes, 
-											// importRawCsv,
+var executionStack = [createPostgisExtension,
+											dropRelation, 
+											createRelation, 
+											dropIndexes, 
+											importRawCsv,
 											populateLocation, 
 											recreateIndexes];
 
