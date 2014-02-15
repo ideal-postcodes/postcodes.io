@@ -4,7 +4,7 @@ var	fs = require("fs"),
 		path = require("path"),
 		async = require("async"),
 		start = process.hrtime(),
-		sourceFolder = process.argv[2],
+		sourceFile = process.argv[2],
 		env = process.env.NODE_ENV || "development",
 		Base = require(path.join(__dirname, "../app/models")),
 		config = require(path.join(__dirname, "../config/config"))(env),
@@ -13,8 +13,8 @@ var	fs = require("fs"),
 var pg = Base.connect(config);
 // Performing checks
 
-if (!sourceFolder) {
-	throw new Error("Aborting Import. No folder specified");
+if (!sourceFile) {
+	throw new Error("Aborting Import. No source file specified");
 }
 
 function dropRelation (callback) {
@@ -38,25 +38,8 @@ function recreateIndexes(callback) {
 }
 
 function importRawCsv (callback) {
-	console.log("Importing CSV data from", sourceFolder);
-	var importQueue = [],
-			csvFiles = fs.readdirSync(sourceFolder).filter(function (elem) {
-				return elem.match(/\.csv$/);
-			});
-
-	csvFiles.forEach(function (file) {
-		importQueue.push(function (callback) {
-			console.log("Streaming source file:", path.join(sourceFolder, file), "to Postgres");
-			Postcode.seedPostcodes(path.join(sourceFolder, file), callback);
-		});
-	});
-
-	async.series(importQueue, function (error, result) {
-		if (error) {
-			console.log("Unabled to import data due to error:", error);
-		}
-		callback(error, result);
-	});
+	console.log("Importing CSV data from", sourceFile);
+	Postcode.seedPostcodes(sourceFile, callback);
 }
 
 function populateLocation (callback) {
@@ -69,11 +52,11 @@ function createPostgisExtension(callback) {
 	Postcode._query("CREATE EXTENSION IF NOT EXISTS postgis", callback);
 }
 
-var executionStack = [createPostgisExtension,
-											dropRelation, 
-											createRelation, 
-											dropIndexes, 
-											importRawCsv,
+var executionStack = [//createPostgisExtension,
+											// dropRelation, 
+											// createRelation, 
+											// dropIndexes, 
+											// importRawCsv,
 											populateLocation, 
 											recreateIndexes];
 

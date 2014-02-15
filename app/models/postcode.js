@@ -1,26 +1,34 @@
 var	fs = require("fs"),
 		util = require("util"),
+		path = require("path"),
 		Pc = require("postcode"),
 		async = require("async"),
 		OSPoint = require("ospoint"),
 		Base = require("./index").Base;
 
 var postcodeSchema = {
-	id: "SERIAL PRIMARY KEY",
-	postcode : "VARCHAR(10)",
-	pc_compact : "VARCHAR(9)",
-	quality : "INTEGER",
-	eastings : "INTEGER",
-	northings : "INTEGER",
-	country : "VARCHAR(255)",
-	nhs_regional_ha : "VARCHAR(255)",
-	nhs_ha : "VARCHAR(255)",
-	admin_county : "VARCHAR(255)",
-	admin_district : "VARCHAR(255)",
-	admin_ward : "VARCHAR(255)",
-	longitude : "DOUBLE PRECISION",
-	latitude : "DOUBLE PRECISION",
-	location : "GEOGRAPHY(Point, 4326)"
+	"id": "SERIAL PRIMARY KEY",
+	"postcode" : "VARCHAR(10)",
+	"pc_compact" : "VARCHAR(9)",
+	"quality" : "INTEGER",
+	"eastings" : "INTEGER",
+	"northings" : "INTEGER",
+	"country" : "VARCHAR(255)",
+	"nhs_ha" : "VARCHAR(255)",
+	"admin_county" : "VARCHAR(255)",
+	"admin_district" : "VARCHAR(255)",
+	"admin_ward" : "VARCHAR(255)",
+	"longitude" : "DOUBLE PRECISION",
+	"latitude" : "DOUBLE PRECISION",
+	"location" : "GEOGRAPHY(Point, 4326)",
+	"parliamentary_constituency" : "VARCHAR(255)",
+	"european_electoral_region" : "VARCHAR(255)",
+	"primary_care_trust" : "VARCHAR(255)", 
+	"region" : "VARCHAR(255)", 
+	"parish" : "VARCHAR(255)", 
+	"lsoa" : "VARCHAR(255)", 
+	"msoa" : "VARCHAR(255)",
+	"nuts" : "VARCHAR(255)"
 };
 
 var indexes = {
@@ -42,7 +50,9 @@ Postcode.prototype.find = function (postcode, callback) {
 		return callback(null, null);
 	}
 
-	this._query("SELECT * FROM " + this.relation + " WHERE pc_compact=$1", [postcode.replace(" ", "")], function(error, result) {
+	var query = "SELECT * FROM " + this.relation + " WHERE pc_compact=$1";
+
+	this._query(query, [postcode.replace(" ", "")], function(error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
@@ -62,36 +72,10 @@ Postcode.prototype.random = function (callback) {
 	});
 }
 
-Postcode.prototype.seedPostcodes = function (filePath, callback) {
-	var self = this,
-			csvColumns = 	"postcode, quality, eastings, northings, country, nhs_regional_ha, nhs_ha," + 
-										" admin_county, admin_district, admin_ward, longitude, latitude, pc_compact",
-			denormalisationData = JSON.parse(fs.readFileSync(__dirname + "/postcodeDenormData.json")),
-			columnsToDenormalise = [4, 5, 6, 7, 8, 9],
-			location;
-
-	var transform = function (row, index) {
-		// Replace codes with data (denormalisation process)
-		columnsToDenormalise.forEach(function (elem) {
-			row[elem] = denormalisationData[row[elem]];
-		});
-
-		// Translate Northings and Eastings to longitude and latitude
-		location = new OSPoint("" + row[3] , "" + row[2]).toWGS84();
-		row.push(location.longitude);
-		row.push(location.latitude);
-
-		// Push pc_compact
-		row.push(row[0].replace(/\s/g, ""));
-
-		return row;
-	}
-	self._csvSeed(filePath, csvColumns, transform, callback);
-}
-
 Postcode.prototype.populateLocation = function (callback) {
-	var query = "UPDATE postcodes SET location =" 
-					 + " ST_GeogFromText('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')";
+	var query = "UPDATE postcodes SET location=ST_GeogFromText" + 
+							"('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')" + 
+							" WHERE northings!=0 AND EASTINGS!=0";
 	this._query(query, callback);
 }
 
@@ -181,5 +165,133 @@ Postcode.prototype.toJson = function (address) {
 	delete address.pc_compact;
 	return address;
 }
+
+/*
+*
+*
+*		0 - Unit postcode (7char)
+*		1 - Unit postcode (8char)
+*		2 - Unit postcode (variable)											Y
+*		3 - Date of intro
+*		4 - Date of termination (null = live)
+*		5 - County 																				Y
+*		6 - District 																			Y
+*		7 - Ward 																					Y
+*		8 - Postcode user type (small/large)
+*		9 - Easting 																			Y
+*		10 - Northings 																		Y
+*		11 - Positional quality indicator 								Y
+*		12 - Strategic health authority (SHA) (nhs_ha) 		Y
+*		13 - Pan SHA (nhs_regional) 											
+*		14 - Country 																			Y
+*		15 - Region (region code, GOR)										Y
+*		16 - Standard statistical region (SSR)
+*		17 - Westminster parliamentary constituency 			Y
+*		18 - European Electoral Register									Y
+*		19 - Local learning and skills council
+*		20 - Travel to work area
+*		21 - Primary care trust 													Y
+*		22 - NUTS / LAU areas 														Y
+*		23 - 1991 census ed
+*		24 - 1991 census ed with census code
+*		25 - ed positional quality indicator
+*		26 - Previous SHA prior to 2006
+*		27 - LEA
+*		28 - Health Authority (old style)
+*		29 - 1991 ward
+*		30 - 1991 ward OGSS code
+*		31 - 1998 ward
+*		32 - 2005 statistical ward
+*		33 - 2001 census output area
+*		34 - census area statistics ward
+*		35 - national park
+*		36 - 2001 LSOA
+*		37 - 2001 MSOA
+*		38 - 2001 rural/urban indicator
+*		39 - 2001 OAC
+*		40 - Old PCT
+*		41 - 2011 census output areas 									Y
+*		42 - 2011 LSOA																	Y
+*		43 - 2011 MSOA 																	Y
+*		44 - Parish 																		Y
+*		45 - Census workplace zone
+*
+*
+*/
+
+Postcode.prototype.seedPostcodes = function (filePath, callback) {
+	var self = this,
+			csvColumns = 	"postcode, pc_compact, eastings, northings, longitude," +
+										" latitude, country, nhs_ha," + 
+										" admin_county, admin_district, admin_ward, parish, quality," +
+										" parliamentary_constituency , european_electoral_region, region, " +
+										" primary_care_trust, lsoa, msoa, nuts"
+			dataPath = path.join(__dirname, "../../data/"),
+			countries = JSON.parse(fs.readFileSync(dataPath + "countries.json")),
+			nhsHa = JSON.parse(fs.readFileSync(dataPath + "nhsHa.json")),
+			counties = JSON.parse(fs.readFileSync(dataPath + "counties.json")),
+			districts = JSON.parse(fs.readFileSync(dataPath + "districts.json")),
+			wards = JSON.parse(fs.readFileSync(dataPath + "wards.json")),
+			parishes = JSON.parse(fs.readFileSync(dataPath + "parishes.json")),
+			constituencies = JSON.parse(fs.readFileSync(dataPath + "constituencies.json")),
+			european_registers = JSON.parse(fs.readFileSync(dataPath + "european_registers.json")),
+			regions = JSON.parse(fs.readFileSync(dataPath + "regions.json")),
+			pcts = JSON.parse(fs.readFileSync(dataPath + "pcts.json")),
+			lsoa = JSON.parse(fs.readFileSync(dataPath + "lsoa.json")),
+			msoa = JSON.parse(fs.readFileSync(dataPath + "msoa.json")),
+			nuts = JSON.parse(fs.readFileSync(dataPath + "nuts.json"));
+			
+
+	var transform = function (row, index) {
+		if (index % 10000 === 0) {
+		}
+
+		// Skip row if terminated
+		if (row[4].length !== 0) {
+			return null;
+		}
+
+		var finalRow = [];
+
+		finalRow.push(row[2]);  												// postcode
+		finalRow.push(row[2].replace(/\s/g, ""));				// pc_compact
+		finalRow.push(row[9]);													// Eastings
+		finalRow.push(row[10]);													// Northings
+
+		var location;
+		if (row[9].length === 0 || row[10].length === 0) {
+			location = {
+				longitude: "",
+				latitude: ""
+			};
+		} else if (row[14] === "N92000002") {
+			location = new OSPoint("" + row[10] , "" + row[9]).toWGS84("irish_national_grid");
+		} else {
+			location = new OSPoint("" + row[10] , "" + row[9]).toWGS84();
+		}
+		
+		finalRow.push(location.longitude);							// longitude
+		finalRow.push(location.latitude);								// latitude
+		finalRow.push(countries[row[14]]);							// Country
+		finalRow.push(nhsHa[row[12]]);									// NHS Health Authority
+		finalRow.push(counties[row[5]]);								// County
+		finalRow.push(districts[row[6]]);								// District
+		finalRow.push(wards[row[7]]);										// Ward
+		finalRow.push(parishes[row[44]]);								// Parish
+		finalRow.push(row[11]);													// Quality
+		finalRow.push(constituencies[row[17]]);					// Westminster const.
+		finalRow.push(european_registers[row[18]]);			// European electoral region
+		finalRow.push(regions[row[15]]);								// Region
+		finalRow.push(pcts[row[21]]);										// Primary Care Trusts
+		finalRow.push(lsoa[row[42]]);										// 2011 LSOA
+		finalRow.push(msoa[row[43]]);										// 2011 MSOA
+		finalRow.push(nuts[row[22]]);										// NUTS
+
+		return finalRow;
+	}
+
+	self._csvSeed(filePath, csvColumns, transform, callback);
+}
+
 
 module.exports = new Postcode();

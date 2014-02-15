@@ -9,6 +9,7 @@ describe("Postcode Model", function () {
 	var testPostcode;
 
 	before(function (done) {
+		this.timeout(0);
 		helper.seedPostcodeDb(function (error, result) {
 			if (error) throw error;
 			done();

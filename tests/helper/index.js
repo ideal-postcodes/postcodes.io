@@ -10,7 +10,12 @@ var	csv = require("csv"),
 		config = require(path.join(rootPath + "/config/config"))(env),
 		Postcode = require(path.join(rootPath, "app/models/postcode")),
 		seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv"),
-		testPostcodes, testPostcodesLength;
+		testPostcodes, testPostcodesLength,
+		csvIndex = {
+			postcode: 2,
+			northings: 10,
+			eastings: 9
+		};
 
 csv().from(seedPostcodePath).to.array(function (data, count) {
 	testPostcodes = data;
@@ -70,12 +75,12 @@ var getRandom = function (max) {
 }
 
 function randomPostcode() {
-	return testPostcodes[getRandom(testPostcodesLength)][0];
+	return testPostcodes[getRandom(testPostcodesLength)][csvIndex.postcode];
 }
 
 function randomLocation() {
-	var postcode = testPostcodes[getRandom(testPostcodesLength)]
-	var ospoint = new OSPoint(postcode[3], postcode[2])
+	var postcode = testPostcodes[getRandom(testPostcodesLength)],
+			ospoint = new OSPoint(postcode[csvIndex.northings], postcode[csvIndex.eastings]);
 	return ospoint.toWGS84();
 }
 
@@ -103,7 +108,13 @@ function isPostcodeObject(o) {
 	assert.property(o, "admin_county");
 	assert.notProperty(o, "pc_compact");
 	assert.property(o, "admin_district");
-	assert.property(o, "nhs_regional_ha");
+	assert.property(o, "parliamentary_constituency");
+	assert.property(o, "european_electoral_region");
+	assert.property(o, "parish");
+	assert.property(o, "lsoa");
+	assert.property(o, "msoa");
+	assert.property(o, "nuts");
+	assert.property(o, "primary_care_trust");
 }
 
 function isRawPostcodeObject(o) {
@@ -121,7 +132,13 @@ function isRawPostcodeObject(o) {
 	assert.property(o, "admin_ward");
 	assert.property(o, "admin_county");
 	assert.property(o, "admin_district");
-	assert.property(o, "nhs_regional_ha");
+	assert.property(o, "parliamentary_constituency");
+	assert.property(o, "european_electoral_region");
+	assert.property(o, "parish");
+	assert.property(o, "lsoa");
+	assert.property(o, "msoa");
+	assert.property(o, "nuts");
+	assert.property(o, "primary_care_trust");
 }
 
 module.exports = {

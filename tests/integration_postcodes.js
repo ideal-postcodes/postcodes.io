@@ -8,6 +8,7 @@ describe("Postcodes routes", function () {
 	var testPostcode;
 
 	before(function (done) {
+		this.timeout(0);
 		helper.connectToDb();
 		helper.seedPostcodeDb(function (error, result) {
 			if (error) throw error;
@@ -150,6 +151,7 @@ describe("Postcodes routes", function () {
 					assert.isArray(response.body.result);
 					assert.equal(response.body.result.length, bulkLength);
 					response.body.result.forEach(function (lookup) {
+						console.log(lookup);
 						assert.property(lookup, "query");
 						assert.property(lookup, "result");
 						assert.isArray(lookup.result);
