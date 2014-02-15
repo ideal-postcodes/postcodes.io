@@ -27,19 +27,19 @@ $ npm install
 
 **Configure it**
 
-Update `config/config.js` with your Postgresql credentials. Note that in order to import Code, Postgresql user must also be superuser (at least when importing Codepoint Open to Postgresql).
+Update `config/config.js` with your Postgresql credentials. Note that in order to import Code, Postgresql user must also be superuser for the import process.
 
-**Import Codepoint Open Data**
+**Import ONS Postcode Data**
 
-Download Codepoint Open Data ([in CSV format here](https://www.ordnancesurvey.co.uk/opendatadownload/products.html)). Unzip the data locally. Navigate to `postcodes.io/` and run `importcpo` passing  directory containing the CSV data.
+Download the lastest Office for National Statistics postcode lookup dataset ([in CSV format here](https://geoportal.statistics.gov.uk/geoportal/catalog/main/home.page)). Unzip the data locally. Navigate to `postcodes.io/` and run `importons` passing the path to the CSV data.
 
 It should look something like this:
 
 ```bash
-$ importcpo /path/to/data/codepo_gb/Data/CSV
+$ importons /path/to/data/ONSPD/Data/data.csv
 ```
 
-Import process takes around 5 minutes to complete. You also the [PostGIS extension availble](http://postgis.net/install).
+Import process takes around 10 minutes to complete. You also the [PostGIS extension availble](http://postgis.net/install).
 
 **Run it**
 

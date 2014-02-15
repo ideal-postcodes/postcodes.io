@@ -167,7 +167,7 @@ Postcode.prototype.toJson = function (address) {
 }
 
 /*
-*
+*  	ONS CSV Data Reference
 *
 *		0 - Unit postcode (7char)
 *		1 - Unit postcode (8char)
@@ -243,9 +243,6 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 			
 
 	var transform = function (row, index) {
-		if (index % 10000 === 0) {
-		}
-
 		// Skip row if terminated
 		if (row[4].length !== 0) {
 			return null;
