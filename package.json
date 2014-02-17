@@ -43,7 +43,8 @@
     "async": "~0.2.10",
     "postcode": "~0.2.1",
     "ospoint": "~0.2.0",
-    "bunyan-syslog": "~0.2.2"
+    "bunyan-syslog": "~0.2.2",
+    "string": "~1.8.0"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

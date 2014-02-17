@@ -1,5 +1,6 @@
 var logger = require("commonlog-bunyan"),
 		async = require("async"),
+		S = require("string"),
 		Postcode = require("../models/postcode");
 
 exports.show = function (request, response, next) {
@@ -10,12 +11,12 @@ exports.show = function (request, response, next) {
 			return next(error);
 		}
 		if (address) {
-			response.json(200, {
+			return response.json(200, {
 				status: 200,
 				result: Postcode.toJson(address)
 			});		
 		} else {
-			response.jsonp(404, {
+			return response.jsonp(404, {
 				status: 404,
 				error: "Postcode not found"
 			});		
@@ -33,12 +34,12 @@ exports.valid = function (request, response, next) {
 		}
 
 		if (address) {
-			response.jsonp(200, {
+			return response.jsonp(200, {
 				status: 200,
 				result: true
 			});		
 		} else {
-			response.jsonp(200, {
+			return response.jsonp(200, {
 				status: 200,
 				result: false
 			});		
@@ -52,7 +53,7 @@ exports.random = function (request, response, next) {
 			return next(error);
 		}
 
-		response.jsonp(200, {
+		return response.jsonp(200, {
 			status: 200,
 			result: Postcode.toJson(address)
 		});
@@ -65,7 +66,7 @@ exports.bulk = function (request, response, next) {
 	} else if (request.body.geolocations) {
 		return bulkGeocode(request, response, next);
 	} else {
-		response.jsonp(400, {
+		return response.jsonp(400, {
 			status: 400,
 			error: "Invalid JSON submitted. You need to submit a JSON object with an array of postcodes or geolocation objects"
 		});
@@ -175,8 +176,8 @@ exports.query = function (request, response, next) {
 	var searchTerm = request.query.q || request.query.query,
 			limit = request.query.limit;
 
-	if (!searchTerm) {
-		response.jsonp(200, {
+	if (S(searchTerm).isEmpty()) {
+		return response.jsonp(400, {
 			status: 400,
 			error: "No postcode query submitted. Remember to include query parameter"
 		});
@@ -185,12 +186,12 @@ exports.query = function (request, response, next) {
 	Postcode.search(searchTerm, {limit: limit}, function (error, results) {
 		if (error) return next(error);
 		if (!results) {
-			response.jsonp(200, {
+			return response.jsonp(200, {
 				status: 200,
 				result: null
 			});
 		} else {
-			response.jsonp(200, {
+			return response.jsonp(200, {
 				status: 200,
 				result: results.map(function (elem) {
 					return Postcode.toJson(elem);
@@ -207,12 +208,12 @@ exports.autocomplete = function (request, response, next) {
 	Postcode.search(searchTerm, {limit: limit}, function (error, results) {
 		if (error) return next(error);
 		if (!results) {
-			response.jsonp(200, {
+			return response.jsonp(200, {
 				status: 200,
 				result: null
 			});
 		} else {
-			response.jsonp(200, {
+			return response.jsonp(200, {
 				status: 200,
 				result: results.map(function (elem) {
 					return elem.postcode;
@@ -265,12 +266,12 @@ exports.lonlat = function (request, response, next) {
 	Postcode.nearestPostcodes(params, function (error, results) {
 		if (error) return next(error);
 		if (!results) {
-			response.jsonp(200, {
+			return response.jsonp(200, {
 				status: 200,
 				result: null
 			});
 		} else {
-			response.jsonp(200, {
+			return response.jsonp(200, {
 				status: 200,
 				result: results.map(function (postcode) {
 					return Postcode.toJson(postcode);
@@ -286,12 +287,12 @@ exports.showOutcode = function (request, response, next) {
 	Postcode.findOutcode(outcode, function (error, result) {
 		if (error) return next(error);
 		if (!result) {
-			response.jsonp(404, {
+			return response.jsonp(404, {
 				status: 404,
 				result: null
 			});
 		} else {
-			response.jsonp(200, {
+			return response.jsonp(200, {
 				status: 200,
 				result: result
 			});

@@ -25,7 +25,7 @@ describe("Postcodes routes", function () {
 		helper.clearPostcodeDb(done);
 	});
 
-	describe("GET /", function () {
+	describe("GET /postcodes", function () {
 		var uri, limit;
 
 		it ("should return a list of matching postcode objects", function (done) {
@@ -124,6 +124,18 @@ describe("Postcodes routes", function () {
 				response.body.result.forEach(function (postcode) {
 					helper.isPostcodeObject(postcode);
 				});
+				done();
+			});
+		});
+		it ("should return 400 if no postcode submitted", function (done) {
+			uri = encodeURI("/postcodes?q=");
+			request(app)
+			.get(uri)
+			.expect("Content-Type", /json/)
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.equal(response.body.status, 400);
 				done();
 			});
 		});

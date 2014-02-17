@@ -7,7 +7,6 @@ module.exports = function (app) {
 	app.get("/", pagesController.home);
 	app.get("/about", pagesController.about)
 	app.get("/docs", pagesController.documentation);
-
 	app.get("/postcodes", postcodesController.query);
 	app.post("/postcodes", postcodesController.bulk);
 	app.get("/random/postcodes", postcodesController.random);

@@ -111,7 +111,6 @@ describe("Postcode Model", function () {
 		it ("should return null if no matching outcode", function (done) {
 			Postcode.findOutcode("BOGUSOUTCODE", function (error, result) {
 				if (error) throw error;
-				console.log(result);
 				assert.equal(result, null);
 				done();
 			});
@@ -119,7 +118,6 @@ describe("Postcode Model", function () {
 		it ("should return null for a plausible but non-existent postcode", function (done) {
 			Postcode.findOutcode("EJ12", function (error, result) {
 				if (error) throw error;
-				console.log(result);
 				assert.equal(result, null);
 				done();
 			});
