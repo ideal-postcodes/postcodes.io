@@ -281,10 +281,19 @@ block content
 
 					h3#Random-Postcode Random Postcode
 
-					p Returns a random postcode and all available data for that postcode
+					p Returns a random postcode and all available data for that postcode.
 
 					pre
 						h4 
 							.http-method GET 
 							| http://api.postcodes.io/random/postcodes
+
+					h3#Show-Outcode Outward Code Lookup
+
+					p Geolocation data for the centroid of the outward code specified. The outward code represents the first half of any postcode (separated by a space).
+
+					pre
+						h4 
+							.http-method GET 
+							| http://api.postcodes.io/outcodes/:outcode
 

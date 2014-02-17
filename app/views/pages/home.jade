@@ -129,3 +129,12 @@ block content
 							a(href="#")#query-postcode Request
 						pre.code-box#query-postcode-result
 
+					.api-method
+						h4.method-title Lookup Outward Code
+						h4
+							.http-method GET
+							| api.postcodes.io/outcodes/
+							input.rest-resource(value=":outcode")#show-outcode-input
+							a(href="#")#show-outcode Request
+						pre.code-box#show-outcode-result
+

@@ -124,4 +124,13 @@ $(function () {
 			$bulkGeocodeInput.addClass("invalid");
 		}
 	});
+
+	$("#show-outcode").click(function (event) {
+		event.preventDefault();
+		var $result = $("#show-outcode-result").slideUp(),
+				outcode = $("#show-outcode-input").val();
+		$.get(encodeURI("/outcodes/" + outcode), function (data) {
+			$result.html(JSON.stringify(data, null, 4)).slideDown();
+		});
+	});
 });
