@@ -16,7 +16,5 @@ module.exports = function (app) {
 	app.get("/postcodes/:postcode", postcodesController.show);
 	app.get("/postcodes/:postcode/validate", postcodesController.valid);
 	app.get("/postcodes/:postcode/autocomplete", postcodesController.autocomplete);	
-
-	// Bulk longitude latitude
-	// app.post("/v1/postcodes")
+	// app.get("/outcodes/:outward_code", postcodesController.showOutcode);
 }

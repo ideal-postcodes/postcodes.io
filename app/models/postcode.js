@@ -36,7 +36,8 @@ var postcodeSchema = {
 var indexes = {
 	"postcode_index" : "CREATE UNIQUE INDEX postcode_index ON postcodes (postcode)",
 	"pc_compact_index" : "CREATE UNIQUE INDEX pc_compact_index ON postcodes (pc_compact)",
-	"location_index" : "CREATE INDEX location_index ON postcodes USING GIST (location)"
+	"location_index" : "CREATE INDEX location_index ON postcodes USING GIST (location)",
+	"outcode_index" : "CREATE INDEX outcode_index ON postcodes (outcode)"
 };
 
 function Postcode () {
@@ -158,6 +159,29 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 			return callback(null, null);
 		}
 		return callback(null, result.rows);
+	});
+}
+
+Postcode.prototype.findOutcode = function (outcode, callback) {
+	outcode = outcode.trim().toUpperCase();
+
+	if (!Pc.validOutcode(outcode)) {
+		return callback(null, null);
+	}
+
+	var query = "Select avg(northings) as northings, avg(eastings) as eastings, " + 
+							"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry))" + 
+							" as latitude FROM postcodes WHERE postcodes.outcode=$1";
+
+	this._query(query, [outcode], function (error, result) {
+		if (error) return callback(error, null);
+		if (result.rows.length !== 1) return callback(null, null);
+		var outcodeResult = result.rows[0];
+		if (!outcodeResult.eastings || !outcodeResult.northings) {
+			return callback(null, null);
+		}
+		outcodeResult.outcode = outcode;
+		return callback(null, result.rows[0]);
 	});
 }
 

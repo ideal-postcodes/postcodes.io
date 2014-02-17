@@ -41,7 +41,7 @@
     "pg-copy-streams": "~0.2.1",
     "csv": "~0.3.6",
     "async": "~0.2.10",
-    "postcode": "~0.1.2",
+    "postcode": "~0.2.1",
     "ospoint": "~0.2.0",
     "bunyan-syslog": "~0.2.2"
   },

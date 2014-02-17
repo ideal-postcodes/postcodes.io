@@ -78,6 +78,10 @@ function randomPostcode() {
 	return testPostcodes[getRandom(testPostcodesLength)][csvIndex.postcode];
 }
 
+function randomOutcode() {
+	return randomPostcode().split(" ")[0];
+}
+
 function randomLocation() {
 	var postcode = testPostcodes[getRandom(testPostcodesLength)],
 			ospoint = new OSPoint(postcode[csvIndex.northings], postcode[csvIndex.eastings]);
@@ -151,6 +155,7 @@ module.exports = {
 	rootPath: rootPath,
 	Postcode: Postcode,
 	connectToDb: connectToDb,
+	randomOutcode: randomOutcode,
 	randomPostcode: randomPostcode,
 	randomLocation: randomLocation,
 	seedPostcodeDb: seedPostcodeDb,

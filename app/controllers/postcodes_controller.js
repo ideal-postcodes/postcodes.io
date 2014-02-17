@@ -279,3 +279,12 @@ exports.lonlat = function (request, response, next) {
 		}
 	});
 }
+
+exports.showOutcode = function (request, response, next) {
+	// var outcode = request.params.outward_code;
+
+	// if (invalid_outcode) {
+		
+	// }
+}
+

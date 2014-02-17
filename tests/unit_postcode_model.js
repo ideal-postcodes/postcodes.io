@@ -18,6 +18,7 @@ describe("Postcode Model", function () {
 
 	beforeEach(function () {
 		testPostcode = helper.randomPostcode();
+		testOutcode = helper.randomOutcode();
 	});
 
 	after(function (done) {
@@ -94,6 +95,58 @@ describe("Postcode Model", function () {
 			});
 		});
 	});
+
+	describe("#findOutcode", function () {
+		it ("should return the outcode with the right attributes", function (done) {
+			Postcode.findOutcode(testOutcode, function (error, result) {
+				if (error) throw error;
+				assert.equal(result.outcode, testOutcode);
+				assert.property(result, "northings");
+				assert.property(result, "eastings");
+				assert.property(result, "longitude");
+				assert.property(result, "latitude");
+				done();
+			});
+		});
+		it ("should return null if no matching outcode", function (done) {
+			Postcode.findOutcode("BOGUSOUTCODE", function (error, result) {
+				if (error) throw error;
+				console.log(result);
+				assert.equal(result, null);
+				done();
+			});
+		});
+		it ("should return null for a plausible but non-existent postcode", function (done) {
+			Postcode.findOutcode("EJ12", function (error, result) {
+				if (error) throw error;
+				console.log(result);
+				assert.equal(result, null);
+				done();
+			});
+		});
+		it ("should be insensitive to space", function (done) {
+			Postcode.findOutcode(testOutcode + "    ", function (error, result) {
+				if (error) throw error;
+				assert.equal(result.outcode, testOutcode);
+				assert.property(result, "northings");
+				assert.property(result, "eastings");
+				assert.property(result, "longitude");
+				assert.property(result, "latitude");
+				done();
+			});
+		});
+		it ("should be insensitive to case", function (done) {
+			Postcode.findOutcode(testOutcode.toLowerCase(), function (error, result) {
+				if (error) throw error;
+				assert.equal(result.outcode, testOutcode);
+				assert.property(result, "northings");
+				assert.property(result, "eastings");
+				assert.property(result, "longitude");
+				assert.property(result, "latitude");
+				done();
+			});
+		});
+	})
 
 	describe("#nearestPostcodes", function () {
 		var randomPostcode;
