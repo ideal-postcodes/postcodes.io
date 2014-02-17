@@ -28,7 +28,9 @@ var postcodeSchema = {
 	"parish" : "VARCHAR(255)", 
 	"lsoa" : "VARCHAR(255)", 
 	"msoa" : "VARCHAR(255)",
-	"nuts" : "VARCHAR(255)"
+	"nuts" : "VARCHAR(255)",
+	"incode" : "VARCHAR(5)",
+	"outcode" : "VARCHAR(5)"
 };
 
 var indexes = {
@@ -225,7 +227,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 										" latitude, country, nhs_ha," + 
 										" admin_county, admin_district, admin_ward, parish, quality," +
 										" parliamentary_constituency , european_electoral_region, region, " +
-										" primary_care_trust, lsoa, msoa, nuts"
+										" primary_care_trust, lsoa, msoa, nuts, incode, outcode"
 			dataPath = path.join(__dirname, "../../data/"),
 			countries = JSON.parse(fs.readFileSync(dataPath + "countries.json")),
 			nhsHa = JSON.parse(fs.readFileSync(dataPath + "nhsHa.json")),
@@ -283,6 +285,8 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(lsoa[row[42]]);										// 2011 LSOA
 		finalRow.push(msoa[row[43]]);										// 2011 MSOA
 		finalRow.push(nuts[row[22]]);										// NUTS
+		finalRow.push(row[2].split(" ")[1]);						// Incode
+		finalRow.push(row[2].split(" ")[0]);						// Outcode
 
 		return finalRow;
 	}
