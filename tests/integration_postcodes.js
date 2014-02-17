@@ -18,6 +18,7 @@ describe("Postcodes routes", function () {
 
 	beforeEach(function () {
 		testPostcode = helper.randomPostcode();
+		testOutcode = helper.randomOutcode();
 	});
 
 	after(function (done) {
@@ -322,6 +323,73 @@ describe("Postcodes routes", function () {
 				if (error) throw error;
 				assert.equal(response.body.status, 404);
 				assert.property(response.body, "error");
+				done();
+			});
+		});
+	});
+
+	describe("/outcodes/:outcode", function (done) {
+		it ("should return correct geolocation data for a given outcode", function (done) {
+			var path = ["/outcodes/", encodeURI(testOutcode)].join("");
+			request(app)
+			.get(path)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.equal(response.body.status, 200);
+				assert.equal(response.body.result.outcode, testOutcode);
+				assert.property(response.body.result, "longitude");
+				assert.property(response.body.result, "latitude");
+				assert.property(response.body.result, "northings");
+				assert.property(response.body.result, "eastings");
+				done();
+			});
+		});
+		it ("should be case insensitive", function (done) {
+			var path = ["/outcodes/", encodeURI(testOutcode.toLowerCase())].join("");
+			request(app)
+			.get(path)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.equal(response.body.status, 200);
+				assert.equal(response.body.result.outcode, testOutcode);
+				assert.property(response.body.result, "longitude");
+				assert.property(response.body.result, "latitude");
+				assert.property(response.body.result, "northings");
+				assert.property(response.body.result, "eastings");
+				done();
+			});
+		});
+		it ("should be space insensitive", function (done) {
+			var path = ["/outcodes/", encodeURI(testOutcode+"   ")].join("");
+			request(app)
+			.get(path)
+			.expect("Content-Type", /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.equal(response.body.status, 200);
+				assert.equal(response.body.result.outcode, testOutcode);
+				assert.property(response.body.result, "longitude");
+				assert.property(response.body.result, "latitude");
+				assert.property(response.body.result, "northings");
+				assert.property(response.body.result, "eastings");
+				done();
+			});
+		});
+		it ("should return 404 for an outcode which does not exist", function (done) {
+			var path = ["/outcodes/", encodeURI("DEFINITELYBOGUS")].join("");
+			request(app)
+			.get(path)
+			.expect("Content-Type", /json/)
+			.expect(404)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.equal(response.body.status, 404);
+				assert.isNull(response.body.result);
 				done();
 			});
 		});

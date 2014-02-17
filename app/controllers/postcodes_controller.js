@@ -281,10 +281,21 @@ exports.lonlat = function (request, response, next) {
 }
 
 exports.showOutcode = function (request, response, next) {
-	// var outcode = request.params.outward_code;
+	var outcode = request.params.outcode;
 
-	// if (invalid_outcode) {
-		
-	// }
+	Postcode.findOutcode(outcode, function (error, result) {
+		if (error) return next(error);
+		if (!result) {
+			response.jsonp(404, {
+				status: 404,
+				result: null
+			});
+		} else {
+			response.jsonp(200, {
+				status: 200,
+				result: result
+			});
+		}
+	});
 }
 
