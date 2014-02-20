@@ -1,11 +1,13 @@
 var path = require("path")
 
 var pagesController = require(path.join(__dirname, "../app/controllers/pages_controller")),
-		postcodesController = require(path.join(__dirname, "../app/controllers/postcodes_controller"));
+		postcodesController = require(path.join(__dirname, "../app/controllers/postcodes_controller")),
+		utilsController = require(path.join(__dirname, "../app/controllers/utils_controller"));
 
 module.exports = function (app) {
 	app.get("/", pagesController.home);
-	app.get("/about", pagesController.about)
+	app.get("/ping", utilsController.ping);
+	app.get("/about", pagesController.about);
 	app.get("/docs", pagesController.documentation);
 	app.get("/postcodes", postcodesController.query);
 	app.post("/postcodes", postcodesController.bulk);

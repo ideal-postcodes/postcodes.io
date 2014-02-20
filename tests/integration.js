@@ -70,3 +70,19 @@ describe("Misc", function () {
 			  });
 	});
 });
+
+describe("Utils", function () {
+	describe("Ping", function () {
+		it ("should pong", function (done) {
+			request(app)
+				.get("/ping")
+				.expect(200)
+				.expect("Content-Type", /json/)
+				.end(function (error, response) {
+					if (error) throw error;
+					assert.equal(response.body.result, "pong");
+					done();
+				});
+		});
+	});
+});
