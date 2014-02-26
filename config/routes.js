@@ -4,6 +4,13 @@ var pagesController = require(path.join(__dirname, "../app/controllers/pages_con
 		postcodesController = require(path.join(__dirname, "../app/controllers/postcodes_controller")),
 		utilsController = require(path.join(__dirname, "../app/controllers/utils_controller"));
 
+var jsonResponder = function (request, response, next) {
+	var jsonResponse = response.jsonApiResponse;
+	if (!jsonResponse) return next();
+	response.status(jsonResponse.status);
+	response.jsonp(jsonResponse);
+}
+
 module.exports = function (app) {
 	app.get("/", pagesController.home);
 	app.get("/ping", utilsController.ping);
@@ -18,4 +25,5 @@ module.exports = function (app) {
 	app.get("/postcodes/:postcode/validate", postcodesController.valid);
 	app.get("/postcodes/:postcode/autocomplete", postcodesController.autocomplete);	
 	app.get("/outcodes/:outcode", postcodesController.showOutcode);
+	app.all("/*", jsonResponder);
 }

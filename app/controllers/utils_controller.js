@@ -1,6 +1,7 @@
-exports.ping = function (request, response) {
-	response.jsonp(200, {
-		code: 200,
+exports.ping = function (request, response, next) {
+	response.jsonApiResponse = {
+		status: 200,
 		result: "pong"
-	});
+	};
+	next();
 }

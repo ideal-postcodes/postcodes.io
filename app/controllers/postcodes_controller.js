@@ -11,15 +11,17 @@ exports.show = function (request, response, next) {
 			return next(error);
 		}
 		if (address) {
-			return response.json(200, {
+			response.jsonApiResponse = {
 				status: 200,
 				result: Postcode.toJson(address)
-			});		
+			};
+			return next();		
 		} else {
-			return response.jsonp(404, {
+			response.jsonApiResponse = {
 				status: 404,
 				error: "Postcode not found"
-			});		
+			};
+			return next();
 		}
 	});
 	
@@ -34,15 +36,17 @@ exports.valid = function (request, response, next) {
 		}
 
 		if (address) {
-			return response.jsonp(200, {
+			response.jsonApiResponse = {
 				status: 200,
 				result: true
-			});		
+			};		
+			return next();
 		} else {
-			return response.jsonp(200, {
+			response.jsonApiResponse = {
 				status: 200,
 				result: false
-			});		
+			};
+			return next();		
 		}
 	});	
 }
@@ -53,10 +57,11 @@ exports.random = function (request, response, next) {
 			return next(error);
 		}
 
-		return response.jsonp(200, {
+		response.jsonApiResponse = {
 			status: 200,
 			result: Postcode.toJson(address)
-		});
+		};
+		return next();
 	});
 }
 
@@ -66,10 +71,11 @@ exports.bulk = function (request, response, next) {
 	} else if (request.body.geolocations) {
 		return bulkGeocode(request, response, next);
 	} else {
-		return response.jsonp(400, {
+		response.jsonApiResponse = {
 			status: 400,
 			error: "Invalid JSON submitted. You need to submit a JSON object with an array of postcodes or geolocation objects"
-		});
+		};
+		return next();
 	}
 }
 
@@ -77,17 +83,19 @@ function bulkGeocode (request, response, next) {
 	var geolocations = request.body.geolocations;
 
 	if (!Array.isArray(geolocations)) {
-		return response.jsonp(400, {
+		response.jsonApiResponse = {
 			status: 400,
 			error: "Invalid data submitted. You need to provide a JSON array"
-		});
+		};
+		return next();
 	}
 
 	if (geolocations.length > 100) {
-		return response.jsonp(400, {
+		response.jsonApiResponse = {
 			status: 400,
 			error: "Too many locations submitted. Up to 100 locations can be bulk requested at a time"
-		});
+		};
+		return next();
 	}
 
 	var result = [],
@@ -117,29 +125,34 @@ function bulkGeocode (request, response, next) {
 		});
 	});
 
-	async.parallel(execution, function () {
-		response.jsonp(200, {
+	var onComplete = function () {
+		response.jsonApiResponse = {
 			status: 200,
 			result: result
-		});
-	});	
+		};
+		return next();
+	}
+
+	async.parallel(execution, onComplete);
 }
 
 function bulkLookupPostcodes (request, response, next) {
 	var postcodes = request.body.postcodes;
 
 	if (!Array.isArray(postcodes)) {
-		return response.jsonp(400, {
+		response.jsonApiResponse = {
 			status: 400,
 			error: "Invalid data submitted. You need to provide a JSON array"
-		});
+		};
+		return next();
 	}
 
 	if (postcodes.length > 100) {
-		return response.jsonp(400, {
+		response.jsonApiResponse = {
 			status: 400,
 			error: "Too many postcodes submitted. Up to 100 postcodes can be bulk requested at a time"
-		});
+		};
+		return next();
 	}
 
 	var result = [],
@@ -165,10 +178,11 @@ function bulkLookupPostcodes (request, response, next) {
 	});
 
 	async.parallel(execution, function () {
-		response.jsonp(200, {
+		response.jsonApiResponse = {
 			status: 200,
 			result: result
-		});
+		};
+		return next();
 	});
 }
 
@@ -177,26 +191,29 @@ exports.query = function (request, response, next) {
 			limit = request.query.limit;
 
 	if (S(searchTerm).isEmpty()) {
-		return response.jsonp(400, {
+		response.jsonApiResponse = {
 			status: 400,
 			error: "No postcode query submitted. Remember to include query parameter"
-		});
+		};
+		return next();
 	}
 
 	Postcode.search(searchTerm, {limit: limit}, function (error, results) {
 		if (error) return next(error);
 		if (!results) {
-			return response.jsonp(200, {
+			response.jsonApiResponse = {
 				status: 200,
 				result: null
-			});
+			};
+			return next();
 		} else {
-			return response.jsonp(200, {
+			response.jsonApiResponse = {
 				status: 200,
 				result: results.map(function (elem) {
 					return Postcode.toJson(elem);
 				})
-			});
+			};
+			return next();
 		}
 	});
 }
@@ -208,17 +225,19 @@ exports.autocomplete = function (request, response, next) {
 	Postcode.search(searchTerm, {limit: limit}, function (error, results) {
 		if (error) return next(error);
 		if (!results) {
-			return response.jsonp(200, {
+			response.jsonApiResponse = {
 				status: 200,
 				result: null
-			});
+			};
+			return next();
 		} else {
-			return response.jsonp(200, {
+			response.jsonApiResponse = {
 				status: 200,
 				result: results.map(function (elem) {
 					return elem.postcode;
 				})
-			});
+			};
+			return next();
 		}
 	});
 }
@@ -229,10 +248,11 @@ exports.lonlat = function (request, response, next) {
 			limit, radius, params = {};
 
 	if (isNaN(longitude) || isNaN(latitude)) {
-		return response.jsonp(400, {
+		response.jsonApiResponse = {
 			status: 400,
 			error: "Invalid longitude/latitude submitted"
-		});
+		};
+		return next();
 	} else {
 		params.longitude = longitude;
 		params.latitude = latitude;
@@ -242,10 +262,11 @@ exports.lonlat = function (request, response, next) {
 	if (request.query.limit) {
 		limit = parseInt(request.query.limit, 10);
 		if (isNaN(limit)) {
-			return response.jsonp(400, {
-				status: 404,
+			response.jsonApiResponse = {
+				status: 400,
 				error: "Invalid result limit submitted"
-			});
+			};
+			return next();
 		} else {
 			params.limit = limit;
 		}
@@ -254,10 +275,11 @@ exports.lonlat = function (request, response, next) {
 	if (request.query.radius) {
 		radius = parseFloat(request.query.radius);
 		if (isNaN(radius)) {
-			return response.jsonp(400, {
-				status: 404,
+			response.jsonApiResponse = {
+				status: 400,
 				error: "Invalid lookups radius submitted"
-			});
+			};
+			return next();
 		} else {
 			params.radius = radius;
 		}
@@ -266,17 +288,19 @@ exports.lonlat = function (request, response, next) {
 	Postcode.nearestPostcodes(params, function (error, results) {
 		if (error) return next(error);
 		if (!results) {
-			return response.jsonp(200, {
+			response.jsonApiResponse = {
 				status: 200,
 				result: null
-			});
+			};
+			return next();
 		} else {
-			return response.jsonp(200, {
+			response.jsonApiResponse = {
 				status: 200,
 				result: results.map(function (postcode) {
 					return Postcode.toJson(postcode);
 				})
-			});
+			};
+			return next();
 		}
 	});
 }
@@ -287,15 +311,17 @@ exports.showOutcode = function (request, response, next) {
 	Postcode.findOutcode(outcode, function (error, result) {
 		if (error) return next(error);
 		if (!result) {
-			return response.jsonp(404, {
+			response.jsonApiResponse = {
 				status: 404,
 				result: null
-			});
+			};
+			return next();
 		} else {
-			return response.jsonp(200, {
+			response.jsonApiResponse = {
 				status: 200,
 				result: result
-			});
+			};
+			return next();
 		}
 	});
 }
