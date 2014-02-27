@@ -94,7 +94,6 @@ h1.mast-text {
   border-radius: 5px;
   font-size: 90%;
   color: #111;
-  margin-left: 2em;
   float: right;
 }
 
@@ -142,9 +141,16 @@ h1.api-header {
 
 .api-method {
   text-align: left;
-  max-width: 68%;
   margin: 0 auto;
 }
+
+@media (min-width: 1200px) { 
+  .api-method {
+    max-width: 68%;
+  }
+}
+
+
 
 ul.doc-menu {
   margin-top: 1em;
