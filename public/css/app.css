@@ -215,3 +215,7 @@ h4.method-title {
   background-color: #fcc
 }
 
+.code-box {
+  max-height: 480px;
+  overflow: auto;
+}
