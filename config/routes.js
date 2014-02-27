@@ -7,8 +7,11 @@ var pagesController = require(path.join(__dirname, "../app/controllers/pages_con
 var jsonResponder = function (request, response, next) {
 	var jsonResponse = response.jsonApiResponse;
 	if (!jsonResponse) return next();
-	response.status(jsonResponse.status);
-	response.jsonp(jsonResponse);
+	if (request.query.callback) {
+		response.jsonp(200, jsonResponse);
+	} else {
+		response.json(jsonResponse.status, jsonResponse);
+	}
 }
 
 module.exports = function (app) {

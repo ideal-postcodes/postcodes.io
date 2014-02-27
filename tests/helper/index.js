@@ -97,6 +97,12 @@ function lookupRandomPostcode(callback) {
 	});
 }
 
+function jsonpResponseBody (response) {
+	// Rough regex to extract json object
+	var result = response.text.match(/\(.*\)/);
+	return JSON.parse(result[0].slice(1, result[0].length - 1));
+}
+
 function isPostcodeObject(o) {
 	assert.notProperty(o, "id");
 	assert.property(o, "nhs_ha");
@@ -161,6 +167,7 @@ module.exports = {
 	seedPostcodeDb: seedPostcodeDb,
 	clearPostcodeDb: clearPostcodeDb,
 	isPostcodeObject: isPostcodeObject,
+	jsonpResponseBody: jsonpResponseBody,
 	getCustomRelation: getCustomRelation,
 	isRawPostcodeObject: isRawPostcodeObject, 
 	lookupRandomPostcode: lookupRandomPostcode,
