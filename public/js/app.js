@@ -3,20 +3,32 @@ $(function () {
 		$(this).val("");
 	});
 
+	var displayJsonResult = function ($context, data) {
+		$context.html(JSON.stringify(data, null, 4)).slideDown();
+	}
+
 	$("#single-postcode").click(function (event) {
 		event.preventDefault();
 		var $result = $("#single-postcode-result").slideUp(),
 				postcode = $("#single-postcode-input").val();
-		$.get(encodeURI("/postcodes/" + postcode), function (data) {
-			$("#single-postcode-result").html(JSON.stringify(data, null, 4)).slideDown();
+		$.get(encodeURI("/postcodes/" + postcode))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
 		});
 	});
 
 	$("#random-postcode").click(function (event) {
 		event.preventDefault();
 		var $result = $("#random-postcode-result").slideUp();
-		$.get(encodeURI("/random/postcodes"), function (data) {
-			$result.html(JSON.stringify(data, null, 4)).slideDown();
+		$.get(encodeURI("/random/postcodes"))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
 		});
 	});
 
@@ -24,8 +36,12 @@ $(function () {
 		event.preventDefault();
 		var $result = $("#validate-postcode-result").slideUp(),
 				postcode = $("#validate-postcode-input").val();
-		$.get(encodeURI("/postcodes/" + postcode + "/validate"), function (data) {
-			$result.html(JSON.stringify(data, null, 4)).slideDown();
+		$.get(encodeURI("/postcodes/" + postcode + "/validate"))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
 		});
 	});
 
@@ -33,8 +49,12 @@ $(function () {
 		event.preventDefault();
 		var $result = $("#autocomplete-postcode-result").slideUp(),
 				postcode = $("#autocomplete-postcode-input").val();
-		$.get(encodeURI("/postcodes/" + postcode +"/autocomplete"), function (data) {
-			$result.html(JSON.stringify(data, null, 4)).slideDown();
+		$.get(encodeURI("/postcodes/" + postcode +"/autocomplete"))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
 		});
 	});
 
@@ -43,8 +63,12 @@ $(function () {
 		var $result = $("#geocode-postcode-result"),
 				lon = $("#lon-input").val(),
 				lat = $("#lat-input").val();
-		$.get(encodeURI("postcodes/lon/" + lon +"/lat/" + lat), function (data) {
-			$result.html(JSON.stringify(data, null, 4)).slideDown();
+		$.get(encodeURI("postcodes/lon/" + lon +"/lat/" + lat))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
 		});
 	});
 
@@ -52,8 +76,12 @@ $(function () {
 		event.preventDefault();
 		var $result = $("#query-postcode-result"),
 				postcode = $("#query-postcode-input").val();
-		$.get(encodeURI("/postcodes?q=" + postcode), function (data) {
-			$result.html(JSON.stringify(data, null, 4)).slideDown();
+		$.get(encodeURI("/postcodes?q=" + postcode))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
 		});
 	});
 
@@ -83,8 +111,12 @@ $(function () {
 
 		try {
 			postcodes = JSON.parse(data);
-			$.post("/postcodes", postcodes, function (data) {
-				$result.html(JSON.stringify(data, null, 4)).slideDown();
+			$.post("/postcodes", postcodes)
+			.done(function (data) {
+				displayJsonResult($result, data);
+			})
+			.fail(function (error) {
+				displayJsonResult($result, error.responseJSON);
 			});
 		} catch (e) {
 			$bulkPostcodeInput.addClass("invalid");
@@ -117,8 +149,12 @@ $(function () {
 
 		try {
 			locations = JSON.parse(data);
-			$.post("/postcodes", locations, function (data) {
-				$result.html(JSON.stringify(data, null, 4)).slideDown();
+			$.post("/postcodes", locations)
+			.done(function (data) {
+				displayJsonResult($result, data);
+			})
+			.fail(function (error) {
+				displayJsonResult($result, error.responseJSON);
 			});
 		} catch (e) {
 			$bulkGeocodeInput.addClass("invalid");
@@ -129,8 +165,12 @@ $(function () {
 		event.preventDefault();
 		var $result = $("#show-outcode-result").slideUp(),
 				outcode = $("#show-outcode-input").val();
-		$.get(encodeURI("/outcodes/" + outcode), function (data) {
-			$result.html(JSON.stringify(data, null, 4)).slideDown();
+		$.get(encodeURI("/outcodes/" + outcode))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
 		});
 	});
 });
