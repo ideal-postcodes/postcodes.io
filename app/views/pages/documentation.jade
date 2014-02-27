@@ -27,7 +27,7 @@ block content
 
 					p Each response comes with an appropriate HTTP Status code. These include 200 for success, 400 for bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.
 
-					p JSONP requests do not come with an appropriate HTTP Status code because of silent errors. All JSONP requests return 200 and error is accomplished via the response body.
+					p JSONP requests do not come with an appropriate HTTP Status code because of the silent error problem. All JSONP requests return 200 status code and error checking is accomplished via looking at the response body.
 
 					h3#Authentication Authentication
 
