@@ -23,11 +23,9 @@ block content
 						h4 http://api.postcodes.io
 
 					h3#Responses Responses
-					p JSON(P) only.
+					p JSON(P) only. CORS is enabled.
 
-					p Each response comes with an appropriate HTTP Status code. These include 200 for success, 400 for bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.
-
-					p JSONP requests do not come with an appropriate HTTP Status code because of the silent error problem. All JSONP requests return 200 status code and error checking is accomplished via looking at the response body.
+					p Each response comes with an appropriate HTTP Status code (except for JSONP requests). These include 200 for success, 400 for bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.
 
 					h3#Authentication Authentication
 
@@ -39,7 +37,7 @@ block content
 
 					p Alternatively you can examine HTTP Status code in the 'status' property in the result body.
 
-					p Since all JSONP requests return 200, you need use the latter method to check for errors.
+					p All JSONP requests return 200 responses because of the silent error problem, so you need use the latter method to check for errors.
 
 					h3#JSONP JSONP
 					p JSONP requests are supported. Simply appended the URI with a callback name. E.g.
