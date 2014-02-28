@@ -45,10 +45,10 @@ var config = {
 		env : "production",
 		root: rootPath,
 		postgres: {
-			user: "",
-			password: "",
-			database: "",
-			host: "",
+			user: "docker",
+			password: "docker",
+			database: "postcodesio",
+			host: "localhost",
 			port: 5432
 		},
 		log : {
