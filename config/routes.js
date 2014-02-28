@@ -7,6 +7,12 @@ var pagesController = require(path.join(__dirname, "../app/controllers/pages_con
 var jsonResponder = function (request, response, next) {
 	var jsonResponse = response.jsonApiResponse;
 	if (!jsonResponse) return next();
+
+	// Enable CORS
+	response.header("Access-Control-Allow-Origin", "*");
+  response.header("Access-Control-Allow-Methods", "GET, POST");
+  response.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+
 	if (request.query.callback) {
 		response.jsonp(200, jsonResponse);
 	} else {

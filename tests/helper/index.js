@@ -103,6 +103,12 @@ function jsonpResponseBody (response) {
 	return JSON.parse(result[0].slice(1, result[0].length - 1));
 }
 
+function allowsCORS (response) {
+	assert.equal(response.headers["access-control-allow-origin"], "*");
+	assert.equal(response.headers["access-control-allow-methods"], "GET, POST");
+	assert.equal(response.headers["access-control-allow-headers"], "X-Requested-With, Content-Type");
+}
+
 function isPostcodeObject(o) {
 	assert.notProperty(o, "id");
 	assert.property(o, "nhs_ha");
@@ -160,6 +166,7 @@ module.exports = {
 	config: config,
 	rootPath: rootPath,
 	Postcode: Postcode,
+	allowsCORS: allowsCORS,
 	connectToDb: connectToDb,
 	randomOutcode: randomOutcode,
 	randomPostcode: randomPostcode,

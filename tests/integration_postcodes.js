@@ -33,6 +33,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -49,6 +50,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -65,6 +67,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -82,6 +85,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -99,6 +103,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -116,6 +121,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -132,6 +138,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(400)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -158,6 +165,7 @@ describe("Postcodes routes", function () {
 				.post("/postcodes")
 				.send({geolocations: testLocations})
 				.expect("Content-Type", /json/)
+				.expect(helper.allowsCORS)
 				.expect(200)
 				.end(function (error, response) {
 					if (error) throw error;
@@ -182,6 +190,7 @@ describe("Postcodes routes", function () {
 					latitude: 0
 				}]})
 				.expect("Content-Type", /json/)
+				.expect(helper.allowsCORS)
 				.expect(200)
 				.end(function (error, response) {
 					if (error) throw error;
@@ -199,6 +208,7 @@ describe("Postcodes routes", function () {
 				.post("/postcodes")
 				.send({geolocations: testLocations})
 				.expect("Content-Type", /json/)
+				.expect(helper.allowsCORS)
 				.expect(400)
 				.end(function (error, response) {
 					if (error) throw error;
@@ -211,6 +221,7 @@ describe("Postcodes routes", function () {
 				.post("/postcodes")
 				.send({geolocations: "Bogus"})
 				.expect("Content-Type", /json/)
+				.expect(helper.allowsCORS)
 				.expect(400)
 				.end(function (error, response) {
 					if (error) throw error;
@@ -225,6 +236,7 @@ describe("Postcodes routes", function () {
 				.post("/postcodes")
 				.send({geolocations: [testLocation]})
 				.expect("Content-Type", /json/)
+				.expect(helper.allowsCORS)
 				.expect(200)
 				.end(function (error, response) {
 					if (error) throw error;
@@ -346,6 +358,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(path)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -363,6 +376,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(path)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -380,6 +394,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(path)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -397,6 +412,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(path)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(404)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -462,6 +478,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -479,6 +496,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -496,6 +514,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -514,6 +533,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -532,6 +552,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -550,6 +571,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -579,6 +601,7 @@ describe("Postcodes routes", function () {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
