@@ -9,18 +9,13 @@ var	csv = require("csv"),
 		Base = require(path.join(rootPath, "app/models")),
 		config = require(path.join(rootPath + "/config/config"))(env),
 		Postcode = require(path.join(rootPath, "app/models/postcode")),
-		seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv"),
-		testPostcodes, testPostcodesLength,
-		csvIndex = {
+		seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
+
+var CSV_INDEX = {
 			postcode: 2,
 			northings: 10,
 			eastings: 9
 		};
-
-csv().from(seedPostcodePath).to.array(function (data, count) {
-	testPostcodes = data;
-	testPostcodesLength = count;
-});
 
 function getCustomRelation () {
 	var relationName = randomString({
@@ -74,18 +69,25 @@ var getRandom = function (max) {
 	return Math.floor(Math.random() * max);
 }
 
-function randomPostcode() {
-	return testPostcodes[getRandom(testPostcodesLength)][csvIndex.postcode];
+function randomPostcode(callback) {
+	Postcode.random(function (error, result) {
+		callback(error, result.postcode);
+	});
 }
 
-function randomOutcode() {
-	return randomPostcode().split(" ")[0];
+function randomOutcode(callback) {
+	return Postcode.random(function (error, result) {
+		callback(error, result.outcode)
+	});
 }
 
-function randomLocation() {
-	var postcode = testPostcodes[getRandom(testPostcodesLength)],
-			ospoint = new OSPoint(postcode[csvIndex.northings], postcode[csvIndex.eastings]);
-	return ospoint.toWGS84();
+function randomLocation(callback) {
+	return Postcode.random(function (error, result) {
+		callback(error, {
+			longitude: result.longitude,
+			latitude: result.latitude
+		})
+	});
 }
 
 function lookupRandomPostcode(callback) {

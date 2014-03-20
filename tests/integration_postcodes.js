@@ -2,7 +2,8 @@ var path = require("path"),
 		app = require(path.join(__dirname, "../server")),
 		request = require("supertest"),
 		assert = require("chai").assert,
-		helper = require(__dirname + "/helper");
+		helper = require(__dirname + "/helper")
+		async = require("async");
 
 describe("Postcodes routes", function () {
 	var testPostcode;
@@ -16,9 +17,12 @@ describe("Postcodes routes", function () {
 		});
 	});
 
-	beforeEach(function () {
-		testPostcode = helper.randomPostcode();
-		testOutcode = helper.randomOutcode();
+	beforeEach(function (done) {
+		helper.lookupRandomPostcode(function (result) {
+			testPostcode = result.postcode;
+			testOutcode = result.outcode;
+			done();	
+		});
 	});
 
 	after(function (done) {
@@ -153,11 +157,14 @@ describe("Postcodes routes", function () {
 				testPostcodes, testLocations;
 
 		describe("Bulk geocoding", function () {
-			testLocations = [];
-			beforeEach(function () {
-				for (var i = 0; i < bulkLength; i++) {
-					testLocations.push(helper.randomLocation());	
-				}
+			beforeEach(function (done) {
+				async.times(bulkLength, function (n, next) {
+					helper.randomLocation(next);
+				}, function (error, locations) {
+					if (error) throw error;
+					testLocations = locations;
+					done();
+				});				
 			});
 
 			it ("should return postcodes for specified geolocations", function (done) {
@@ -230,7 +237,7 @@ describe("Postcodes routes", function () {
 				});
 			});
 			it ("should be sensitive to limit", function (done) {
-				var testLocation = helper.randomLocation();
+				var testLocation = testLocations[0];
 				testLocation.limit = 1;
 				request(app)
 				.post("/postcodes")
@@ -249,11 +256,14 @@ describe("Postcodes routes", function () {
 		});
 
 		describe("Bulk postcode lookup", function () {
-			beforeEach(function () {
-				testPostcodes = [];
-				for (var i = 0; i < bulkLength; i++) {
-					testPostcodes.push(helper.randomPostcode());
-				}
+			beforeEach(function (done) {
+				async.times(bulkLength, function (n, next) {
+					helper.randomPostcode(next);
+				}, function (error, postcodes) {
+					if (error) throw error;
+					testPostcodes = postcodes;
+					done();
+				});				
 			});
 
 			it ("should return addresses for postcodes", function (done) {

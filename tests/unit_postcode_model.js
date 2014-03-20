@@ -16,10 +16,14 @@ describe("Postcode Model", function () {
 		});
 	});
 
-	beforeEach(function () {
-		testPostcode = helper.randomPostcode();
-		testOutcode = helper.randomOutcode();
+	beforeEach(function (done) {
+		helper.lookupRandomPostcode(function (result) {
+			testPostcode = result.postcode;
+			testOutcode = result.outcode;
+			done();	
+		});
 	});
+
 
 	after(function (done) {
 		helper.clearPostcodeDb(done);
