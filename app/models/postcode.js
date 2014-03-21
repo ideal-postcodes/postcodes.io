@@ -41,7 +41,7 @@ var indexes = {
 };
 
 function Postcode () {
-	Base.call(this, "postcodes", postcodeSchema);
+	Base.call(this, "postcodes", postcodeSchema, indexes);
 }
 
 util.inherits(Postcode, Base);
@@ -87,36 +87,6 @@ Postcode.prototype.populateLocation = function (callback) {
 							"('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')" + 
 							" WHERE northings!=0 AND EASTINGS!=0";
 	this._query(query, callback);
-}
-
-Postcode.prototype.createIndexes = function (callback) {
-	var self = this,
-			indexExecution = [];
-
-	for (indexName in indexes) {
-		indexExecution.push(indexes[indexName]);
-	}	
-
-	async.series(indexExecution.map(function (instruction) {
-			return function (callback) {
-				self._query(instruction, callback);
-			}
-	}), callback);
-}
-
-Postcode.prototype.destroyIndexes = function (callback) {
-	var self = this,
-			indexExecution = [];
-
-	for (indexName in indexes) {
-		indexExecution.push("DROP INDEX IF EXISTS " + indexName);
-	}	
-
-	async.series(indexExecution.map(function (instruction) {
-		return function (callback) {
-			self._query(instruction, callback);
-		};
-	}), callback);	
 }
 
 Postcode.prototype.search = function (postcode, options, callback) {

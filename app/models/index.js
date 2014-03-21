@@ -5,9 +5,10 @@ var pg = require("pg"),
 
 // All models inherit from base
 // Requires schema and relation name
-function Base (relation, schema) {
+function Base (relation, schema, indexes) {
 	this.relation = relation;
 	this.schema = schema;
+	this.indexes = indexes;
 }
 
 // To implement 'parameterised' queries
@@ -70,6 +71,36 @@ Base.prototype._createRelation = function (callback) {
 
 Base.prototype._destroyRelation = function (callback) {
 	this._query("DROP TABLE IF EXISTS " + this.relation + " CASCADE", callback);
+}
+
+Base.prototype.createIndexes = function (callback) {
+	var self = this,
+			indexExecution = [];
+
+	for (indexName in this.indexes) {
+		indexExecution.push(this.indexes[indexName]);
+	}	
+
+	async.series(indexExecution.map(function (instruction) {
+			return function (callback) {
+				self._query(instruction, callback);
+			}
+	}), callback);
+}
+
+Base.prototype.destroyIndexes = function (callback) {
+	var self = this,
+			indexExecution = [];
+
+	for (indexName in this.indexes) {
+		indexExecution.push("DROP INDEX IF EXISTS " + indexName);
+	}	
+
+	async.series(indexExecution.map(function (instruction) {
+		return function (callback) {
+			self._query(instruction, callback);
+		};
+	}), callback);	
 }
 
 Base.prototype._csvSeed = function (filePath, columns, transform, callback) {
