@@ -65,7 +65,7 @@ Postcode.prototype.find = function (postcode, callback) {
 }
 
 Postcode.prototype.random = function (callback) {
-	var query = "SELECT * FROM postcodes OFFSET random() * (SELECT count(postcode) from postcodes) LIMIT 1";
+	var query = "SELECT * FROM postcodes OFFSET random() * (SELECT count(id) from postcodes) LIMIT 1";
 	this._query(query, function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
