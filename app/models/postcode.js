@@ -100,10 +100,10 @@ Postcode.prototype.search = function (postcode, options, callback) {
 		if (limit > 100) limit = 100;
 	}
 	
-	var	query = "SELECT * FROM postcodes WHERE pc_compact ~ $1 LIMIT " + limit,
+	var	query = "SELECT * FROM postcodes WHERE pc_compact ~ $1 LIMIT $2",
 			re = "^" + postcode.toUpperCase().replace(" ", "") + ".*";
 			
-	this._query(query, [re], function (error, result) {
+	this._query(query, [re, limit], function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
