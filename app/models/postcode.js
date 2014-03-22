@@ -35,7 +35,7 @@ var postcodeSchema = {
 
 var indexes = {
 	"postcode_index" : "CREATE UNIQUE INDEX postcode_index ON postcodes (postcode)",
-	"pc_compact_index" : "CREATE UNIQUE INDEX pc_compact_index ON postcodes (pc_compact)",
+	"pc_compact_index" : "CREATE UNIQUE INDEX pc_compact_index ON postcodes (pc_compact varchar_pattern_ops)",
 	"location_index" : "CREATE INDEX location_index ON postcodes USING GIST (location)",
 	"outcode_index" : "CREATE INDEX outcode_index ON postcodes (outcode)"
 };
