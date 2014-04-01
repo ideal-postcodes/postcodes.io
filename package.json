@@ -39,7 +39,7 @@
     "random-string": "~0.1.1",
     "pg-copy-streams": "~0.2.1",
     "csv": "~0.3.6",
-    "async": "~0.4.0",
+    "async": "~0.6.0",
     "postcode": "~0.2.1",
     "ospoint": "~0.2.0",
     "bunyan-syslog": "~0.2.2",
