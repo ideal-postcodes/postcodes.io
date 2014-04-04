@@ -1,5 +1,6 @@
 var pg = require("pg"),
 		copyFrom = require("pg-copy-streams").from,
+		async = require("async"),
 		csv = require("csv"),
 		config;
 

@@ -22,16 +22,16 @@ $ git clone https://github.com/ideal-postcodes/postcodes.io.git
 
 $ cd postcodes.io/
 
-$ npm install
+$ npm install && npm link
 ```
 
-**Configure it**
+**Configure Postgres**
 
-Update `config/config.js` with your Postgres credentials. 
+Ensure you have Postgres and with [PostGIS extension availble](http://postgis.net/install). Create a new database and a super user.
+
+Update `config/config.js` with the above Postgres credentials. Pass in a postgresql superuser for the import process  (you can swap this with a user with reduced privileges later). You may update the config object for the development environment for simplicity.
 
 **Import ONS Postcode Data**
-
-In order to import Ordnance Survey CSV dataset to Postgres, the specified user in `config/config.js` must also be superuser during the import process. You will also need to have the [PostGIS extension availble](http://postgis.net/install).
 
 Download the latest Office for National Statistic's "Postcode Lookup Dataset" ([in CSV here](https://geoportal.statistics.gov.uk/geoportal/catalog/main/home.page)). Unzip the data locally. Navigate to `postcodes.io/` and run `importons` passing the path to the CSV data.
 
@@ -47,7 +47,11 @@ The import process takes around 10 minutes to complete.
 
 ```
 node server.js
+
+// Default environment is development (NODE_ENV=development)
 ```
+
+
 
 ## Testing
 
