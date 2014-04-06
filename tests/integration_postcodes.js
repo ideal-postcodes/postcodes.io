@@ -11,9 +11,12 @@ describe("Postcodes routes", function () {
 	before(function (done) {
 		this.timeout(0);
 		helper.connectToDb();
-		helper.seedPostcodeDb(function (error, result) {
+		helper.clearPostcodeDb(function (error, result) {
 			if (error) throw error;
-			done();
+			helper.seedPostcodeDb(function (error, result) {
+				if (error) throw error;
+				done();
+			});
 		});
 	});
 
