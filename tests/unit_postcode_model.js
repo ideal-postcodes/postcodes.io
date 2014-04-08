@@ -41,6 +41,13 @@ describe("Postcode Model", function () {
 				done();
 			});
 		});
+		it ("should return null for null/undefined postcode search", function (done) {
+			Postcode.find(null, function (error, result) {
+				if (error) throw error;
+				assert.isNull(result);
+				done()
+			});
+		});
 		it ("should be insensitive to space", function (done) {
 			Postcode.find(testPostcode.replace(/\s/, ""), function (error, result) {
 				if (error) throw error;

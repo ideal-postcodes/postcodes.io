@@ -1,4 +1,5 @@
 var	fs = require("fs"),
+		S = require("string"),
 		util = require("util"),
 		path = require("path"),
 		Pc = require("postcode"),
@@ -47,6 +48,10 @@ function Postcode () {
 util.inherits(Postcode, Base);
 
 Postcode.prototype.find = function (postcode, callback) {
+	if (typeof postcode !== "string") {
+		return callback(null, null);
+	} 
+
 	postcode = postcode.trim().toUpperCase();
 
 	if (!new Pc(postcode).valid()) {

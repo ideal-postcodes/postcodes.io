@@ -287,6 +287,21 @@ describe("Postcodes routes", function () {
 					done();
 				});
 			});
+			it ("should return an empty result for non string queries", function (done) {
+				request(app)
+				.post("/postcodes")
+				.send({postcodes: [null]})
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end(function (error, response) {
+					if (error) throw error;
+					assert.isArray(response.body.result);
+					assert.equal(response.body.result.length, 1);
+					assert.isNull(response.body.result[0].query);
+					assert.isNull(response.body.result[0].result);
+					done();
+				});
+			});
 			it ("should return a null if postcode not found", function (done) {
 				testPostcodes.push("B0GUS");
 				request(app)
