@@ -5,3 +5,5 @@ Capfile
 config/deploy.rb
 logs
 ONSPD_NOV_2013_csv
+.ruby-version
+.ruby-gemset
