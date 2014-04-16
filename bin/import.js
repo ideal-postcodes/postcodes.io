@@ -27,11 +27,6 @@ function createRelation (callback) {
 	Postcode._createRelation(callback);
 }
 
-function dropIndexes (callback) {
-	console.log("Dropping indexes...");
-	Postcode.destroyIndexes(callback);
-}
-
 function recreateIndexes(callback) {
 	console.log("Rebuilding indexes...");
 	Postcode.createIndexes(callback);
@@ -55,7 +50,6 @@ function createPostgisExtension(callback) {
 var executionStack = [createPostgisExtension,
 											dropRelation, 
 											createRelation, 
-											dropIndexes, 
 											importRawCsv,
 											populateLocation, 
 											recreateIndexes];
