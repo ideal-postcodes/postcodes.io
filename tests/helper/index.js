@@ -132,6 +132,7 @@ function isPostcodeObject(o) {
 	assert.property(o, "lsoa");
 	assert.property(o, "msoa");
 	assert.property(o, "nuts");
+	assert.property(o, "ccg");
 	assert.property(o, "primary_care_trust");
 	assert.property(o, "incode");
 	assert.property(o, "outcode");
@@ -158,6 +159,7 @@ function isRawPostcodeObject(o) {
 	assert.property(o, "lsoa");
 	assert.property(o, "msoa");
 	assert.property(o, "nuts");
+	assert.property(o, "ccg");
 	assert.property(o, "primary_care_trust");
 	assert.property(o, "incode");
 	assert.property(o, "outcode");
