@@ -31,7 +31,8 @@ var postcodeSchema = {
 	"msoa" : "VARCHAR(255)",
 	"nuts" : "VARCHAR(255)",
 	"incode" : "VARCHAR(5)",
-	"outcode" : "VARCHAR(5)"
+	"outcode" : "VARCHAR(5)",
+	"ccg" : "VARCHAR(255)"
 };
 
 var indexes = {
@@ -228,26 +229,27 @@ Postcode.prototype.toJson = function (address) {
 */
 
 Postcode.prototype.seedPostcodes = function (filePath, callback) {
-	var self = this,
-			csvColumns = 	"postcode, pc_compact, eastings, northings, longitude," +
+	var self = this;
+	var csvColumns = 	"postcode, pc_compact, eastings, northings, longitude," +
 										" latitude, country, nhs_ha," + 
 										" admin_county, admin_district, admin_ward, parish, quality," +
 										" parliamentary_constituency , european_electoral_region, region, " +
-										" primary_care_trust, lsoa, msoa, nuts, incode, outcode"
-			dataPath = path.join(__dirname, "../../data/"),
-			countries = JSON.parse(fs.readFileSync(dataPath + "countries.json")),
-			nhsHa = JSON.parse(fs.readFileSync(dataPath + "nhsHa.json")),
-			counties = JSON.parse(fs.readFileSync(dataPath + "counties.json")),
-			districts = JSON.parse(fs.readFileSync(dataPath + "districts.json")),
-			wards = JSON.parse(fs.readFileSync(dataPath + "wards.json")),
-			parishes = JSON.parse(fs.readFileSync(dataPath + "parishes.json")),
-			constituencies = JSON.parse(fs.readFileSync(dataPath + "constituencies.json")),
-			european_registers = JSON.parse(fs.readFileSync(dataPath + "european_registers.json")),
-			regions = JSON.parse(fs.readFileSync(dataPath + "regions.json")),
-			pcts = JSON.parse(fs.readFileSync(dataPath + "pcts.json")),
-			lsoa = JSON.parse(fs.readFileSync(dataPath + "lsoa.json")),
-			msoa = JSON.parse(fs.readFileSync(dataPath + "msoa.json")),
-			nuts = JSON.parse(fs.readFileSync(dataPath + "nuts.json"));
+										" primary_care_trust, lsoa, msoa, nuts, incode, outcode, ccg";
+	var dataPath = path.join(__dirname, "../../data/");
+	var countries = JSON.parse(fs.readFileSync(dataPath + "countries.json"));
+	var nhsHa = JSON.parse(fs.readFileSync(dataPath + "nhsHa.json"));
+	var counties = JSON.parse(fs.readFileSync(dataPath + "counties.json"));
+	var districts = JSON.parse(fs.readFileSync(dataPath + "districts.json"));
+	var wards = JSON.parse(fs.readFileSync(dataPath + "wards.json"));
+	var parishes = JSON.parse(fs.readFileSync(dataPath + "parishes.json"));
+	var constituencies = JSON.parse(fs.readFileSync(dataPath + "constituencies.json"));
+	var european_registers = JSON.parse(fs.readFileSync(dataPath + "european_registers.json"));
+	var regions = JSON.parse(fs.readFileSync(dataPath + "regions.json"));
+	var pcts = JSON.parse(fs.readFileSync(dataPath + "pcts.json"));
+	var lsoa = JSON.parse(fs.readFileSync(dataPath + "lsoa.json"));
+	var msoa = JSON.parse(fs.readFileSync(dataPath + "msoa.json"));
+	var nuts = JSON.parse(fs.readFileSync(dataPath + "nuts.json"));
+	var ccg = JSON.parse(fs.readFileSync(dataPath + "ccg.json"));
 			
 
 	var transform = function (row, index) {
@@ -293,6 +295,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(nuts[row[22]]);										// NUTS
 		finalRow.push(row[2].split(" ")[1]);						// Incode
 		finalRow.push(row[2].split(" ")[0]);						// Outcode
+		finalRow.push(ccg[lsoa[row[42]]]);							// Clinical Commissioning Group
 
 		return finalRow;
 	}
