@@ -89,21 +89,6 @@ Base.prototype.createIndexes = function (callback) {
 	}), callback);
 }
 
-Base.prototype.destroyIndexes = function (callback) {
-	var self = this,
-			indexExecution = [];
-
-	for (indexName in this.indexes) {
-		indexExecution.push("DROP INDEX IF EXISTS " + indexName);
-	}	
-
-	async.series(indexExecution.map(function (instruction) {
-		return function (callback) {
-			self._query(instruction, callback);
-		};
-	}), callback);	
-}
-
 Base.prototype._csvSeed = function (filePath, columns, transform, callback) {
 	if (arguments.length !== 4) throw new Error("Insufficient number of arguments specified");
 
