@@ -57,7 +57,13 @@ var executionStack = [createPostgisExtension,
 async.series(executionStack, function (error, result) {
 	if (error) {
 		console.log("Unable to complete import process due to error", error);
-		process.exit(1);
+		console.log("Dropping newly created relation")
+		dropRelation(function (error, result) {
+			if (error) {
+				console.log("Unabled to drop relation");
+				process.exit(1);		
+			}		
+		});
 	}
 	console.log("Finished import process in", process.hrtime(start)[0], "seconds");
 	process.exit(0);
