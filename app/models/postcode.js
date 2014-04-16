@@ -35,12 +35,19 @@ var postcodeSchema = {
 	"ccg" : "VARCHAR(255)"
 };
 
-var indexes = {
-	"postcode_index" : "CREATE UNIQUE INDEX postcode_index ON postcodes (postcode)",
-	"pc_compact_index" : "CREATE UNIQUE INDEX pc_compact_index ON postcodes (pc_compact varchar_pattern_ops)",
-	"location_index" : "CREATE INDEX location_index ON postcodes USING GIST (location)",
-	"outcode_index" : "CREATE INDEX outcode_index ON postcodes (outcode)"
-};
+var indexes = [{
+	unique: true,
+	column: "postcode"
+}, {
+	unique: true,
+	column: "pc_compact",
+	opClass: "varchar_pattern_ops"
+}, {
+	type: "GIST",
+	column: "location"
+}, {
+	column: "outcode"
+}];
 
 function Postcode () {
 	Base.call(this, "postcodes", postcodeSchema, indexes);
