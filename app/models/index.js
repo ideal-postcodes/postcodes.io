@@ -75,12 +75,29 @@ Base.prototype._destroyRelation = function (callback) {
 }
 
 Base.prototype.createIndexes = function (callback) {
-	var self = this,
-			indexExecution = [];
+	var self = this;
+	var indexExecution = [];
+	var	returnInstruction = function (index) {
+			var instruction = ["CREATE"];
+			if (index.unique) {
+				instruction.push("UNIQUE INDEX");
+			} else {
+				instruction.push("INDEX");
+			}
+			instruction.push("ON " + self.relation);
+			instruction.push("USING " + (index.type || "BTREE"));
+			instruction.push("(");
+			instruction.push(index.column);
+			if (index.opClass) {
+				instruction.push(index.opClass);
+			}
+			instruction.push(")");
+			return instruction.join(" ");
+		}
 
-	for (indexName in this.indexes) {
-		indexExecution.push(this.indexes[indexName]);
-	}	
+	for (var i = 0; i < this.indexes.length; i += 1) {
+		indexExecution.push(returnInstruction(this.indexes[i]));
+	}
 
 	async.series(indexExecution.map(function (instruction) {
 			return function (callback) {
