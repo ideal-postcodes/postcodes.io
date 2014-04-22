@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/ideal-postcodes/postcodes.io.png)](https://travis-ci.org/ideal-postcodes/postcodes.io) 
-[![Dependency Status](https://gemnasium.com/ideal-postcodes/postcodes.io.png)](https://gemnasium.com/ideal-postcodes/postcodes.io)
+![Dependency Status](https://david-dm.org/ideal-postcodes/postcodes.io.png)
 
 # Postcodes.io
 
