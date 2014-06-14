@@ -41,7 +41,7 @@ block content
 					.api-method
 						h4.method-title Lookup a postcode
 						h4 
-							.http-method GET 
+							span.http-method GET 
 							| api.postcodes.io/postcodes/
 							input.rest-resource(value=":postcode")#single-postcode-input
 							a(href="#")#single-postcode Request
@@ -50,7 +50,7 @@ block content
 					.api-method
 						h4.method-title Bulk lookup postcodes
 						h4
-							.http-method POST
+							span.http-method POST
 							| api.postcodes.io/postcodes
 							a(href="#")#bulk-postcodes Request
 						.json-post
@@ -63,7 +63,7 @@ block content
 					.api-method
 						h4.method-title Get nearest postcodes for a given longitude &amp; latitude
 						h4
-							.http-method GET
+							span.http-method GET
 							| api.postcodes.io/postcodes/lon/
 							input.rest-resource(value=":longitude")#lon-input
 							| /lat/
@@ -74,7 +74,7 @@ block content
 					.api-method
 						h4.method-title Bulk Reverse Geocoding
 						h4
-							.http-method POST
+							span.http-method POST
 							| api.postcodes.io/postcodes
 							a(href="#")#bulk-reverse Request
 						.json-post
@@ -95,7 +95,7 @@ block content
 					.api-method
 						h4.method-title Get a random postcode
 						h4
-							.http-method GET 
+							span.http-method GET 
 							| api.postcodes.io/random/postcodes
 							a(href="#")#random-postcode Request
 						pre.code-box#random-postcode-result
@@ -103,7 +103,7 @@ block content
 					.api-method
 						h4.method-title Validate a postcode
 						h4
-							.http-method GET  
+							span.http-method GET  
 							| api.postcodes.io/postcodes/
 							input.rest-resource(value=":postcode")#validate-postcode-input
 							| /validate
@@ -113,7 +113,7 @@ block content
 					.api-method
 						h4.method-title Autocomplete a postcode partial
 						h4
-							.http-method GET
+							span.http-method GET
 							| api.postcodes.io/postcodes/
 							input.rest-resource(value=":postcode")#autocomplete-postcode-input
 							| /autocomplete
@@ -123,7 +123,7 @@ block content
 					.api-method
 						h4.method-title Query for postcode
 						h4
-							.http-method GET
+							span.http-method GET
 							| api.postcodes.io/postcodes?q=
 							input.rest-resource(value=":postcode")#query-postcode-input
 							a(href="#")#query-postcode Request
@@ -132,7 +132,7 @@ block content
 					.api-method
 						h4.method-title Lookup Outward Code
 						h4
-							.http-method GET
+							span.http-method GET
 							| api.postcodes.io/outcodes/
 							input.rest-resource(value=":outcode")#show-outcode-input
 							a(href="#")#show-outcode Request
