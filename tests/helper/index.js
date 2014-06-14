@@ -1,21 +1,32 @@
-var	csv = require("csv"),
-		util = require("util"),
-		path = require("path"),
-		OSPoint = require("ospoint"),
-		assert = require("chai").assert,
-		randomString = require("random-string"),
-		rootPath = path.join(__dirname, "../../"),
-		env = process.env.NODE_ENV || "development",
-		Base = require(path.join(rootPath, "app/models")),
-		config = require(path.join(rootPath + "/config/config"))(env),
-		Postcode = require(path.join(rootPath, "app/models/postcode")),
-		seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
+var	csv = require("csv");
+var util = require("util");
+var path = require("path");
+var OSPoint = require("ospoint");
+var assert = require("chai").assert;
+var randomString = require("random-string");
+var rootPath = path.join(__dirname, "../../");
+var env = process.env.NODE_ENV || "development";
+var Base = require(path.join(rootPath, "app/models"));
+var config = require(path.join(rootPath + "/config/config"))(env);
+var Postcode = require(path.join(rootPath, "app/models/postcode"));
+var seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
 
 var CSV_INDEX = {
-			postcode: 2,
-			northings: 10,
-			eastings: 9
-		};
+	postcode: 2,
+	northings: 10,
+	eastings: 9
+};
+
+// Location with nearby postcodes to be used in lonlat test requests
+
+
+var locationWithNearbyPostcodes = function (callback) {
+	var postcodeWithNearbyPostcodes = "AB14 0LP";
+	Postcode.find(postcodeWithNearbyPostcodes, function (error, result) {
+		if (error) return callback(error, null);
+		return callback(null, result);
+	});
+}
 
 function getCustomRelation () {
 	var relationName = randomString({
@@ -182,6 +193,7 @@ module.exports = {
 	getCustomRelation: getCustomRelation,
 	isRawPostcodeObject: isRawPostcodeObject, 
 	lookupRandomPostcode: lookupRandomPostcode,
+	locationWithNearbyPostcodes: locationWithNearbyPostcodes,
 	seedPaths: {
 		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
 		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv")

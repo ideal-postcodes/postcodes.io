@@ -429,7 +429,8 @@ describe("Postcodes routes with JSONP", function () {
 		var loc;
 
 		beforeEach(function (done) {
-			helper.lookupRandomPostcode(function (postcode) {
+			helper.locationWithNearbyPostcodes(function (error, postcode) {
+				if (error) return done(error);
 				loc = postcode;
 				done();
 			});

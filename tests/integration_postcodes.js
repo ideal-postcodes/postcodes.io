@@ -617,13 +617,16 @@ describe("Postcodes routes", function () {
 		var loc;
 
 		beforeEach(function (done) {
-			helper.lookupRandomPostcode(function (postcode) {
+			helper.locationWithNearbyPostcodes(function (error, postcode) {
+				if (error) return done(error);
 				loc = postcode;
 				done();
 			});
 		});
 
 		it ("should return a list of nearby postcodes", function (done) {
+			// loc = helper.locationWithNearbyPostcodes;
+			// console.log(loc);
 			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 
 			request(app)

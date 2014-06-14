@@ -161,20 +161,19 @@ describe("Postcode Model", function () {
 	})
 
 	describe("#nearestPostcodes", function () {
-		var randomPostcode;
+		var location;
 
 		beforeEach(function (done) {
-			helper.lookupRandomPostcode(function (postcode) {
-				randomPostcode = postcode;
+			helper.locationWithNearbyPostcodes(function (error, postcode) {
+				if (error) return done(error);
+				location = postcode;
 				done();
 			});
 		});
 
 		it ("should return a list of nearby postcodes", function (done) {
-			var params = {
-				longitude: randomPostcode.longitude,
-				latitude: randomPostcode.latitude
-			}
+			var params = location;
+			
 			Postcode.nearestPostcodes(params, function (error, postcodes) {
 				if (error) throw error;
 				assert.isArray(postcodes);
@@ -186,8 +185,8 @@ describe("Postcode Model", function () {
 		});
 		it ("should be sensitive to limit", function (done) {
 			var params = {
-				longitude: randomPostcode.longitude,
-				latitude: randomPostcode.latitude,
+				longitude: location.longitude,
+				latitude: location.latitude,
 				limit: 1
 			}
 			Postcode.nearestPostcodes(params, function (error, postcodes) {
@@ -202,12 +201,12 @@ describe("Postcode Model", function () {
 		});
 		it ("should be sensitive to distance param", function (done) {
 			var nearby = {
-					longitude: randomPostcode.longitude,
-					latitude: randomPostcode.latitude,
+					longitude: location.longitude,
+					latitude: location.latitude,
 				},
 				farAway = {
-					longitude: randomPostcode.longitude,
-					latitude: randomPostcode.latitude,
+					longitude: location.longitude,
+					latitude: location.latitude,
 					radius: 1000
 				};
 
@@ -222,8 +221,8 @@ describe("Postcode Model", function () {
 		});
 		it ("should default limit to 10 if invalid", function (done) {
 			var params = {
-				longitude: randomPostcode.longitude,
-				latitude: randomPostcode.latitude,
+				longitude: location.longitude,
+				latitude: location.latitude,
 				limit: "Bogus"
 			};
 			Postcode.nearestPostcodes(params, function (error, postcodes) {
@@ -234,13 +233,13 @@ describe("Postcode Model", function () {
 		});
 		it ("should default radius to 100 if invalid", function (done) {
 			var nearby = {
-					longitude: randomPostcode.longitude,
-					latitude: randomPostcode.latitude,
+					longitude: location.longitude,
+					latitude: location.latitude,
 					radius: "BOGUS"
 				},
 				farAway = {
-					longitude: randomPostcode.longitude,
-					latitude: randomPostcode.latitude,
+					longitude: location.longitude,
+					latitude: location.latitude,
 					radius: 1000
 				};
 
@@ -256,7 +255,7 @@ describe("Postcode Model", function () {
 		it ("should raise an error if invalid longitude", function (done) {
 			var params = {
 				longitude: "Bogus",
-				latitude: randomPostcode.latitude,
+				latitude: location.latitude,
 			};
 			Postcode.nearestPostcodes(params, function (error, postcodes) {
 				assert.isNotNull(error);
@@ -266,7 +265,7 @@ describe("Postcode Model", function () {
 		});
 		it ("should raise an error if invalid latitude", function (done) {
 			var params = {
-				longitude: randomPostcode.longitude,
+				longitude: location.longitude,
 				latitude: "Bogus",
 			};
 			Postcode.nearestPostcodes(params, function (error, postcodes) {
