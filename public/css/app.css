@@ -35,6 +35,11 @@ body {
   margin-top: 10px;
 }
 
+.gitlink {
+  overflow: hidden;
+  border: none;  
+}
+
 .mast {
   padding: 8em 0 3em;
   background-color: #1c2533;
