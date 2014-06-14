@@ -29,11 +29,11 @@ function jsonApiResponseRenderer (request, response, next) {
 function errorRenderer (error, request, response, next) {
 	var message = "Something went wrong: " + error.message;
 	
-	if (config.env !== "test") {
+	if (process.env.NODE_ENV !== "test") {
 		console.log(error.stack);	
 	}
 	
-	if (config.env === "production") {
+	if (process.env.NODE_ENV === "production") {
 		message = "500 Error. Oooomph!";
 	}
 
