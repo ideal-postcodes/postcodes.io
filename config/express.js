@@ -17,5 +17,5 @@ module.exports = function (app, config) {
 		app.use(express.static(path.join(config.root, '/public')));
 	}
 	
-	app.use(bodyParser());
+	app.use(bodyParser.json());
 }
