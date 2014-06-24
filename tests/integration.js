@@ -62,12 +62,12 @@ describe("Errors", function () {
 describe("Misc", function () {
 	it ("should return a favicon", function (done) {
 		request(app)
-				.get("/favicon.ico")
-			  .expect(200)
-			  .end(function(error, response){
-			    if (error) throw error;
-			    done();
-			  });
+			.get("/favicon.ico")
+		  .expect(200)
+		  .end(function(error, response){
+		    if (error) throw error;
+		    done();
+		  });
 	});
 });
 

@@ -153,6 +153,16 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
+		it ("should respond to options", function (done) {
+			request(app)
+			.options("/postcodes")
+			.expect(204)
+			.end(function (error, response) {
+				if (error) done(error);
+				helper.validCorsOptions(response);
+				done();
+			});
+		});
 	});
 
 	describe("Post /", function () {
@@ -378,6 +388,17 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
+		it ("should respond to options", function (done) {
+			var path = ["/postcodes/", encodeURI(testPostcode)].join("");
+			request(app)
+			.options(path)
+			.expect(204)
+			.end(function (error, response) {
+				if (error) done(error);
+				helper.validCorsOptions(response);
+				done();
+			});
+		});
 	});
 
 	describe("/outcodes/:outcode", function (done) {
@@ -449,6 +470,17 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
+		it ("should respond to options", function (done) {
+			var path = ["/outcodes/", encodeURI(testOutcode)].join("");
+			request(app)
+			.options(path)
+			.expect(204)
+			.end(function (error, response) {
+				if (error) done(error);
+				helper.validCorsOptions(response);
+				done();
+			});
+		});
 	});
 
 	describe("/:postcode/validate", function () {
@@ -479,6 +511,17 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
+		it ("should respond to options", function (done) {
+			var path = ["/postcodes/", encodeURI(testPostcode), "/validate"].join("");
+			request(app)
+			.options(path)
+			.expect(204)
+			.end(function (error, response) {
+				if (error) done(error);
+				helper.validCorsOptions(response);
+				done();
+			});
+		});
 	});
 
 	describe("/random/postcode", function () {
@@ -492,6 +535,17 @@ describe("Postcodes routes", function () {
 				if (error) throw error;
 				assert.property(response.body.result, "postcode");
 				helper.isPostcodeObject(response.body.result);
+				done();
+			});
+		});
+		it ("should respond to options", function (done) {
+			var path = "/random/postcodes";
+			request(app)
+			.options(path)
+			.expect(204)
+			.end(function (error, response) {
+				if (error) done(error);
+				helper.validCorsOptions(response);
 				done();
 			});
 		});
@@ -611,6 +665,17 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
+		it ("should respond to options", function (done) {
+			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2) + "/autocomplete");
+			request(app)
+			.options(uri)
+			.expect(204)
+			.end(function (error, response) {
+				if (error) done(error);
+				helper.validCorsOptions(response);
+				done();
+			});
+		});
 	});
 
 	describe("#/lon/:longitude/lat/latitude", function () {
@@ -713,6 +778,17 @@ describe("Postcodes routes", function () {
 			.expect(400)
 			.end(function (error, response) {
 				if (error) throw error;
+				done();
+			});
+		});
+		it ("should respond to options", function (done) {
+			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
+			request(app)
+			.options(uri)
+			.expect(204)
+			.end(function (error, response) {
+				if (error) done(error);
+				helper.validCorsOptions(response);
 				done();
 			});
 		});

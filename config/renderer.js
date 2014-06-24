@@ -10,11 +10,6 @@ function jsonApiResponseRenderer (request, response, next) {
 	var jsonResponse = response.jsonApiResponse;
 	if (!jsonResponse) return next();
 
-	// Enable CORS
-	response.header("Access-Control-Allow-Origin", "*");
-  response.header("Access-Control-Allow-Methods", "GET, POST");
-  response.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
-
 	if (request.query.callback) {
 		response.jsonp(200, jsonResponse);
 	} else {

@@ -4,6 +4,11 @@ var favicon = require("static-favicon");
 var bodyParser = require("body-parser");
 var express = require("express");
 var path = require("path");
+var cors = require("cors")({
+	origin: "*",
+	methods: "GET,POST",
+	allowedHeaders: "X-Requested-With,Content-Type"
+});
 
 module.exports = function (app, config) {
 	app.enable('trust proxy');
@@ -16,6 +21,6 @@ module.exports = function (app, config) {
 		app.use(favicon("public/favicon.ico"));
 		app.use(express.static(path.join(config.root, '/public')));
 	}
-	
+	app.use(cors);
 	app.use(bodyParser.json());
 }

@@ -118,8 +118,12 @@ function jsonpResponseBody (response) {
 
 function allowsCORS (response) {
 	assert.equal(response.headers["access-control-allow-origin"], "*");
-	assert.equal(response.headers["access-control-allow-methods"], "GET, POST");
-	assert.equal(response.headers["access-control-allow-headers"], "X-Requested-With, Content-Type");
+}
+
+function validCorsOptions(response) {
+	assert.equal(response.headers["access-control-allow-origin"], "*");
+	assert.equal(response.headers["access-control-allow-methods"], "GET,POST");
+	assert.equal(response.headers["access-control-allow-headers"], "X-Requested-With,Content-Type");	
 }
 
 function isPostcodeObject(o) {
@@ -188,6 +192,7 @@ module.exports = {
 	randomLocation: randomLocation,
 	seedPostcodeDb: seedPostcodeDb,
 	clearPostcodeDb: clearPostcodeDb,
+	validCorsOptions: validCorsOptions,
 	isPostcodeObject: isPostcodeObject,
 	jsonpResponseBody: jsonpResponseBody,
 	getCustomRelation: getCustomRelation,
