@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "pg": "~3.3.0",
-    "express": "~4.4.3",
+    "express": "~4.6.1",
     "morgan": "~1.1.1",
     "static-favicon": "~1.0.0",
     "body-parser": "~1.4.3",
@@ -47,8 +47,8 @@
     "postcode": "~0.2.1",
     "ospoint": "~0.2.0",
     "bunyan-syslog": "~0.2.2",
-    "string": "~1.8.0",
-    "cors": "~2.3.1"
+    "string": "~1.9.0",
+    "cors": "~2.4.1"
   },
   "devDependencies": {
     "mocha": "~1.20.0",
