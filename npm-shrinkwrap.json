@@ -202,7 +202,7 @@
     },
     "body-parser": {
       "version": "1.4.3",
-      "from": "body-parser@~1.4.3",
+      "from": "body-parser@~1.4.0",
       "dependencies": {
         "bytes": {
           "version": "1.0.0",
@@ -214,7 +214,8 @@
         },
         "iconv-lite": {
           "version": "0.4.3",
-          "from": "iconv-lite@0.4.3"
+          "from": "iconv-lite@0.4.3",
+          "resolved": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.3.tgz"
         },
         "media-typer": {
           "version": "0.2.0",
@@ -384,7 +385,7 @@
           "dependencies": {
             "uglify-js": {
               "version": "2.4.15",
-              "from": "uglify-js@~2.4.12",
+              "from": "uglify-js@~2.4.0",
               "dependencies": {
                 "async": {
                   "version": "0.2.10",
@@ -497,7 +498,7 @@
           "from": "randomstring@~1.0.2"
         },
         "tail": {
-          "version": "0.3.5",
+          "version": "0.3.6",
           "from": "tail@~0.3.5"
         }
       }
