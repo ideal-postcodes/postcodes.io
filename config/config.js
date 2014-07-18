@@ -91,5 +91,5 @@ var config = {
 };
 
 module.exports = function (environment) {
-	return config[environment];
+	return config[environment] || config["development"];
 };
