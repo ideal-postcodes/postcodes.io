@@ -32,7 +32,7 @@ function errorRenderer (error, request, response, next) {
 		message = "500 Error. Oooomph!";
 	}
 
-	response.send(500, message);
+	response.status(500).send(message);
 	
 	logger.error({error: error, stack: error.stack});
 }
