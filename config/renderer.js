@@ -11,9 +11,9 @@ function jsonApiResponseRenderer (request, response, next) {
 	if (!jsonResponse) return next();
 
 	if (request.query.callback) {
-		response.jsonp(200, jsonResponse);
+		response.status(200).jsonp(jsonResponse);
 	} else {
-		response.json(jsonResponse.status, jsonResponse);
+		response.status(jsonResponse.status).json(jsonResponse);
 	}
 }
 

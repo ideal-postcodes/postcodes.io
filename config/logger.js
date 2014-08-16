@@ -17,5 +17,5 @@ module.exports = function (app, config) {
 		}
 	} 
 
-	app.use(morgan({ stream: logStream }));
+	app.use(morgan("combined", { stream: logStream }));
 }
