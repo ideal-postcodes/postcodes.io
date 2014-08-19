@@ -17,10 +17,10 @@ block content
 
 					h3#Endpoint Endpoint
 
-					p All services is accessed from the following HTTP endpoint
+					p All services can be accessed from the following HTTP[S] endpoint
 
 					pre 
-						h4 http://api.postcodes.io
+						h4 https://api.postcodes.io
 
 					h3#Responses Responses
 					p JSON(P) only. CORS is enabled.
@@ -33,17 +33,18 @@ block content
 
 					h3#Error-Handling Error Handling
 
-					p To check for errors, simply examine the HTTP response code. 200 response indicates success while any other code will provide important information about why an error occured. 
+					p To check for errors, examine the HTTP response code. 200 response indicates success while any other code will provide important information about why an error occured. 
 
-					p Alternatively you can examine HTTP Status code in the 'status' property in the result body.
+					p Alternatively, you can examine status code in the 'status' property in the result body.
 
-					p All JSONP requests return 200 responses because of the silent error problem, so you need use the latter method to check for errors.
+					p All JSONP requests return 200 responses because of silent errors. When using JSONP, be sure to use the latter method to check for errors.
 
 					h3#JSONP JSONP
+
 					p JSONP requests are supported. Simply appended the URI with a callback name. E.g.
 
 					pre 
-						h4 http://api.postcodes.io/postcodes/GU50BD?callback=foo
+						h4 https://api.postcodes.io/postcodes/GU50BD?callback=foo
 
 					h3#Data Available Data Fields
 
@@ -174,7 +175,7 @@ block content
 
 					p Lookup a postcode. Returns all available data if found. Returns 404 if postcode does not exist.
 					pre
-						h4 http://api.postcodes.io/postcodes/:postcode
+						h4 https://api.postcodes.io/postcodes/:postcode
 
 					h3#Bulk-Postcode-Lookup Bulk Postcode Lookup
 
@@ -185,7 +186,7 @@ block content
 					pre
 						h4
 							.http-method POST
-							| http://api.postcodes.io/postcodes?q=[postcode]
+							| https://api.postcodes.io/postcodes?q=[postcode]
 
 					h4 Post Data
 
@@ -204,7 +205,7 @@ block content
 					pre
 						h4 
 							.http-method GET 
-							| http://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
+							| https://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
 
 					h4 Optional Query Parameters
 					p
@@ -222,7 +223,7 @@ block content
 					pre
 						h4 
 							.http-method POST 
-							| http://api.postcodes.io/postcodes
+							| https://api.postcodes.io/postcodes
 
 					h4 Post Data
 
@@ -249,7 +250,7 @@ block content
 					pre
 						h4 
 							.http-method GET 
-							| http://api.postcodes.io/postcodes?q=[query]
+							| https://api.postcodes.io/postcodes?q=[query]
 
 					h4 Optional Query Parameters
 					p 
@@ -268,7 +269,7 @@ block content
 					pre
 						h4 
 							.http-method GET 
-							| http://api.postcodes.io/postcodes/:postcode/validate
+							| https://api.postcodes.io/postcodes/:postcode/validate
 
 
 					h3#Postcode-Autocomplete Postcode Autocomplete
@@ -278,7 +279,7 @@ block content
 					pre
 						h4 
 							.http-method GET 
-							| http://api.postcodes.io/postcodes/:postcode/autocomplete
+							| https://api.postcodes.io/postcodes/:postcode/autocomplete
 
 					h4 Optional Query Parameters
 					p
@@ -293,7 +294,7 @@ block content
 					pre
 						h4 
 							.http-method GET 
-							| http://api.postcodes.io/random/postcodes
+							| https://api.postcodes.io/random/postcodes
 
 					h3#Show-Outcode Outward Code Lookup
 
@@ -302,5 +303,5 @@ block content
 					pre
 						h4 
 							.http-method GET 
-							| http://api.postcodes.io/outcodes/:outcode
+							| https://api.postcodes.io/outcodes/:outcode
 
