@@ -242,7 +242,7 @@ exports.autocomplete = function (request, response, next) {
 	});
 }
 
-exports.lonlat = function (request, response, next) {
+var nearestPostcodes = function (request, response, next) {
 	var longitude = parseFloat(request.params.longitude),
 			latitude = parseFloat(request.params.latitude),
 			limit, radius, params = {};
@@ -277,7 +277,7 @@ exports.lonlat = function (request, response, next) {
 		if (isNaN(radius)) {
 			response.jsonApiResponse = {
 				status: 400,
-				error: "Invalid lookups radius submitted"
+				error: "Invalid lookup radius submitted"
 			};
 			return next();
 		} else {
@@ -305,6 +305,9 @@ exports.lonlat = function (request, response, next) {
 	});
 };
 
+exports.lonlat = nearestPostcodes;
+
+
 exports.nearest = function (request, response, next) {
 	var postcode = request.params.postcode;
 
@@ -314,17 +317,16 @@ exports.nearest = function (request, response, next) {
 		}
 
 		if (address) {
-			response.jsonAPIResponse = {
-				status: 200,
-				result: Postcode.toJson(address)
-			};
+			request.params.longitude = address.longitude;
+			request.params.latitude = address.latitude;
+			return nearestPostcodes(request, response, next);
 		} else {
 			response.jsonApiResponse = {
 				status: 404,
 				error: "Postcode not found"
 			};
+			return next();
 		}
-		return next();
 	})
 
 };
