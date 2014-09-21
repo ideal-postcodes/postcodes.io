@@ -12,7 +12,7 @@ describe("Postcodes routes", function () {
 		this.timeout(0);
 		helper.connectToDb();
 		helper.clearPostcodeDb(function (error, result) {
-			if (error) throw error;
+			if (error) return done(error);
 			helper.seedPostcodeDb(function (error, result) {
 				if (error) throw error;
 				done();
