@@ -111,6 +111,16 @@ block content
 						pre.code-box#validate-postcode-result
 
 					.api-method
+						h4.method-title Nearest postcodes for postcode
+						h4
+							span.http-method GET  
+							| api.postcodes.io/postcodes/
+							input.rest-resource(value=":postcode")#nearest-postcode-input
+							| /nearest
+							a(href="#")#nearest-postcode Request
+						pre.code-box#nearest-postcode-result
+
+					.api-method
 						h4.method-title Autocomplete a postcode partial
 						h4
 							span.http-method GET

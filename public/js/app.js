@@ -45,6 +45,19 @@ $(function () {
 		});
 	});
 
+	$("#nearest-postcode").click(function (event) {
+		event.preventDefault();
+		var $result = $("#nearest-postcode-result").slideUp(),
+				postcode = $("#nearest-postcode-input").val();
+		$.get(encodeURI("/postcodes/" + postcode + "/nearest"))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
+		});
+	});
+
 	$("#autocomplete-postcode").click(function (event) {
 		event.preventDefault();
 		var $result = $("#autocomplete-postcode-result").slideUp(),
