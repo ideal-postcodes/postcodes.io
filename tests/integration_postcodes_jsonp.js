@@ -12,9 +12,9 @@ describe("Postcodes routes with JSONP", function () {
 		this.timeout(0);
 		helper.connectToDb();
 		helper.clearPostcodeDb(function (error, result) {
-			if (error) throw error;
+			if (error) return done(error);
 			helper.seedPostcodeDb(function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		})
@@ -44,7 +44,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -61,7 +61,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -78,7 +78,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -96,7 +96,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 11);
 				response.body.result.forEach(function (postcode) {
@@ -114,7 +114,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 100);
 				response.body.result.forEach(function (postcode) {
@@ -132,7 +132,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -149,7 +149,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 400);
 				done();
 			});
@@ -165,7 +165,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.postcode, testPostcode);
 				helper.isPostcodeObject(response.body.result);
@@ -181,7 +181,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 404);
 				assert.property(response.body, "error");
 				done();
@@ -198,7 +198,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
 				assert.property(response.body.result, "longitude");
@@ -216,7 +216,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
 				assert.property(response.body.result, "longitude");
@@ -234,7 +234,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
 				assert.property(response.body.result, "longitude");
@@ -252,7 +252,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 404);
 				assert.isNull(response.body.result);
 				done();
@@ -269,7 +269,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.isTrue(response.body.result);
 				done();
@@ -284,11 +284,91 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.isFalse(response.body.result);
 				done();
 			});
+		});
+	});
+
+	describe("/:postcode/nearest", function () {
+		it ("should return a list of nearby postcodes", function (done) {
+			var uri = encodeURI("/postcodes/" + testPostcode + "/nearest");
+
+			request(app)
+			.get(uri)
+			.query({
+				callback: "foo"
+			})
+			.expect(200)
+			.end(function (error, response) {
+				response.body = helper.jsonpResponseBody(response);
+				if (error) return done(error);
+				assert.isArray(response.body.result);
+				assert.isTrue(response.body.result.length > 0);
+				response.body.result.forEach(function (postcode) {
+					helper.isPostcodeObject(postcode);
+				});
+				done();
+			});
+		});
+
+		
+		it ("should throw a 400 error if invalid limit", function (done) {
+			var uri = encodeURI("/postcodes/" + testPostcode + "/nearest");
+
+			request(app)
+			.get(uri)
+			.query({
+				limit: "bogus",
+				callback: "foo"
+			})
+			.expect(200)
+			.end(function (error, response) {
+				response.body = helper.jsonpResponseBody(response);
+				if (error) return done(error);
+				assert.equal(response.body.status, 400);
+				assert.equal(response.body.error, "Invalid result limit submitted");
+				done();
+			});
+		});
+
+		it ("should throw a 400 error if invalid distance", function (done) {
+			var uri = encodeURI("/postcodes/" + testPostcode + "/nearest");
+
+			request(app)
+			.get(uri)
+			.query({
+				radius: "bogus",
+				callback: "foo"
+			})
+			.expect(200)
+			.end(function (error, response) {
+				response.body = helper.jsonpResponseBody(response);
+				if (error) return done(error);
+				assert.equal(response.body.status, 400);
+				assert.equal(response.body.error, "Invalid lookup radius submitted")
+				done();
+			});
+		});
+
+		it ("should return 404 if postcode not found", function (done) {
+			var testPostcode = "ID11QE";
+			var uri = ["/postcodes/", encodeURI(testPostcode), "/nearest"].join("");
+			request(app)
+				.get(uri)
+				.query({
+					callback: "foo"
+				})
+				.expect(200)
+				.end(function (error, response) {
+					response.body = helper.jsonpResponseBody(response);
+					if (error) return done(error);
+					assert.equal(response.body.status, 404);
+					assert.equal(response.body.error, "Postcode not found");
+					done();
+				});
 		});
 	});
 
@@ -301,7 +381,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.property(response.body.result, "postcode");
 				helper.isPostcodeObject(response.body.result);
 				done();
@@ -321,7 +401,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -339,7 +419,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -357,7 +437,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -376,7 +456,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, limit);
 				response.body.result.forEach(function (postcode) {
@@ -395,7 +475,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 100);
 				response.body.result.forEach(function (postcode) {
@@ -414,7 +494,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -445,7 +525,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
 				response.body.result.forEach(function (postcode) {
@@ -465,13 +545,13 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, firstResponse) {
 				firstResponse.body = helper.jsonpResponseBody(firstResponse);
-				if (error) throw error;
+				if (error) return done(error);
 				request(app)
 				.get(uri + encodeURI("?radius=2000"))
 				.expect(200)
 				.end(function (error, secondResponse) {
 					secondResponse.body = helper.jsonpResponseBody(secondResponse);
-					if (error) throw error;
+					if (error) return done(error);
 					assert.isTrue(secondResponse.body.result.length >= firstResponse.body.result.length);
 					done();
 				});
@@ -484,7 +564,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.result.length, 1);
 				done();
 			});
@@ -496,7 +576,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -507,7 +587,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -518,7 +598,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -529,7 +609,7 @@ describe("Postcodes routes with JSONP", function () {
 			.expect(200)
 			.end(function (error, response) {
 				response.body = helper.jsonpResponseBody(response);
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
