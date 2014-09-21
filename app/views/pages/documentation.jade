@@ -271,6 +271,22 @@ block content
 							.http-method GET 
 							| https://api.postcodes.io/postcodes/:postcode/validate
 
+					h3#Nearest-Postcode Nearest Postcode
+
+					p Returns nearest postcodes for a given postcode.
+
+					pre
+						h4 
+							.http-method GET 
+							| https://api.postcodes.io/postcodes/:postcode/nearest
+
+					h4 Optional Query Parameters
+					p
+						code limit=
+						|  (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+					p
+						code radius=
+						|  (not required) Limits number of postcodes matches to return. Defaults to 100 meteres. Needs to be less than 1,000m.
 
 					h3#Postcode-Autocomplete Postcode Autocomplete
 
