@@ -303,7 +303,31 @@ exports.lonlat = function (request, response, next) {
 			return next();
 		}
 	});
-}
+};
+
+exports.nearest = function (request, response, next) {
+	var postcode = request.params.postcode;
+
+	Postcode.find(postcode, function (error, address) {
+		if (error) {
+			return next(error);
+		}
+
+		if (address) {
+			response.jsonAPIResponse = {
+				status: 200,
+				result: Postcode.toJson(address)
+			};
+		} else {
+			response.jsonApiResponse = {
+				status: 404,
+				error: "Postcode not found"
+			};
+		}
+		return next();
+	})
+
+};
 
 exports.showOutcode = function (request, response, next) {
 	var outcode = request.params.outcode;

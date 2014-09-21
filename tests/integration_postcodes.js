@@ -524,6 +524,25 @@ describe("Postcodes routes", function () {
 		});
 	});
 
+	describe("/:postcode/nearest", function () {
+		it ("returns the nearest postcodes");
+		it ("is sensitive to radius");
+		it ("should return 404 if postcode not found", function (done) {
+			testPostcode= "ID11QE";
+			var path = ["/postcodes/", encodeURI(testPostcode), "/nearest"].join("");
+			request(app)
+				.get(path)
+				.expect("Content-Type", /json/)
+				.expect(404)
+				.end(function (error, response) {
+					if (error) return done(error);
+					assert.equal(response.body.error, "Postcode not found");
+					done();
+				});
+		});
+		it ("should respond to options");
+	});
+
 	describe("/random/postcode", function () {
 		it ("should return a random postcode", function (done) {
 			var path = "/random/postcodes";

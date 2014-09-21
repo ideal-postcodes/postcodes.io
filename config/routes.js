@@ -15,6 +15,7 @@ module.exports = function (app) {
 	app.get("/postcodes/lon/:longitude/lat/:latitude", postcodesController.lonlat);
 	app.get("/postcodes/lat/:latitude/lon/:longitude", postcodesController.lonlat);
 	app.get("/postcodes/:postcode", postcodesController.show);
+	app.get("/postcodes/:postcode/nearest", postcodesController.nearest);
 	app.get("/postcodes/:postcode/validate", postcodesController.valid);
 	app.get("/postcodes/:postcode/autocomplete", postcodesController.autocomplete);	
 }
