@@ -62,7 +62,7 @@
           "dependencies": {
             "mime-types": {
               "version": "2.0.1",
-              "from": "mime-types@~2.0.1",
+              "from": "mime-types@~2.0.0",
               "dependencies": {
                 "mime-db": {
                   "version": "1.0.1",
@@ -82,7 +82,7 @@
         },
         "debug": {
           "version": "2.0.0",
-          "from": "debug@*",
+          "from": "debug@~2.0.0",
           "dependencies": {
             "ms": {
               "version": "0.6.2",
