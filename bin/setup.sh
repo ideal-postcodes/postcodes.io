@@ -63,5 +63,5 @@ sleep 1
 # Download and install
 echo "Dowloading latest ONS dataset and importing to Postgresql...\n"
 
-wget -O - $LATEST | gunzip -c | psql -v ON_ERROR_STOP=1 --quiet $DATABASE_NAME
+wget -O - $LATEST | gunzip -c | $PSQL -v ON_ERROR_STOP=1 --quiet $DATABASE_NAME
 echo "Done\n"
