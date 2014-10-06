@@ -52,7 +52,7 @@ var config = {
 		postgres: {
 			user: "postcodesio",
 			password: "password",
-			database: "postcodeio_test",
+			database: "postcodeio_testing",
 			host: "localhost",
 			port: 5432
 		},
