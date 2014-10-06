@@ -9,9 +9,9 @@ echo "In order to create, setup and download your database we need Postgres user
 read -p "Please provide your Postgres Username: [leave blank if your default user has superuser privileges] " POSTGRES_USER
 if [ -z "$POSTGRES_USER" ];
 then
-	PSQL="psql -d template1"
+	PSQL="psql"
 else
-	PSQL="psql --username=$POSTGRES_USER -d template1"
+	PSQL="psql --username=$POSTGRES_USER"
 fi
 
 # Create postgres user
@@ -19,7 +19,7 @@ fi
 
 echo "Creating new user $USERNAME if it does not already exist..."
 
-$PSQL --quiet --command="DO
+$PSQL -d template1 --quiet --command="DO
 \$body\$
 BEGIN
    IF NOT EXISTS (
@@ -63,4 +63,4 @@ sleep 1
 # Download and install
 echo "Enabling Postgis"
 
-$PSQL -c "CREATE EXTENSION postgis;"
+$PSQL -d $DATABASE_NAME -c "CREATE EXTENSION postgis;"
