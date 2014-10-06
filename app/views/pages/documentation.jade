@@ -321,3 +321,78 @@ block content
 							.http-method GET 
 							| https://api.postcodes.io/outcodes/:outcode
 
+					h2#Install-notes.doc-header Install Notes
+
+					p There may be occasions where you want to host postcodes.io yourself. We've laid out instructions below on how to do this.
+
+					p Installing Postcodes.io is matter of cloning the source. For example,
+
+					pre
+						h4 $ git clone git@github.com:ideal-postcodes/postcodes.io.git
+
+					p The tricky part is importing the data. We currently provide 3 methods.
+
+					ol
+						li The easiest is to use our install script. This will require postgres superuser privileges to create and provision your database. It will then download the database and import the data from a pg_dump (hosted and created by us).
+						li You can download the pg_dump and attempt to import the database yourself with psql or pg_restore. 
+						li Lastly, you can retrieve the raw CSV data from the ONS and import it with our import script.
+
+					p The entire process should take around 10 minutes even on a virtual, low-spec, single core system.
+
+					h3#install-requirements Requirements
+
+					ul
+						li 
+							a(href="http://nodejs.org") Node.js
+						li 
+							a(href="http://postgis.net/install/") Postgresql and Postgis
+
+					h3#data-download Data Download
+
+					p Data is sourced and can be downloaded from the 
+						a(href="https://geoportal.statistics.gov.uk/geoportal/catalog/main/home.page") Office for National Statistics Data Portal. 
+						| The dataset can not easy to find. The simplest way is to search for "Postcode Directory".
+
+					p Alternatively you can download a 
+						a(href="http://www.postgresql.org/docs/9.3/static/app-pgdump.html") pg_dump 
+						| of the postcode database which is hosted by us. This is the same dump which is used by the install script. The link to the latest dump can be found in our 
+						a(href="https://github.com/ideal-postcodes/postcodes.io/blob/master/latest") repository.
+
+					h3#install-script Install Script
+
+					p Currently the install process targets *nix systems. We've provisioned and tested on OS X Mavericks &amp; Ubuntu 14.04. Please 
+						a(href="/about") let us know
+						|  if you have issues on other operating systems.
+
+					p Postcodes.io is packaged with a 
+						a(href="https://github.com/ideal-postcodes/postcodes.io/blob/master/bin/setup") script 
+						| to provision postgres and download a dump (pg_dump) of the ONS Postcode Directory (hosted by us). The script will do the following,
+					ul
+						li Prompt you for your postgres superuser credentials (most of the setup steps require this level of privilege)
+						li Create a new user "postcodesio"
+						li Create a new database "postcodesiodb" owned by "postcodesio"
+						li Create the necessary extensions on "postcodesiodb"
+						li Download, unzip and stream the Postcode directory into Postgres
+
+					p To run,
+
+					pre
+						h4 $ npm run setup
+
+					h3#import-from-pgdump Manual Installation from our pg_dump
+
+					p To setup the database from our pg_dump simply download, gunzip and use either psql or pg_restore to import the data into Postgresql.
+
+					p For example,
+
+					pre
+						h4 $ cat postcodeiodb.sql | psql postcodesiodb
+
+					h3#import-from-ons Manual Installation from ONS Postcode Directory
+
+					p Download the latest Office for National Statistic's "Postcode Lookup Dataset". Unzip the data locally. Navigate to postcodes.io/, link the install script ($npm link) and run the import script ($ importons) passing the path to the CSV data.
+
+					p It should look something like this,
+
+					pre
+						h4 $ importons /path/to/data/ONSPD/Data/data.csv

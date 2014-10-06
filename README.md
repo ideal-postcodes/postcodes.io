@@ -1,54 +1,49 @@
-# Postcodes.io [![Build Status](https://travis-ci.org/ideal-postcodes/postcodes.io.png)](https://travis-ci.org/ideal-postcodes/postcodes.io) ![Dependency Status](https://david-dm.org/ideal-postcodes/postcodes.io.png)
+# Postcodes.io [![Build Status](https://travis-ci.org/ideal-postcodes/postcodes.io.png)](https://travis-ci.org/ideal-postcodes/postcodes.io)
 
-Open source postcode API server using Codepoint Open and ONS Postcode Data.
-
-Contributions and Github issues are welcome.
+Free Postcode API server using the Office for National Statistics' postcode directory.
 
 Documentation can be found at [postcodes.io](http://postcodes.io)
 
 ## Requirements
 
-- Node 0.10
-- Postgres (>= 9.1) with PostGIS extension
+Please make sure you have the following available:
 
-## Installation
+- Node (>= v0.10) [(Instructions)](http://nodejs.org/)
+- Postgres with PostGIS extension [(Instructions)](http://postgis.net/install)
 
-**Download it**
+## Install & Download Data & Run
+
+**Download and install**
+
 ```bash
 $ git clone https://github.com/ideal-postcodes/postcodes.io.git
 
-$ cd postcodes.io/
-
-$ npm install && npm link
+& cd postcodes.io/ && npm install
 ```
 
-**Configure Postgres**
+**Configure Postgres and Seed Database**
 
-Ensure you have Postgres and with [PostGIS extension availble](http://postgis.net/install). Create a new database and a super user.
+Postcodes.io is packaged with a script to setup and download the ONS Postcode Directory. To run this, navigate into the repository directory and run,
 
-Update `config/config.js` with the above Postgres credentials. Pass in a postgresql superuser for the import process  (you can swap this with a user with reduced privileges later). You may update the config object for the development environment for simplicity.
-
-**Import ONS Postcode Data**
-
-Download the latest Office for National Statistic's "Postcode Lookup Dataset" ([in CSV here](https://geoportal.statistics.gov.uk/geoportal/catalog/main/home.page)). Unzip the data locally. Navigate to `postcodes.io/` and run `importons` passing the path to the CSV data.
-
-It should look something like this:
-
-```bash
-$ importons /path/to/data/ONSPD/Data/data.csv
+```
+$ npm run setup
 ```
 
-The import process takes around 10 minutes to complete. 
+This script will prompt you for Postgres superuser credentials. This privilege is required to create a new user, database, extensions and then to load the data. For the security conscious, you can find out how this works by [reading our installation notes](http://postcodes.io/docs#Install-notes) and [the script itself](/bin/setup). Alternative methods are also available but can be quite tedious.
+
+You can change the Postgres username/password yourself but you will need to update 'config/config.js' with the relevant credentials.
+
+The import process takes around 10 minutes to complete.
 
 **Run it**
 
 ```
-node server.js
-
-// Default environment is development (NODE_ENV=development)
+node server.js // Default environment is development
 ```
 
+## Contributions
 
+Contributions are welcome. 
 
 ## Testing
 
