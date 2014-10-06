@@ -50,9 +50,9 @@ var config = {
 		env : "test",
 		root: rootPath,
 		postgres: {
-			user: "postcodesio",
-			password: "postgres",
-			database: "",
+			user: "postgres",
+			password: "",
+			database: "postcodeio_testing",
 			host: "localhost",
 			port: 5432
 		},
