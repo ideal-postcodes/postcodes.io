@@ -27,7 +27,7 @@ BEGIN
       FROM   pg_catalog.pg_user
       WHERE  usename = '$USERNAME') THEN
 
-      CREATE ROLE $USERNAME LOGIN PASSWORD '';
+      CREATE ROLE $USERNAME LOGIN PASSWORD 'password';
    END IF;
 END
 \$body\$"

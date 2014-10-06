@@ -23,7 +23,7 @@ var config = {
 		root: rootPath,
 		postgres: {
 			user: "postcodesio",
-			password: "",
+			password: "password",
 			database: "postcodeiodb",	// Database name
 			host: "localhost",
 			port: 5432
@@ -51,7 +51,7 @@ var config = {
 		root: rootPath,
 		postgres: {
 			user: "postcodesio",
-			password: "",
+			password: "password",
 			database: "postcodeio_test",
 			host: "localhost",
 			port: 5432
@@ -76,7 +76,7 @@ var config = {
 		root: rootPath,
 		postgres: {
 			user: "postcodesio",
-			password: "",
+			password: "password",
 			database: "postcodesiodb",
 			host: "localhost",
 			port: 5432
