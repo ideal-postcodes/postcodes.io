@@ -22,9 +22,9 @@ var config = {
 		env : "development",
 		root: rootPath,
 		postgres: {
-			user: "postgres",
+			user: "postcodesio",
 			password: "",
-			database: "postcodeio",	// Database name
+			database: "postcodeiodb",	// Database name
 			host: "localhost",
 			port: 5432
 		},
@@ -75,9 +75,9 @@ var config = {
 		env : "production",
 		root: rootPath,
 		postgres: {
-			user: "docker",
-			password: "docker",
-			database: "postcodesio",
+			user: "postcodesio",
+			password: "",
+			database: "postcodesiodb",
 			host: "localhost",
 			port: 5432
 		},
