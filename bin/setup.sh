@@ -9,9 +9,9 @@ echo "In order to create, setup and download your database we need Postgres user
 read -p "Please provide your Postgres Username: [leave blank if your default user has superuser privileges] " POSTGRES_USER
 if [ -z "$POSTGRES_USER" ];
 then
-	PSQL="psql"
+	PSQL="psql -d template1"
 else
-	PSQL="psql --username=$POSTGRES_USER"
+	PSQL="psql --username=$POSTGRES_USER -d template1"
 fi
 
 # Create postgres user
