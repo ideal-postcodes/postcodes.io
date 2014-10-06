@@ -3,7 +3,6 @@ codepo_gb/
 .DS_Store
 Capfile
 config/deploy.rb
-logs
 .ruby-version
 .ruby-gemset
 ONSPD_*
