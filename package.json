@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "NODE_ENV=test mocha tests/ -R spec",
-    "start": "node server.js"
+    "start": "node server.js",
+    "setup": "./bin/setup.sh"
   },
   "bin": {
     "importons": "./bin/import.js",
