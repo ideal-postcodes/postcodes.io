@@ -6,7 +6,7 @@ echo "Postcodes.io Database Setup Script"
 
 # Gather user credentials with superuser privileges
 echo "In order to create, setup and download your database we need Postgres user credentials with superuser privileges to carry out some operations.\n"
-read -p "Please provide your Postgres Username: " POSTGRES_USER
+read -p "Postgresql Username: " POSTGRES_USER
 PSQL="psql --username=$POSTGRES_USER"
 
 # Create postgres user
@@ -43,7 +43,7 @@ fi
 
 # Grant Permissions on App User
 echo "Granting read (SELECT) permissions on new user..."
-if $PSQL --command "GRANT SELECT ON ALL TABLES IN SCHEMA public TO postcodesio;"
+if $PSQL -d template1 --command "GRANT SELECT ON ALL TABLES IN SCHEMA public TO postcodesio;"
 then
 	echo "Done\n"
 else
