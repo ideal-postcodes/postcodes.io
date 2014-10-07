@@ -3,7 +3,7 @@ USERNAME="postcodesio"
 LATEST=`cat latest`
 
 echo "Postcodes.io Database Setup Script"
-
+echo "----------------------------------"
 # Gather user credentials with superuser privileges
 echo "In order to create, setup and download your database we need Postgres user credentials with superuser privileges to carry out some operations.\n"
 echo "Your Postgresql user credentials will be used to create a new database and populate it with the latest addressing data hosted by ideal-postcodes.co.uk.\n"
