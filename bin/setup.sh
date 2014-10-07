@@ -12,9 +12,9 @@ PSQL="psql --username=$POSTGRES_USER"
 # Create postgres user
 # With thanks to Erwin Brandstetter (http://stackoverflow.com/questions/8092086/create-postgresql-role-user-if-it-doesnt-exist)
 
-echo "Creating new user $USERNAME if it does not already exist..."
+echo "\nCreating new user $USERNAME if it does not already exist..."
 
-$PSQL -d $DATABASE_NAME --quiet --command="DO
+$PSQL -d template1 --quiet --command="DO
 \$body\$
 BEGIN
    IF NOT EXISTS (
@@ -42,13 +42,20 @@ else
 fi
 
 # Grant Permissions on App User
-$PSQL --command "GRANT SELECT ON ALL TABLES IN SCHEMA public TO postcodesio;"
+echo "Granting read (SELECT) permissions on new user..."
+if $PSQL --command "GRANT SELECT ON ALL TABLES IN SCHEMA public TO postcodesio;"
+then
+	echo "Done\n"
+else
+	echo "Failed to grant privileges. Please check the error message and take action"
+	exit 1
+fi
 
 
 sleep 1
 
 # Download and install
-echo "Dowloading latest ONS dataset and importing to Postgresql...\n"
-
+echo "Dowloading latest ONS dataset and importing to Postgresql\n"
+echo "Please wait a few minutes for this operation to finish...\n"
 wget -O - $LATEST | gunzip -c | $PSQL -v ON_ERROR_STOP=1 --quiet $DATABASE_NAME
 echo "Done\n"
