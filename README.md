@@ -29,7 +29,7 @@ Postcodes.io is packaged with a script to setup and download the ONS Postcode Di
 $ npm run setup
 ```
 
-This script will prompt you for Postgres superuser credentials. This privilege is required to create a new user, database, extensions and then to load the data. For the security conscious, you can find out how this works by [reading our installation notes](http://postcodes.io/docs#Install-notes) and [the script itself](/bin/setup). Alternative methods are also available but can be quite tedious.
+This script will prompt you for Postgres superuser credentials. This privilege is required to create a new user, database, extensions and then to load the data. For the security conscious, you can find out how this works by [reading our installation notes](http://postcodes.io/docs#Install-notes) and [the script itself](/bin/setup). Other install methods are available but require a bit of extra work.
 
 You can change the Postgres username/password yourself but you will need to update 'config/config.js' with the relevant credentials.
 
