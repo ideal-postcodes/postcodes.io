@@ -43,7 +43,7 @@ fi
 
 # Grant Permissions on App User
 echo "Granting read (SELECT) permissions on new user..."
-if $PSQL -d template1 --command "GRANT SELECT ON ALL TABLES IN SCHEMA public TO postcodesio;"
+if $PSQL -d $DATABASE_NAME --command "GRANT SELECT ON ALL TABLES IN SCHEMA public TO $USERNAME;"
 then
 	echo "Done\n"
 else
