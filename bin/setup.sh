@@ -33,13 +33,17 @@ sleep 1
 
 # Create Database
 echo "Creating new database called $DATABASE_NAME..."
-if createdb -U $POSTGRES_USER -O $USERNAME $DATABASE_NAME
+if createdb -U $POSTGRES_USER $DATABASE_NAME
 then
 	echo "Done\n"
 else
 	echo "Failed to create database. Please check the error message and take action"
 	exit 1
 fi
+
+# Grant Permissions on App User
+$PSQL --command "GRANT SELECT ON ALL TABLES IN SCHEMA public TO postcodesio;"
+
 
 sleep 1
 
