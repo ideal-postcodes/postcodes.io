@@ -24,7 +24,7 @@ var config = {
 		postgres: {
 			user: "postcodesio",
 			password: "password",
-			database: "postcodeiodb",	// Database name
+			database: "postcodesiodb",	// Database name
 			host: "localhost",
 			port: 5432
 		},
