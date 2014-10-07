@@ -6,6 +6,8 @@ echo "Postcodes.io Database Setup Script"
 
 # Gather user credentials with superuser privileges
 echo "In order to create, setup and download your database we need Postgres user credentials with superuser privileges to carry out some operations.\n"
+echo "Your Postgresql user credentials will be used to create a new database and populate it with the latest addressing data hosted by ideal-postcodes.co.uk.\n"
+echo "A new Postgres user will also be created with read only privileges for Postcodes.io to access the data. Details of this user can be found in config/config.js\n"
 read -p "Postgresql Username: " POSTGRES_USER
 PSQL="psql --username=$POSTGRES_USER"
 
@@ -41,6 +43,14 @@ else
 	exit 1
 fi
 
+sleep 1
+
+# Download and install
+echo "Dowloading latest ONS dataset and importing to Postgresql\n"
+echo "Please wait a few minutes for this operation to finish...\n"
+wget -O - $LATEST | gunzip -c | $PSQL -v ON_ERROR_STOP=1 --quiet $DATABASE_NAME
+echo "Done\n"
+
 # Grant Permissions on App User
 echo "Granting read (SELECT) permissions on new user..."
 if $PSQL -d $DATABASE_NAME --command "GRANT SELECT ON ALL TABLES IN SCHEMA public TO $USERNAME;"
@@ -51,11 +61,5 @@ else
 	exit 1
 fi
 
-
-sleep 1
-
-# Download and install
-echo "Dowloading latest ONS dataset and importing to Postgresql\n"
-echo "Please wait a few minutes for this operation to finish...\n"
-wget -O - $LATEST | gunzip -c | $PSQL -v ON_ERROR_STOP=1 --quiet $DATABASE_NAME
-echo "Done\n"
+echo "Installation is complete."
+echo "Use $ node server.js to start a server on http://localhost:8000/"
