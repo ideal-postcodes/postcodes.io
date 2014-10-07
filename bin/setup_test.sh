@@ -59,4 +59,4 @@ sleep 1
 # Download and install
 echo "Enabling Postgis"
 
-$PSQL -d $DATABASE_NAME -c "CREATE EXTENSION postgis;"
+$PSQL -d $DATABASE_NAME -c "CREATE EXTENSION IF NOT EXISTS postgis;"

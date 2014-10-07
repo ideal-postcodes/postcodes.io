@@ -6,4 +6,4 @@ config/deploy.rb
 .ruby-version
 .ruby-gemset
 ONSPD_*
-logs/
+*.log
