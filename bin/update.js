@@ -26,12 +26,12 @@ function createPostgisExtension(callback) {
 }
 
 function dropRelation (callback) {
-	console.log("Nuking old postcode database...");
+	console.log("Nuking old update relation...");
 	Postcode._destroyRelation(callback);
 }
 
 function createRelation (callback) {
-	console.log("Creaing new postcode database...");
+	console.log("Creaing new update relation...");
 	Postcode._createRelation(callback);
 }
 
