@@ -20,7 +20,7 @@ We also have an end-to-end guide to install Postcodes.io on a fresh virtual mach
 ```bash
 $ git clone https://github.com/ideal-postcodes/postcodes.io.git
 
-& cd postcodes.io/ && npm install
+$ cd postcodes.io/ && npm install
 ```
 
 **Configure Postgres and Seed Database**
@@ -50,7 +50,9 @@ Contributions are welcome.
 ## Testing
 
 ```
-npm test
+$ npm run setup_test_db # create test database
+
+$ npm test
 ```
 
 ## License 
