@@ -31,8 +31,6 @@ var config = {
 		log : {
 			name : "postcodes.io",
 			streams: [{
-				path : path.join(rootPath, "/logs/development.log")	
-			}, {
 				stream: process.stdout
 			}]
 		}
