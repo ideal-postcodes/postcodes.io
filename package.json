@@ -10,7 +10,8 @@
     "test": "NODE_ENV=test mocha tests/ -R spec",
     "start": "node server.js",
     "setup": "./bin/setup.sh",
-    "setup_test_db": "./bin/setup_test.sh"
+    "setup_test_db": "./bin/setup_test.sh",
+    "generate_test_data": "./bin/generate_test_data.js"
   },
   "bin": {
     "importons": "./bin/import.js",
