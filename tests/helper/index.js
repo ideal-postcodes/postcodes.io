@@ -55,13 +55,13 @@ function connectToDb () {
 
 function seedPostcodeDb (callback) {
 	Postcode._createRelation(function (error, result) {
-		if (error) return callback(error, null)
+		if (error) return callback(error, null);
 		Postcode.clear(function (error, result) {
-			if (error) return callback(error, null)
+			if (error) return callback(error, null);
 			Postcode.seedPostcodes(seedPostcodePath, function (error, result) {
-				if (error) return callback(error, null)
+				if (error) return callback(error, null);
 				Postcode.populateLocation(function (error, result) {
-					if (error) throw error;
+					if (error) return callback(error, null);
 					Postcode.createIndexes(function (error, result) {
 						if (error) return callback(error, null)
 						callback(null, result);
