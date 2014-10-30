@@ -14,7 +14,7 @@ describe("Postcodes routes", function () {
 		helper.clearPostcodeDb(function (error, result) {
 			if (error) return done(error);
 			helper.seedPostcodeDb(function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
