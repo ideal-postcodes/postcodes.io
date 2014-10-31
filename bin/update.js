@@ -64,9 +64,9 @@ var executionStack = [createPostgisExtension,
 											createRelation, 
 											importRawCsv,
 											populateLocation, 
-											recreateIndexes,
-											dropOldRelation,
-											renameNewRelation
+											recreateIndexes
+											// dropOldRelation,
+											// renameNewRelation
 											];
 
 async.series(executionStack, function (error, result) {
