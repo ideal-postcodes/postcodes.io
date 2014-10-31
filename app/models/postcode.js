@@ -96,7 +96,7 @@ Postcode.prototype.random = function (callback) {
 }
 
 Postcode.prototype.populateLocation = function (callback) {
-	var query = "UPDATE postcodes SET location=ST_GeogFromText" + 
+	var query = "UPDATE " + this.relation + " SET location=ST_GeogFromText" + 
 							"('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')" + 
 							" WHERE northings!=0 AND EASTINGS!=0";
 	this._query(query, callback);
