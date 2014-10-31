@@ -7,3 +7,4 @@ config/deploy.rb
 .ruby-gemset
 ONSPD_*
 *.log
+tests/other_tests
