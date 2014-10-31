@@ -260,6 +260,11 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 			
 
 	var transform = function (row, index) {
+		// Skip if header
+		if (index === 0 && row[0] === "pcd") {
+			return null;
+		}
+
 		// Skip row if terminated
 		if (row[4].length !== 0) {
 			return null;
@@ -302,7 +307,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(nuts[row[22]]);										// NUTS
 		finalRow.push(row[2].split(" ")[1]);						// Incode
 		finalRow.push(row[2].split(" ")[0]);						// Outcode
-		finalRow.push(ccg[lsoa[row[42]]]);							// Clinical Commissioning Group
+		finalRow.push(ccg[row[46]]);										// Clinical Commissioning Group
 
 		return finalRow;
 	}
