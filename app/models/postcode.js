@@ -185,52 +185,56 @@ Postcode.prototype.toJson = function (address) {
 /*
 *  	ONS CSV Data Reference
 *
-*		0 - Unit postcode (7char)
-*		1 - Unit postcode (8char)
-*		2 - Unit postcode (variable)											Y
-*		3 - Date of intro
-*		4 - Date of termination (null = live)
-*		5 - County 																				Y
-*		6 - District 																			Y
-*		7 - Ward 																					Y
-*		8 - Postcode user type (small/large)
-*		9 - Easting 																			Y
-*		10 - Northings 																		Y
-*		11 - Positional quality indicator 								Y
-*		12 - Strategic health authority (SHA) (nhs_ha) 		Y
-*		13 - Pan SHA (nhs_regional) 											
-*		14 - Country 																			Y
-*		15 - Region (region code, GOR)										Y
-*		16 - Standard statistical region (SSR)
-*		17 - Westminster parliamentary constituency 			Y
-*		18 - European Electoral Register									Y
-*		19 - Local learning and skills council
-*		20 - Travel to work area
-*		21 - Primary care trust 													Y
-*		22 - NUTS / LAU areas 														Y
-*		23 - 1991 census ed
-*		24 - 1991 census ed with census code
-*		25 - ed positional quality indicator
-*		26 - Previous SHA prior to 2006
-*		27 - LEA
-*		28 - Health Authority (old style)
-*		29 - 1991 ward
-*		30 - 1991 ward OGSS code
-*		31 - 1998 ward
-*		32 - 2005 statistical ward
-*		33 - 2001 census output area
-*		34 - census area statistics ward
-*		35 - national park
-*		36 - 2001 LSOA
-*		37 - 2001 MSOA
-*		38 - 2001 rural/urban indicator
-*		39 - 2001 OAC
-*		40 - Old PCT
-*		41 - 2011 census output areas 									Y
-*		42 - 2011 LSOA																	Y
-*		43 - 2011 MSOA 																	Y
-*		44 - Parish 																		Y
-*		45 - Census workplace zone
+(0) pcd - Unit Postcode (7 Char)
+(1) pcd2 - Unit Postcode (8 Char)
+(2) pcds - Unit Postcode (Variable) 											Y
+(3) dointr - Date of Introduction
+(4) doterm - Date of Termnation
+(5) oscty - County 																				Y
+(6) oslaua - Local Authority District (LAD)								Y
+(7) osward - (Electoral) Ward / Sub-division							Y
+(8) usertype - Postcode User Type
+(9) oseast1m - Eastings																		Y
+(10) osnrth1m - Northings																	Y
+(11) osgrdind - Positional Quality Indicator   						Y
+(12) oshlthau - Strategic Health Authority 								Y
+(13) hro - Pan SHA
+(14) ctry - Country 																			Y
+(15) gor - Region 																				Y
+(16) streg - Standard Region (SSR)
+(17) pcon - Westminster Parliamentary Constituency  		 	Y
+(18) eer - European Electoral Region											Y
+(19) teclec - Local Learning and Skills Council
+(20) ttwa - Travel to Work Area
+(21) pct - Primary Care Trust															Y
+(22) nuts - LAU2 Areas																		Y
+(23) psed - 1991 Census Enumeration District (code range)
+(24) cened - 1991 Census Enumeration District (code)
+(25) edind - ED Positional Quality Indicator
+(26) oshaprev - Previous SHA
+(27) lea - Local Education Authority
+(28) oldha - Health Authority (old style)
+(29) wardc91 - 1991 Ward (code)
+(30) wardo91 - 1991 Ward (code range)
+(31) ward98 - 1998 Ward
+(32) statsward - 2005 Statistical Ward
+(33) oa01 - 2001 Census Output Area
+(34) casward - Census Area Statistics (CAS)
+(35) park - National Park
+(36) lsoa01 - 2001 LSOA
+(37) msoa01 - 2001 MSOA
+(38) ur01ind - 2001 Census (Urban / Rural Indicator)
+(39) oac01 - 2001 Census Output Area Classification
+(40) oldpct - Old Primary Care Trust
+(41) oa11 - 2011 Census Output Areas 										Y
+(42) lsoa11 - 2011 LSOA 																Y
+(43) msoa11 - 2011 MSOA 																Y
+(44) parish - Parish 																		Y
+(45) wz11 - Census Workplace Zone
+(46) ccg - Clinical Commissioning Group 								Y - NEW
+(47) bua11 - Built-up Area
+(48) buasd11 - Built-up Area Sub-division
+(49) ru11ind - Census Rural Urban Classification - - 
 *
 *
 */
