@@ -1,6 +1,6 @@
 # Postcodes.io [![Build Status](https://travis-ci.org/ideal-postcodes/postcodes.io.png)](https://travis-ci.org/ideal-postcodes/postcodes.io)
 
-Free Postcode API server using the Office for National Statistics' postcode directory.
+Query for UK postcodes and geolocations over HTTP. Postcodes.io uses the Office for National Statistics Postcode Directory.
 
 Documentation can be found at [postcodes.io](http://postcodes.io)
 
