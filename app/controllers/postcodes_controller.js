@@ -1,7 +1,10 @@
-var logger = require("commonlog-bunyan"),
-		async = require("async"),
-		S = require("string"),
-		Postcode = require("../models/postcode");
+var logger = require("commonlog-bunyan");
+var async = require("async");
+var S = require("string");
+var Postcode = require("../models/postcode");
+var path = require("path");
+var env = process.env.NODE_ENV || "development";
+var defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
 
 exports.show = function (request, response, next) {
 	var postcode = request.params.postcode;
@@ -90,10 +93,11 @@ function bulkGeocode (request, response, next) {
 		return next();
 	}
 
-	if (geolocations.length > 100) {
+	var MAX_GEOLOCATIONS = defaults.bulkGeocode.geolocations.MAX;
+	if (geolocations.length > MAX_GEOLOCATIONS) {
 		response.jsonApiResponse = {
 			status: 400,
-			error: "Too many locations submitted. Up to 100 locations can be bulk requested at a time"
+			error: "Too many locations submitted. Up to " + MAX_GEOLOCATIONS + " locations can be bulk requested at a time"
 		};
 		return next();
 	}
@@ -147,10 +151,12 @@ function bulkLookupPostcodes (request, response, next) {
 		return next();
 	}
 
-	if (postcodes.length > 100) {
+	var MAX_POSTCODES = defaults.bulkLookups.postcodes.MAX;
+
+	if (postcodes.length > MAX_POSTCODES) {
 		response.jsonApiResponse = {
 			status: 400,
-			error: "Too many postcodes submitted. Up to 100 postcodes can be bulk requested at a time"
+			error: "Too many postcodes submitted. Up to " + MAX_POSTCODES + " postcodes can be bulk requested at a time"
 		};
 		return next();
 	}
