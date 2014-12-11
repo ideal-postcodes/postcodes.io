@@ -1,11 +1,13 @@
-var	fs = require("fs"),
-		S = require("string"),
-		util = require("util"),
-		path = require("path"),
-		Pc = require("postcode"),
-		async = require("async"),
-		OSPoint = require("ospoint"),
-		Base = require("./index").Base;
+var fs = require("fs");
+var S = require("string");
+var util = require("util");
+var path = require("path");
+var Pc = require("postcode");
+var async = require("async");
+var OSPoint = require("ospoint");
+var Base = require("./index").Base;
+var env = process.env.NODE_ENV || "development";
+var defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
 
 var postcodeSchema = {
 	"id": "SERIAL PRIMARY KEY",
@@ -103,14 +105,16 @@ Postcode.prototype.populateLocation = function (callback) {
 }
 
 Postcode.prototype.search = function (postcode, options, callback) {
+	var DEFAULT_LIMIT = defaults.search.limit.DEFAULT;
+	var MAX_LIMIT = defaults.search.limit.MAX;
 	var limit;
 	if (typeof options === 'function') {
 		callback = options;
 		limit = 10;
 	} else {
 		limit = parseInt(options.limit, 10);
-		if (isNaN(limit)) limit = 10;
-		if (limit > 100) limit = 100;
+		if (isNaN(limit)) limit = DEFAULT_LIMIT;
+		if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 	}
 	
 	var	query = "SELECT * FROM " + this.relation  + " WHERE pc_compact ~ $1 LIMIT $2",
@@ -126,11 +130,16 @@ Postcode.prototype.search = function (postcode, options, callback) {
 }
 
 Postcode.prototype.nearestPostcodes = function (params, callback) {
-	var radius = parseFloat(params.radius) || 100;
-	if (radius > 1000) radius = 1000;
+	var DEFAULT_RADIUS = defaults.nearest.radius.DEFAULT;
+	var MAX_RADIUS = defaults.nearest.radius.MAX;
+	var DEFAULT_LIMIT = defaults.nearest.limit.DEFAULT;
+	var MAX_LIMIT = defaults.nearest.limit.MAX;
 
-	var limit = parseInt(params.limit, 10) || 10;
-	if (limit > 100) limit = 100;
+	var radius = parseFloat(params.radius) || DEFAULT_RADIUS;
+	if (radius > MAX_RADIUS) radius = MAX_RADIUS;
+
+	var limit = parseInt(params.limit, 10) || DEFAULT_LIMIT;
+	if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 
 	var longitude = parseFloat(params.longitude);
 	if (isNaN(longitude)) return callback(new Error("Invalid longitude"), null);
