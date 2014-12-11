@@ -1,6 +1,34 @@
-var path = require("path"),
-		bsyslog = require("bunyan-syslog"),
-		rootPath = path.join(__dirname, '../');
+var path = require("path");
+var bsyslog = require("bunyan-syslog");
+var rootPath = path.join(__dirname, '../');
+var defaults = {
+	nearest: {
+		radius: {
+			DEFAULT: 100,
+			MAX: 1000
+		},
+		limit: {
+			DEFAULT: 10,
+			MAX: 100
+		}
+	},
+	search: {
+		limit: {
+			DEFAULT: 10,
+			MAX: 100
+		}
+	},
+	bulkGeocode: {
+		geolocations: {
+			MAX: 100
+		}
+	},
+	bulkLookups: {
+		postcodes: {
+			MAX: 100
+		}
+	}
+};
 
 var config = {
 
@@ -21,6 +49,7 @@ var config = {
 	development : {
 		env : "development",
 		root: rootPath,
+		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
 			password: "password",
@@ -47,6 +76,7 @@ var config = {
 	test: {
 		env : "test",
 		root: rootPath,
+		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
 			password: "password",
@@ -72,6 +102,7 @@ var config = {
 	production : {
 		env : "production",
 		root: rootPath,
+		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
 			password: "password",
