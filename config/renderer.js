@@ -1,5 +1,3 @@
-var logger = require("commonlog-bunyan").logger;
-
 /**
  * Returns JSON response on behalf of routes that return `response.jsonApiResponse`
  *
@@ -36,7 +34,7 @@ function errorRenderer (error, request, response, next) {
 
 	response.status(500).send(message);
 	
-	logger.error({error: error, stack: error.stack});
+	console.log(error);
 }
 
 /**
