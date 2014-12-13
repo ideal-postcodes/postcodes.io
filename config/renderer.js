@@ -1,3 +1,5 @@
+var logger = require("commonlog-bunyan").logger;
+
 /**
  * Returns JSON response on behalf of routes that return `response.jsonApiResponse`
  *
