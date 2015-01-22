@@ -5,7 +5,7 @@ var defaults = {
 	nearest: {
 		radius: {
 			DEFAULT: 100,
-			MAX: 5000
+			MAX: 2000
 		},
 		limit: {
 			DEFAULT: 10,
