@@ -132,6 +132,12 @@ Postcode.prototype.search = function (postcode, options, callback) {
 	});
 }
 
+var nearestPostcodeQuery = "SELECT *, ST_Distance(location, " + 
+	" ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance " + 
+	"FROM postcodes " + 
+	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
+	"ORDER BY distance LIMIT $4";
+
 Postcode.prototype.nearestPostcodes = function (params, callback) {
 	var DEFAULT_RADIUS = defaults.nearest.radius.DEFAULT;
 	var MAX_RADIUS = defaults.nearest.radius.MAX;
@@ -150,12 +156,7 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 	var latitude = parseFloat(params.latitude);
 	if (isNaN(latitude)) return callback(new Error("Invalid latitude"), null);
 
-	var query = "SELECT *, ST_Distance(location, " + 
-							" ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance " + 
-							"FROM postcodes " + 
-							"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
-							"ORDER BY distance LIMIT $4";
-	this._query(query, [longitude, latitude, radius, limit], function (error, result) {
+	this._query(nearestPostcodeQuery, [longitude, latitude, radius, limit], function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
