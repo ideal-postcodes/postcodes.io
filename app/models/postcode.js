@@ -104,6 +104,8 @@ Postcode.prototype.populateLocation = function (callback) {
 	this._query(query, callback);
 }
 
+var searchRegexp = /\W/g;
+
 Postcode.prototype.search = function (postcode, options, callback) {
 	var DEFAULT_LIMIT = defaults.search.limit.DEFAULT;
 	var MAX_LIMIT = defaults.search.limit.MAX;
@@ -117,8 +119,9 @@ Postcode.prototype.search = function (postcode, options, callback) {
 		if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 	}
 	
-	var	query = "SELECT * FROM " + this.relation  + " WHERE pc_compact ~ $1 LIMIT $2",
-			re = "^" + postcode.toUpperCase().replace(" ", "") + ".*";
+	var	query = "SELECT * FROM " + this.relation  + " WHERE pc_compact ~ $1 LIMIT $2";
+	// Strip spaces and any regex special characters
+	var re = "^" + postcode.toUpperCase().replace(searchRegexp, "") + ".*";
 			
 	this._query(query, [re, limit], function (error, result) {
 		if (error) return callback(error, null);
