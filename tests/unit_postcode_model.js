@@ -11,9 +11,9 @@ describe("Postcode Model", function () {
 	before(function (done) {
 		this.timeout(0);
 		helper.clearPostcodeDb(function (error, result) {
-			if (error) throw error;
+			if (error) return done(error);
 			helper.seedPostcodeDb(function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -35,7 +35,7 @@ describe("Postcode Model", function () {
 	describe("#find", function () {
 		it ("should return postcode with the right attributes", function (done) {
 			Postcode.find(testPostcode, function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(result.postcode, testPostcode);
 				helper.isRawPostcodeObject(result);
 				done();
@@ -43,21 +43,21 @@ describe("Postcode Model", function () {
 		});
 		it ("should return null for null/undefined postcode search", function (done) {
 			Postcode.find(null, function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isNull(result);
 				done()
 			});
 		});
 		it ("should be insensitive to space", function (done) {
 			Postcode.find(testPostcode.replace(/\s/, ""), function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(result.postcode, testPostcode);
 				done();
 			});
 		});
 		it ("should return null if postcode does not exist", function (done) {
 			Postcode.find("ID11QD", function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isNull(result);
 				done();
 			});
@@ -68,7 +68,7 @@ describe("Postcode Model", function () {
 		it ("should return a list of candidate postcodes for given search term", function (done) {
 			testPostcode = testPostcode.slice(0, 2);
 			Postcode.search(testPostcode, function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.notEqual(result.length, 0);
 				result.forEach(function (postcode) {
 					helper.isRawPostcodeObject(postcode);
@@ -79,7 +79,7 @@ describe("Postcode Model", function () {
 		it ("should be case insensitive", function (done) {
 			testPostcode = testPostcode.slice(0, 2).toLowerCase();
 			Postcode.search(testPostcode, function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.notEqual(result.length, 0);
 				result.forEach(function (postcode) {
 					helper.isRawPostcodeObject(postcode);
@@ -90,7 +90,7 @@ describe("Postcode Model", function () {
 		it ("should work regardless of spaces", function (done) {
 			testPostcode = testPostcode.slice(0, 4).replace(" ", "");
 			Postcode.search(testPostcode, function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.notEqual(result.length, 0);
 				result.forEach(function (postcode) {
 					helper.isRawPostcodeObject(postcode);
@@ -103,7 +103,7 @@ describe("Postcode Model", function () {
 	describe("#random", function () {
 		it ("should return a random postcode", function (done) {
 			Postcode.random(function (error, postcode) {
-				if (error) throw error;
+				if (error) return done(error);
 				helper.isRawPostcodeObject(postcode);
 				done();
 			});
@@ -113,7 +113,7 @@ describe("Postcode Model", function () {
 	describe("#findOutcode", function () {
 		it ("should return the outcode with the right attributes", function (done) {
 			Postcode.findOutcode(testOutcode, function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(result.outcode, testOutcode);
 				assert.property(result, "northings");
 				assert.property(result, "eastings");
@@ -124,21 +124,21 @@ describe("Postcode Model", function () {
 		});
 		it ("should return null if no matching outcode", function (done) {
 			Postcode.findOutcode("BOGUSOUTCODE", function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(result, null);
 				done();
 			});
 		});
 		it ("should return null for a plausible but non-existent postcode", function (done) {
 			Postcode.findOutcode("EJ12", function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(result, null);
 				done();
 			});
 		});
 		it ("should be insensitive to space", function (done) {
 			Postcode.findOutcode(testOutcode + "    ", function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(result.outcode, testOutcode);
 				assert.property(result, "northings");
 				assert.property(result, "eastings");
@@ -149,7 +149,7 @@ describe("Postcode Model", function () {
 		});
 		it ("should be insensitive to case", function (done) {
 			Postcode.findOutcode(testOutcode.toLowerCase(), function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(result.outcode, testOutcode);
 				assert.property(result, "northings");
 				assert.property(result, "eastings");
@@ -175,7 +175,7 @@ describe("Postcode Model", function () {
 			var params = location;
 			
 			Postcode.nearestPostcodes(params, function (error, postcodes) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(postcodes);
 				postcodes.forEach(function (postcode) {
 					helper.isRawPostcodeObject(postcode);
@@ -190,7 +190,7 @@ describe("Postcode Model", function () {
 				limit: 1
 			}
 			Postcode.nearestPostcodes(params, function (error, postcodes) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(postcodes);
 				assert.equal(postcodes.length, 1);
 				postcodes.forEach(function (postcode) {
@@ -211,9 +211,9 @@ describe("Postcode Model", function () {
 				};
 
 			Postcode.nearestPostcodes(nearby, function (error, postcodes) {
-				if (error) throw error;
+				if (error) return done(error);
 				Postcode.nearestPostcodes(farAway, function (error, farawayPostcodes) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.isTrue(farawayPostcodes.length >= postcodes.length);
 					done();
 				});
@@ -226,7 +226,7 @@ describe("Postcode Model", function () {
 				limit: "Bogus"
 			};
 			Postcode.nearestPostcodes(params, function (error, postcodes) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isTrue(postcodes.length <= 10);
 				done();
 			});
@@ -244,9 +244,9 @@ describe("Postcode Model", function () {
 				};
 
 			Postcode.nearestPostcodes(nearby, function (error, postcodes) {
-				if (error) throw error;
+				if (error) return done(error);
 				Postcode.nearestPostcodes(farAway, function (error, farawayPostcodes) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.isTrue(farawayPostcodes.length >= postcodes.length);
 					done();
 				});
