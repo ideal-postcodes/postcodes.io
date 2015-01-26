@@ -98,6 +98,17 @@ describe("Postcode Model", function () {
 				done();
 			});
 		});
+		it ("should strip out non digits, numbers or spaces	for search", function (done) {
+			testPostcode = testPostcode.slice(0, 2) + "[]";
+			Postcode.search(testPostcode, function (error, result) {
+				if (error) return done(error);
+				assert.notEqual(result.length, 0);
+				result.forEach(function (postcode) {
+					helper.isRawPostcodeObject(postcode);
+				});
+				done();
+			});
+		});
 	});
 
 	describe("#random", function () {
