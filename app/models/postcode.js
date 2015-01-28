@@ -79,16 +79,12 @@ Postcode.prototype.find = function (postcode, callback) {
 	});
 }
 
-Postcode.prototype.random = function (callback) {
-	var query	=	"SELECT * FROM  ("+
-					    "SELECT 1 + floor(random() * (SELECT count(id) FROM postcodes))::integer AS id "+
-					    "FROM   generate_series(1, 100) g "+
-					    "GROUP BY 1 "+
-					    ") r "+
-							"JOIN postcodes USING (id) "+
-							"LIMIT  1;"
+var randomQuery	=	"SELECT * FROM  ("+
+  "SELECT 1 + floor(random() * (SELECT count(id) FROM postcodes))::integer AS id "+
+  "FROM   generate_series(1, 100) g GROUP BY 1 ) r JOIN postcodes USING (id) LIMIT 1;"
 
-	this._query(query, function (error, result) {
+Postcode.prototype.random = function (callback) {
+	this._query(randomQuery, function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
@@ -133,8 +129,7 @@ Postcode.prototype.search = function (postcode, options, callback) {
 }
 
 var nearestPostcodeQuery = "SELECT *, ST_Distance(location, " + 
-	" ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance " + 
-	"FROM postcodes " + 
+	"ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance FROM postcodes " + 
 	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
 	"ORDER BY distance LIMIT $4";
 
@@ -163,7 +158,19 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 		}
 		return callback(null, result.rows);
 	});
-}
+};
+
+var nearestPostcodeCount = "SELECT *, ST_Distance(location, " + 
+	"ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance FROM postcodes " + 
+	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) LIMIT $4";
+
+Postcode.prototype.nearestCount = function (params, callback) {
+
+};
+
+var outcodeQuery = "Select avg(northings) as northings, avg(eastings) as eastings, " + 
+	"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry))" + 
+	" as latitude FROM postcodes WHERE postcodes.outcode=$1";
 
 Postcode.prototype.findOutcode = function (outcode, callback) {
 	outcode = outcode.trim().toUpperCase();
@@ -172,11 +179,7 @@ Postcode.prototype.findOutcode = function (outcode, callback) {
 		return callback(null, null);
 	}
 
-	var query = "Select avg(northings) as northings, avg(eastings) as eastings, " + 
-							"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry))" + 
-							" as latitude FROM postcodes WHERE postcodes.outcode=$1";
-
-	this._query(query, [outcode], function (error, result) {
+	this._query(outcodeQuery, [outcode], function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length !== 1) return callback(null, null);
 		var outcodeResult = result.rows[0];
