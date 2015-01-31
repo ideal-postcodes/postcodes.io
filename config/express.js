@@ -1,6 +1,6 @@
 var logger = require("commonlog-bunyan").logger;
 var morgan = require("morgan");
-var favicon = require("static-favicon");
+var favicon = require("serve-favicon");
 var bodyParser = require("body-parser");
 var express = require("express");
 var path = require("path");
