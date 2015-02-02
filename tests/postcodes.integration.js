@@ -165,7 +165,7 @@ describe("Postcodes routes", function () {
 		});
 	});
 
-	describe("Post /", function () {
+	describe("POST /postcodes", function () {
 		var bulkLength = 10,
 				testPostcodes, testLocations;
 
@@ -359,7 +359,7 @@ describe("Postcodes routes", function () {
 		});
 	});
 
-	describe("/:postcode", function () {
+	describe("GET /postcodes/:postcode", function () {
 		it ("should return 200 if postcode found", function (done) {
 			var path = ["/postcodes/", encodeURI(testPostcode)].join("");
 			request(app)
@@ -401,7 +401,7 @@ describe("Postcodes routes", function () {
 		});
 	});
 
-	describe("/outcodes/:outcode", function (done) {
+	describe("GET /outcodes/:outcode", function (done) {
 		it ("should return correct geolocation data for a given outcode", function (done) {
 			var path = ["/outcodes/", encodeURI(testOutcode)].join("");
 			request(app)
@@ -483,7 +483,7 @@ describe("Postcodes routes", function () {
 		});
 	});
 
-	describe("/:postcode/validate", function () {
+	describe("GET /postcodes/:postcode/validate", function () {
 		it ("should return true if postcode found", function (done) {
 			var path = ["/postcodes/", encodeURI(testPostcode), "/validate"].join("");
 			request(app)
@@ -524,7 +524,7 @@ describe("Postcodes routes", function () {
 		});
 	});
 
-	describe("/:postcode/nearest", function () {
+	describe("GET /postcodes/:postcode/nearest", function () {
 
 		it ("should return a list of nearby postcodes", function (done) {
 			var uri = encodeURI("/postcodes/" + testPostcode + "/nearest");
@@ -641,7 +641,7 @@ describe("Postcodes routes", function () {
 		});
 	});
 
-	describe("/random/postcode", function () {
+	describe("GET /random/postcode", function () {
 		it ("should return a random postcode", function (done) {
 			var path = "/random/postcodes";
 			request(app)
@@ -668,7 +668,7 @@ describe("Postcodes routes", function () {
 		});
 	});
 
-	describe("/:postcode/autocomplete", function () {
+	describe("GET /postcodes/:postcode/autocomplete", function () {
 		var uri, limit;
 
 		it ("should return a list of matching postcodes only", function (done) {
@@ -795,7 +795,7 @@ describe("Postcodes routes", function () {
 		});
 	});
 
-	describe("#/lon/:longitude/lat/latitude", function () {
+	describe("GET /postcodes/lon/:longitude/lat/latitude", function () {
 		var loc;
 
 		beforeEach(function (done) {
