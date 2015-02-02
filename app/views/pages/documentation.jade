@@ -215,6 +215,14 @@ block content
 						code radius=
 						|  (not required) Limits number of postcodes matches to return. Defaults to 100 meteres. Needs to be less than 2,000m.
 
+					h4 Legacy
+
+					p Note that the old style of reverse geocoding (including optional headers above) will still be supported. Namely,
+
+					pre
+						h4 
+							.http-method GET 
+							| https://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
 
 					h3#Bulk-Geocode-Postcode Bulk Reverse Geocoding
 
