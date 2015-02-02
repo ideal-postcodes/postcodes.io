@@ -193,6 +193,20 @@ function bulkLookupPostcodes (request, response, next) {
 }
 
 exports.query = function (request, response, next) {
+	if (request.query.latitude && request.query.longitude) {
+		request.params.latitude = request.query.latitude;
+		request.params.longitude = request.query.longitude;
+		nearestPostcodes(request, response, next);
+		return;
+	}
+
+	if (request.query.lat && request.query.lon) {
+		request.params.latitude = request.query.lat;
+		request.params.longitude = request.query.lon;
+		nearestPostcodes(request, response, next);
+		return;
+	}
+
 	var searchTerm = request.query.q || request.query.query,
 			limit = request.query.limit;
 
