@@ -76,7 +76,7 @@ $(function () {
 		var $result = $("#geocode-postcode-result"),
 				lon = $("#lon-input").val(),
 				lat = $("#lat-input").val();
-		$.get(encodeURI("postcodes/lon/" + lon +"/lat/" + lat))
+		$.get(encodeURI("postcodes?lon=" + lon +"&lat=" + lat))
 		.done(function (data) {
 			displayJsonResult($result, data);
 		})

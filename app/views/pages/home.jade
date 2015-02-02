@@ -64,9 +64,9 @@ block content
 						h4.method-title Get nearest postcodes for a given longitude &amp; latitude
 						h4
 							span.http-method GET
-							| api.postcodes.io/postcodes/lon/
+							| api.postcodes.io/postcodes?lon=
 							input.rest-resource(value=":longitude")#lon-input
-							| /lat/
+							| &amp;lat=
 							input.rest-resource(value=":latitude")#lat-input
 							a(href="#")#geocode-postcode Request
 						pre.code-box#geocode-postcode-result
