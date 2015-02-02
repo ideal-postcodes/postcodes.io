@@ -195,6 +195,10 @@ describe("Postcodes routes", function () {
 		it ("should be sensitive to distance query", function (done) {
 			request(app)
 			.get(uri)
+			.query({
+				lon: loc.longitude,
+				lat: loc.latitude
+			})
 			.expect(200)
 			.end(function (error, firstResponse) {
 				if (error) throw error;
@@ -284,10 +288,6 @@ describe("Postcodes routes", function () {
 		});
 		it ("should respond to options", function (done) {
 			request(app)
-			.query({
-				lon: loc.longitude,
-				lat: loc.latitude
-			})
 			.options(uri)
 			.expect(204)
 			.end(function (error, response) {
