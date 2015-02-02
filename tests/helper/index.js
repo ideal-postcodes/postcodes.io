@@ -6,6 +6,7 @@ var assert = require("chai").assert;
 var randomString = require("random-string");
 var rootPath = path.join(__dirname, "../../");
 var env = process.env.NODE_ENV || "development";
+var NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
 var Base = require(path.join(rootPath, "app/models"));
 var config = require(path.join(rootPath + "/config/config"))(env);
 var Postcode = require(path.join(rootPath, "app/models/postcode"));
@@ -54,6 +55,9 @@ function connectToDb () {
 }
 
 function seedPostcodeDb (callback) {
+	if (NO_RELOAD_DB) {
+		return callback(null);
+	}
 	Postcode._createRelation(function (error, result) {
 		if (error) return callback(error, null);
 		Postcode.clear(function (error, result) {
@@ -72,7 +76,10 @@ function seedPostcodeDb (callback) {
 	});
 }
 
-function clearPostcodeDb(callback) {
+function clearPostcodeDb(callback, force) {
+	if (NO_RELOAD_DB) {
+		return callback(null);
+	}
 	Postcode._destroyRelation(callback);
 }
 

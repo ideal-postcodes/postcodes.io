@@ -45,7 +45,6 @@ describe("Postcodes routes with JSONP", function () {
 		});
 	});
 
-
 	after(function (done) {
 		helper.clearPostcodeDb(done);
 	});
