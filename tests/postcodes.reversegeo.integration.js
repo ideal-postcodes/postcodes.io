@@ -169,7 +169,7 @@ describe("Postcodes routes", function () {
 			});
 		});
 
-		it ("should return a list of nearby postcodes", function (done) {
+		it ("returns a list of nearby postcodes", function (done) {
 			request(app)
 			.get(uri)
 			.query({
@@ -192,7 +192,30 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should be sensitive to distance query", function (done) {
+		it ("accepts full spelling of longitude and latitude", function (done) {
+			request(app)
+			.get(uri)
+			.query({
+				longitude: loc.longitude,
+				latitude: loc.latitude
+			})
+			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.isTrue(response.body.result.length > 0);
+				response.body.result.forEach(function (postcode) {
+					helper.isPostcodeObject(postcode);
+				});
+				assert.isTrue(response.body.result.some(function (elem) {
+					return elem.postcode === loc.postcode;
+				}));
+				done();
+			});
+		});
+		it ("is sensitive to distance query", function (done) {
 			request(app)
 			.get(uri)
 			.query({
@@ -217,7 +240,7 @@ describe("Postcodes routes", function () {
 				});
 			});
 		});
-		it ("should be sensitive to limit query", function (done) {
+		it ("is sensitive to limit query", function (done) {
 			request(app)
 			.get(uri)
 			.query({
@@ -232,7 +255,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should throw a 400 error if invalid longitude", function (done) {
+		it ("returns a 400 error if invalid longitude", function (done) {
 			request(app)
 			.get(uri)
 			.query({
@@ -245,7 +268,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should throw a 400 error if invalid latitude", function (done) {
+		it ("returns a 400 error if invalid latitude", function (done) {
 			request(app)
 			.get(uri)
 			.query({
@@ -258,7 +281,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should throw a 400 error if invalid limit", function (done) {
+		it ("returns a 400 error if invalid limit", function (done) {
 			request(app)
 			.get(uri)
 			.query({ 
@@ -272,7 +295,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should throw a 400 error if invalid distance", function (done) {
+		it ("returns a 400 error if invalid distance", function (done) {
 			request(app)
 			.get(uri)
 			.query({
@@ -286,7 +309,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should respond to options", function (done) {
+		it ("responds to options", function (done) {
 			request(app)
 			.options(uri)
 			.expect(204)
