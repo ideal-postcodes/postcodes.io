@@ -66,14 +66,16 @@ describe("Postcodes routes", function () {
 		});
 		it ("should be sensitive to distance query", function (done) {
 			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
-
 			request(app)
 			.get(uri)
 			.expect(200)
 			.end(function (error, firstResponse) {
 				if (error) throw error;
 				request(app)
-				.get(uri + encodeURI("?radius=2000"))
+				.get(uri)
+				.query({
+					radius: 2000
+				})
 				.expect(200)
 				.end(function (error, secondResponse) {
 					if (error) throw error;
@@ -83,9 +85,12 @@ describe("Postcodes routes", function () {
 			});
 		});
 		it ("should be sensitive to limit query", function (done) {
-			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude + "?limit=1");
+			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 			request(app)
 			.get(uri)
+			.query({
+				limit: 1
+			})
 			.expect(200)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -94,7 +99,7 @@ describe("Postcodes routes", function () {
 			});
 		});
 		it ("should throw a 400 error if invalid longitude", function (done) {
-			var uri = encodeURI("/postcodes/lon/" + "BOGUS" + "/lat/" + loc.latitude + "?limit=1");
+			var uri = encodeURI("/postcodes/lon/" + "BOGUS" + "/lat/" + loc.latitude);
 			request(app)
 			.get(uri)
 			.expect(400)
@@ -114,9 +119,12 @@ describe("Postcodes routes", function () {
 			});
 		});
 		it ("should throw a 400 error if invalid limit", function (done) {
-			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude + "?limit=bogus");
+			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 			request(app)
 			.get(uri)
+			.query({ 
+				limit: "BOGUS" 
+			})
 			.expect(400)
 			.end(function (error, response) {
 				if (error) throw error;
@@ -124,9 +132,12 @@ describe("Postcodes routes", function () {
 			});
 		});
 		it ("should throw a 400 error if invalid distance", function (done) {
-			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude + "?radius=bogus");
+			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 			request(app)
 			.get(uri)
+			.query({
+				radius: "BOGUS"
+			})
 			.expect(400)
 			.end(function (error, response) {
 				if (error) throw error;
