@@ -7,13 +7,15 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "NODE_ENV=test mocha tests/ -R spec",
+    "test": "NODE_ENV=test ./bin/createTestDb.sh && NODE_ENV=test NO_RELOAD_DB=true mocha tests/ -R spec && NODE_ENV=test ./bin/clearTestDb.sh",
     "start": "node server.js",
     "setup": "./bin/setup.sh",
     "setup_test_db": "./bin/setup_test.sh",
     "generate_test_data": "./bin/generate_test_data.js"
   },
   "bin": {
+    "createTestDb": "./bin/createTestDb.sh",
+    "clearTestDb": "./bin/clearTestDb.sh",
     "importons": "./bin/import.js",
     "updateons": "./bin/update.js"
   },
