@@ -2,7 +2,7 @@ var path = require("path");
 var app = require(path.join(__dirname, "../server"));
 var request = require("supertest");
 var assert = require("chai").assert;
-var helper = require(__dirname + "/helper";
+var helper = require(path.join(__dirname + "/helper"));
 var async = require("async");
 
 describe("Postcodes routes", function () {
@@ -147,6 +147,147 @@ describe("Postcodes routes", function () {
 		it ("should respond to options", function (done) {
 			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 			request(app)
+			.options(uri)
+			.expect(204)
+			.end(function (error, response) {
+				if (error) done(error);
+				helper.validCorsOptions(response);
+				done();
+			});
+		});
+	});
+	
+	describe("GET /postcodes?lon=:longitude&lat=:latitude", function () {
+		var loc, uri;
+
+		beforeEach(function (done) {
+			uri = "/postcodes/";
+			helper.locationWithNearbyPostcodes(function (error, postcode) {
+				if (error) return done(error);
+				loc = postcode;
+				done();
+			});
+		});
+
+		it ("should return a list of nearby postcodes", function (done) {
+			request(app)
+			.get(uri)
+			.query({
+				lon: loc.longitude,
+				lat: loc.latitude
+			})
+			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.isArray(response.body.result);
+				assert.isTrue(response.body.result.length > 0);
+				response.body.result.forEach(function (postcode) {
+					helper.isPostcodeObject(postcode);
+				});
+				assert.isTrue(response.body.result.some(function (elem) {
+					return elem.postcode === loc.postcode;
+				}));
+				done();
+			});
+		});
+		it ("should be sensitive to distance query", function (done) {
+			request(app)
+			.get(uri)
+			.expect(200)
+			.end(function (error, firstResponse) {
+				if (error) throw error;
+				request(app)
+				.get(uri)
+				.query({
+					lon: loc.longitude,
+					lat: loc.latitude,
+					radius: 2000
+				})
+				.expect(200)
+				.end(function (error, secondResponse) {
+					if (error) throw error;
+					assert.isTrue(secondResponse.body.result.length >= firstResponse.body.result.length);
+					done();
+				});
+			});
+		});
+		it ("should be sensitive to limit query", function (done) {
+			request(app)
+			.get(uri)
+			.query({
+				lon: loc.longitude,
+				lat: loc.latitude,
+				limit: 1
+			})
+			.expect(200)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.equal(response.body.result.length, 1);
+				done();
+			});
+		});
+		it ("should throw a 400 error if invalid longitude", function (done) {
+			request(app)
+			.get(uri)
+			.query({
+				lon: "BOGUS",
+				lat: loc.latitude
+			})
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				done();
+			});
+		});
+		it ("should throw a 400 error if invalid latitude", function (done) {
+			request(app)
+			.get(uri)
+			.query({
+				lon: loc.longitude,
+				lat: "BOGUS"
+			})
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				done();
+			});
+		});
+		it ("should throw a 400 error if invalid limit", function (done) {
+			request(app)
+			.get(uri)
+			.query({ 
+				lon: loc.longitude,
+				lat: loc.latitude,
+				limit: "BOGUS" 
+			})
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				done();
+			});
+		});
+		it ("should throw a 400 error if invalid distance", function (done) {
+			request(app)
+			.get(uri)
+			.query({
+				lon: loc.longitude,
+				lat: loc.latitude,
+				radius: "BOGUS"
+			})
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				done();
+			});
+		});
+		it ("should respond to options", function (done) {
+			request(app)
+			.query({
+				lon: loc.longitude,
+				lat: loc.latitude
+			})
 			.options(uri)
 			.expect(204)
 			.end(function (error, response) {
