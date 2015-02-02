@@ -215,6 +215,36 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
+		it ("falls back to a postcode query if longitude is missing", function (done) {
+			request(app)
+			.get(uri)
+			.query({
+				latitude: loc.latitude
+			})
+			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.equal(response.body.status, 400);
+				done();
+			});
+		});
+		it ("falls back to a postcode query if latitude is missing", function (done) {
+			request(app)
+			.get(uri)
+			.query({
+				longitude: loc.longitude
+			})
+			.expect("Content-Type", /json/)
+			.expect(helper.allowsCORS)
+			.expect(400)
+			.end(function (error, response) {
+				if (error) throw error;
+				assert.equal(response.body.status, 400);
+				done();
+			});
+		});
 		it ("is sensitive to distance query", function (done) {
 			request(app)
 			.get(uri)
