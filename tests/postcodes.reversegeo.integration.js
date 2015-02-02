@@ -1,9 +1,9 @@
-var path = require("path"),
-		app = require(path.join(__dirname, "../server")),
-		request = require("supertest"),
-		assert = require("chai").assert,
-		helper = require(__dirname + "/helper")
-		async = require("async");
+var path = require("path");
+var app = require(path.join(__dirname, "../server"));
+var request = require("supertest");
+var assert = require("chai").assert;
+var helper = require(__dirname + "/helper";
+var async = require("async");
 
 describe("Postcodes routes", function () {
 	var testPostcode;
