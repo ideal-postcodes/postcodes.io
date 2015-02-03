@@ -144,6 +144,17 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
+		it ("returns null if no postcodes nearby", function (done) {
+			var uri = encodeURI("/postcodes/lon/0/lat/0");
+			request(app)
+			.get(uri)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) done(error);
+				assert.isNull(response.body.result);
+				done();
+			});
+		});
 		it ("should respond to options", function (done) {
 			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 			request(app)
@@ -336,6 +347,21 @@ describe("Postcodes routes", function () {
 			.expect(400)
 			.end(function (error, response) {
 				if (error) throw error;
+				done();
+			});
+		});
+		it ("returns null if no postcodes nearby", function (done) {
+			var uri = encodeURI("/postcodes");
+			request(app)
+			.get(uri)
+			.query({
+				lat: 0,
+				lon: 0
+			})
+			.expect(200)
+			.end(function (error, response) {
+				if (error) done(error);
+				assert.isNull(response.body.result);
 				done();
 			});
 		});
