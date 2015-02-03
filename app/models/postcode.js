@@ -1,3 +1,5 @@
+"use strict";
+
 var fs = require("fs");
 var S = require("string");
 var util = require("util");
@@ -164,8 +166,63 @@ var nearestPostcodeCount = "SELECT *, ST_Distance(location, " +
 	"ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance FROM postcodes " + 
 	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) LIMIT $4";
 
-Postcode.prototype.nearestCount = function (params, callback) {
+// If user wants to guarantee result, sets flag
+// Max range is calculated
+// Search on range performed
 
+// MAX RANGE CALCULATION
+// Start at 100m 
+// 	If results < limit, double limit and start again
+// 	If results >= limit, return with range
+
+// Derives a range which yields at least `limit` number of postcode locations (max 10)
+
+var START_RANGE = 300; // 300m
+var MAX_RANGE = 50000; // 50km
+var SEARCH_LIMIT = 100;
+
+// Params
+// - upperBound
+// - lowerBound
+
+Postcode.prototype._deriveMaxRange = function (params, callback) {
+	var self = this;
+	var queryBound = function (params, range, limit, callback) {
+		var queryParams = [params.longitude, params.latitude, range, limit];
+		self._query(nearestPostcodeCount, queryParams, function (error, result) {
+			if (error) return done(error);
+			return callback(null, result.rows.length);
+		});
+	};
+
+	var handleResponse = function (error, count) {
+		if (error) return callback(error);
+		if (count > 10) {
+			return callback(null, START_RANGE);
+		} else if (count === 0) {
+			return self._deriveMaxRange(params, callback);
+		}
+	}
+
+	if (!params.lowerBound) {
+		// Init lower bound
+		params.lowerBound = START_RANGE;
+		queryBound(params, START_RANGE, SEARCH_LIMIT, handleResponse);
+	} else if (!params.upperBound) {
+		params.upperBound = MAX_RANGE;
+		queryBound(params, MAX_RANGE, SEARCH_LIMIT, function (error, count) {
+			if (count === 0) return callback(null, null);
+		});
+	} else {
+		// Start narrowing down
+	}
+
+	// Test start range, if within, return start_range
+	// Test max range, if no wtihin, return null
+	// Start bisecting
+		// If results == 100, new upper bound
+		// If results < 100, new lower bound
+		// If bounds are within 500m, then return upper bound
 };
 
 var outcodeQuery = "Select avg(northings) as northings, avg(eastings) as eastings, " + 

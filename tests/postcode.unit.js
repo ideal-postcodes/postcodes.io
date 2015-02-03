@@ -169,7 +169,45 @@ describe("Postcode Model", function () {
 				done();
 			});
 		});
-	})
+	});
+
+	describe("#_deriveMaxRange", function () {
+		var postcode, location;
+
+		beforeEach(function (done) {
+			// Test example from:
+			// https://github.com/ideal-postcodes/postcodes.io/issues/23
+			// postcode = "DE73 8BB";
+			// location = {
+			// 	longitude: -1.361275,
+			// 	latitude: 52.809403
+			// };
+			helper.locationWithNearbyPostcodes(function (error, postcode) {
+				if (error) return done(error);
+				location = postcode;
+				done();
+			});
+		});
+		it ("returns start range if many postcodes nearby", function (done) {
+			Postcode._deriveMaxRange(location, function (error, result) {
+				if (error) return done(error);
+				assert.equal(result, 300);
+				done();
+			});
+		});
+
+		it ("returns null if nearest postcode is outside of max range", function (done) {
+			location = {
+				longitude: -0.12466272904588,
+				latitude: 51.4998404539774
+			};
+			Postcode._deriveMaxRange(location, function (error, result) {
+				if (error) return done(error);
+				assert.isNull(result);
+				done();
+			});
+		});
+	});
 
 	describe("#nearestPostcodes", function () {
 		var location;
