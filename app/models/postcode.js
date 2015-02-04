@@ -136,13 +136,11 @@ var nearestPostcodeQuery = "SELECT *, ST_Distance(location, " +
 	"ORDER BY distance LIMIT $4";
 
 Postcode.prototype.nearestPostcodes = function (params, callback) {
+	var self = this;
 	var DEFAULT_RADIUS = defaults.nearest.radius.DEFAULT;
 	var MAX_RADIUS = defaults.nearest.radius.MAX;
 	var DEFAULT_LIMIT = defaults.nearest.limit.DEFAULT;
 	var MAX_LIMIT = defaults.nearest.limit.MAX;
-
-	var radius = parseFloat(params.radius) || DEFAULT_RADIUS;
-	if (radius > MAX_RADIUS) radius = MAX_RADIUS;
 
 	var limit = parseInt(params.limit, 10) || DEFAULT_LIMIT;
 	if (limit > MAX_LIMIT) limit = MAX_LIMIT;
@@ -153,13 +151,30 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 	var latitude = parseFloat(params.latitude);
 	if (isNaN(latitude)) return callback(new Error("Invalid latitude"), null);
 
-	this._query(nearestPostcodeQuery, [longitude, latitude, radius, limit], function (error, result) {
+	var radius = parseFloat(params.radius) || DEFAULT_RADIUS;
+	if (radius > MAX_RADIUS) radius = MAX_RADIUS;
+
+	var handleResult = function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
 		}
 		return callback(null, result.rows);
-	});
+	};
+
+	// If a wideSearch query is requested, derive a suitable range which guarantees 
+	// postcode results over a much wider area
+	if (params.wideSearch) {
+		if (limit > DEFAULT_LIMIT) {
+			limit = DEFAULT_LIMIT;
+		}
+		return self._deriveMaxRange(params, function (error, maxRange) {
+			if (error) return callback(error);
+			self._query(nearestPostcodeQuery, [longitude, latitude, maxRange, limit], handleResult);
+		});
+	}
+
+	self._query(nearestPostcodeQuery, [longitude, latitude, radius, limit], handleResult);
 };
 
 var nearestPostcodeCount = "SELECT *, ST_Distance(location, " + 
