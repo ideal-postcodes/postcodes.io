@@ -1,7 +1,7 @@
-var	path = require("path"),
-		async = require("async"),
-		assert = require("chai").assert,
-		helper = require(__dirname + "/helper");
+var path = require("path");
+var async = require("async");
+var assert = require("chai").assert;
+var helper = require(__dirname + "/helper");
 		
 var Postcode = helper.Postcode;
 
@@ -175,23 +175,17 @@ describe("Postcode Model", function () {
 		var postcode, location;
 
 		beforeEach(function (done) {
-			// Test example from:
-			// https://github.com/ideal-postcodes/postcodes.io/issues/23
-			// postcode = "DE73 8BB";
-			// location = {
-			// 	longitude: -1.361275,
-			// 	latitude: 52.809403
-			// };
 			helper.locationWithNearbyPostcodes(function (error, postcode) {
 				if (error) return done(error);
 				location = postcode;
 				done();
 			});
 		});
+
 		it ("returns start range if many postcodes nearby", function (done) {
 			Postcode._deriveMaxRange(location, function (error, result) {
 				if (error) return done(error);
-				assert.equal(result, 300);
+				assert.equal(result, 500);
 				done();
 			});
 		});
@@ -204,6 +198,19 @@ describe("Postcode Model", function () {
 			Postcode._deriveMaxRange(location, function (error, result) {
 				if (error) return done(error);
 				assert.isNull(result);
+				done();
+			});
+		});
+
+		it ("returns a range which has at least 10 postcodes", function (done) {
+			location = {
+				longitude: -2.12659411941741,
+				latitude: 57.0465923827836
+			};
+			Postcode._deriveMaxRange(location, function (error, count) {
+				if (error) return done(error);
+				assert.isNumber(count);
+				assert.isTrue(count > 500);
 				done();
 			});
 		});
@@ -323,6 +330,7 @@ describe("Postcode Model", function () {
 				done();
 			});
 		});
+		it ("performs an incremental search if ")
 	});
 });
 
