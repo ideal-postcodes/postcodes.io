@@ -375,5 +375,67 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
+		describe("Wide Area Searches", function () {
+			var longitude, latitude;
+			beforeEach(function () {
+				longitude = -2.12659411941741;
+				latitude = 57.2465923827836;
+			});
+			it ("allows search over a larger area", function (done) {
+				request(app)
+					.get("/postcodes")
+					.query({
+						longitude: longitude,
+						latitude: latitude,
+						wideSearch: true
+					})
+					.expect("Content-Type", /json/)
+					.expect(helper.allowsCORS)
+					.expect(200)
+					.end(function (error, response) {
+						if (error) return done(error);
+						assert.equal(response.body.result.length, 10);
+						done();
+					});
+			});
+
+			it ("does not allow limit to exceed 10", function (done) {
+				request(app)
+					.get("/postcodes")
+					.query({
+						longitude: longitude,
+						latitude: latitude,
+						limit: 100,
+						wideSearch: true
+					})
+					.expect("Content-Type", /json/)
+					.expect(helper.allowsCORS)
+					.expect(200)
+					.end(function (error, response) {
+						if (error) return done(error);
+						assert.equal(response.body.result.length, 10);
+						done();
+					});
+			});
+
+			it ("does allows limit to be below 10", function (done) {
+				request(app)
+					.get("/postcodes")
+					.query({
+						longitude: longitude,
+						latitude: latitude,
+						limit: 1,
+						wideSearch: true
+					})
+					.expect("Content-Type", /json/)
+					.expect(helper.allowsCORS)
+					.expect(200)
+					.end(function (error, response) {
+						if (error) return done(error);
+						assert.equal(response.body.result.length, 1);
+						done();
+					});
+			});
+		});
 	});
 });

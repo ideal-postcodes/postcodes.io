@@ -205,12 +205,12 @@ describe("Postcode Model", function () {
 		it ("returns a range which has at least 10 postcodes", function (done) {
 			location = {
 				longitude: -2.12659411941741,
-				latitude: 57.0465923827836
+				latitude: 57.2465923827836
 			};
-			Postcode._deriveMaxRange(location, function (error, count) {
+			Postcode._deriveMaxRange(location, function (error, range) {
 				if (error) return done(error);
-				assert.isNumber(count);
-				assert.isTrue(count > 500);
+				assert.isNumber(range);
+				assert.isTrue(range > 500);
 				done();
 			});
 		});
@@ -330,7 +330,58 @@ describe("Postcode Model", function () {
 				done();
 			});
 		});
-		it ("performs an incremental search if ")
+		describe("Wide Search", function () {
+			var params;
+			beforeEach(function () {
+				params = {
+					longitude: -2.12659411941741,
+					latitude: 57.2465923827836
+				};
+			});
+			it ("performs an incremental search if flag is passed", function (done) {
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) return done(error);
+					assert.isNull(postcodes);
+					params.wideSearch = true;
+					Postcode.nearestPostcodes(params, function (error, postcodes) {
+						if (error) return done(error);
+						assert.equal(postcodes.length, 10);
+						done();
+					});
+				});
+			});
+			it ("returns null if point is too far from nearest postcode", function (done) {
+				params = {
+					longitude: 0,
+					latitude: 0,
+					wideSearch: true
+				};
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) return done(error);
+					assert.isNull(postcodes);
+					done();
+				});
+			});
+			it ("resets limit to a maximum of 10 if it is exceeded", function (done) {
+				params.wideSearch = true;
+				params.limit = 20;
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) return done(error);
+					assert.equal(postcodes.length, 10);
+					done();
+				});
+			});
+			it ("maintains limit if less than 10", function (done) {
+				var limit = 2;
+				params.wideSearch = true;
+				params.limit = limit;
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) return done(error);
+					assert.equal(postcodes.length, limit);
+					done();
+				});
+			});
+		});
 	});
 });
 
