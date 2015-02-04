@@ -7,16 +7,23 @@ exports.home = function (request, response) {
 	response.render("pages/home", {
 		ga: config.googleAnalyticsKey
 	});
-}
+};
 
 exports.documentation = function (request, response) {
 	response.render("pages/documentation", {
 		ga: config.googleAnalyticsKey
 	});
-}
+};
 
 exports.about = function (request, response) {
 	response.render("pages/about", {
 		ga: config.googleAnalyticsKey
 	});
-}
+};
+
+exports.explore = function (request, response) {
+	response.render("pages/explore", {
+		ga: config.googleAnalyticsKey,
+		mapBoxKey: config.mapBoxKey
+	});
+};
