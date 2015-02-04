@@ -49,6 +49,8 @@ var config = {
 	development : {
 		env : "development",
 		root: rootPath,
+		googleAnalyticsKey: "",
+		mapBoxKey: "",
 		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
@@ -76,6 +78,8 @@ var config = {
 	test: {
 		env : "test",
 		root: rootPath,
+		googleAnalyticsKey: "",
+		mapBoxKey: "",
 		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
@@ -102,6 +106,8 @@ var config = {
 	production : {
 		env : "production",
 		root: rootPath,
+		googleAnalyticsKey: "",
+		mapBoxKey: "",
 		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
