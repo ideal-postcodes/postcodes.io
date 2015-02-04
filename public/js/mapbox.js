@@ -2,7 +2,7 @@ $(function () {
 	// Remove footer
 	$("#footer").remove();
 	var startingCoordinates = [55, -2];
-	var initialZoom = 5;
+	var initialZoom = 6;
 	var searchZoom = 13;
 	$longitude = $("#longitude").html(startingCoordinates[1]);
 	$latitude = $("#latitude").html(startingCoordinates[0]);
@@ -58,17 +58,6 @@ $(function () {
 		}
 	}
 
-	function displayResults (geolocation) {
-		return function (data) {
-			var zoom = map.getZoom();
-			var newZoom = zoom > searchZoom ? zoom : searchZoom;
-			var postcodes = (data.result === null) ? [] : data.result;
-			console.log(postcodes);
-			map.flyTo(geolocation, newZoom);
-			markers.setData(toGeoJson(postcodes));
-		}
-	}
-
 	function handleError(data) {
 		console.log("An error occurred", data);
 	}
@@ -78,53 +67,31 @@ $(function () {
 	}
 
 	// Initialise MapBox
-	mapboxgl.accessToken = 'pk.eyJ1IjoiY2FibGFuY2hhcmQiLCJhIjoibEF1SEUyNCJ9.jgoC-5g61IQobWff1f7i8A';
-	var map, markers;
-	var styleUrl = 'https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v6.json';
-	mapboxgl.util.getJSON(styleUrl, function (error, style) {
-	  if (error) throw error;
+	L.mapbox.accessToken = 'pk.eyJ1IjoiY2FibGFuY2hhcmQiLCJhIjoibEF1SEUyNCJ9.jgoC-5g61IQobWff1f7i8A';
+	var map = L.mapbox.map('map', 'examples.map-i86nkdio')
+		.setView(startingCoordinates, initialZoom);
 
-	  style.layers.push({
-	    "id": "markers",
-	    "type": "symbol",
-	    "source": "markers",
-	    "layout": {
-	      "icon-image": "{marker-symbol}-12",
-	      "text-field": "{postcode}",
-	      "text-font": "Open Sans Semibold, Arial Unicode MS Bold",
-	      "text-offset": [0, 0.6],
-	      "text-anchor": "top"
-	    },
-	    "paint": {
-	      "text-size": 12
-	    }
-	  });
+	var postcodesLayer = L.mapbox.featureLayer().addTo(map);
 
-	  map = new mapboxgl.Map({
-		  container: 'map',
-		  style: style,
-		  center: startingCoordinates,
-		  zoom: initialZoom // starting zoom
-		});
+	var geojson = {
+    type: 'FeatureCollection',
+    features: []
+	};
 
-	  markers = new mapboxgl.GeoJSONSource({
-	    data: {
-	      "type": "FeatureCollection",
-	      "features": []
-	    }
-		});
+	postcodesLayer.setGeoJSON(geojson);
 
-		map.addSource('markers', markers);
 
-		map.on('hover', function(event) {
-	    var geolocation = map.unproject(event.point);
-	    $longitude.html(roundCoord(geolocation['lng']));
-	    $latitude.html(roundCoord(geolocation['lat']));
-		});
-
-		map.on("click", function (event) {
-			var geolocation = map.unproject(event.point);
-			getPostcodesForLocation(geolocation, displayResults(geolocation), handleError)
-		});
+	map.on("click", function (event) {
+		console.log(event);
+		var geolocation = event.latlng;
+		// Zoom exactly to each double-clicked point
+		var zoom = map.getZoom();
+		var newZoom = zoom > searchZoom ? zoom : searchZoom;
+    map.setView(event.latlng, newZoom);
+		getPostcodesForLocation(geolocation, function (data) {
+			console.log(data);
+			var postcodes = (data.result === null) ? [] : data.result;
+			postcodesLayer.setGeoJSON(toGeoJson(postcodes));
+		}, handleError)
 	});
 });
