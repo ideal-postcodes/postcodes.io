@@ -15,6 +15,23 @@ body {
   background-color: #f5f5f5;
 }
 
+#map {
+  position: absolute;
+  min-height: 100%;
+  min-width: 100%;
+  height: auto;
+  width: auto;
+}
+
+#navigator {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  width: 240px;
+  background-color: rgba(240,240,240,0.5);
+  padding: 10px;
+}
+
 .container .text-muted {
   margin: 20px 0;
 }
