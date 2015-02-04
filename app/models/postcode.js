@@ -166,14 +166,15 @@ var nearestPostcodeCount = "SELECT *, ST_Distance(location, " +
 	"ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance FROM postcodes " + 
 	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) LIMIT $4";
 
-
-// Derives a range which yields at least `limit` number of postcode locations (max 10)
-
 var START_RANGE = 500; // 0.5km
-var MAX_RANGE = 10000; // 10km
+var MAX_RANGE = 20000; // 20km
 var SEARCH_LIMIT = 10;
 var INCREMENT = 1000;
 
+// _deriveMaxRange returns a 'goldilocks' range which can be fed into a reverse geocode search
+// - Not so large that the query grinds to a halt because it has to process 000's of postcodes
+// - Not 0
+// Future improvement: Narrow down range in O(log n) time using bisect instead of linear search
 Postcode.prototype._deriveMaxRange = function (params, callback) {
 	var self = this;
 	var queryBound = function (params, range, callback) {
