@@ -8,6 +8,7 @@ module.exports = function (app) {
 	app.get("/ping", utilsController.ping);
 	app.get("/about", pagesController.about);
 	app.get("/docs", pagesController.documentation);
+	app.get("/explore", pagesController.explore);
 	app.get("/random/postcodes", postcodesController.random);
 	app.get("/outcodes/:outcode", postcodesController.showOutcode);	
 	app.get("/postcodes", postcodesController.query);
@@ -18,4 +19,4 @@ module.exports = function (app) {
 	app.get("/postcodes/:postcode/nearest", postcodesController.nearest);
 	app.get("/postcodes/:postcode/validate", postcodesController.valid);
 	app.get("/postcodes/:postcode/autocomplete", postcodesController.autocomplete);	
-}
+};
