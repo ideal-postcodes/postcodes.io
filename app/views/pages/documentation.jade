@@ -220,6 +220,9 @@ block content
 					p
 						code radius=
 						|  (not required) Limits number of postcodes matches to return. Defaults to 100 meteres. Needs to be less than 2,000m.
+					p
+						code wideSearch=
+						|  (not required) Search up to 20km radius, but subject to a maximum of 10 results. Since lookups over a wide area can be very expensive, we've created this method to allow you choose to make the trade off between search radius and number of results. Defaults to false. When enabled, radius and limits over 10 are ignored.
 
 					h4 Legacy
 
