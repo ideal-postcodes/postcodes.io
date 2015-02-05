@@ -230,26 +230,52 @@ Postcode.prototype._deriveMaxRange = function (params, callback) {
 	}
 };
 
-var outcodeQuery = "Select avg(northings) as northings, avg(eastings) as eastings, " + 
+var outcodeQuery = "Select outcode, avg(northings) as northings, avg(eastings) as eastings, " + 
 	"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry))" + 
-	" as latitude FROM postcodes WHERE postcodes.outcode=$1";
+	" as latitude FROM postcodes WHERE outcode=$1 GROUP BY outcode";
+
+function generateAttrQuery (attribute) {
+	return "SELECT DISTINCT " + attribute + " FROM postcodes WHERE outcode=$1";
+}
+
+var additionalAttributes = ["admin_ward", "admin_district", "admin_county", "parish"];
 
 Postcode.prototype.findOutcode = function (outcode, callback) {
+	var self = this;
 	outcode = outcode.trim().toUpperCase();
 
 	if (!Pc.validOutcode(outcode)) {
 		return callback(null, null);
 	}
 
-	this._query(outcodeQuery, [outcode], function (error, result) {
+	self._query(outcodeQuery, [outcode], function (error, result) {
 		if (error) return callback(error, null);
-		if (result.rows.length !== 1) return callback(null, null);
+		if (result.rows.length === 0) return callback(null, null);
 		var outcodeResult = result.rows[0];
-		if (!outcodeResult.eastings || !outcodeResult.northings) {
-			return callback(null, null);
-		}
-		outcodeResult.outcode = outcode;
-		return callback(null, result.rows[0]);
+
+		// Start pulling in data
+		var execution = {};
+		additionalAttributes.forEach(function (attribute) {
+			execution[attribute] = function (callback) {
+				self._query(generateAttrQuery(attribute), [outcode], callback);
+			};
+		});
+
+		var handler = function (error, result) {
+			if (error) return callback(error);
+			for (var i in result) {
+				if (result.hasOwnProperty(i)) {
+					outcodeResult[i] = result[i].rows.map(function (elem) {
+						return elem[i];
+					}).filter(function (elem) {
+						return elem !== null;
+					});
+				}
+			}
+			return callback(null, outcodeResult);
+		};
+
+		async.parallel(execution, handler);
 	});
 }
 
