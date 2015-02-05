@@ -41,7 +41,7 @@ describe("Postcodes routes", function () {
 				async.times(bulkLength, function (n, next) {
 					helper.randomLocation(next);
 				}, function (error, locations) {
-					if (error) throw error;
+					if (error) return done(error);
 					testLocations = locations;
 					done();
 				});				
@@ -55,7 +55,7 @@ describe("Postcodes routes", function () {
 				.expect(helper.allowsCORS)
 				.expect(200)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.isArray(response.body.result);
 					assert.equal(response.body.result.length, bulkLength);
 					response.body.result.forEach(function (lookup) {
@@ -80,7 +80,7 @@ describe("Postcodes routes", function () {
 				.expect(helper.allowsCORS)
 				.expect(200)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.equal(response.body.result.length, 1);
 					assert.isNull(response.body.result[0].result);
 					done();
@@ -98,7 +98,7 @@ describe("Postcodes routes", function () {
 				.expect(helper.allowsCORS)
 				.expect(400)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.match(response.body.error, /too many locations submitted/i);
 					done();
 				});
@@ -111,7 +111,7 @@ describe("Postcodes routes", function () {
 				.expect(helper.allowsCORS)
 				.expect(400)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.match(response.body.error, /Invalid data submitted/i);
 					done();
 				});
@@ -126,7 +126,7 @@ describe("Postcodes routes", function () {
 				.expect(helper.allowsCORS)
 				.expect(200)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.equal(response.body.result.length, 1);
 					assert.equal(response.body.result[0].result.length, 1);
 					helper.isPostcodeObject(response.body.result[0].result[0]);
@@ -144,7 +144,7 @@ describe("Postcodes routes", function () {
 				.expect(helper.allowsCORS)
 				.expect(200)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.isTrue(response.body.result[0].result.length > 0);
 					var count = response.body.result[0].result.length;
 					var query = response.body.result[0].query;
@@ -176,7 +176,7 @@ describe("Postcodes routes", function () {
 				.expect(helper.allowsCORS)
 				.expect(200)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.equal(response.body.result[0].result.length, 10);
 					assert.isTrue(response.body.result[0].query["wideSearch"]);
 					assert.isUndefined(response.body.result[0].query["lowerBound"]);
@@ -191,7 +191,7 @@ describe("Postcodes routes", function () {
 				async.times(bulkLength, function (n, next) {
 					helper.randomPostcode(next);
 				}, function (error, postcodes) {
-					if (error) throw error;
+					if (error) return done(error);
 					testPostcodes = postcodes;
 					done();
 				});				
@@ -204,7 +204,7 @@ describe("Postcodes routes", function () {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.isArray(response.body.result);
 					assert.equal(response.body.result.length, bulkLength);
 					response.body.result.forEach(function (lookup) {
@@ -222,7 +222,7 @@ describe("Postcodes routes", function () {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.isArray(response.body.result);
 					assert.equal(response.body.result.length, 1);
 					assert.isNull(response.body.result[0].query);
@@ -238,7 +238,7 @@ describe("Postcodes routes", function () {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.equal(response.body.result.length, bulkLength + 1);
 					var hasNull = response.body.result.some(function (lookup) {
 						return lookup.result === null;
@@ -258,7 +258,7 @@ describe("Postcodes routes", function () {
 				.expect('Content-Type', /json/)
 				.expect(400)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					done();
 				});
 			});	
@@ -271,7 +271,7 @@ describe("Postcodes routes", function () {
 			.expect('Content-Type', /json/)
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
