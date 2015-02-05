@@ -31,7 +31,7 @@ function errorRenderer (error, request, response, next) {
 	}
 	
 	if (process.env.NODE_ENV === "production") {
-		message = "500 Error. Oooomph!";
+		message = "500 Server Error. Something went wrong. If you need this fixed urgently please email support@ideal-postcodes.co.uk";
 	}
 
 	response.status(500).send(message);
