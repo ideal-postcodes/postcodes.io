@@ -134,57 +134,40 @@ function validCorsOptions(response) {
 }
 
 function isPostcodeObject(o) {
-	assert.notProperty(o, "id");
-	assert.property(o, "nhs_ha");
-	assert.property(o, "country");
-	assert.property(o, "quality");
-	assert.property(o, "postcode");
-	assert.property(o, "eastings");
-	assert.property(o, "latitude");
-	assert.property(o, "northings");
-	assert.property(o, "longitude");
-	assert.property(o, "admin_ward");
-	assert.notProperty(o, "location");
-	assert.property(o, "admin_county");
-	assert.notProperty(o, "pc_compact");
-	assert.property(o, "admin_district");
-	assert.property(o, "parliamentary_constituency");
-	assert.property(o, "european_electoral_region");
-	assert.property(o, "parish");
-	assert.property(o, "lsoa");
-	assert.property(o, "msoa");
-	assert.property(o, "nuts");
-	assert.property(o, "ccg");
-	assert.property(o, "primary_care_trust");
-	assert.property(o, "incode");
-	assert.property(o, "outcode");
+	var nonProperties = ["id", "location", "pc_compact"];
+
+	nonProperties.forEach(function (prop) {
+		assert.notProperty(o, prop);
+	});
+
+	var properties = ["nhs_ha","country","quality","postcode","eastings","latitude",
+		"northings","longitude","admin_ward","admin_county","admin_district",
+		"parliamentary_constituency","european_electoral_region","parish","lsoa",
+		"msoa","nuts","ccg","primary_care_trust","incode","outcode"];
+
+	properties.forEach(function (prop) {
+		assert.property(o, prop);
+	});
 }
 
 function isRawPostcodeObject(o) {
-	assert.property(o, "id");
-	assert.property(o, "nhs_ha");
-	assert.property(o, "country");
-	assert.property(o, "quality");
-	assert.property(o, "postcode");
-	assert.property(o, "eastings");
-	assert.property(o, "latitude");
-	assert.property(o, "location");
-	assert.property(o, "northings");
-	assert.property(o, "longitude");
-	assert.property(o, "pc_compact");
-	assert.property(o, "admin_ward");
-	assert.property(o, "admin_county");
-	assert.property(o, "admin_district");
-	assert.property(o, "parliamentary_constituency");
-	assert.property(o, "european_electoral_region");
-	assert.property(o, "parish");
-	assert.property(o, "lsoa");
-	assert.property(o, "msoa");
-	assert.property(o, "nuts");
-	assert.property(o, "ccg");
-	assert.property(o, "primary_care_trust");
-	assert.property(o, "incode");
-	assert.property(o, "outcode");
+	var properties = ["id", "nhs_ha", "country", "quality", "postcode", "eastings", "latitude", "location", 
+	"northings",  "longitude", "pc_compact", "admin_ward", "admin_county", "admin_district",
+	"parliamentary_constituency", "european_electoral_region", "parish", "lsoa", "msoa",
+	"nuts", "ccg", "primary_care_trust", "incode", "outcode"]
+
+	properties.forEach(function (prop) {
+		assert.property(o, prop);
+	});
+}
+
+function testOutcode(o) {
+	var properties = ["longitude", "latitude", "northings", "eastings", "admin_ward", 
+	"admin_district", "admin_county", "parish"];
+
+	properties.forEach(function (prop) {
+		assert.property(o, prop);
+	});
 }
 
 module.exports = {
@@ -194,6 +177,7 @@ module.exports = {
 	Postcode: Postcode,
 	allowsCORS: allowsCORS,
 	connectToDb: connectToDb,
+	testOutcode: testOutcode,
 	randomOutcode: randomOutcode,
 	randomPostcode: randomPostcode,
 	randomLocation: randomLocation,
