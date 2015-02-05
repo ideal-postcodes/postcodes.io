@@ -230,9 +230,16 @@ Postcode.prototype._deriveMaxRange = function (params, callback) {
 	}
 };
 
-var outcodeQuery = "Select avg(northings) as northings, avg(eastings) as eastings, " + 
+var outcodeQuery = "Select outcode, avg(northings) as northings, avg(eastings) as eastings, " + 
 	"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry))" + 
-	" as latitude FROM postcodes WHERE postcodes.outcode=$1";
+	" as latitude FROM postcodes WHERE outcode=$1 GROUP BY outcode";
+
+var listOutcodeAttributes = "SELECT DISTINCT $1 FROM postcodes WHERE postcodes.outcode=$2";
+var additionalAttributes = ["admin_ward"];
+
+function generateOutcodeQueries() {
+
+}
 
 Postcode.prototype.findOutcode = function (outcode, callback) {
 	outcode = outcode.trim().toUpperCase();
@@ -243,13 +250,9 @@ Postcode.prototype.findOutcode = function (outcode, callback) {
 
 	this._query(outcodeQuery, [outcode], function (error, result) {
 		if (error) return callback(error, null);
-		if (result.rows.length !== 1) return callback(null, null);
+		if (result.rows === 0) return callback(null, null);
 		var outcodeResult = result.rows[0];
-		if (!outcodeResult.eastings || !outcodeResult.northings) {
-			return callback(null, null);
-		}
-		outcodeResult.outcode = outcode;
-		return callback(null, result.rows[0]);
+		return callback(null, outcodeResult);
 	});
 }
 

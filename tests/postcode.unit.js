@@ -130,6 +130,7 @@ describe("Postcode Model", function () {
 				assert.property(result, "eastings");
 				assert.property(result, "longitude");
 				assert.property(result, "latitude");
+				// assert.isArray(result["admin_ward"]);
 				done();
 			});
 		});
