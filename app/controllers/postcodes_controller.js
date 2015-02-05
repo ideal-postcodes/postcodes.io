@@ -29,7 +29,6 @@ exports.show = function (request, response, next) {
 			return next();
 		}
 	});
-	
 }
 
 exports.valid = function (request, response, next) {
