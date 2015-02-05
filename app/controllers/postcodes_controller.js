@@ -1,3 +1,5 @@
+"use strict";
+
 var logger = require("commonlog-bunyan");
 var async = require("async");
 var S = require("string");
@@ -102,8 +104,18 @@ function bulkGeocode (request, response, next) {
 		return next();
 	}
 
-	var result = [],
-			execution = [];
+	var result = [];
+	var execution = [];
+	var whitelist = ["limit", "longitude", "latitude", "radius", "wideSearch"];
+	var sanitizeQuery = function (query) {
+		var result = {};
+		for (var attr in query) {
+			if (whitelist.indexOf(attr) !== -1) {
+				result[attr] = query[attr];
+			}
+		}
+		return result;
+	}
 
 	geolocations.forEach(function (location) {
 		execution.push(function (callback) {
@@ -117,7 +129,7 @@ function bulkGeocode (request, response, next) {
 					});
 				} else {
 					result.push({
-						query: location,
+						query: sanitizeQuery(location),
 						result: postcodes.map(function (postcode) {
 							return Postcode.toJson(postcode)
 						})

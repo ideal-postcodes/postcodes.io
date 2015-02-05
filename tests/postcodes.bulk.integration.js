@@ -116,7 +116,7 @@ describe("Postcodes routes", function () {
 					done();
 				});
 			});
-			it ("should be sensitive to limit", function (done) {
+			it ("is sensitive to limit", function (done) {
 				var testLocation = testLocations[0];
 				testLocation.limit = 1;
 				request(app)
@@ -130,6 +130,57 @@ describe("Postcodes routes", function () {
 					assert.equal(response.body.result.length, 1);
 					assert.equal(response.body.result[0].result.length, 1);
 					helper.isPostcodeObject(response.body.result[0].result[0]);
+					done();
+				});
+			});
+			it ("is sensitive to radius", function (done) {
+				var testLocation = testLocations[0];
+				testLocation.limit = 100;
+				testLocation.radius = 100;
+				request(app)
+				.post("/postcodes")
+				.send({geolocations: [testLocation]})
+				.expect("Content-Type", /json/)
+				.expect(helper.allowsCORS)
+				.expect(200)
+				.end(function (error, response) {
+					if (error) throw error;
+					assert.isTrue(response.body.result[0].result.length > 0);
+					var count = response.body.result[0].result.length;
+					var query = response.body.result[0].query;
+					assert.isDefined(query.limit);
+					assert.equal(query.radius, testLocation.radius);
+					helper.isPostcodeObject(response.body.result[0].result[0]);
+					testLocation.radius = 1000;
+					request(app)
+						.post("/postcodes")
+						.send({geolocations: [testLocation]})
+						.expect(200)
+						.end(function (error, response) {
+							if (error) return done(error);
+							assert.isTrue(response.body.result[0].result.length > count);
+							done();
+						});
+				});
+			});
+			it ("allows wide area searches", function (done) {
+				var testLocation = {
+					longitude: -2.12659411941741,
+					latitude: 57.2465923827836,
+					wideSearch: true
+				}
+				request(app)
+				.post("/postcodes")
+				.send({geolocations: [testLocation]})
+				.expect("Content-Type", /json/)
+				.expect(helper.allowsCORS)
+				.expect(200)
+				.end(function (error, response) {
+					if (error) throw error;
+					assert.equal(response.body.result[0].result.length, 10);
+					assert.isTrue(response.body.result[0].query["wideSearch"]);
+					assert.isUndefined(response.body.result[0].query["lowerBound"]);
+					assert.isUndefined(response.body.result[0].query["uppserBound"]);
 					done();
 				});
 			});
