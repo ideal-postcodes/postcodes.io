@@ -146,7 +146,6 @@ $(function () {
 	}
 
 	// Initialise MapBox
-	L.mapbox.accessToken = 'pk.eyJ1IjoiY2FibGFuY2hhcmQiLCJhIjoibEF1SEUyNCJ9.jgoC-5g61IQobWff1f7i8A';
 	var map = L.mapbox.map('map', 'examples.map-i86nkdio', {
 			zoomControl: false
 		})
@@ -211,7 +210,6 @@ $(function () {
 			var newZoom = zoom > searchZoom ? zoom : searchZoom;
 			indicateLoading();
 			queryPostcode(postcode, function (data) {
-				console.log(data);
 				var postcodes = (data.result === null) ? [] : data.result;
 				if (postcodes.length > 0) {
 					var totalLat = 0; 

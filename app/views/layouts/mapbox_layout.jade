@@ -18,6 +18,8 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml')
 		script(src='https://code.jquery.com/jquery-2.1.0.min.js')
 		script(src='https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js')
 		script(src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js')
+		script.
+			L.mapbox.accessToken = '#{mapBoxKey}';
 		script(src='/js/mapbox.js')
 		if ga
 			script(type="text/javascript").
