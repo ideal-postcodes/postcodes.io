@@ -1,7 +1,7 @@
-var	path = require("path"),
-		async = require("async"),
-		assert = require("chai").assert,
-		helper = require(__dirname + "/helper");
+var path = require("path");
+var async = require("async");
+var assert = require("chai").assert;
+var helper = require(__dirname + "/helper");
 		
 var Postcode = helper.Postcode;
 
@@ -169,7 +169,52 @@ describe("Postcode Model", function () {
 				done();
 			});
 		});
-	})
+	});
+
+	describe("#_deriveMaxRange", function () {
+		var postcode, location;
+
+		beforeEach(function (done) {
+			helper.locationWithNearbyPostcodes(function (error, postcode) {
+				if (error) return done(error);
+				location = postcode;
+				done();
+			});
+		});
+
+		it ("returns start range if many postcodes nearby", function (done) {
+			Postcode._deriveMaxRange(location, function (error, result) {
+				if (error) return done(error);
+				assert.equal(result, 500);
+				done();
+			});
+		});
+
+		it ("returns null if nearest postcode is outside of max range", function (done) {
+			location = {
+				longitude: -0.12466272904588,
+				latitude: 51.4998404539774
+			};
+			Postcode._deriveMaxRange(location, function (error, result) {
+				if (error) return done(error);
+				assert.isNull(result);
+				done();
+			});
+		});
+
+		it ("returns a range which has at least 10 postcodes", function (done) {
+			location = {
+				longitude: -2.12659411941741,
+				latitude: 57.2465923827836
+			};
+			Postcode._deriveMaxRange(location, function (error, range) {
+				if (error) return done(error);
+				assert.isNumber(range);
+				assert.isTrue(range > 500);
+				done();
+			});
+		});
+	});
 
 	describe("#nearestPostcodes", function () {
 		var location;
@@ -283,6 +328,58 @@ describe("Postcode Model", function () {
 				assert.isNotNull(error);
 				assert.match(error.message, /invalid latitude/i);
 				done();
+			});
+		});
+		describe("Wide Search", function () {
+			var params;
+			beforeEach(function () {
+				params = {
+					longitude: -2.12659411941741,
+					latitude: 57.2465923827836
+				};
+			});
+			it ("performs an incremental search if flag is passed", function (done) {
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) return done(error);
+					assert.isNull(postcodes);
+					params.wideSearch = true;
+					Postcode.nearestPostcodes(params, function (error, postcodes) {
+						if (error) return done(error);
+						assert.equal(postcodes.length, 10);
+						done();
+					});
+				});
+			});
+			it ("returns null if point is too far from nearest postcode", function (done) {
+				params = {
+					longitude: 0,
+					latitude: 0,
+					wideSearch: true
+				};
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) return done(error);
+					assert.isNull(postcodes);
+					done();
+				});
+			});
+			it ("resets limit to a maximum of 10 if it is exceeded", function (done) {
+				params.wideSearch = true;
+				params.limit = 20;
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) return done(error);
+					assert.equal(postcodes.length, 10);
+					done();
+				});
+			});
+			it ("maintains limit if less than 10", function (done) {
+				var limit = 2;
+				params.wideSearch = true;
+				params.limit = limit;
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) return done(error);
+					assert.equal(postcodes.length, limit);
+					done();
+				});
 			});
 		});
 	});

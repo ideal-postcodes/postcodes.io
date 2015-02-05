@@ -278,7 +278,6 @@ var nearestPostcodes = function (request, response, next) {
 		params.latitude = latitude;
 	}
 
-	
 	if (request.query.limit) {
 		limit = parseInt(request.query.limit, 10);
 		if (isNaN(limit)) {
@@ -304,6 +303,8 @@ var nearestPostcodes = function (request, response, next) {
 			params.radius = radius;
 		}
 	}
+
+	params.wideSearch = !!request.query.wideSearch;
 
 	Postcode.nearestPostcodes(params, function (error, results) {
 		if (error) return next(error);

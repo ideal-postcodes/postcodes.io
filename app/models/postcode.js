@@ -1,3 +1,5 @@
+"use strict";
+
 var fs = require("fs");
 var S = require("string");
 var util = require("util");
@@ -79,16 +81,12 @@ Postcode.prototype.find = function (postcode, callback) {
 	});
 }
 
-Postcode.prototype.random = function (callback) {
-	var query	=	"SELECT * FROM  ("+
-					    "SELECT 1 + floor(random() * (SELECT count(id) FROM postcodes))::integer AS id "+
-					    "FROM   generate_series(1, 100) g "+
-					    "GROUP BY 1 "+
-					    ") r "+
-							"JOIN postcodes USING (id) "+
-							"LIMIT  1;"
+var randomQuery	=	"SELECT * FROM  ("+
+  "SELECT 1 + floor(random() * (SELECT count(id) FROM postcodes))::integer AS id "+
+  "FROM   generate_series(1, 100) g GROUP BY 1 ) r JOIN postcodes USING (id) LIMIT 1;"
 
-	this._query(query, function (error, result) {
+Postcode.prototype.random = function (callback) {
+	this._query(randomQuery, function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
@@ -132,14 +130,17 @@ Postcode.prototype.search = function (postcode, options, callback) {
 	});
 }
 
+var nearestPostcodeQuery = "SELECT *, ST_Distance(location, " + 
+	"ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance FROM postcodes " + 
+	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
+	"ORDER BY distance LIMIT $4";
+
 Postcode.prototype.nearestPostcodes = function (params, callback) {
+	var self = this;
 	var DEFAULT_RADIUS = defaults.nearest.radius.DEFAULT;
 	var MAX_RADIUS = defaults.nearest.radius.MAX;
 	var DEFAULT_LIMIT = defaults.nearest.limit.DEFAULT;
 	var MAX_LIMIT = defaults.nearest.limit.MAX;
-
-	var radius = parseFloat(params.radius) || DEFAULT_RADIUS;
-	if (radius > MAX_RADIUS) radius = MAX_RADIUS;
 
 	var limit = parseInt(params.limit, 10) || DEFAULT_LIMIT;
 	if (limit > MAX_LIMIT) limit = MAX_LIMIT;
@@ -150,19 +151,88 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 	var latitude = parseFloat(params.latitude);
 	if (isNaN(latitude)) return callback(new Error("Invalid latitude"), null);
 
-	var query = "SELECT *, ST_Distance(location, " + 
-							" ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance " + 
-							"FROM postcodes " + 
-							"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
-							"ORDER BY distance LIMIT $4";
-	this._query(query, [longitude, latitude, radius, limit], function (error, result) {
+	var radius = parseFloat(params.radius) || DEFAULT_RADIUS;
+	if (radius > MAX_RADIUS) radius = MAX_RADIUS;
+
+	var handleResult = function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
 		}
 		return callback(null, result.rows);
-	});
-}
+	};
+
+	// If a wideSearch query is requested, derive a suitable range which guarantees 
+	// postcode results over a much wider area
+	if (params.wideSearch) {
+		if (limit > DEFAULT_LIMIT) {
+			limit = DEFAULT_LIMIT;
+		}
+		return self._deriveMaxRange(params, function (error, maxRange) {
+			if (error) return callback(error);
+			self._query(nearestPostcodeQuery, [longitude, latitude, maxRange, limit], handleResult);
+		});
+	}
+
+	self._query(nearestPostcodeQuery, [longitude, latitude, radius, limit], handleResult);
+};
+
+var nearestPostcodeCount = "SELECT *, ST_Distance(location, " + 
+	"ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance FROM postcodes " + 
+	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) LIMIT $4";
+
+var START_RANGE = 500; // 0.5km
+var MAX_RANGE = 20000; // 20km
+var SEARCH_LIMIT = 10;
+var INCREMENT = 1000;
+
+// _deriveMaxRange returns a 'goldilocks' range which can be fed into a reverse geocode search
+// - Not so large that the query grinds to a halt because it has to process 000's of postcodes
+// - Not 0
+// Future improvement: Narrow down range in O(log n) time using bisect instead of linear search
+Postcode.prototype._deriveMaxRange = function (params, callback) {
+	var self = this;
+	var queryBound = function (params, range, callback) {
+		var queryParams = [params.longitude, params.latitude, range, SEARCH_LIMIT];
+		self._query(nearestPostcodeCount, queryParams, function (error, result) {
+			if (error) return done(error);
+			return callback(null, result.rows.length);
+		});
+	};
+
+	var handleResponse = function (error, count) {
+		if (error) return callback(error);
+		if (count < SEARCH_LIMIT) {
+			return self._deriveMaxRange(params, callback);
+		} else {
+			return callback(null, params.lowerBound);
+		}
+	};
+
+	if (!params.lowerBound) {
+		params.lowerBound = START_RANGE;
+		queryBound(params, START_RANGE, handleResponse);
+	} else if (!params.upperBound) {
+		params.upperBound = MAX_RANGE;
+		queryBound(params, MAX_RANGE, function (error, count) {
+			if (count === 0) {
+				return callback(null, null);
+			} else {
+				return self._deriveMaxRange(params, callback);
+			};
+		});
+	} else {
+		params.lowerBound += INCREMENT;
+		if (params.lowerBound > MAX_RANGE) {
+			return callback(null, null);
+		}
+		queryBound(params, params.lowerBound, handleResponse);
+	}
+};
+
+var outcodeQuery = "Select avg(northings) as northings, avg(eastings) as eastings, " + 
+	"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry))" + 
+	" as latitude FROM postcodes WHERE postcodes.outcode=$1";
 
 Postcode.prototype.findOutcode = function (outcode, callback) {
 	outcode = outcode.trim().toUpperCase();
@@ -171,11 +241,7 @@ Postcode.prototype.findOutcode = function (outcode, callback) {
 		return callback(null, null);
 	}
 
-	var query = "Select avg(northings) as northings, avg(eastings) as eastings, " + 
-							"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry))" + 
-							" as latitude FROM postcodes WHERE postcodes.outcode=$1";
-
-	this._query(query, [outcode], function (error, result) {
+	this._query(outcodeQuery, [outcode], function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length !== 1) return callback(null, null);
 		var outcodeResult = result.rows[0];
