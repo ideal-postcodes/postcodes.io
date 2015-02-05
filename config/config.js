@@ -30,6 +30,8 @@ var defaults = {
 	}
 };
 
+var mapBoxKey = process.env.MAPBOX_PUBLIC_KEY || "";
+
 var config = {
 
 	/*
@@ -50,7 +52,7 @@ var config = {
 		env : "development",
 		root: rootPath,
 		googleAnalyticsKey: "",
-		mapBoxKey: "",
+		mapBoxKey: mapBoxKey,
 		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
@@ -79,7 +81,7 @@ var config = {
 		env : "test",
 		root: rootPath,
 		googleAnalyticsKey: "",
-		mapBoxKey: "",
+		mapBoxKey: mapBoxKey,
 		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
@@ -107,7 +109,7 @@ var config = {
 		env : "production",
 		root: rootPath,
 		googleAnalyticsKey: "",
-		mapBoxKey: "",
+		mapBoxKey: mapBoxKey,
 		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
