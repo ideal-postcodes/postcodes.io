@@ -17,10 +17,7 @@ describe("Postcodes routes", function () {
 				if (error) throw error;
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
-				assert.property(response.body.result, "longitude");
-				assert.property(response.body.result, "latitude");
-				assert.property(response.body.result, "northings");
-				assert.property(response.body.result, "eastings");
+				helper.testOutcode(response.body.result);
 				done();
 			});
 		});
@@ -35,10 +32,7 @@ describe("Postcodes routes", function () {
 				if (error) throw error;
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
-				assert.property(response.body.result, "longitude");
-				assert.property(response.body.result, "latitude");
-				assert.property(response.body.result, "northings");
-				assert.property(response.body.result, "eastings");
+				helper.testOutcode(response.body.result);
 				done();
 			});
 		});
@@ -53,10 +47,7 @@ describe("Postcodes routes", function () {
 				if (error) throw error;
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
-				assert.property(response.body.result, "longitude");
-				assert.property(response.body.result, "latitude");
-				assert.property(response.body.result, "northings");
-				assert.property(response.body.result, "eastings");
+				helper.testOutcode(response.body.result);
 				done();
 			});
 		});
