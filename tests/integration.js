@@ -11,7 +11,7 @@ describe("Pages routes", function () {
 			  .expect('Content-Type', /html/)
 			  .expect(200)
 			  .end(function(error, response){
-			    if (error) throw error;
+			    if (error) return done(error);
 			    done();
 			  });
 		});
@@ -24,7 +24,7 @@ describe("Pages routes", function () {
 			  .expect('Content-Type', /html/)
 			  .expect(200)
 			  .end(function(error, response){
-			    if (error) throw error;
+			    if (error) return done(error);
 			    done();
 			  });
 		});
@@ -36,8 +36,21 @@ describe("Pages routes", function () {
 				.get("/about")
 				.expect("Content-Type", /html/)
 				.expect(200)
-				.end(function(err, res) {
-					if (err) throw err;
+				.end(function(error, res) {
+					if (error) return done(error);
+					done();
+				});
+		});
+	});
+
+	describe("/explore", function () {
+		it ("should return 200", function (done) {
+			request(app)
+				.get("/explore")
+				.expect("Content-Type", /html/)
+				.expect(200)
+				.end(function(error, res) {
+					if (error) return done(error);
 					done();
 				});
 		});
@@ -52,7 +65,7 @@ describe("Errors", function () {
 				.expect('Content-Type', /html/)
 			  .expect(404)
 			  .end(function(error, response){
-			    if (error) throw error;
+			    if (error) return done(error);
 			    done();
 			  });
 		});
@@ -65,7 +78,7 @@ describe("Misc", function () {
 			.get("/favicon.ico")
 		  .expect(200)
 		  .end(function(error, response){
-		    if (error) throw error;
+		    if (error) return done(error);
 		    done();
 		  });
 	});
@@ -79,7 +92,7 @@ describe("Utils", function () {
 				.expect(200)
 				.expect("Content-Type", /json/)
 				.end(function (error, response) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.equal(response.body.result, "pong");
 					done();
 				});
