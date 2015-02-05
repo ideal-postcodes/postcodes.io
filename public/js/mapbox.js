@@ -1,5 +1,4 @@
 $(function () {
-	// Remove footer
 	$("#footer").remove();
 	var startingCoordinates = [55.0932, -2.0472];
 	var initialZoom = 6;
@@ -229,7 +228,6 @@ $(function () {
 				if (postcodes.length === 0) {
 					$postcodeLookup.addClass("has-error");
 				}
-				// map.setView(event.latlng, newZoom);
 				postcodesLayer.setGeoJSON(toGeoJson(postcodes));
 				rebindTooltips(postcodesLayer);
 				indicateLoaded();
