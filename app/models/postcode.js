@@ -230,13 +230,13 @@ Postcode.prototype._deriveMaxRange = function (params, callback) {
 	}
 };
 
-var outcodeQuery = "Select outcode, avg(northings) as northings, avg(eastings) as eastings, " + 
-	"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry))" + 
-	" as latitude FROM postcodes WHERE outcode=$1 GROUP BY outcode";
-
-function generateAttrQuery (attribute) {
-	return "SELECT DISTINCT " + attribute + " FROM postcodes WHERE outcode=$1";
-}
+var outcodeQuery = "Select outcode, avg(northings) as northings, avg(eastings) as eastings, " +
+"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry)) as latitude," +
+"array(SELECT DISTINCT admin_ward FROM postcodes WHERE outcode=$1) as admin_ward," +
+"array(SELECT DISTINCT admin_district FROM postcodes WHERE outcode=$1) as admin_district," +
+"array(SELECT DISTINCT admin_county FROM postcodes WHERE outcode=$1) as admin_county," +
+"array(SELECT DISTINCT parish FROM postcodes WHERE outcode=$1) as parish " +
+"FROM postcodes WHERE outcode=$1 GROUP BY outcode;";
 
 var additionalAttributes = ["admin_ward", "admin_district", "admin_county", "parish"];
 
@@ -252,30 +252,12 @@ Postcode.prototype.findOutcode = function (outcode, callback) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) return callback(null, null);
 		var outcodeResult = result.rows[0];
-
-		// Start pulling in data
-		var execution = {};
 		additionalAttributes.forEach(function (attribute) {
-			execution[attribute] = function (callback) {
-				self._query(generateAttrQuery(attribute), [outcode], callback);
-			};
-		});
-
-		var handler = function (error, result) {
-			if (error) return callback(error);
-			for (var i in result) {
-				if (result.hasOwnProperty(i)) {
-					outcodeResult[i] = result[i].rows.map(function (elem) {
-						return elem[i];
-					}).filter(function (elem) {
-						return elem !== null;
-					});
-				}
+			if (outcodeResult[attribute].length === 1 && outcodeResult[attribute][0] === null) {
+				outcodeResult[attribute] = [];
 			}
-			return callback(null, outcodeResult);
-		};
-
-		async.parallel(execution, handler);
+		});
+		return callback(null, outcodeResult);
 	});
 }
 
