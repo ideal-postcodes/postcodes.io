@@ -387,7 +387,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	var lsoa = JSON.parse(fs.readFileSync(dataPath + "lsoa.json"));
 	var msoa = JSON.parse(fs.readFileSync(dataPath + "msoa.json"));
 	var nuts = JSON.parse(fs.readFileSync(dataPath + "nuts.json"));
-	var ccg = JSON.parse(fs.readFileSync(dataPath + "ccg.json"));
+	var ccg = JSON.parse(fs.readFileSync(dataPath + "ccgs.json"));
 			
 
 	var transform = function (row, index) {

@@ -16,6 +16,7 @@ var AttributeBase = require(path.join(rootPath, "app/models/attribute_base"));
 var Postcode = require(path.join(rootPath, "app/models/postcode"));
 var District = require(path.join(rootPath, "app/models/district"));
 var Parish = require(path.join(rootPath, "app/models/parish"));
+var County = require(path.join(rootPath, "app/models/county"));
 
 
 var CSV_INDEX = {
@@ -195,6 +196,7 @@ module.exports = {
 	Postcode: Postcode,
 	District: District,
 	Parish: Parish,
+	County: County,
 
 	seedPaths: {
 		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
