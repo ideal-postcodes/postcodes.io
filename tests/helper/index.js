@@ -9,8 +9,12 @@ var env = process.env.NODE_ENV || "development";
 var NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
 var Base = require(path.join(rootPath, "app/models"));
 var config = require(path.join(rootPath + "/config/config"))(env);
-var Postcode = require(path.join(rootPath, "app/models/postcode"));
 var seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
+
+// Load models
+var Postcode = require(path.join(rootPath, "app/models/postcode"));
+var District = require(path.join(rootPath, "app/models/district"));
+
 
 var CSV_INDEX = {
 	postcode: 2,
@@ -52,7 +56,7 @@ function getCustomRelation () {
 
 function connectToDb () {
 	return Base.connect(config);
-}
+};
 
 function seedPostcodeDb (callback) {
 	if (NO_RELOAD_DB) {
@@ -67,8 +71,11 @@ function seedPostcodeDb (callback) {
 				Postcode.populateLocation(function (error, result) {
 					if (error) return callback(error, null);
 					Postcode.createIndexes(function (error, result) {
-						if (error) return callback(error, null)
-						callback(null, result);
+						if (error) return callback(error, null);
+						District._setupTable(function (error, result) {
+							if (error) return callback(error, null);
+							callback(null, result);
+						});
 					});
 				});
 			});
@@ -175,6 +182,7 @@ module.exports = {
 	config: config,
 	rootPath: rootPath,
 	Postcode: Postcode,
+	District: District,
 	allowsCORS: allowsCORS,
 	connectToDb: connectToDb,
 	testOutcode: testOutcode,
