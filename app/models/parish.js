@@ -1,15 +1,15 @@
 "use strict";
 
+var TABLE_NAME = "parishes";
+
 var util = require("util");
 var path = require("path");
 var AttributeBase = require(path.join(__dirname, "attribute_base.js"));
 
-var TABLE_NAME = "parishes";
-
-function Parish() {
+function Model() {
 	AttributeBase.call(this, TABLE_NAME);
 }
 
-util.inherits(Parish, AttributeBase);
+util.inherits(Model, AttributeBase);
 
-module.exports = new Parish();
+module.exports = new Model();
