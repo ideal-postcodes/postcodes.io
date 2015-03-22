@@ -3,6 +3,7 @@
 var fs = require("fs");
 var util = require("util");
 var path = require("path");
+var async = require("async");
 var Base = require("./index").Base;
 var env = process.env.NODE_ENV || "development";
 var defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
