@@ -11,7 +11,7 @@ var defaults = require(path.join(__dirname, "../../config/config.js"))(env).defa
 var TABLE_NAME = "districts";
 
 var SCHEMA = {
-	"code": "VARCHAR(32)",
+	"code": "VARCHAR(32) NOT NULL",
 	"name": "VARCHAR(255)"
 };
 
