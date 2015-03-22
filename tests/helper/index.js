@@ -149,7 +149,7 @@ function isRawPostcodeObject(o) {
 	var properties = ["id", "nhs_ha", "country", "quality", "postcode", "eastings", "latitude", "location", 
 	"northings",  "longitude", "pc_compact", "admin_ward", "admin_county", "admin_district",
 	"parliamentary_constituency", "european_electoral_region", "parish", "lsoa", "msoa",
-	"nuts", "ccg", "primary_care_trust", "incode", "outcode"]
+	"nuts", "ccg", "primary_care_trust", "incode", "outcode", "admin_district_id"]
 
 	properties.forEach(function (prop) {
 		assert.property(o, prop);

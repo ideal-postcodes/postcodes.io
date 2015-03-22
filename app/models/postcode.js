@@ -21,7 +21,7 @@ var postcodeSchema = {
 	"country" : "VARCHAR(255)",
 	"nhs_ha" : "VARCHAR(255)",
 	"admin_county" : "VARCHAR(255)",
-	"admin_district" : "VARCHAR(255)",
+	"admin_district_id" : "VARCHAR(32)",
 	"admin_ward" : "VARCHAR(255)",
 	"longitude" : "DOUBLE PRECISION",
 	"latitude" : "DOUBLE PRECISION",
@@ -59,6 +59,12 @@ function Postcode () {
 
 util.inherits(Postcode, Base);
 
+var findQuery = "SELECT postcodes.*" +
+								",districts.name as admin_district " + 
+								"FROM postcodes " +
+								"LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code " + 
+								"WHERE pc_compact=$1";
+
 Postcode.prototype.find = function (postcode, callback) {
 	if (typeof postcode !== "string") {
 		return callback(null, null);
@@ -70,9 +76,7 @@ Postcode.prototype.find = function (postcode, callback) {
 		return callback(null, null);
 	}
 
-	var query = "SELECT * FROM " + this.relation + " WHERE pc_compact=$1";
-
-	this._query(query, [postcode.replace(" ", "")], function(error, result) {
+	this._query(findQuery, [postcode.replace(" ", "")], function(error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
@@ -81,9 +85,12 @@ Postcode.prototype.find = function (postcode, callback) {
 	});
 }
 
-var randomQuery	=	"SELECT * FROM  ("+
-  "SELECT 1 + floor(random() * (SELECT count(id) FROM postcodes))::integer AS id "+
-  "FROM   generate_series(1, 100) g GROUP BY 1 ) r JOIN postcodes USING (id) LIMIT 1;"
+var randomQuery	=	"SELECT postcodes.*" + 
+									",districts.name as admin_district " + 
+									"FROM postcodes " +
+									"LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code " + 
+									"OFFSET random() * (SELECT count(*) FROM postcodes) " +
+									"LIMIT 1;";
 
 Postcode.prototype.random = function (callback) {
 	this._query(randomQuery, function (error, result) {
@@ -95,14 +102,14 @@ Postcode.prototype.random = function (callback) {
 	});
 }
 
-Postcode.prototype.populateLocation = function (callback) {
-	var query = "UPDATE " + this.relation + " SET location=ST_GeogFromText" + 
-							"('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')" + 
-							" WHERE northings!=0 AND EASTINGS!=0";
-	this._query(query, callback);
-}
-
 var searchRegexp = /\W/g;
+
+var	searchQuery = "SELECT postcodes.*" +
+									",districts.name as admin_district " + 
+									"FROM postcodes " + 
+									"LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code " + 
+									"WHERE pc_compact ~ $1 " + 
+									"LIMIT $2";
 
 Postcode.prototype.search = function (postcode, options, callback) {
 	var DEFAULT_LIMIT = defaults.search.limit.DEFAULT;
@@ -117,11 +124,11 @@ Postcode.prototype.search = function (postcode, options, callback) {
 		if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 	}
 	
-	var	query = "SELECT * FROM " + this.relation  + " WHERE pc_compact ~ $1 LIMIT $2";
+	
 	// Strip spaces and any regex special characters
 	var re = "^" + postcode.toUpperCase().replace(searchRegexp, "") + ".*";
 			
-	this._query(query, [re, limit], function (error, result) {
+	this._query(searchQuery, [re, limit], function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
@@ -130,10 +137,14 @@ Postcode.prototype.search = function (postcode, options, callback) {
 	});
 }
 
-var nearestPostcodeQuery = "SELECT *, ST_Distance(location, " + 
-	"ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance FROM postcodes " + 
-	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
-	"ORDER BY distance LIMIT $4";
+var nearestPostcodeQuery =  "SELECT postcodes.* " + 
+														",ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance " + 
+														",districts.name as admin_district " + 
+														"FROM postcodes " + 
+														"LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code " + 
+														"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
+														"ORDER BY distance " + 
+														"LIMIT $4";
 
 Postcode.prototype.nearestPostcodes = function (params, callback) {
 	var self = this;
@@ -177,9 +188,11 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 	self._query(nearestPostcodeQuery, [longitude, latitude, radius, limit], handleResult);
 };
 
-var nearestPostcodeCount = "SELECT *, ST_Distance(location, " + 
-	"ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance FROM postcodes " + 
-	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) LIMIT $4";
+var nearestPostcodeCount =  "SELECT postcodes.*" + 
+														", ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance " + 
+														"FROM postcodes " + 
+														"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
+														"LIMIT $4";
 
 var START_RANGE = 500; // 0.5km
 var MAX_RANGE = 20000; // 20km
@@ -230,16 +243,23 @@ Postcode.prototype._deriveMaxRange = function (params, callback) {
 	}
 };
 
-var additionalAttributes = ["admin_ward", "admin_district", "admin_county", "parish"];
+var additionalAttributes = ["admin_ward", "admin_county", "parish"];
 var attributesQuery = [];
 
 additionalAttributes.forEach(function (attribute) {
 	attributesQuery.push("array(SELECT DISTINCT " + attribute + " FROM postcodes WHERE outcode=$1) as " + attribute);
 });
 
+["admin_district_id"];
+// Temporary fix until all data is normalized
+attributesQuery.push("array(SELECT DISTINCT districts.name FROM postcodes LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code WHERE outcode=$1) as admin_district");
+
+
 var outcodeQuery = "Select outcode, avg(northings) as northings, avg(eastings) as eastings, " +
-"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry)) as latitude," + attributesQuery.join(",") + 
-" FROM postcodes WHERE outcode=$1 GROUP BY outcode;";
+"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry)) as latitude," + attributesQuery.join(",") + " " +
+"FROM postcodes " + 
+"WHERE outcode=$1 " + 
+"GROUP BY outcode;";
 
 
 Postcode.prototype.findOutcode = function (outcode, callback) {
@@ -351,14 +371,13 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	var self = this;
 	var csvColumns = 	"postcode, pc_compact, eastings, northings, longitude," +
 										" latitude, country, nhs_ha," + 
-										" admin_county, admin_district, admin_ward, parish, quality," +
+										" admin_county, admin_district_id, admin_ward, parish, quality," +
 										" parliamentary_constituency , european_electoral_region, region, " +
 										" primary_care_trust, lsoa, msoa, nuts, incode, outcode, ccg";
 	var dataPath = path.join(__dirname, "../../data/");
 	var countries = JSON.parse(fs.readFileSync(dataPath + "countries.json"));
 	var nhsHa = JSON.parse(fs.readFileSync(dataPath + "nhsHa.json"));
 	var counties = JSON.parse(fs.readFileSync(dataPath + "counties.json"));
-	var districts = JSON.parse(fs.readFileSync(dataPath + "districts.json"));
 	var wards = JSON.parse(fs.readFileSync(dataPath + "wards.json"));
 	var parishes = JSON.parse(fs.readFileSync(dataPath + "parishes.json"));
 	var constituencies = JSON.parse(fs.readFileSync(dataPath + "constituencies.json"));
@@ -406,7 +425,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(countries[row[14]]);							// Country
 		finalRow.push(nhsHa[row[12]]);									// NHS Health Authority
 		finalRow.push(counties[row[5]]);								// County
-		finalRow.push(districts[row[6]]);								// District
+		finalRow.push(row[6]);													// District
 		finalRow.push(wards[row[7]]);										// Ward
 		finalRow.push(parishes[row[44]]);								// Parish
 		finalRow.push(row[11]);													// Quality
@@ -425,6 +444,13 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	}
 
 	self._csvSeed(filePath, csvColumns, transform, callback);
+}
+
+Postcode.prototype.populateLocation = function (callback) {
+	var query = "UPDATE " + this.relation + " SET location=ST_GeogFromText" + 
+							"('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')" + 
+							" WHERE northings!=0 AND EASTINGS!=0";
+	this._query(query, callback);
 }
 
 
