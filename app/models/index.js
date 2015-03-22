@@ -1,8 +1,11 @@
-var pg = require("pg"),
-		copyFrom = require("pg-copy-streams").from,
-		async = require("async"),
-		csv = require("csv"),
-		config;
+var pg = require("pg");
+var copyFrom = require("pg-copy-streams").from;
+var async = require("async");
+var path = require("path");
+var csv = require("csv");
+var env = process.env.NODE_ENV || "development";
+var defaults = require(path.join(__dirname, "../../config/config.js"))(env);
+var config = defaults.postgres;
 
 // All models inherit from base
 // Requires schema and relation name
@@ -150,7 +153,7 @@ var dollarise = function (values) {
 module.exports = {
 	connect: function (configObj, callback) {
 		var cb = callback || function(){};
-		config = configObj.postgres;
+		// config = configObj.postgres;
 		pg.connect(config, cb);	
 		return pg;
 	},

@@ -58,10 +58,6 @@ function getCustomRelation () {
 	return new CustomRelation();
 }
 
-function connectToDb () {
-	return Base.connect(config);
-};
-
 function seedPostcodeDb (callback) {
 	if (NO_RELOAD_DB) {
 		return callback(null);
@@ -176,7 +172,6 @@ module.exports = {
 
 	// Methods
 	allowsCORS: allowsCORS,
-	connectToDb: connectToDb,
 	testOutcode: testOutcode,
 	randomOutcode: randomOutcode,
 	randomPostcode: randomPostcode,
