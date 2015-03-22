@@ -17,6 +17,7 @@ var Postcode = require(path.join(rootPath, "app/models/postcode"));
 var District = require(path.join(rootPath, "app/models/district"));
 var Parish = require(path.join(rootPath, "app/models/parish"));
 var County = require(path.join(rootPath, "app/models/county"));
+var Ccg = require(path.join(rootPath, "app/models/ccg"));
 
 
 var CSV_INDEX = {
@@ -197,6 +198,7 @@ module.exports = {
 	District: District,
 	Parish: Parish,
 	County: County,
+	Ccg: Ccg,
 
 	seedPaths: {
 		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
