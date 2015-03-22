@@ -15,6 +15,7 @@ var seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
 var AttributeBase = require(path.join(rootPath, "app/models/attribute_base"));
 var Postcode = require(path.join(rootPath, "app/models/postcode"));
 var District = require(path.join(rootPath, "app/models/district"));
+var Parish = require(path.join(rootPath, "app/models/parish"));
 
 
 var CSV_INDEX = {
@@ -167,16 +168,15 @@ function testOutcode(o) {
 }
 
 module.exports = {
-	Base: Base,
+	// Data	
 	config: config,
 	rootPath: rootPath,
-	Postcode: Postcode,
-	District: District,
+
+	// Methods
 	allowsCORS: allowsCORS,
 	connectToDb: connectToDb,
 	testOutcode: testOutcode,
 	randomOutcode: randomOutcode,
-	AttributeBase: AttributeBase,
 	randomPostcode: randomPostcode,
 	randomLocation: randomLocation,
 	seedPostcodeDb: seedPostcodeDb,
@@ -188,6 +188,14 @@ module.exports = {
 	isRawPostcodeObject: isRawPostcodeObject, 
 	lookupRandomPostcode: lookupRandomPostcode,
 	locationWithNearbyPostcodes: locationWithNearbyPostcodes,
+
+	// Models
+	Base: Base,
+	AttributeBase: AttributeBase,
+	Postcode: Postcode,
+	District: District,
+	Parish: Parish,
+
 	seedPaths: {
 		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
 		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv")

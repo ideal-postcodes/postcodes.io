@@ -5,7 +5,7 @@ var assert = require("chai").assert;
 var helper = require(__dirname + "/helper");
 
 /* Modify model here */
-var Model = helper.District;
+var Model = helper.Parish;
 /* Modify model here */
 
 var data = JSON.parse(fs.readFileSync(path.join(helper.rootPath, "data/"+ Model.relation +".json")));
@@ -32,6 +32,7 @@ describe(Model.relation + " model", function () {
 
 	// Rebuild table after tests
 	after(function (done) {
+		this.timeout(0);
 		Model._setupTable(done);
 	});
 
@@ -44,6 +45,7 @@ describe(Model.relation + " model", function () {
 			});
 		});
 		it ("loads correct data from data directory", function (done) {
+			this.timeout(0);
 			Model.seedData(function (error) {
 				if (error) return done(error);
 				Model._query("SELECT count(*) FROM " + Model.relation , function (error, result) {
@@ -57,6 +59,7 @@ describe(Model.relation + " model", function () {
 
 	describe("_setupTable", function (done) {
 		it ("creates a table, associated indexes and populates with data", function (done) {
+			this.timeout(0);
 			Model._setupTable(function (error) {
 				if (error) return done(error);
 				Model._query("SELECT count(*) FROM " + Model.relation , function (error, result) {
