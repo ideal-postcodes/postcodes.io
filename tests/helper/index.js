@@ -12,6 +12,7 @@ var config = require(path.join(rootPath + "/config/config"))(env);
 var seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
 
 // Load models
+var AttributeBase = require(path.join(rootPath, "app/models/attribute_base"));
 var Postcode = require(path.join(rootPath, "app/models/postcode"));
 var District = require(path.join(rootPath, "app/models/district"));
 
@@ -175,6 +176,7 @@ module.exports = {
 	connectToDb: connectToDb,
 	testOutcode: testOutcode,
 	randomOutcode: randomOutcode,
+	AttributeBase: AttributeBase,
 	randomPostcode: randomPostcode,
 	randomLocation: randomLocation,
 	seedPostcodeDb: seedPostcodeDb,

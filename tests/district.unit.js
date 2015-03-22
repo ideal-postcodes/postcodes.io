@@ -17,7 +17,6 @@ var District = helper.District;
 describe("District model", function () {
 	before(function (done) {
 		this.timeout(0);
-		helper.connectToDb();
 		helper.clearPostcodeDb(function (error, result) {
 			if (error) return done(error);
 			helper.seedPostcodeDb(function (error, result) {
