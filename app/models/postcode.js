@@ -327,6 +327,26 @@ Postcode.prototype.toJson = function (address) {
 *
 */
 
+Postcode.prototype._setupTable = function (filePath, callback) {
+	var self = this;
+	self._createRelation(function (error, result) {
+		if (error) return callback(error, null);
+		self.clear(function (error, result) {
+			if (error) return callback(error, null);
+			self.seedPostcodes(filePath, function (error, result) {
+				if (error) return callback(error, null);
+				self.populateLocation(function (error, result) {
+					if (error) return callback(error, null);
+					self.createIndexes(function (error, result) {
+						if (error) return callback(error, null);
+						callback(null);
+					});
+				});
+			});
+		});
+	});
+};
+
 Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	var self = this;
 	var csvColumns = 	"postcode, pc_compact, eastings, northings, longitude," +

@@ -62,23 +62,11 @@ function seedPostcodeDb (callback) {
 	if (NO_RELOAD_DB) {
 		return callback(null);
 	}
-	Postcode._createRelation(function (error, result) {
+	Postcode._setupTable(seedPostcodePath, function (error) {
 		if (error) return callback(error, null);
-		Postcode.clear(function (error, result) {
-			if (error) return callback(error, null);
-			Postcode.seedPostcodes(seedPostcodePath, function (error, result) {
-				if (error) return callback(error, null);
-				Postcode.populateLocation(function (error, result) {
-					if (error) return callback(error, null);
-					Postcode.createIndexes(function (error, result) {
-						if (error) return callback(error, null);
-						District._setupTable(function (error, result) {
-							if (error) return callback(error, null);
-							callback(null, result);
-						});
-					});
-				});
-			});
+		District._setupTable(function (error) {
+			if (error) return callback(error);
+			return callback(null);
 		});
 	});
 }
