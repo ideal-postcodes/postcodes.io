@@ -20,6 +20,8 @@ var requiredAttributes = {
 	"name": "VARCHAR(255)"
 };
 
+// Note - relation name must match source (.json) file name in data/ directory. E.g. /data/<relation>.json
+
 function AttributeBase(relation, schema, indexes) {
 	if (!schema) {
 		schema = {};
