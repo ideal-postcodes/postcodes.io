@@ -1,6 +1,7 @@
 var	csv = require("csv");
 var util = require("util");
 var path = require("path");
+var async = require("async");
 var OSPoint = require("ospoint");
 var assert = require("chai").assert;
 var randomString = require("random-string");
@@ -62,13 +63,18 @@ function seedPostcodeDb (callback) {
 	if (NO_RELOAD_DB) {
 		return callback(null);
 	}
-	Postcode._setupTable(seedPostcodePath, function (error) {
-		if (error) return callback(error, null);
-		District._setupTable(function (error) {
-			if (error) return callback(error);
-			return callback(null);
-		});
+
+	var instructions = [];
+	instructions.push(function (callback) {
+		Postcode._setupTable(seedPostcodePath, callback);
 	});
+	instructions.push(District._setupTable.bind(District));
+	instructions.push(Parish._setupTable.bind(Parish));
+	instructions.push(County._setupTable.bind(County));
+	instructions.push(Ccg._setupTable.bind(Ccg));
+	instructions.push(Ward._setupTable.bind(Ward));
+
+	async.series(instructions, callback);
 }
 
 function clearPostcodeDb(callback, force) {
