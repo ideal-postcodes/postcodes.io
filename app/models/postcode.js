@@ -20,9 +20,9 @@ var postcodeSchema = {
 	"northings" : "INTEGER",
 	"country" : "VARCHAR(255)",
 	"nhs_ha" : "VARCHAR(255)",
-	"admin_county" : "VARCHAR(255)",
+	"admin_county_id" : "VARCHAR(32)",
 	"admin_district_id" : "VARCHAR(32)",
-	"admin_ward" : "VARCHAR(255)",
+	"admin_ward_id" : "VARCHAR(32)",
 	"longitude" : "DOUBLE PRECISION",
 	"latitude" : "DOUBLE PRECISION",
 	"location" : "GEOGRAPHY(Point, 4326)",
@@ -30,7 +30,7 @@ var postcodeSchema = {
 	"european_electoral_region" : "VARCHAR(255)",
 	"primary_care_trust" : "VARCHAR(255)", 
 	"region" : "VARCHAR(255)", 
-	"parish_id" : "VARCHAR(255)", 
+	"parish_id" : "VARCHAR(32)", 
 	"lsoa" : "VARCHAR(255)", 
 	"msoa" : "VARCHAR(255)",
 	"nuts" : "VARCHAR(255)",
@@ -61,6 +61,14 @@ var relationships = [{
 	table: "parishes",
 	key: "parish_id",
 	foreignKey: "code"
+}, {
+	table: "counties",
+	key: "admin_county_id",
+	foreignKey: "code"
+}, {
+	table: "wards",
+	key: "admin_ward_id",
+	foreignKey: "code"
 }];
 
 var toJoinString = function () {
@@ -76,6 +84,12 @@ var foreignColumns = [{
 }, {
 	field: "parishes.name",
 	as: "parish"
+}, {
+	field: "counties.name",
+	as: "admin_county"
+}, {
+	field: "wards.name",
+	as: "admin_ward"
 }];
 
 var toColumnsString = function () {
@@ -273,24 +287,19 @@ Postcode.prototype._deriveMaxRange = function (params, callback) {
 	}
 };
 
-var additionalAttributes = ["admin_ward", "admin_county"];
 var attributesQuery = [];
-
-additionalAttributes.forEach(function (attribute) {
-	attributesQuery.push("array(SELECT DISTINCT " + attribute + " FROM postcodes WHERE outcode=$1) as " + attribute);
-});
-
-var altAttributes = ["admin_district_id", "parish_id"];
-// Temporary fix until all data is normalized
 attributesQuery.push("array(SELECT DISTINCT districts.name FROM postcodes LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code WHERE outcode=$1) as admin_district");
 attributesQuery.push("array(SELECT DISTINCT parishes.name FROM postcodes LEFT OUTER JOIN parishes ON postcodes.parish_id = parishes.code WHERE outcode=$1) as parish");
+attributesQuery.push("array(SELECT DISTINCT counties.name FROM postcodes LEFT OUTER JOIN counties ON postcodes.admin_county_id = counties.code WHERE outcode=$1) as admin_county");
+attributesQuery.push("array(SELECT DISTINCT wards.name FROM postcodes LEFT OUTER JOIN wards ON postcodes.admin_ward_id = wards.code WHERE outcode=$1) as admin_ward");
 
 
-var outcodeQuery = "Select outcode, avg(northings) as northings, avg(eastings) as eastings, " +
-"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry)) as latitude," + attributesQuery.join(",") + " " +
-"FROM postcodes " + 
-"WHERE outcode=$1 " + 
-"GROUP BY outcode;";
+var outcodeQuery = ["SELECT outcode, avg(northings) as northings, avg(eastings) as eastings,",
+										"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry)) as latitude,",
+										attributesQuery.join(","),
+										"FROM postcodes", 
+										"WHERE outcode=$1", 
+										"GROUP BY outcode;"].join(" ");
 
 
 Postcode.prototype.findOutcode = function (outcode, callback) {
@@ -305,7 +314,8 @@ Postcode.prototype.findOutcode = function (outcode, callback) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) return callback(null, null);
 		var outcodeResult = result.rows[0];
-		additionalAttributes.forEach(function (attribute) {
+		// Swap out null result for empty arrays
+		["admin_district", "parish", "admin_county", "admin_ward"].forEach(function (attribute) {
 			if (outcodeResult[attribute].length === 1 && outcodeResult[attribute][0] === null) {
 				outcodeResult[attribute] = [];
 			}
@@ -402,14 +412,12 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	var self = this;
 	var csvColumns = 	"postcode, pc_compact, eastings, northings, longitude," +
 										" latitude, country, nhs_ha," + 
-										" admin_county, admin_district_id, admin_ward, parish_id, quality," +
+										" admin_county_id, admin_district_id, admin_ward_id, parish_id, quality," +
 										" parliamentary_constituency , european_electoral_region, region, " +
 										" primary_care_trust, lsoa, msoa, nuts, incode, outcode, ccg";
 	var dataPath = path.join(__dirname, "../../data/");
 	var countries = JSON.parse(fs.readFileSync(dataPath + "countries.json"));
 	var nhsHa = JSON.parse(fs.readFileSync(dataPath + "nhsHa.json"));
-	var counties = JSON.parse(fs.readFileSync(dataPath + "counties.json"));
-	var wards = JSON.parse(fs.readFileSync(dataPath + "wards.json"));
 	var parishes = JSON.parse(fs.readFileSync(dataPath + "parishes.json"));
 	var constituencies = JSON.parse(fs.readFileSync(dataPath + "constituencies.json"));
 	var european_registers = JSON.parse(fs.readFileSync(dataPath + "european_registers.json"));
@@ -455,9 +463,9 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(location.latitude);								// latitude
 		finalRow.push(countries[row[14]]);							// Country
 		finalRow.push(nhsHa[row[12]]);									// NHS Health Authority
-		finalRow.push(counties[row[5]]);								// County
+		finalRow.push(row[5]);													// County
 		finalRow.push(row[6]);													// District
-		finalRow.push(wards[row[7]]);										// Ward
+		finalRow.push(row[7]);													// Ward
 		finalRow.push(row[44]);													// Parish
 		finalRow.push(row[11]);													// Quality
 		finalRow.push(constituencies[row[17]]);					// Westminster const.
