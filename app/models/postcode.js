@@ -30,7 +30,7 @@ var postcodeSchema = {
 	"european_electoral_region" : "VARCHAR(255)",
 	"primary_care_trust" : "VARCHAR(255)", 
 	"region" : "VARCHAR(255)", 
-	"parish" : "VARCHAR(255)", 
+	"parish_id" : "VARCHAR(255)", 
 	"lsoa" : "VARCHAR(255)", 
 	"msoa" : "VARCHAR(255)",
 	"nuts" : "VARCHAR(255)",
@@ -57,6 +57,10 @@ var relationships = [{
 	table: "districts",
 	key: "admin_district_id",
 	foreignKey: "code"
+}, {
+	table: "parishes",
+	key: "parish_id",
+	foreignKey: "code"
 }];
 
 var toJoinString = function () {
@@ -69,6 +73,9 @@ var toJoinString = function () {
 var foreignColumns = [{
 	field: "districts.name",
 	as: "admin_district"
+}, {
+	field: "parishes.name",
+	as: "parish"
 }];
 
 var toColumnsString = function () {
@@ -266,16 +273,17 @@ Postcode.prototype._deriveMaxRange = function (params, callback) {
 	}
 };
 
-var additionalAttributes = ["admin_ward", "admin_county", "parish"];
+var additionalAttributes = ["admin_ward", "admin_county"];
 var attributesQuery = [];
 
 additionalAttributes.forEach(function (attribute) {
 	attributesQuery.push("array(SELECT DISTINCT " + attribute + " FROM postcodes WHERE outcode=$1) as " + attribute);
 });
 
-["admin_district_id"];
+var altAttributes = ["admin_district_id", "parish_id"];
 // Temporary fix until all data is normalized
 attributesQuery.push("array(SELECT DISTINCT districts.name FROM postcodes LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code WHERE outcode=$1) as admin_district");
+attributesQuery.push("array(SELECT DISTINCT parishes.name FROM postcodes LEFT OUTER JOIN parishes ON postcodes.parish_id = parishes.code WHERE outcode=$1) as parish");
 
 
 var outcodeQuery = "Select outcode, avg(northings) as northings, avg(eastings) as eastings, " +
@@ -450,7 +458,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(counties[row[5]]);								// County
 		finalRow.push(row[6]);													// District
 		finalRow.push(wards[row[7]]);										// Ward
-		finalRow.push(parishes[row[44]]);								// Parish
+		finalRow.push(row[44]);													// Parish
 		finalRow.push(row[11]);													// Quality
 		finalRow.push(constituencies[row[17]]);					// Westminster const.
 		finalRow.push(european_registers[row[18]]);			// European electoral region
