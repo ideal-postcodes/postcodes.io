@@ -16,7 +16,7 @@ var env = process.env.NODE_ENV || "development";
 var defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
 
 var requiredAttributes = {
-	"code": "VARCHAR(32) NOT NULL",
+	"code": "VARCHAR(32) NOT NULL UNIQUE",
 	"name": "VARCHAR(255)"
 };
 
