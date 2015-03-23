@@ -53,17 +53,42 @@ var indexes = [{
 	column: "outcode"
 }];
 
+var relationships = [{
+	table: "districts",
+	key: "admin_district_id",
+	foreignKey: "code"
+}];
+
+var toJoinString = function () {
+	return relationships.map(function (r) {
+		return ["LEFT OUTER JOIN", r.table, "ON", "postcodes." + r.key, 
+						"=", r.table + "." + r.foreignKey].join(" ");
+	}).join(" ");
+};
+
+var foreignColumns = [{
+	field: "districts.name",
+	as: "admin_district"
+}];
+
+var toColumnsString = function () {
+	return foreignColumns.map(function(elem) {
+		return [elem.field, "as", elem.as ].join(" ");
+	}).join(",");
+};
+
 function Postcode () {
 	Base.call(this, "postcodes", postcodeSchema, indexes);
 }
 
 util.inherits(Postcode, Base);
 
-var findQuery = "SELECT postcodes.*" +
-								",districts.name as admin_district " + 
-								"FROM postcodes " +
-								"LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code " + 
-								"WHERE pc_compact=$1";
+var findQuery = ["SELECT postcodes.*,",
+								toColumnsString(),
+								"FROM postcodes",
+								toJoinString(),
+								// "LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code " + 
+								"WHERE pc_compact=$1"].join(" ");
 
 Postcode.prototype.find = function (postcode, callback) {
 	if (typeof postcode !== "string") {
@@ -85,12 +110,12 @@ Postcode.prototype.find = function (postcode, callback) {
 	});
 }
 
-var randomQuery	=	"SELECT postcodes.*" + 
-									",districts.name as admin_district " + 
-									"FROM postcodes " +
-									"LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code " + 
-									"OFFSET random() * (SELECT count(*) FROM postcodes) " +
-									"LIMIT 1;";
+var randomQuery	=	["SELECT postcodes.*,", 
+									toColumnsString(),
+									"FROM postcodes",
+									toJoinString(),
+									"OFFSET random() * (SELECT count(*) FROM postcodes)",
+									"LIMIT 1;"].join(" ");
 
 Postcode.prototype.random = function (callback) {
 	this._query(randomQuery, function (error, result) {
@@ -104,12 +129,12 @@ Postcode.prototype.random = function (callback) {
 
 var searchRegexp = /\W/g;
 
-var	searchQuery = "SELECT postcodes.*" +
-									",districts.name as admin_district " + 
-									"FROM postcodes " + 
-									"LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code " + 
-									"WHERE pc_compact ~ $1 " + 
-									"LIMIT $2";
+var	searchQuery = ["SELECT postcodes.*,",
+									toColumnsString(),
+									"FROM postcodes",
+									toJoinString(),
+									"WHERE pc_compact ~ $1",
+									"LIMIT $2"].join(" ");
 
 Postcode.prototype.search = function (postcode, options, callback) {
 	var DEFAULT_LIMIT = defaults.search.limit.DEFAULT;
@@ -137,14 +162,13 @@ Postcode.prototype.search = function (postcode, options, callback) {
 	});
 }
 
-var nearestPostcodeQuery =  "SELECT postcodes.* " + 
-														",ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance " + 
-														",districts.name as admin_district " + 
-														"FROM postcodes " + 
-														"LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code " + 
-														"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
-														"ORDER BY distance " + 
-														"LIMIT $4";
+var nearestPostcodeQuery =  ["SELECT postcodes.*, ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance,", 
+														toColumnsString(),
+														"FROM postcodes",
+														toJoinString(),
+														"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3)", 
+														"ORDER BY distance",
+														"LIMIT $4"].join(" ");
 
 Postcode.prototype.nearestPostcodes = function (params, callback) {
 	var self = this;
@@ -188,11 +212,10 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 	self._query(nearestPostcodeQuery, [longitude, latitude, radius, limit], handleResult);
 };
 
-var nearestPostcodeCount =  "SELECT postcodes.*" + 
-														", ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance " + 
-														"FROM postcodes " + 
-														"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3) " + 
-														"LIMIT $4";
+var nearestPostcodeCount =  ["SELECT postcodes.*, ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance", 
+														"FROM postcodes",
+														"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3)",
+														"LIMIT $4"].join(" ");
 
 var START_RANGE = 500; // 0.5km
 var MAX_RANGE = 20000; // 20km
