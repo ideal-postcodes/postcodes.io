@@ -402,7 +402,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	var self = this;
 	var csvColumns = 	"postcode, pc_compact, eastings, northings, longitude," +
 										" latitude, country, nhs_ha," + 
-										" admin_county, admin_district_id, admin_ward, parish, quality," +
+										" admin_county, admin_district_id, admin_ward, parish_id, quality," +
 										" parliamentary_constituency , european_electoral_region, region, " +
 										" primary_care_trust, lsoa, msoa, nuts, incode, outcode, ccg";
 	var dataPath = path.join(__dirname, "../../data/");
