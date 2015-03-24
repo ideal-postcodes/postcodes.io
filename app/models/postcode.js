@@ -427,7 +427,6 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	var dataPath = path.join(__dirname, "../../data/");
 	var countries = JSON.parse(fs.readFileSync(dataPath + "countries.json"));
 	var nhsHa = JSON.parse(fs.readFileSync(dataPath + "nhsHa.json"));
-	var parishes = JSON.parse(fs.readFileSync(dataPath + "parishes.json"));
 	var constituencies = JSON.parse(fs.readFileSync(dataPath + "constituencies.json"));
 	var european_registers = JSON.parse(fs.readFileSync(dataPath + "european_registers.json"));
 	var regions = JSON.parse(fs.readFileSync(dataPath + "regions.json"));
