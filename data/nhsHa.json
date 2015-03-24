@@ -1,5 +1,12 @@
 {  
 	"S08000001":"Ayrshire & Arran",
+	"W11000023": "Betsi Cadwaladr University Health Board",
+  "W11000024": "Powys Teaching Health Board",
+  "W11000025": "Hywel Dda University Health Board",
+  "W11000026": "Abertawe Bro Morgannwg University Health Board",
+  "W11000027": "Cwm Taf University Health Board",
+  "W11000028": "Aneurin Bevan University Health Board",
+  "W11000029": "Cardiff and Vale University Health Board",
 	"S08000002":"Borders",
 	"S08000003":"Dumfries and Galloway",
 	"S08000004":"Fife",
