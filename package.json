@@ -10,6 +10,7 @@
     "test": "NODE_ENV=test ./bin/createTestDb.sh && NODE_ENV=test NO_RELOAD_DB=true mocha tests/ -R spec && NODE_ENV=test ./bin/clearTestDb.sh",
     "start": "node server.js",
     "setup": "./bin/setup.sh",
+    "rebuild_support_tables": "./bin/rebuild_support_tables.js",
     "setup_test_db": "./bin/setup_test.sh",
     "generate_test_data": "./bin/generate_test_data.js"
   },
