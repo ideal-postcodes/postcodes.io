@@ -36,7 +36,7 @@ var postcodeSchema = {
 	"nuts" : "VARCHAR(255)",
 	"incode" : "VARCHAR(5)",
 	"outcode" : "VARCHAR(5)",
-	"ccg" : "VARCHAR(255)"
+	"ccg_id" : "VARCHAR(32)"
 };
 
 var indexes = [{
@@ -69,6 +69,10 @@ var relationships = [{
 	table: "wards",
 	key: "admin_ward_id",
 	foreignKey: "code"
+},{
+	table: "ccgs",
+	key: "ccg_id",
+	foreignKey: "code"
 }];
 
 var toJoinString = function () {
@@ -90,6 +94,9 @@ var foreignColumns = [{
 }, {
 	field: "wards.name",
 	as: "admin_ward"
+},{
+	field: "ccgs.name",
+	as: "ccg"
 }];
 
 var toColumnsString = function () {
@@ -183,13 +190,14 @@ Postcode.prototype.search = function (postcode, options, callback) {
 	});
 }
 
-var nearestPostcodeQuery =  ["SELECT postcodes.*, ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance,", 
-														toColumnsString(),
-														"FROM postcodes",
-														toJoinString(),
-														"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3)", 
-														"ORDER BY distance",
-														"LIMIT $4"].join(" ");
+var nearestPostcodeQuery =  ["SELECT postcodes.*,", 
+	"ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance,", 
+	toColumnsString(),
+	"FROM postcodes",
+	toJoinString(),
+	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3)", 
+	"ORDER BY distance",
+	"LIMIT $4"].join(" ");
 
 Postcode.prototype.nearestPostcodes = function (params, callback) {
 	var self = this;
@@ -233,10 +241,11 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 	self._query(nearestPostcodeQuery, [longitude, latitude, radius, limit], handleResult);
 };
 
-var nearestPostcodeCount =  ["SELECT postcodes.*, ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance", 
-														"FROM postcodes",
-														"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3)",
-														"LIMIT $4"].join(" ");
+var nearestPostcodeCount =  ["SELECT postcodes.*, ",
+	"ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance", 
+	"FROM postcodes",
+	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3)",
+	"LIMIT $4"].join(" ");
 
 var START_RANGE = 500; // 0.5km
 var MAX_RANGE = 20000; // 20km
@@ -295,11 +304,11 @@ attributesQuery.push("array(SELECT DISTINCT wards.name FROM postcodes LEFT OUTER
 
 
 var outcodeQuery = ["SELECT outcode, avg(northings) as northings, avg(eastings) as eastings,",
-										"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry)) as latitude,",
-										attributesQuery.join(","),
-										"FROM postcodes", 
-										"WHERE outcode=$1", 
-										"GROUP BY outcode;"].join(" ");
+	"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry)) as latitude,",
+	attributesQuery.join(","),
+	"FROM postcodes", 
+	"WHERE outcode=$1", 
+	"GROUP BY outcode;"].join(" ");
 
 
 Postcode.prototype.findOutcode = function (outcode, callback) {
@@ -414,7 +423,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 										" latitude, country, nhs_ha," + 
 										" admin_county_id, admin_district_id, admin_ward_id, parish_id, quality," +
 										" parliamentary_constituency , european_electoral_region, region, " +
-										" primary_care_trust, lsoa, msoa, nuts, incode, outcode, ccg";
+										" primary_care_trust, lsoa, msoa, nuts, incode, outcode, ccg_id";
 	var dataPath = path.join(__dirname, "../../data/");
 	var countries = JSON.parse(fs.readFileSync(dataPath + "countries.json"));
 	var nhsHa = JSON.parse(fs.readFileSync(dataPath + "nhsHa.json"));
@@ -426,8 +435,6 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	var lsoa = JSON.parse(fs.readFileSync(dataPath + "lsoa.json"));
 	var msoa = JSON.parse(fs.readFileSync(dataPath + "msoa.json"));
 	var nuts = JSON.parse(fs.readFileSync(dataPath + "nuts.json"));
-	var ccg = JSON.parse(fs.readFileSync(dataPath + "ccgs.json"));
-			
 
 	var transform = function (row, index) {
 		// Skip if header
@@ -477,7 +484,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(nuts[row[22]]);										// NUTS
 		finalRow.push(row[2].split(" ")[1]);						// Incode
 		finalRow.push(row[2].split(" ")[0]);						// Outcode
-		finalRow.push(ccg[row[46]]);										// Clinical Commissioning Group
+		finalRow.push(row[46]);													// Clinical Commissioning Group
 
 		return finalRow;
 	}
