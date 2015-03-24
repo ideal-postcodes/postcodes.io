@@ -297,10 +297,10 @@ Postcode.prototype._deriveMaxRange = function (params, callback) {
 };
 
 var attributesQuery = [];
-attributesQuery.push("array(SELECT DISTINCT districts.name FROM postcodes LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code WHERE outcode=$1) as admin_district");
-attributesQuery.push("array(SELECT DISTINCT parishes.name FROM postcodes LEFT OUTER JOIN parishes ON postcodes.parish_id = parishes.code WHERE outcode=$1) as parish");
-attributesQuery.push("array(SELECT DISTINCT counties.name FROM postcodes LEFT OUTER JOIN counties ON postcodes.admin_county_id = counties.code WHERE outcode=$1) as admin_county");
-attributesQuery.push("array(SELECT DISTINCT wards.name FROM postcodes LEFT OUTER JOIN wards ON postcodes.admin_ward_id = wards.code WHERE outcode=$1) as admin_ward");
+attributesQuery.push("array(SELECT DISTINCT districts.name FROM postcodes LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code WHERE outcode=$1 AND districts.name IS NOT NULL) as admin_district");
+attributesQuery.push("array(SELECT DISTINCT parishes.name FROM postcodes LEFT OUTER JOIN parishes ON postcodes.parish_id = parishes.code WHERE outcode=$1 AND parishes.name IS NOT NULL) as parish");
+attributesQuery.push("array(SELECT DISTINCT counties.name FROM postcodes LEFT OUTER JOIN counties ON postcodes.admin_county_id = counties.code WHERE outcode=$1 AND counties.name IS NOT NULL) as admin_county");
+attributesQuery.push("array(SELECT DISTINCT wards.name FROM postcodes LEFT OUTER JOIN wards ON postcodes.admin_ward_id = wards.code WHERE outcode=$1 AND wards.name IS NOT NULL) as admin_ward");
 
 
 var outcodeQuery = ["SELECT outcode, avg(northings) as northings, avg(eastings) as eastings,",
