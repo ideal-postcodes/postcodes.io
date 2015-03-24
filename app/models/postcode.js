@@ -334,9 +334,21 @@ Postcode.prototype.findOutcode = function (outcode, callback) {
 }
 
 Postcode.prototype.toJson = function (address) {
+	address.codes = {
+		admin_district: address["admin_district_id"],
+		admin_county: address["admin_county_id"],
+		admin_ward: address["admin_ward_id"],
+		parish: address["parish_id"],
+		ccg: address["ccg_id"] 
+	};
 	delete address.id;
 	delete address.location;
 	delete address.pc_compact;
+	delete address.admin_district_id;
+	delete address.admin_county_id;
+	delete address.admin_ward_id;
+	delete address.parish_id;
+	delete address.ccg_id;
 	return address;
 }
 

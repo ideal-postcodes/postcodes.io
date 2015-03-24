@@ -135,7 +135,8 @@ function validCorsOptions(response) {
 }
 
 function isPostcodeObject(o) {
-	var nonProperties = ["id", "location", "pc_compact"];
+	var nonProperties = ["id", "location", "pc_compact", "admin_county_id", 
+		"admin_district_id", "parish_id", "ccg_id", "admin_ward_id"];
 
 	nonProperties.forEach(function (prop) {
 		assert.notProperty(o, prop);
@@ -144,9 +145,15 @@ function isPostcodeObject(o) {
 	var properties = ["nhs_ha","country","quality","postcode","eastings","latitude",
 		"northings","longitude","admin_ward","admin_county","admin_district",
 		"parliamentary_constituency","european_electoral_region","parish","lsoa",
-		"msoa","nuts","ccg","primary_care_trust","incode","outcode"];
+		"msoa","nuts","ccg","primary_care_trust","incode","outcode", "codes"];
 
 	properties.forEach(function (prop) {
+		assert.property(o, prop);
+	});
+
+	var codeProperties = ["admin_county", "admin_district", "parish", "ccg", "admin_ward"];
+
+	codeProperties.forEach(function (prop) {
 		assert.property(o, prop);
 	});
 }
@@ -155,7 +162,8 @@ function isRawPostcodeObject(o) {
 	var properties = ["id", "nhs_ha", "country", "quality", "postcode", "eastings", "latitude", "location", 
 	"northings",  "longitude", "pc_compact", "admin_ward", "admin_county", "admin_district",
 	"parliamentary_constituency", "european_electoral_region", "parish", "lsoa", "msoa",
-	"nuts", "ccg", "primary_care_trust", "incode", "outcode", "admin_district_id"]
+	"nuts", "ccg", "primary_care_trust", "incode", "outcode", "admin_district",
+	"admin_county_id", "admin_district_id", "parish_id", "ccg_id", "admin_ward_id"];
 
 	properties.forEach(function (prop) {
 		assert.property(o, prop);
