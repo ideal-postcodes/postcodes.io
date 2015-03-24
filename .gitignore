@@ -8,3 +8,4 @@ config/deploy.rb
 ONSPD_*
 *.log
 tests/other_tests
+todo
