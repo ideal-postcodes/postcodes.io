@@ -115,7 +115,6 @@ var findQuery = ["SELECT postcodes.*,",
 								toColumnsString(),
 								"FROM postcodes",
 								toJoinString(),
-								// "LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code " + 
 								"WHERE pc_compact=$1"].join(" ");
 
 Postcode.prototype.find = function (postcode, callback) {
