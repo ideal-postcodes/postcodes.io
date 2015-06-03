@@ -13,18 +13,10 @@ util.inherits(CustomAttribute, AttributeBase);
 var customAttribute = new CustomAttribute();
 
 describe("AttributeBase model", function () {
-	before(function (done) {
-		this.timeout(0);
-		helper.clearPostcodeDb(function (error, result) {
-			if (error) return done(error);
-			helper.seedPostcodeDb(function (error, result) {
-				if (error) return done(error);
-				done();
-			});
-		})
-	});
-
 	describe("_createRelation", function () {
+		after(function (done) {
+			customAttribute._query(["DROP TABLE", customAttribute.relation].join(" "), done);
+		});
 		it ("creates a relation with the correct default attributes", function (done) {
 			customAttribute._createRelation(function (error) {
 				if (error) return done(error);
