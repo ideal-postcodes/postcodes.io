@@ -398,6 +398,24 @@ describe("Postcodes routes", function () {
 					});
 			});
 
+			it ("allows search over a larger area using 'widesearch'", function (done) {
+				request(app)
+					.get("/postcodes")
+					.query({
+						longitude: longitude,
+						latitude: latitude,
+						widesearch: true
+					})
+					.expect("Content-Type", /json/)
+					.expect(helper.allowsCORS)
+					.expect(200)
+					.end(function (error, response) {
+						if (error) return done(error);
+						assert.equal(response.body.result.length, 10);
+						done();
+					});
+			});
+
 			it ("does not allow limit to exceed 10", function (done) {
 				request(app)
 					.get("/postcodes")

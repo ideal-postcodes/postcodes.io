@@ -105,11 +105,11 @@ function bulkGeocode (request, response, next) {
 
 	var result = [];
 	var execution = [];
-	var whitelist = ["limit", "longitude", "latitude", "radius", "wideSearch"];
+	var whitelist = ["limit", "longitude", "latitude", "radius", "widesearch"];
 	var sanitizeQuery = function (query) {
 		var result = {};
 		for (var attr in query) {
-			if (whitelist.indexOf(attr) !== -1) {
+			if (whitelist.indexOf(attr.toLowerCase()) !== -1) {
 				result[attr] = query[attr];
 			}
 		}
@@ -315,7 +315,7 @@ var nearestPostcodes = function (request, response, next) {
 		}
 	}
 
-	params.wideSearch = !!request.query.wideSearch;
+	params.wideSearch = !!request.query.wideSearch || !!request.query.widesearch;
 
 	Postcode.nearestPostcodes(params, function (error, results) {
 		if (error) return next(error);

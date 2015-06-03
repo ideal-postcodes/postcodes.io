@@ -227,7 +227,7 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 
 	// If a wideSearch query is requested, derive a suitable range which guarantees 
 	// postcode results over a much wider area
-	if (params.wideSearch) {
+	if (params.wideSearch || params.widesearch) {
 		if (limit > DEFAULT_LIMIT) {
 			limit = DEFAULT_LIMIT;
 		}

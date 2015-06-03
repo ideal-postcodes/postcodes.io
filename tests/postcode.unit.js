@@ -353,6 +353,18 @@ describe("Postcode Model", function () {
 					});
 				});
 			});
+			it ("performs an incremental search if 'widesearch' flag is passed", function (done) {
+				Postcode.nearestPostcodes(params, function (error, postcodes) {
+					if (error) return done(error);
+					assert.isNull(postcodes);
+					params.widesearch = true;
+					Postcode.nearestPostcodes(params, function (error, postcodes) {
+						if (error) return done(error);
+						assert.equal(postcodes.length, 10);
+						done();
+					});
+				});
+			});
 			it ("returns null if point is too far from nearest postcode", function (done) {
 				params = {
 					longitude: 0,

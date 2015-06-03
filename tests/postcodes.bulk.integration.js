@@ -179,7 +179,29 @@ describe("Postcodes routes", function () {
 					assert.equal(response.body.result[0].result.length, 10);
 					assert.isTrue(response.body.result[0].query["wideSearch"]);
 					assert.isUndefined(response.body.result[0].query["lowerBound"]);
-					assert.isUndefined(response.body.result[0].query["uppserBound"]);
+					assert.isUndefined(response.body.result[0].query["upperBound"]);
+					done();
+				});
+			});
+			it ("allows wide area searches using 'widesearch'", function (done) {
+				var testLocation = {
+					longitude: -2.12659411941741,
+					latitude: 57.2465923827836,
+					widesearch: true
+				}
+				request(app)
+				.post("/postcodes")
+				.send({geolocations: [testLocation]})
+				.expect("Content-Type", /json/)
+				.expect(helper.allowsCORS)
+				.expect(200)
+				.end(function (error, response) {
+					if (error) return done(error);
+					console.log(response.body);
+					assert.equal(response.body.result[0].result.length, 10);
+					assert.isTrue(response.body.result[0].query["widesearch"]);
+					assert.isUndefined(response.body.result[0].query["lowerBound"]);
+					assert.isUndefined(response.body.result[0].query["upperBound"]);
 					done();
 				});
 			});
