@@ -11,6 +11,7 @@ var Ward = require(path.join(__dirname, "../app/models/ward.js"));
 var County = require(path.join(__dirname, "../app/models/county.js"));
 var Parish = require(path.join(__dirname, "../app/models/parish.js"));
 var Ccg = require(path.join(__dirname, "../app/models/ccg.js"));
+var Outcode = require(path.join(__dirname, "../app/models/outcode.js"));
 
 var pg = Base.connect(config);
 // Performing checks
@@ -22,7 +23,8 @@ function setupSupportTables (callback) {
 		County._setupTable.bind(County),
 		Ccg._setupTable.bind(Ccg),
 		Ward._setupTable.bind(Ward),
-		Parish._setupTable.bind(Parish)
+		Parish._setupTable.bind(Parish),
+		Outcode._setupTable.bind(Outcode)
 	];
 	async.series(instructions, callback);
 }
