@@ -38,7 +38,7 @@ $(function () {
 	var queryCache = {};
 
 	function queryPostcode (postcode, success, error) {
-		var postcode = postcode.replace(/\W/, "").replace("/\s/", "");
+		var postcode = postcode.replace(/\W/, "");
 		if (queryCache[postcode]) {
 			return success(queryCache[postcode]);
 		}
