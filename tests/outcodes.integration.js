@@ -17,6 +17,8 @@ describe("Postcodes routes", function () {
 				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
+				assert.isUndefined(response.body.result.id);
+				assert.isUndefined(response.body.result.location);
 				helper.testOutcode(response.body.result);
 				done();
 			});
