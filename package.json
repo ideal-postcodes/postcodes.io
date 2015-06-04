@@ -17,8 +17,7 @@
   "bin": {
     "createTestDb": "./bin/createTestDb.sh",
     "clearTestDb": "./bin/clearTestDb.sh",
-    "importons": "./bin/import.js",
-    "updateons": "./bin/update.js"
+    "importons": "./bin/import.js"
   },
   "repository": {
     "type": "git",
