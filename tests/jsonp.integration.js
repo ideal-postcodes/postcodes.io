@@ -14,7 +14,7 @@ describe("Utils with JSONP", function () {
 				.expect("Content-Type", /text\/javascript/)
 				.end(function (error, response) {
 					response.body = helper.jsonpResponseBody(response);
-					if (error) throw error;
+					if (error) return done(error);
 					assert.equal(response.body.result, "pong");
 					done();
 				});

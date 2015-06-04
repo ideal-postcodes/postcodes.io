@@ -14,7 +14,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
 				helper.testOutcode(response.body.result);
@@ -29,7 +29,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
 				helper.testOutcode(response.body.result);
@@ -44,7 +44,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
 				helper.testOutcode(response.body.result);
@@ -59,7 +59,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(404)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 404);
 				assert.isNull(response.body.result);
 				done();

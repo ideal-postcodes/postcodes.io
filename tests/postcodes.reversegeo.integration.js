@@ -51,7 +51,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
 				response.body.result.forEach(function (postcode) {
@@ -69,7 +69,7 @@ describe("Postcodes routes", function () {
 			.get(uri)
 			.expect(200)
 			.end(function (error, firstResponse) {
-				if (error) throw error;
+				if (error) return done(error);
 				request(app)
 				.get(uri)
 				.query({
@@ -77,7 +77,7 @@ describe("Postcodes routes", function () {
 				})
 				.expect(200)
 				.end(function (error, secondResponse) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.isTrue(secondResponse.body.result.length >= firstResponse.body.result.length);
 					done();
 				});
@@ -92,7 +92,7 @@ describe("Postcodes routes", function () {
 			})
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.result.length, 1);
 				done();
 			});
@@ -103,7 +103,7 @@ describe("Postcodes routes", function () {
 			.get(uri)
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -113,7 +113,7 @@ describe("Postcodes routes", function () {
 			.get(uri)
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -126,7 +126,7 @@ describe("Postcodes routes", function () {
 			})
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -139,7 +139,7 @@ describe("Postcodes routes", function () {
 			})
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -190,7 +190,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
 				response.body.result.forEach(function (postcode) {
@@ -213,7 +213,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
 				response.body.result.forEach(function (postcode) {
@@ -235,7 +235,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 400);
 				done();
 			});
@@ -250,7 +250,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 400);
 				done();
 			});
@@ -264,7 +264,7 @@ describe("Postcodes routes", function () {
 			})
 			.expect(200)
 			.end(function (error, firstResponse) {
-				if (error) throw error;
+				if (error) return done(error);
 				request(app)
 				.get(uri)
 				.query({
@@ -274,7 +274,7 @@ describe("Postcodes routes", function () {
 				})
 				.expect(200)
 				.end(function (error, secondResponse) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.isTrue(secondResponse.body.result.length >= firstResponse.body.result.length);
 					done();
 				});
@@ -290,7 +290,7 @@ describe("Postcodes routes", function () {
 			})
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.result.length, 1);
 				done();
 			});
@@ -304,7 +304,7 @@ describe("Postcodes routes", function () {
 			})
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -317,7 +317,7 @@ describe("Postcodes routes", function () {
 			})
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -331,7 +331,7 @@ describe("Postcodes routes", function () {
 			})
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -345,7 +345,7 @@ describe("Postcodes routes", function () {
 			})
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});

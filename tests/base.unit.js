@@ -7,7 +7,7 @@ describe("Base model", function () {
 	describe("Connect", function () {
 		it ("should connect to postgresql database", function (done) {
 			var pg = Base.connect(helper.config, function (error, client, returnClient) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isNotNull(client);
 				returnClient();
 				done();
@@ -19,7 +19,7 @@ describe("Base model", function () {
 			it ("should execute a query", function (done) {
 				var base = new Base.Base();
 				base._query("SELECT * FROM pg_tables", function (error, result) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.isArray(result.rows);
 					done();
 				});
@@ -44,9 +44,7 @@ describe("Base model", function () {
 				customRelation._create({
 					"bogus" : "bogusfield"
 				}, function (error, result) {
-					assert.throws(function () {
-						if (error) throw error;
-					}, /Could not create record/);
+					assert.match(error.message, /Could not create record/);
 					done();
 				});
 			});
@@ -54,7 +52,7 @@ describe("Base model", function () {
 				customRelation._create({
 					somefield: "unique"
 				}, function (error, result) {
-					if (error) throw error;
+					if (error) return done(error);
 					done();
 				});
 			});
@@ -63,7 +61,7 @@ describe("Base model", function () {
 		describe("#all", function () {
 			it ("should return list of all records", function (done) {
 				customRelation.all(function (error, result) {
-					if (error) throw error;
+					if (error) return done(error);
 					var containsUnique = result.rows.some(function (elem) {
 						return elem.somefield === "unique";
 					});
@@ -84,14 +82,14 @@ describe("Base model", function () {
 
 		it ("should create a table with the right attributes", function (done) {
 			customRelation._createRelation(function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
 
 		after(function (done) {
 			customRelation._destroyRelation(function (error, result) {
-				if (error) throw error();
+				if (error) return done(error)();
 				done();
 			});
 		});
@@ -103,14 +101,14 @@ describe("Base model", function () {
 		before(function (done) {
 			customRelation = helper.getCustomRelation();
 			customRelation._createRelation(function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
 
 		it ("should delete the relation", function (done) {
 			customRelation._destroyRelation(function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				done();
 			});
 		});
@@ -130,9 +128,9 @@ describe("Base model", function () {
 
 		it ("should seed the relation table with data", function (done) {
 			customRelation._csvSeed(helper.seedPaths.customRelation, "someField", null, function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				customRelation.all(function (error, data) {
-					if (error) throw error;
+					if (error) return done(error);
 					var hasLorem = data.rows.some(function (elem) {
 						return elem.somefield === "Lorem";
 					});
@@ -149,11 +147,11 @@ describe("Base model", function () {
 		before(function (done) {
 			customRelation = helper.getCustomRelation();
 			customRelation._createRelation(function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				customRelation._csvSeed(helper.seedPaths.customRelation, "someField", null, function (error, result) {
-					if (error) throw error;
+					if (error) return done(error);
 					customRelation.all(function (error, data) {
-						if (error) throw error;
+						if (error) return done(error);
 						assert.isTrue(data.rows.length > 0);
 						done();
 					});
@@ -167,9 +165,9 @@ describe("Base model", function () {
 
 		it ("should clear the table", function (done) {
 			customRelation.clear(function (error, result) {
-				if (error) throw error;
+				if (error) return done(error);
 				customRelation.all(function (error, data) {
-					if (error) throw error;
+					if (error) return done(error);
 					assert.equal(data.rows.length, 0);
 					done();
 				});

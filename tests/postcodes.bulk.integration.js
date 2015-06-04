@@ -197,7 +197,6 @@ describe("Postcodes routes", function () {
 				.expect(200)
 				.end(function (error, response) {
 					if (error) return done(error);
-					console.log(response.body);
 					assert.equal(response.body.result[0].result.length, 10);
 					assert.isTrue(response.body.result[0].query["widesearch"]);
 					assert.isUndefined(response.body.result[0].query["lowerBound"]);

@@ -42,7 +42,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -59,7 +59,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -76,7 +76,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -94,7 +94,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 11);
 				response.body.result.forEach(function (postcode) {
@@ -112,7 +112,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 100);
 				response.body.result.forEach(function (postcode) {
@@ -130,7 +130,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -147,7 +147,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(400)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 400);
 				done();
 			});
@@ -172,7 +172,7 @@ describe("Postcodes routes", function () {
 			.expect('Content-Type', /json/)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.postcode, testPostcode);
 				helper.isPostcodeObject(response.body.result);
@@ -187,7 +187,7 @@ describe("Postcodes routes", function () {
 			.expect('Content-Type', /json/)
 			.expect(404)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 404);
 				assert.property(response.body, "error");
 				done();
@@ -214,7 +214,7 @@ describe("Postcodes routes", function () {
 			.expect('Content-Type', /json/)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.isTrue(response.body.result);
 				done();
@@ -228,7 +228,7 @@ describe("Postcodes routes", function () {
 			.expect('Content-Type', /json/)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.isFalse(response.body.result);
 				done();
@@ -255,7 +255,7 @@ describe("Postcodes routes", function () {
 			.expect('Content-Type', /json/)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.property(response.body.result, "postcode");
 				helper.isPostcodeObject(response.body.result);
 				done();
@@ -286,7 +286,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -304,7 +304,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -322,7 +322,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
@@ -341,7 +341,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, limit);
 				response.body.result.forEach(function (postcode) {
@@ -360,7 +360,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 100);
 				response.body.result.forEach(function (postcode) {
@@ -379,7 +379,7 @@ describe("Postcodes routes", function () {
 			.expect(helper.allowsCORS)
 			.expect(200)
 			.end(function (error, response) {
-				if (error) throw error;
+				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.equal(response.body.result.length, 10);
 				response.body.result.forEach(function (postcode) {
