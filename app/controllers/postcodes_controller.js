@@ -336,9 +336,7 @@ var nearestPostcodes = function (request, response, next) {
 		}
 	});
 };
-
 exports.lonlat = nearestPostcodes;
-
 
 exports.nearest = function (request, response, next) {
 	var postcode = request.params.postcode;
@@ -360,27 +358,4 @@ exports.nearest = function (request, response, next) {
 			return next();
 		}
 	})
-
 };
-
-exports.showOutcode = function (request, response, next) {
-	var outcode = request.params.outcode;
-
-	Postcode.findOutcode(outcode, function (error, result) {
-		if (error) return next(error);
-		if (!result) {
-			response.jsonApiResponse = {
-				status: 404,
-				result: null
-			};
-			return next();
-		} else {
-			response.jsonApiResponse = {
-				status: 200,
-				result: result
-			};
-			return next();
-		}
-	});
-}
-
