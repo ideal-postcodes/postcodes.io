@@ -128,7 +128,7 @@ Postcode.prototype.find = function (postcode, callback) {
 		return callback(null, null);
 	}
 
-	this._query(findQuery, [postcode.replace(" ", "")], function(error, result) {
+	this._query(findQuery, [postcode.replace(/\s/g, "")], function(error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
