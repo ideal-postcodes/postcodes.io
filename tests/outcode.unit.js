@@ -173,5 +173,13 @@ describe("Outcode Model", function () {
 				done();
 			});
 		});
+		it ("is space insensitive", function (done) {
+			var term = " AB 10 ";
+			Outcode.find(term, function (error, outcode) {
+				if (error) return done(error);
+				assert.equal(outcode.outcode, term.replace(/\s/g, ""));
+				done();
+			});
+		});
 	});
 });

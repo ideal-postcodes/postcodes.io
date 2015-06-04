@@ -79,7 +79,7 @@ Outcode.prototype.find = function (outcode, callback) {
 		return callback(null, null);
 	}
 	var query = ["SELECT * FROM", this.relation, "WHERE outcode=$1"].join(" ");
-	var params = [outcode.toUpperCase()];
+	var params = [outcode.toUpperCase().replace(/\s/g, "")];
 	self._query(query, params, function (error, result) {
 		if (error) return callback(error);
 		if (result.rows.length === 0) {
@@ -89,5 +89,13 @@ Outcode.prototype.find = function (outcode, callback) {
 		}
 	});
 };
+
+Outcode.prototype.sanitize = function (outcode) {
+	if (typeof outcode === 'object') {
+		delete outcode.id;
+		delete outcode.location;
+	}
+	return outcode;
+}
 
 module.exports = new Outcode();
