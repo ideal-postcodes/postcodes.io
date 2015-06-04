@@ -145,7 +145,7 @@ Base.prototype._destroyAll = function (callback) {
 var dollarise = function (values) {
 	var result = [];
 	values.forEach(function (elem, index) {
-		result.push("$" + index + 1);
+		result.push("$" + (index + 1));
 	});
 	return result.join(", ");
 }

@@ -20,6 +20,7 @@ var Parish = require(path.join(rootPath, "app/models/parish"));
 var County = require(path.join(rootPath, "app/models/county"));
 var Ccg = require(path.join(rootPath, "app/models/ccg"));
 var Ward = require(path.join(rootPath, "app/models/ward"));
+var Outcode = require(path.join(rootPath, "app/models/outcode"));
 
 var CSV_INDEX = {
 	postcode: 2,
@@ -73,6 +74,7 @@ function seedPostcodeDb (callback) {
 	instructions.push(County._setupTable.bind(County));
 	instructions.push(Ccg._setupTable.bind(Ccg));
 	instructions.push(Ward._setupTable.bind(Ward));
+	instructions.push(Outcode._setupTable.bind(Outcode));
 
 	async.series(instructions, callback);
 }
@@ -209,6 +211,7 @@ module.exports = {
 	County: County,
 	Ccg: Ccg,
 	Ward: Ward,
+	Outcode: Outcode,
 
 	seedPaths: {
 		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
