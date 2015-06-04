@@ -56,10 +56,14 @@ function setupSupportTables (callback) {
 		County._setupTable.bind(County),
 		Ccg._setupTable.bind(Ccg),
 		Ward._setupTable.bind(Ward),
-		Parish._setupTable.bind(Parish),
-		Outcode._setupTable.bind(Outcode),
+		Parish._setupTable.bind(Parish)
 	];
 	async.series(instructions, callback);
+}
+
+function setupOutcodeTable(callback) {
+	console.log("Building outcodes table...");
+	Outcode._setupTable(calback);
 }
 
 function createPostgisExtension(callback) {
@@ -73,7 +77,8 @@ var executionStack = [createPostgisExtension,
 											createRelation, 
 											importRawCsv,
 											populateLocation, 
-											recreateIndexes];
+											recreateIndexes,
+											setupOutcodeTable];
 
 function startImport () {
 	async.series(executionStack, function (error, result) {
