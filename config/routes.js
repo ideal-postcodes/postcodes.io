@@ -22,5 +22,5 @@ module.exports = function (app) {
 
 	app.get("/outcodes", outcodesController.query);
 	app.get("/outcodes/:outcode", outcodesController.showOutcode);
-	// app.get("/outcodes/:outcode/nearest", outcodesController.nearest);
+	app.get("/outcodes/:outcode/nearest", outcodesController.nearest);
 };

@@ -50,6 +50,28 @@ exports.showOutcode = function (request, response, next) {
 	});
 };
 
+exports.nearest = function (request, response, next) {
+	var outcode = request.params.outcode;
+
+	Outcode.find(outcode, function (error, outcode) {
+		if (error) {
+			return next(error);
+		}
+
+		if (outcode) {
+			request.params.longitude = outcode.longitude;
+			request.params.latitude = outcode.latitude;
+			return nearestOutcodes(request, response, next);
+		} else {
+			response.jsonApiResponse = {
+				status: 404,
+				error: "Outcode not found"
+			};
+			return next();
+		}
+	})
+};
+
 function nearestOutcodes (request, response, next) {
 	var longitude = parseFloat(request.params.longitude),
 			latitude = parseFloat(request.params.latitude),
