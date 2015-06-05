@@ -148,3 +148,25 @@ block content
 							a(href="#")#show-outcode Request
 						pre.code-box#show-outcode-result
 
+					.api-method
+						h4.method-title Nearest outward code for outward code
+						h4
+							span.http-method GET
+							| api.postcodes.io/outcodes/
+							input.rest-resource(value=":outcode")#nearest-outcode-input
+							a(href="#")#nearest-outcode Request
+							| /nearest
+						pre.code-box#nearest-outcode-result
+
+					.api-method
+						h4.method-title Get nearest outward codes for a given longitude &amp; latitude
+						h4
+							span.http-method GET
+							| api.postcodes.io/outcodes?lon=
+							input.rest-resource(value=":longitude")#lon-outcode-input
+							| &amp;lat=
+							input.rest-resource(value=":latitude")#lat-outcode-input
+							a(href="#")#geocode-outcode Request
+						pre.code-box#geocode-outcode-result
+
+						

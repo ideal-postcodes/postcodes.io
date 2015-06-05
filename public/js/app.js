@@ -186,4 +186,31 @@ $(function () {
 			displayJsonResult($result, error.responseJSON);
 		});
 	});
+
+	$("#nearest-outcode").click(function (event) {
+		event.preventDefault();
+		var $result = $("#nearest-outcode-result").slideUp(),
+				outcode = $("#nearest-outcode-input").val();
+		$.get(encodeURI("/outcodes/" + outcode + "/nearest"))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
+		});
+	});
+
+	$("#geocode-outcode").click(function (event) {
+		event.preventDefault();
+		var $result = $("#geocode-outcode-result"),
+				lon = $("#lon-outcode-input").val(),
+				lat = $("#lat-outcode-input").val();
+		$.get(encodeURI("outcodes?lon=" + lon +"&lat=" + lat))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
+		});
+	});
 });

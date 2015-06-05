@@ -73,7 +73,7 @@ block content
 									ul
 										li 1 = within the building of the matched address closest to the postcode mean
 										li 2 = as for status value 1, except by visual inspection of Landline maps (Scotland only)
-										li 3 = approximate to within 50 metres
+										li 3 = approximate to within 50m
 										li 4 = postcode unit mean (mean of matched addresses with the same postcode, but not snapped to a building)
 										li 5 = imputed by ONS, by reference to surrounding postcode grid references 
 										li 6 = postcode sector mean, (mainly	| PO Boxes)
@@ -223,7 +223,7 @@ block content
 						|  (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
 					p
 						code radius=
-						|  (not required) Limits number of postcodes matches to return. Defaults to 100 meteres. Needs to be less than 2,000m.
+						|  (not required) Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.
 					p
 						code wideSearch=
 						|  (not required) Search up to 20km radius, but subject to a maximum of 10 results. Since lookups over a wide area can be very expensive, we've created this method to allow you choose to make the trade off between search radius and number of results. Defaults to false. When enabled, radius and limits over 10 are ignored.
@@ -237,7 +237,7 @@ block content
 							.http-method GET 
 							| https://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
 
-					h3#Bulk-Geocode-Postcode Bulk Reverse Geocoding
+					h3#Bulk-Geocode-Postcode Outcode Reverse Geocoding
 
 					p Bulk translates into geolocations into Postcodes. Accepts up to 100 geolocations.
 
@@ -305,7 +305,7 @@ block content
 						|  (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
 					p
 						code radius=
-						|  (not required) Limits number of postcodes matches to return. Defaults to 100 meteres. Needs to be less than 2,000m.
+						|  (not required) Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.
 
 					h3#Postcode-Autocomplete Postcode Autocomplete
 
@@ -339,6 +339,40 @@ block content
 						h4 
 							.http-method GET 
 							| https://api.postcodes.io/outcodes/:outcode
+
+					h3#Geocode-Outcode Outcode Reverse Geocoding
+
+					p Returns nearest outcodes for a given longitude and latitude.
+
+					pre
+						h4 
+							.http-method GET 
+							| https://api.postcodes.io/outcodes?lon=:longitude&amp;lat=:latitude
+
+					h4 Optional Query Parameters
+					p
+						code limit=
+						|  (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+					p
+						code radius=
+						|  (not required) Limits number of postcodes matches to return. Defaults to 5,000m. Needs to be less than 25,000m.
+
+					h3#Nearest-Outcode Nearest Outcode
+
+					p Returns nearest outcodes for a given outcode.
+
+					pre
+						h4 
+							.http-method GET 
+							| https://api.postcodes.io/outcodes/:outcode/nearest
+
+					h4 Optional Query Parameters
+					p
+						code limit=
+						|  (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+					p
+						code radius=
+						|  (not required) Limits number of postcodes matches to return. Defaults to 5,000m. Needs to be less than 25,000m.
 
 					h2#Install-notes.doc-header Install Notes
 
