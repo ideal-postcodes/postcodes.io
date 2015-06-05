@@ -54,8 +54,8 @@ Outcode.prototype.seedData = function (callback) {
 		async.each(result.rows, function (row, callback) {
 			var outcode = row.outcode;
 			Postcode.findOutcode(outcode, function (error, outcode) {
-				outcode.northings = parseInt(outcode.northings, 10);
-				outcode.eastings = parseInt(outcode.eastings, 10);
+				outcode.northings = parseInt(outcode.northings, 10) || 0;
+				outcode.eastings = parseInt(outcode.eastings, 10) || 0;
 				self._create(outcode, callback);
 			});
 		}, callback);
