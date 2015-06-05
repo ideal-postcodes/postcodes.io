@@ -91,7 +91,7 @@ Outcode.prototype.find = function (outcode, callback) {
 	});
 };
 
-Outcode.prototype.sanitize = function (outcode) {
+Outcode.prototype.toJson = function (outcode) {
 	if (typeof outcode === 'object') {
 		delete outcode.id;
 		delete outcode.location;

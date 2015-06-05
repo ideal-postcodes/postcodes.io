@@ -179,8 +179,8 @@ function isOutcodeObject(o) {
 		assert.notProperty(o, prop);
 	});
 
-	var properties = ["eastings", "latitude", "location", "northings", 
-	"longitude", "admin_ward", "admin_county", "admin_district", "parish", "outcode"];
+	var properties = ["eastings", "latitude", "northings", "longitude", 
+	"admin_ward", "admin_county", "admin_district", "parish", "outcode"];
 
 	properties.forEach(function (prop) {
 		assert.property(o, prop);
@@ -218,6 +218,7 @@ module.exports = {
 	randomLocation: randomLocation,
 	seedPostcodeDb: seedPostcodeDb,
 	clearPostcodeDb: clearPostcodeDb,
+	isOutcodeObject: isOutcodeObject,
 	validCorsOptions: validCorsOptions,
 	isPostcodeObject: isPostcodeObject,
 	jsonpResponseBody: jsonpResponseBody,
