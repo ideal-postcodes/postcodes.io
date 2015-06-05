@@ -182,4 +182,16 @@ describe("Outcode Model", function () {
 			});
 		});
 	});
+	
+	describe("nearestOutcodes", function () {
+		it ("returns a list of nearby outcodes", function (done) {
+			Outcode.nearest
+		});
+		it ("is sensitive to limit");
+		it ("is sensitive to distance");
+		it ("defaults limit to 10");
+		it ("defaults radius to 5km");
+		it ("raises an error if invalid longitude");
+		it ("raises an error if invalid latitude");
+	});
 });
