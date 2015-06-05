@@ -172,6 +172,30 @@ function isRawPostcodeObject(o) {
 	});
 }
 
+function isOutcodeObject(o) {
+	var nonProperties = ["id", "location"];
+
+	nonProperties.forEach(function (prop) {
+		assert.notProperty(o, prop);
+	});
+
+	var properties = ["eastings", "latitude", "location", "northings", 
+	"longitude", "admin_ward", "admin_county", "admin_district", "parish", "outcode"];
+
+	properties.forEach(function (prop) {
+		assert.property(o, prop);
+	});	
+}
+
+function isRawOutcodeObject(o) {
+	var properties = ["id", "eastings", "latitude", "location", "northings", 
+	"longitude", "admin_ward", "admin_county", "admin_district", "parish", "outcode"];
+
+	properties.forEach(function (prop) {
+		assert.property(o, prop);
+	});	
+}
+
 function testOutcode(o) {
 	var properties = ["longitude", "latitude", "northings", "eastings", "admin_ward", 
 	"admin_district", "admin_county", "parish"];
@@ -198,6 +222,7 @@ module.exports = {
 	isPostcodeObject: isPostcodeObject,
 	jsonpResponseBody: jsonpResponseBody,
 	getCustomRelation: getCustomRelation,
+	isRawOutcodeObject: isRawOutcodeObject,
 	isRawPostcodeObject: isRawPostcodeObject, 
 	lookupRandomPostcode: lookupRandomPostcode,
 	locationWithNearbyPostcodes: locationWithNearbyPostcodes,

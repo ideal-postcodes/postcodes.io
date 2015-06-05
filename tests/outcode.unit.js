@@ -183,15 +183,63 @@ describe("Outcode Model", function () {
 		});
 	});
 	
-	describe("nearestOutcodes", function () {
-		it ("returns a list of nearby outcodes", function (done) {
-			Outcode.nearest
+	describe("nearest", function () {
+		var params;
+		beforeEach(function () {
+			params = {
+				longitude: -2.09301393644196,
+				latitude: 57.1392691975667
+			};
 		});
-		it ("is sensitive to limit");
-		it ("is sensitive to distance");
-		it ("defaults limit to 10");
-		it ("defaults radius to 5km");
-		it ("raises an error if invalid longitude");
-		it ("raises an error if invalid latitude");
+
+		it ("returns a list of nearby outcodes", function (done) {
+			Outcode.nearest(params, function (error, outcodes) {
+				if (error) return done(error);
+				assert.isTrue(outcodes.length > 0);
+				outcodes.forEach(function (outcode) {
+					helper.isRawOutcodeObject(outcode);
+				});
+				done();
+			});
+		});
+		it ("is sensitive to limit", function (done) {
+			params.limit = 1;
+			Outcode.nearest(params, function (error, outcodes) {
+				if (error) return done(error);
+				assert.equal(outcodes.length, 1);
+				outcodes.forEach(function (outcode) {
+					helper.isRawOutcodeObject(outcode);
+				});
+				done();
+			});
+		});
+		it ("is sensitive to radius", function (done) {
+			params.radius = 1000;
+			Outcode.nearest(params, function (error, outcodes) {
+				if (error) return done(error);
+				params.radius = 25000;
+				Outcode.nearest(params, function (error, newOutcodes) {
+					if (error) return done(error);
+					assert.isTrue(newOutcodes.length > outcodes.length);
+					done();
+				});
+			});
+		});
+		it ("raises an error if invalid longitude", function (done) {
+			params.longitude = "foo";
+			Outcode.nearest(params, function (error, outcodes) {
+				assert.isNotNull(error);
+				assert.match(error.message, /invalid\slongitude/i);
+				done();
+			});
+		});
+		it ("raises an error if invalid latitude", function (done) {
+			params.latitude = "foo";
+			Outcode.nearest(params, function (error, outcodes) {
+				assert.isNotNull(error);
+				assert.match(error.message, /invalid\slatitude/i);
+				done();
+			});
+		});
 	});
 });

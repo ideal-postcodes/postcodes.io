@@ -73,12 +73,13 @@ Outcode.prototype._setupTable = function (callback) {
 	], callback);
 };
 
+
 Outcode.prototype.find = function (outcode, callback) {
 	var self = this;
 	if (typeof outcode !== "string") {
 		return callback(null, null);
 	}
-	var query = ["SELECT * FROM", this.relation, "WHERE outcode=$1"].join(" ");
+	var query = ["SELECT * FROM", self.relation, "WHERE outcode=$1"].join(" ");
 	var params = [outcode.toUpperCase().replace(/\s/g, "")];
 	self._query(query, params, function (error, result) {
 		if (error) return callback(error);
@@ -96,6 +97,43 @@ Outcode.prototype.sanitize = function (outcode) {
 		delete outcode.location;
 	}
 	return outcode;
-}
+};
+
+
+Outcode.prototype.nearest = function (params, callback) {
+	var self = this;
+	var DEFAULT_RADIUS = defaults.nearestOutcodes.radius.DEFAULT;
+	var MAX_RADIUS = defaults.nearestOutcodes.radius.MAX;
+	var DEFAULT_LIMIT = defaults.nearestOutcodes.limit.DEFAULT;
+	var MAX_LIMIT = defaults.nearestOutcodes.limit.MAX;
+
+	var limit = parseInt(params.limit, 10) || DEFAULT_LIMIT;
+	if (limit > MAX_LIMIT) limit = MAX_LIMIT;
+
+	var longitude = parseFloat(params.longitude);
+	if (isNaN(longitude)) return callback(new Error("Invalid longitude"), null);
+
+	var latitude = parseFloat(params.latitude);
+	if (isNaN(latitude)) return callback(new Error("Invalid latitude"), null);
+
+	var radius = parseFloat(params.radius) || DEFAULT_RADIUS;
+	if (radius > MAX_RADIUS) radius = MAX_RADIUS;
+
+	var nearestPostcodeQuery =  ["SELECT *,", 
+		"ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance FROM",
+		self.relation,
+		"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3)", 
+		"ORDER BY distance",
+		"LIMIT $4"].join(" ");
+		
+	self._query(nearestPostcodeQuery, [longitude, latitude, radius, limit], function (error, result) {
+		if (error) return callback(error, null);
+		if (result.rows.length === 0) {
+			return callback(null, null);
+		}
+		return callback(null, result.rows);
+	});
+};
 
 module.exports = new Outcode();
+
