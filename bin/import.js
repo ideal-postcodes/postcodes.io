@@ -63,7 +63,7 @@ function setupSupportTables (callback) {
 
 function setupOutcodeTable(callback) {
 	console.log("Building outcodes table...");
-	Outcode._setupTable(calback);
+	Outcode._setupTable(callback);
 }
 
 function createPostgisExtension(callback) {
