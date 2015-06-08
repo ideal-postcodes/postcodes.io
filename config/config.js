@@ -1,46 +1,7 @@
 var path = require("path");
 var bsyslog = require("bunyan-syslog");
 var rootPath = path.join(__dirname, '../');
-var defaults = {
-	nearest: {
-		radius: {
-			DEFAULT: 100,
-			MAX: 2000
-		},
-		limit: {
-			DEFAULT: 10,
-			MAX: 100
-		}
-	},
-	search: {
-		limit: {
-			DEFAULT: 10,
-			MAX: 100
-		}
-	},
-	bulkGeocode: {
-		geolocations: {
-			MAX: 100
-		}
-	},
-	bulkLookups: {
-		postcodes: {
-			MAX: 100
-		}
-	},
-	nearestOutcodes: {
-		radius: {
-			DEFAULT: 5000,
-			MAX: 25000
-		},
-		limit: {
-			DEFAULT: 10,
-			MAX: 100
-		}
-	}
-};
-
-var mapBoxKey = process.env.MAPBOX_PUBLIC_KEY || "";
+var defaults = require("./defaults");
 
 var config = {
 
@@ -62,8 +23,6 @@ var config = {
 		env : "development",
 		root: rootPath,
 		googleAnalyticsKey: "",
-		mapBoxKey: mapBoxKey,
-		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
 			password: "password",
@@ -91,8 +50,6 @@ var config = {
 		env : "test",
 		root: rootPath,
 		googleAnalyticsKey: "",
-		mapBoxKey: mapBoxKey,
-		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
 			password: "password",
@@ -119,8 +76,6 @@ var config = {
 		env : "production",
 		root: rootPath,
 		googleAnalyticsKey: "",
-		mapBoxKey: mapBoxKey,
-		defaults: defaults,
 		postgres: {
 			user: "postcodesio",
 			password: "password",
@@ -138,5 +93,31 @@ var config = {
 };
 
 module.exports = function (environment) {
-	return config[environment] || config["development"];
+	var cfg = config[environment] || config["development"];
+
+	cfg.defaults = defaults;
+
+	cfg.mapBoxKey = process.env.MAPBOX_PUBLIC_KEY || "";
+
+	if (process.env.POSTGRES_USER) {
+		cfg.postgres.user = process.env.POSTGRES_USER;
+	}
+
+	if (process.env.POSTGRES_PASSWORD) {
+		cfg.postgres.password = process.env.POSTGRES_PASSWORD;
+	}
+
+	if (process.env.POSTGRES_DATABASE) {
+		cfg.postgres.database = process.env.POSTGRES_DATABASE;
+	}	
+
+	if (process.env.POSTGRES_HOST) {
+		cfg.postgres.host = process.env.POSTGRES_HOST;
+	}
+
+	if (process.env.POSTGRES_PORT) {
+		cfg.postgres.port = process.env.POSTGRES_PORT;
+	}
+
+	return cfg;
 };
