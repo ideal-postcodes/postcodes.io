@@ -97,7 +97,7 @@ module.exports = function (environment) {
 
 	cfg.defaults = defaults;
 
-	if (process.env.MAPBOX_PUBLIC_KEY || !cnf.mapBoxKey) {
+	if (process.env.MAPBOX_PUBLIC_KEY || !cfg.mapBoxKey) {
 		cfg.mapBoxKey = process.env.MAPBOX_PUBLIC_KEY || "";	
 	}
 
