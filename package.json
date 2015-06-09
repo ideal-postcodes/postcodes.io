@@ -19,7 +19,8 @@
   "bin": {
     "onsParseCode": "./bin/raw_code_parsing.js",
     "onsFindMissing": "./bin/find_missing.js",
-    "onsImport": "./bin/import.js"
+    "onsImport": "./bin/import.js",
+    "onsUpdate": "./bin/update_ons.js"
   },
   "repository": {
     "type": "git",
