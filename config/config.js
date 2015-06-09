@@ -97,7 +97,9 @@ module.exports = function (environment) {
 
 	cfg.defaults = defaults;
 
-	cfg.mapBoxKey = process.env.MAPBOX_PUBLIC_KEY || "";
+	if (process.env.MAPBOX_PUBLIC_KEY || !cnf.mapBoxKey) {
+		cfg.mapBoxKey = process.env.MAPBOX_PUBLIC_KEY || "";	
+	}
 
 	if (process.env.POSTGRES_USER) {
 		cfg.postgres.user = process.env.POSTGRES_USER;
