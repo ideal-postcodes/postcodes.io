@@ -14,8 +14,8 @@ var path = require("path");
 if (argv.h) {
 	console.log("Commands:");
 	console.log("Least last arguments as files. Specifiy as many files as you like");
-	console.log("Code Index -ci [Specify the position where the code can be found, 0 indexed]");
-	console.log("Name Index -ni [Specify the position where the name can be found, 0 indexed]");
+	console.log("Code Index -ci [Specify the position where the code can be found, 0 indexed, default 0]");
+	console.log("Name Index -ni [Specify the position where the name can be found, 0 indexed, default 1]");
 	console.log("Skip first line --skip [Skip the first line]");
 	process.exit(0);
 }
@@ -25,7 +25,6 @@ var nameIndex = argv.ni || 1;
 var skipFirstLine = argv.skip;
 
 var files = argv._;
-console.log(files);
 if (files.length === 0) {
 	console.log("Please specifiy a file path or multiple paths");
 	process.exit(0);
@@ -38,7 +37,7 @@ if (files.length === 0) {
 	});
 }
 
-var delimiter = "\t";
+var delimiter = "	";
 
 var output = {};
 
@@ -47,14 +46,16 @@ var createCsvStream = function (file) {
 		if (index === 0 && skipFirstLine) {
 			return null;
 		}
-		var newRow = row[0].split(delimiter);
-		output[newRow[codeIndex]] = newRow[nameIndex];
-		return newRow;
+		output[row[codeIndex]] = row[nameIndex];
+		return row;
 	}
 
 	return function (callback) {
 		stream = csv()
-			.from.stream(fs.createReadStream(file))
+			.from
+			.stream(fs.createReadStream(file), {
+				delimiter: delimiter
+			})
 			.transform(transform)
 			.on('end', function () {
 				callback(null);
