@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+console.log("Postcodes.io ONS Postcode Directory Import Script");
+
 var fs = require("fs");
 var path = require("path");
 var async = require("async");
