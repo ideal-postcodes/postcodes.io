@@ -22,7 +22,6 @@ describe("Postcodes routes", function () {
 	beforeEach(function (done) {
 		helper.lookupRandomPostcode(function (result) {
 			testPostcode = result.postcode;
-			testOutcode = result.outcode;
 			done();	
 		});
 	});
