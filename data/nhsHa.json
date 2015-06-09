@@ -44,7 +44,11 @@
 	"S08000026" :	"Shetland",
 	"S08000027" :	"Tayside",
 	"S08000028" :	"Western Isles",
-	"E18000010":"South West"
+	"E18000010":"South West",
+	"L00000001":"Jersey",
+	"L00000002":"Guernsey (including Sark and Herm)",
+	"L00000003":"Alderney ",
+	"M00000001":"Isle of Man"
 }
 
 
