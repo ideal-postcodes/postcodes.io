@@ -404,6 +404,17 @@
 	"95W":"North Down",
 	"95X":"Ards",
 	"95Y":"Castlereagh",
-	"95Z":"Belfast"
+	"95Z":"Belfast",
+	"N09000001":"Antrim and Newtownabbey",
+	"N09000002":"Armagh, Banbridge and Craigavon",
+	"N09000003":"Belfast",
+	"N09000004":"Causeway Coast and Glens",
+	"N09000005":"Derry and Strabane",
+	"N09000006":"Fermanagh and Omagh",
+	"N09000007":"Lisburn and Castlereagh",
+	"N09000008":"Mid and East Antrim",
+	"N09000009":"Mid Ulster",
+	"N09000010":"Newry, Mourne and Down",
+	"N09000011":"North Down and Ards"
 }
 

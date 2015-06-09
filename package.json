@@ -12,12 +12,14 @@
     "setup": "./bin/setup.sh",
     "rebuild_support_tables": "./bin/rebuild_support_tables.js",
     "setup_test_db": "./bin/setup_test.sh",
-    "generate_test_data": "./bin/generate_test_data.js"
+    "test:seed": "./bin/generate_test_data.js",
+    "test:create": "./bin/createTestDb.sh",
+    "test:clear": "./bin/clearTestDb.sh"
   },
   "bin": {
-    "createTestDb": "./bin/createTestDb.sh",
-    "clearTestDb": "./bin/clearTestDb.sh",
-    "importons": "./bin/import.js"
+    "onsParseCode": "./bin/raw_code_parsing.js",
+    "onsFindMissing": "./bin/find_missing.js",
+    "onsImport": "./bin/import.js"
   },
   "repository": {
     "type": "git",
@@ -45,6 +47,7 @@
     "csv": "~0.3.6",
     "express": "~4.12.3",
     "jade": "~1.9.2",
+    "minimist": "^1.1.1",
     "morgan": "~1.5.2",
     "node.extend": "~1.1.3",
     "ospoint": "~0.2.0",

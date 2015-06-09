@@ -14,7 +14,7 @@ var config = {
 	* The only action you need to take here is to add your Postgres credentials.
 	* You also need to create the database yourself and pass in the database name.
 	* Note that the specified user needs to be a superuser for the import process
-	* (`$ importons`). You may reduce user privileges after you've imported 
+	* (`$ onsImport`). You may reduce user privileges after you've imported 
 	* postcode data
 	*
 	*/ 
