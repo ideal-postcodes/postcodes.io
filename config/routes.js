@@ -10,7 +10,7 @@ module.exports = function (app) {
 	app.get("/about", pagesController.about);
 	app.get("/docs", pagesController.documentation);
 	app.get("/explore", pagesController.explore);
-	// app.get("/random/postcodes", postcodesController.random);
+	app.get("/random/postcodes", postcodesController.random);
 	app.get("/postcodes", postcodesController.query);
 	app.post("/postcodes", postcodesController.bulk);
 	app.get("/postcodes/lon/:longitude/lat/:latitude", postcodesController.lonlat);
