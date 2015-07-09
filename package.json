@@ -54,6 +54,7 @@
     "ospoint": "~0.2.0",
     "pg": "~4.4.0",
     "pg-copy-streams": "~0.3.0",
+    "pg-query-stream": "^0.7.0",
     "postcode": "~0.2.1",
     "prompt": "^0.2.14",
     "random-string": "~0.1.1",
