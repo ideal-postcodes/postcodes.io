@@ -33,7 +33,7 @@ Base.prototype._query = function (query, params, callback) {
 			done();
 		});
 	});
-}
+};
 
 Base.prototype._create = function (newRecord, callback) {
 	var query = ["INSERT INTO", this.relation],
@@ -53,11 +53,11 @@ Base.prototype._create = function (newRecord, callback) {
 
 Base.prototype.all = function (callback) {
 	this._query("SELECT * FROM " + this.relation, callback);
-}
+};
 
 Base.prototype.clear = function (callback) {
 	this._query("DELETE FROM " + this.relation, callback);
-}
+};
 
 Base.prototype._createRelation = function (callback) {
 	var query = ["CREATE TABLE IF NOT EXISTS", this.relation].join(" "),
@@ -75,7 +75,7 @@ Base.prototype._createRelation = function (callback) {
 
 Base.prototype._destroyRelation = function (callback) {
 	this._query("DROP TABLE IF EXISTS " + this.relation + " CASCADE", callback);
-}
+};
 
 Base.prototype.createIndexes = function (callback) {
 	var self = this;
@@ -107,7 +107,7 @@ Base.prototype.createIndexes = function (callback) {
 				self._query(instruction, callback);
 			}
 	}), callback);
-}
+};
 
 Base.prototype._csvSeed = function (filePath, columns, transform, callback) {
 	if (arguments.length !== 4) throw new Error("Insufficient number of arguments specified");
@@ -129,7 +129,7 @@ Base.prototype._csvSeed = function (filePath, columns, transform, callback) {
 			return callback(error);
 		});
 	});
-}
+};
 
 Base.prototype._destroyAll = function (callback) {
 	if (process.env.NODE_ENV !== "test") {
@@ -140,7 +140,11 @@ Base.prototype._destroyAll = function (callback) {
 		if (error) return callback(error, null);
 		this._query("create public schema", callback);
 	});
-}
+};
+
+Base.prototype._getClient = function (callback) {
+	pg.connect(config, callback);
+};
 
 var dollarise = function (values) {
 	var result = [];
@@ -148,7 +152,7 @@ var dollarise = function (values) {
 		result.push("$" + (index + 1));
 	});
 	return result.join(", ");
-}
+};
 
 module.exports = {
 	connect: function (configObj, callback) {

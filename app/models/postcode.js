@@ -8,6 +8,7 @@ var Pc = require("postcode");
 var async = require("async");
 var OSPoint = require("ospoint");
 var Base = require("./index").Base;
+var QueryStream = require("pg-query-stream");
 var env = process.env.NODE_ENV || "development";
 var defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
 
@@ -137,22 +138,92 @@ Postcode.prototype.find = function (postcode, callback) {
 	});
 }
 
-var randomQuery	=	["SELECT postcodes.*,", 
-									toColumnsString(),
-									"FROM postcodes",
-									toJoinString(),
-									"OFFSET random() * (SELECT count(*) FROM postcodes)",
-									"LIMIT 1;"].join(" ");
+var loadingIds;
+
+Postcode.prototype.loadPostcodeIds = function (callback) {
+	var self = this;
+	if (loadingIds) return null;
+	loadingIds = true;
+
+	this._getClient(function (error, client, done) {
+		var cleanUp = function (error) {
+			done();
+			loadingIds = false;
+			if (callback) {
+				return callback(error)
+			} else {
+				return null;
+			}
+		};
+		if (error) return cleanUp(error);
+		client.query("SELECT count(id) FROM postcodes", function (error, result) {
+			if (error) return cleanUp(error);
+			var i = 0;
+			var count = result.rows[0].count;
+			var idStore = new Array(count);
+			client.query(new QueryStream("SELECT id FROM postcodes"))
+				.on("end", function () {
+					self.postcodeIds = idStore;
+					cleanUp();
+				})
+				.on("error", cleanUp)
+				.on("data", function (data) {
+					idStore[i] = data.id;
+					i++;
+				});
+		});
+	});
+};
 
 Postcode.prototype.random = function (callback) {
-	this._query(randomQuery, function (error, result) {
+	if (typeof this.postcodeIds === 'undefined') {
+		this.loadPostcodeIds();
+		return this.naiveRandom(callback);
+	} else {
+		return this.inMemoryRandom(callback);
+	}
+};
+
+var naiveRandomQuery	=	
+	["SELECT postcodes.*,", 
+	toColumnsString(),
+	"FROM postcodes",
+	toJoinString(),
+	"OFFSET random() * (SELECT count(*) FROM postcodes)",
+	"LIMIT 1;"].join(" ");
+
+// Perform a simple random search with offset (expensive)
+
+Postcode.prototype.naiveRandom = function (callback) {
+	this._query(naiveRandomQuery, function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
 			return callback(null, null);
 		}
 		callback(null, result.rows[0]);
 	});
-}
+};
+
+var findByIdQuery = 
+	["SELECT postcodes.*,",
+	toColumnsString(),
+	"FROM postcodes",
+	toJoinString(),
+	"WHERE id=$1"].join(" ");
+
+// Use an in memory array of IDs to retrieve random postcode
+
+Postcode.prototype.inMemoryRandom = function (callback) {
+	var length = this.postcodeIds.length;
+	var randomId = Math.floor(Math.random() * length);
+	this._query(findByIdQuery, [randomId], function (error, result) {
+		if (error) return callback(error, null);
+		if (result.rows.length === 0) {
+			return callback(null, null);
+		}
+		callback(null, result.rows[0]);
+	});
+};
 
 var searchRegexp = /\W/g;
 

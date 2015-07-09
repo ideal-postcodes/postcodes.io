@@ -110,9 +110,44 @@ describe("Postcode Model", function () {
 		});
 	});
 
+	describe("loadPostcodeIds", function () {
+		it ("loads a complete array of postcode IDs into Postcode model", function (done) {
+			Postcode.postcodeIds = undefined;
+			Postcode.loadPostcodeIds(function (error) {
+				if (error) return done(error);
+				assert.isArray(Postcode.postcodeIds);
+				assert.isTrue(Postcode.postcodeIds.length > 0);
+				done();
+			});
+		});
+	});
+
 	describe("#random", function () {
 		it ("should return a random postcode", function (done) {
 			Postcode.random(function (error, postcode) {
+				if (error) return done(error);
+				helper.isRawPostcodeObject(postcode);
+				done();
+			});
+		});
+	});
+
+	describe("#naiveRandom", function () {
+		it ("should return a random postcode using naive method", function (done) {
+			Postcode.naiveRandom(function (error, postcode) {
+				if (error) return done(error);
+				helper.isRawPostcodeObject(postcode);
+				done();
+			});
+		});
+	});
+
+	describe("#inMemoryRandom", function () {
+		before(function (done) {
+			Postcode.loadPostcodeIds(done);
+		});
+		it ("should return a random postcode using an in memory ID store", function (done) {
+			Postcode.inMemoryRandom(function (error, postcode) {
 				if (error) return done(error);
 				helper.isRawPostcodeObject(postcode);
 				done();
