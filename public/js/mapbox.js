@@ -146,7 +146,7 @@ $(function () {
 	}
 
 	// Initialise MapBox
-	var map = L.mapbox.map('map', 'examples.map-i86nkdio', {
+	var map = L.mapbox.map('map', 'mapbox.streets', {
 			zoomControl: false
 		})
 		.setView(startingCoordinates, initialZoom);
