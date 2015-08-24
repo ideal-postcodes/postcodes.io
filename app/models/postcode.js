@@ -431,6 +431,7 @@ Postcode.prototype.toJson = function (address) {
 	delete address.parish_id;
 	delete address.ccg_id;
 	delete address.nuts_id;
+	delete address.nuts_code;
 	return address;
 }
 

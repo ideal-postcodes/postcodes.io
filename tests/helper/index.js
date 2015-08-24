@@ -140,7 +140,7 @@ function validCorsOptions(response) {
 
 function isPostcodeObject(o) {
 	var nonProperties = ["id", "location", "pc_compact", "admin_county_id", 
-		"admin_district_id", "parish_id", "ccg_id", "admin_ward_id", "nuts_id"];
+		"admin_district_id", "parish_id", "ccg_id", "admin_ward_id", "nuts_id", "nuts_code"];
 
 	nonProperties.forEach(function (prop) {
 		assert.notProperty(o, prop);
