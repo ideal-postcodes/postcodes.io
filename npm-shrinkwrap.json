@@ -179,6 +179,11 @@
       "from": "csv@~0.3.6",
       "resolved": "https://registry.npmjs.org/csv/-/csv-0.3.7.tgz"
     },
+    "csv-parse": {
+      "version": "1.0.0",
+      "from": "csv-parse@",
+      "resolved": "https://registry.npmjs.org/csv-parse/-/csv-parse-1.0.0.tgz"
+    },
     "express": {
       "version": "4.12.4",
       "from": "express@~4.12.3",
