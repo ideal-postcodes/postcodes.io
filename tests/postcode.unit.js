@@ -130,6 +130,10 @@ describe("Postcode Model", function () {
 				done();
 			});
 		});
+		describe("Outcode filter", function () {
+			it ("returns random postcode for within an outcode");
+			it ("returns null if invalid outcode");
+		});
 	});
 
 	describe("#naiveRandom", function () {

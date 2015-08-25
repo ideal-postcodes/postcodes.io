@@ -148,22 +148,22 @@ describe("Postcodes routes with JSONP", function () {
 		});
 	});
 
-	// describe("GET /random/postcode", function () {
-	// 	it ("should return a random postcode", function (done) {
-	// 		var path = "/random/postcodes?callback=foo";
-	// 		request(app)
-	// 		.get(path)
-	// 		.expect('Content-Type', jsonResponseTypeRegex)
-	// 		.expect(200)
-	// 		.end(function (error, response) {
-	// 			response.body = helper.jsonpResponseBody(response);
-	// 			if (error) return done(error);
-	// 			assert.property(response.body.result, "postcode");
-	// 			helper.isPostcodeObject(response.body.result);
-	// 			done();
-	// 		});
-	// 	});
-	// });
+	describe("GET /random/postcode", function () {
+		it ("should return a random postcode", function (done) {
+			var path = "/random/postcodes?callback=foo";
+			request(app)
+			.get(path)
+			.expect('Content-Type', jsonResponseTypeRegex)
+			.expect(200)
+			.end(function (error, response) {
+				response.body = helper.jsonpResponseBody(response);
+				if (error) return done(error);
+				assert.property(response.body.result, "postcode");
+				helper.isPostcodeObject(response.body.result);
+				done();
+			});
+		});
+	});
 
 	describe("GET /postcodes/:postcode/autocomplete", function () {
 		var uri, limit;
