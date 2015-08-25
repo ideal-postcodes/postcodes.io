@@ -19,6 +19,7 @@ var District = require(path.join(rootPath, "app/models/district"));
 var Parish = require(path.join(rootPath, "app/models/parish"));
 var County = require(path.join(rootPath, "app/models/county"));
 var Ccg = require(path.join(rootPath, "app/models/ccg"));
+var Nuts = require(path.join(rootPath, "app/models/nuts"));
 var Ward = require(path.join(rootPath, "app/models/ward"));
 var Outcode = require(path.join(rootPath, "app/models/outcode"));
 
@@ -71,6 +72,7 @@ function seedPostcodeDb (callback) {
 	});
 	instructions.push(District._setupTable.bind(District));
 	instructions.push(Parish._setupTable.bind(Parish));
+	instructions.push(Nuts._setupTable.bind(Nuts));
 	instructions.push(County._setupTable.bind(County));
 	instructions.push(Ccg._setupTable.bind(Ccg));
 	instructions.push(Ward._setupTable.bind(Ward));
@@ -138,7 +140,7 @@ function validCorsOptions(response) {
 
 function isPostcodeObject(o) {
 	var nonProperties = ["id", "location", "pc_compact", "admin_county_id", 
-		"admin_district_id", "parish_id", "ccg_id", "admin_ward_id"];
+		"admin_district_id", "parish_id", "ccg_id", "admin_ward_id", "nuts_id", "nuts_code"];
 
 	nonProperties.forEach(function (prop) {
 		assert.notProperty(o, prop);
@@ -153,7 +155,7 @@ function isPostcodeObject(o) {
 		assert.property(o, prop);
 	});
 
-	var codeProperties = ["admin_county", "admin_district", "parish", "ccg", "admin_ward"];
+	var codeProperties = ["admin_county", "admin_district", "parish", "ccg", "admin_ward", "nuts"];
 
 	codeProperties.forEach(function (prop) {
 		assert.property(o, prop);
@@ -164,7 +166,7 @@ function isRawPostcodeObject(o) {
 	var properties = ["id", "nhs_ha", "country", "quality", "postcode", "eastings", "latitude", "location", 
 	"northings",  "longitude", "pc_compact", "admin_ward", "admin_county", "admin_district",
 	"parliamentary_constituency", "european_electoral_region", "parish", "lsoa", "msoa",
-	"nuts", "ccg", "primary_care_trust", "incode", "outcode", "admin_district",
+	"nuts", "ccg", "primary_care_trust", "incode", "outcode", "admin_district", "nuts_id", "nuts_code",
 	"admin_county_id", "admin_district_id", "parish_id", "ccg_id", "admin_ward_id"];
 
 	properties.forEach(function (prop) {
@@ -236,6 +238,7 @@ module.exports = {
 	Parish: Parish,
 	County: County,
 	Ccg: Ccg,
+	Nuts: Nuts,
 	Ward: Ward,
 	Outcode: Outcode,
 

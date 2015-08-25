@@ -34,7 +34,7 @@ var postcodeSchema = {
 	"parish_id" : "VARCHAR(32)", 
 	"lsoa" : "VARCHAR(255)", 
 	"msoa" : "VARCHAR(255)",
-	"nuts" : "VARCHAR(255)",
+	"nuts_id" : "VARCHAR(32)",
 	"incode" : "VARCHAR(5)",
 	"outcode" : "VARCHAR(5)",
 	"ccg_id" : "VARCHAR(32)"
@@ -74,6 +74,10 @@ var relationships = [{
 	table: "ccgs",
 	key: "ccg_id",
 	foreignKey: "code"
+},{
+	table: "nuts",
+	key: "nuts_id",
+	foreignKey: "code"
 }];
 
 var toJoinString = function () {
@@ -98,6 +102,12 @@ var foreignColumns = [{
 },{
 	field: "ccgs.name",
 	as: "ccg"
+},{
+	field: "nuts.name",
+	as: "nuts"
+},{
+	field: "nuts.nuts_code",
+	as: "nuts_code"
 }];
 
 var toColumnsString = function () {
@@ -409,7 +419,8 @@ Postcode.prototype.toJson = function (address) {
 		admin_county: address["admin_county_id"],
 		admin_ward: address["admin_ward_id"],
 		parish: address["parish_id"],
-		ccg: address["ccg_id"] 
+		ccg: address["ccg_id"],
+		nuts: address["nuts_code"]
 	};
 	delete address.id;
 	delete address.location;
@@ -419,6 +430,8 @@ Postcode.prototype.toJson = function (address) {
 	delete address.admin_ward_id;
 	delete address.parish_id;
 	delete address.ccg_id;
+	delete address.nuts_id;
+	delete address.nuts_code;
 	return address;
 }
 
@@ -505,7 +518,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 										" latitude, country, nhs_ha," + 
 										" admin_county_id, admin_district_id, admin_ward_id, parish_id, quality," +
 										" parliamentary_constituency , european_electoral_region, region, " +
-										" primary_care_trust, lsoa, msoa, nuts, incode, outcode, ccg_id";
+										" primary_care_trust, lsoa, msoa, nuts_id, incode, outcode, ccg_id";
 	var dataPath = path.join(__dirname, "../../data/");
 	var countries = JSON.parse(fs.readFileSync(dataPath + "countries.json"));
 	var nhsHa = JSON.parse(fs.readFileSync(dataPath + "nhsHa.json"));
@@ -515,7 +528,6 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	var pcts = JSON.parse(fs.readFileSync(dataPath + "pcts.json"));
 	var lsoa = JSON.parse(fs.readFileSync(dataPath + "lsoa.json"));
 	var msoa = JSON.parse(fs.readFileSync(dataPath + "msoa.json"));
-	var nuts = JSON.parse(fs.readFileSync(dataPath + "nuts.json"));
 
 	var transform = function (row, index) {
 		// Skip if header
@@ -562,7 +574,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(pcts[row[21]]);										// Primary Care Trusts
 		finalRow.push(lsoa[row[42]]);										// 2011 LSOA
 		finalRow.push(msoa[row[43]]);										// 2011 MSOA
-		finalRow.push(nuts[row[22]]);										// NUTS
+		finalRow.push(row[22]);													// NUTS
 		finalRow.push(row[2].split(" ")[1]);						// Incode
 		finalRow.push(row[2].split(" ")[0]);						// Outcode
 		finalRow.push(row[46]);													// Clinical Commissioning Group

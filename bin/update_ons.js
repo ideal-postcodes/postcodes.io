@@ -14,6 +14,7 @@ var config = require(path.join(__dirname, "../config/config"))(env);
 var Postcode = require(path.join(__dirname, "../app/models/postcode.js"));
 var District = require(path.join(__dirname, "../app/models/district.js"));
 var Ward = require(path.join(__dirname, "../app/models/ward.js"));
+var Nuts = require(path.join(__dirname, "../app/models/nuts.js"));
 var County = require(path.join(__dirname, "../app/models/county.js"));
 var Parish = require(path.join(__dirname, "../app/models/parish.js"));
 var Ccg = require(path.join(__dirname, "../app/models/ccg.js"));
@@ -60,6 +61,7 @@ function setupSupportTables (callback) {
 		County._setupTable.bind(County),
 		Ccg._setupTable.bind(Ccg),
 		Ward._setupTable.bind(Ward),
+		Nuts._setupTable.bind(Nuts),
 		Parish._setupTable.bind(Parish)
 	];
 	async.series(instructions, callback);

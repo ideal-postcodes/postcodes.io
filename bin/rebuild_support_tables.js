@@ -8,6 +8,7 @@ var Base = require(path.join(__dirname, "../app/models"));
 var config = require(path.join(__dirname, "../config/config"))(env);
 var District = require(path.join(__dirname, "../app/models/district.js"));
 var Ward = require(path.join(__dirname, "../app/models/ward.js"));
+var Nuts = require(path.join(__dirname, "../app/models/nuts.js"));
 var County = require(path.join(__dirname, "../app/models/county.js"));
 var Parish = require(path.join(__dirname, "../app/models/parish.js"));
 var Ccg = require(path.join(__dirname, "../app/models/ccg.js"));
