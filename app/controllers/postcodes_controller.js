@@ -56,14 +56,14 @@ exports.valid = function (request, response, next) {
 }
 
 exports.random = function (request, response, next) {
-	Postcode.random(function (error, address) {
+	Postcode.random(request.query, function (error, address) {
 		if (error) {
 			return next(error);
 		}
 
 		response.jsonApiResponse = {
 			status: 200,
-			result: Postcode.toJson(address)
+			result: address ? Postcode.toJson(address) : null
 		};
 		return next();
 	});

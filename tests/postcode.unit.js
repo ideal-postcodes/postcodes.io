@@ -115,8 +115,8 @@ describe("Postcode Model", function () {
 			Postcode.postcodeIds = undefined;
 			Postcode.loadPostcodeIds(function (error) {
 				if (error) return done(error);
-				assert.isArray(Postcode.postcodeIds);
-				assert.isTrue(Postcode.postcodeIds.length > 0);
+				assert.isArray(Postcode.idCache['_all']);
+				assert.isTrue(Postcode.idCache['_all'].length > 0);
 				done();
 			});
 		});
@@ -130,24 +130,51 @@ describe("Postcode Model", function () {
 				done();
 			});
 		});
-	});
-
-	describe("#naiveRandom", function () {
-		it ("should return a random postcode using naive method", function (done) {
-			Postcode.naiveRandom(function (error, postcode) {
-				if (error) return done(error);
-				helper.isRawPostcodeObject(postcode);
-				done();
+		describe("Outcode filter", function () {
+			it ("returns random postcode for within an outcode", function (done) {
+				var outcode = "AB10";
+				Postcode.random({outcode: outcode}, function (error, postcode) {
+					if (error) return done(error);
+					helper.isRawPostcodeObject(postcode);
+					assert.equal(postcode.outcode, outcode);
+					done();
+				});
+			});
+			it ("is case and space insensitive", function (done) {
+				var outcode = "aB 10 ";
+				Postcode.random({outcode: outcode}, function (error, postcode) {
+					if (error) return done(error);
+					helper.isRawPostcodeObject(postcode);
+					assert.equal(postcode.outcode, "AB10");
+					done();
+				});
+			});
+			it ("caches requests", function (done) {
+				var outcode = "AB12";
+				Postcode.random({outcode: outcode}, function (error, postcode) {
+					if (error) return done(error);
+					helper.isRawPostcodeObject(postcode);
+					assert.isTrue(Postcode.idCache[outcode].length > 0);
+					done();
+				});
+			})
+			it ("returns null if invalid outcode", function (done) {
+				var outcode = "BOGUS";
+				Postcode.random({outcode: outcode}, function (error, postcode) {
+					if (error) return done(error);
+					assert.isNull(postcode);
+					done();
+				});
 			});
 		});
 	});
 
-	describe("#inMemoryRandom", function () {
+	describe("#randomFromIds", function () {
 		before(function (done) {
 			Postcode.loadPostcodeIds(done);
 		});
 		it ("should return a random postcode using an in memory ID store", function (done) {
-			Postcode.inMemoryRandom(function (error, postcode) {
+			Postcode.randomFromIds(Postcode.idCache['_all'], function (error, postcode) {
 				if (error) return done(error);
 				helper.isRawPostcodeObject(postcode);
 				done();

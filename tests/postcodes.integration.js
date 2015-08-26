@@ -247,32 +247,64 @@ describe("Postcodes routes", function () {
 		});
 	});
 
-	// describe("GET /random/postcode", function () {
-	// 	it ("should return a random postcode", function (done) {
-	// 		var path = "/random/postcodes";
-	// 		request(app)
-	// 		.get(path)
-	// 		.expect('Content-Type', /json/)
-	// 		.expect(200)
-	// 		.end(function (error, response) {
-	// 			if (error) return done(error);
-	// 			assert.property(response.body.result, "postcode");
-	// 			helper.isPostcodeObject(response.body.result);
-	// 			done();
-	// 		});
-	// 	});
-	// 	it ("should respond to options", function (done) {
-	// 		var path = "/random/postcodes";
-	// 		request(app)
-	// 		.options(path)
-	// 		.expect(204)
-	// 		.end(function (error, response) {
-	// 			if (error) done(error);
-	// 			helper.validCorsOptions(response);
-	// 			done();
-	// 		});
-	// 	});
-	// });
+	describe("GET /random/postcode", function () {
+		it ("should return a random postcode", function (done) {
+			var path = "/random/postcodes";
+			request(app)
+			.get(path)
+			.expect('Content-Type', /json/)
+			.expect(200)
+			.end(function (error, response) {
+				if (error) return done(error);
+				assert.property(response.body.result, "postcode");
+				helper.isPostcodeObject(response.body.result);
+				done();
+			});
+		});
+		it ("should respond to options", function (done) {
+			var path = "/random/postcodes";
+			request(app)
+			.options(path)
+			.expect(204)
+			.end(function (error, response) {
+				if (error) done(error);
+				helper.validCorsOptions(response);
+				done();
+			});
+		});
+		describe("filtered by outcode", function () {
+			it ("returns a random postcode within an outcode", function (done) {
+				var path = "/random/postcodes";
+				var outcode = "AB10";
+				request(app)
+					.get(path)
+					.query({ outcode: outcode })
+					.expect('Content-Type', /json/)
+					.expect(200)
+					.end(function (error, response) {
+						if (error) return done(error);
+						assert.property(response.body.result, "postcode");
+						helper.isPostcodeObject(response.body.result);
+						assert.equal(response.body.result.outcode, outcode);
+						done();
+					});
+			});
+			it ("returns a null for invalid outcode", function (done) {
+				var path = "/random/postcodes";
+				var outcode = "BOGUS";
+				request(app)
+					.get(path)
+					.query({ outcode: outcode })
+					.expect('Content-Type', /json/)
+					.expect(200)
+					.end(function (error, response) {
+						if (error) return done(error);
+						assert.isNull(response.body.result);
+						done();
+					});
+			});
+		});
+	});
 
 	describe("GET /postcodes/:postcode/autocomplete", function () {
 		var uri, limit;
