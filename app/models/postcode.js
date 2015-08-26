@@ -117,6 +117,7 @@ var toColumnsString = function () {
 };
 
 function Postcode () {
+	this.idCache = {};
 	Base.call(this, "postcodes", postcodeSchema, indexes);
 }
 
@@ -148,33 +149,45 @@ Postcode.prototype.find = function (postcode, callback) {
 	});
 }
 
-var loadingIds;
-
-Postcode.prototype.loadPostcodeIds = function (callback) {
+Postcode.prototype.loadPostcodeIds = function (type, callback) {
 	var self = this;
-	if (loadingIds) return null;
-	loadingIds = true;
 
-	this._getClient(function (error, client, done) {
-		var cleanUp = function (error) {
+	if (typeof type === 'function') {
+		callback = type;
+		type = "_all";
+	}
+
+	self._getClient(function (error, client, done) {
+		var cleanUp = function (error, ids) {
 			done();
-			loadingIds = false;
 			if (callback) {
-				return callback(error)
+				return callback(error, ids);
 			} else {
 				return null;
 			}
 		};
 		if (error) return cleanUp(error);
-		client.query("SELECT count(id) FROM postcodes", function (error, result) {
+
+		var params = [];
+		var countQuery = "SELECT count(id) FROM postcodes";
+		var idQuery = "SELECT id FROM postcodes";
+
+		if (type !== "_all") {
+			countQuery += " WHERE outcode = $1";
+			idQuery += " WHERE outcode = $1";
+			params.push(type.replace(/\s/g, "").toUpperCase());
+		}
+
+		client.query(countQuery, params, function (error, result) {
 			if (error) return cleanUp(error);
 			var i = 0;
 			var count = result.rows[0].count;
+			if (count === 0) return callback(null, null);
 			var idStore = new Array(count);
-			client.query(new QueryStream("SELECT id FROM postcodes"))
+			client.query(new QueryStream(idQuery, params))
 				.on("end", function () {
-					self.postcodeIds = idStore;
-					cleanUp();
+					self.idCache[type] = idStore;
+					cleanUp(null, idStore);
 				})
 				.on("error", cleanUp)
 				.on("data", function (data) {
@@ -185,33 +198,25 @@ Postcode.prototype.loadPostcodeIds = function (callback) {
 	});
 };
 
-Postcode.prototype.random = function (callback) {
-	if (typeof this.postcodeIds === 'undefined') {
-		this.loadPostcodeIds();
-		return this.naiveRandom(callback);
-	} else {
-		return this.inMemoryRandom(callback);
+Postcode.prototype.random = function (options, callback) {
+	var self = this;
+
+	if (typeof options === 'function') {
+		callback = options;
+		options = {};
 	}
-};
 
-var naiveRandomQuery	=	
-	["SELECT postcodes.*,", 
-	toColumnsString(),
-	"FROM postcodes",
-	toJoinString(),
-	"OFFSET random() * (SELECT count(*) FROM postcodes)",
-	"LIMIT 1;"].join(" ");
+	var randomType = typeof options.outcode === 'string' && options.outcode.length ? options.outcode : "_all";
+	var idCache = self.idCache[randomType];
 
-// Perform a simple random search with offset (expensive)
+	if (!idCache) {
+		return self.loadPostcodeIds(randomType, function (error, ids) {
+			if (error) return callback(error);
+			return self.randomFromIds(ids, callback);
+		});
+	}
 
-Postcode.prototype.naiveRandom = function (callback) {
-	this._query(naiveRandomQuery, function (error, result) {
-		if (error) return callback(error, null);
-		if (result.rows.length === 0) {
-			return callback(null, null);
-		}
-		callback(null, result.rows[0]);
-	});
+	return self.randomFromIds(idCache, callback);
 };
 
 var findByIdQuery = 
@@ -223,9 +228,9 @@ var findByIdQuery =
 
 // Use an in memory array of IDs to retrieve random postcode
 
-Postcode.prototype.inMemoryRandom = function (callback) {
-	var length = this.postcodeIds.length;
-	var randomId = Math.floor(Math.random() * length);
+Postcode.prototype.randomFromIds = function (ids, callback) {
+	var length = ids.length;
+	var randomId = ids[Math.floor(Math.random() * length)];
 	this._query(findByIdQuery, [randomId], function (error, result) {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) {
