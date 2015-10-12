@@ -57,20 +57,20 @@ var transform = function (row, index) {
 		return null;
 	}
 	
-	// check(row[14], countries);							// Country
-	// check(row[12], nhsHa, "nhsHa");								// NHS Health Authority
-	// check(row[5], counties, "counties");								// County
-	// check(row[6], districts, "districts");								// District
-	// check(row[7], wards, "wards");										// Ward
+	check(row[14], countries);							// Country
+	check(row[12], nhsHa, "nhsHa");								// NHS Health Authority
+	check(row[5], counties, "counties");								// County
+	check(row[6], districts, "districts");								// District
+	check(row[7], wards, "wards");										// Ward
 	check(row[44], parishes, "parishes");								// Parish
-	// check(row[17], constituencies, "constituencies");					// Westminster const.
-	// check(row[18], european_registers, "european_registers");			// European electoral region
-	// check(row[15], regions, "regions");								// Region
-	// check(row[21], pcts, "pcts");										// Primary Care Trusts
-	// check(row[42], lsoa, "lsoa");										// 2011 LSOA
-	// check(row[43], msoa, "msoa");										// 2011 MSOA
-	// check(row[22], nuts, "nuts");										// NUTS
-	// check(row[46], ccg, "ccg");										// Clinical Commissioning Group
+	check(row[17], constituencies, "constituencies");					// Westminster const.
+	check(row[18], european_registers, "european_registers");			// European electoral region
+	check(row[15], regions, "regions");								// Region
+	check(row[21], pcts, "pcts");										// Primary Care Trusts
+	check(row[42], lsoa, "lsoa");										// 2011 LSOA
+	check(row[43], msoa, "msoa");										// 2011 MSOA
+	check(row[22], nuts, "nuts");										// NUTS
+	check(row[46], ccg, "ccg");										// Clinical Commissioning Group
 }
 
 var stream = csv({delimiter: "	"})
