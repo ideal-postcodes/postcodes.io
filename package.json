@@ -64,8 +64,9 @@
     "string": "~3.1.0"
   },
   "devDependencies": {
-    "mocha": "~1.20.0",
     "chai": "~1.9.0",
+    "iconv": "~2.1.11",
+    "mocha": "~1.20.0",
     "supertest": "~0.13.0"
   }
 }
