@@ -346,7 +346,7 @@ Postcode.prototype._deriveMaxRange = function (params, callback) {
 	var queryBound = function (params, range, callback) {
 		var queryParams = [params.longitude, params.latitude, range, SEARCH_LIMIT];
 		self._query(nearestPostcodeCount, queryParams, function (error, result) {
-			if (error) return done(error);
+			if (error) return callback(error);
 			return callback(null, result.rows.length);
 		});
 	};
