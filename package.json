@@ -42,7 +42,7 @@
     "async": "~1.4.2",
     "body-parser": "~1.14.1",
     "bunyan": "~1.5.1",
-    "bunyan-syslog": "~0.3.0",
+    "bunyan-syslog": "~0.3.1",
     "commonlog-bunyan": "~0.4.1",
     "cors": "~2.5.3",
     "csv": "~0.3.6",
