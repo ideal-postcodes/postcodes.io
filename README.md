@@ -43,10 +43,6 @@ The import process takes around 10 minutes to complete.
 node server.js // Default environment is development
 ```
 
-## Contributions
-
-Contributions are welcome. 
-
 ## Testing
 
 ```
@@ -54,6 +50,12 @@ $ npm run setup_test_db # create test database
 
 $ npm test
 ```
+
+## Upgrade Notes & Changelog
+
+Any changes, including backwards incompatible changes will be listed here
+
+*2.0.0* Updated dataset to February 2016
 
 ## License 
 

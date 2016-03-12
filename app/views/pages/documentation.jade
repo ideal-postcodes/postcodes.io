@@ -454,3 +454,12 @@ block content
 
 					pre
 						h4 $ onsImport /path/to/data/ONSPD/Data/data.csv
+
+					h3#update-script Update from ONSPD Data
+
+					p If you wish to manually update your data or data schema, we provide a script which will do this for you with minimal downtime (currently ~10-20 seconds to generate smaller relations).
+
+					p Like above, download the latest Office for National Statistic's "Postcode Lookup Dataset" and run the import script ($ onsUpdate) passing the path to the CSV data.
+
+					pre
+						h4 $ onsUpdate /path/to/data/ONSPD/Data/data.csv
