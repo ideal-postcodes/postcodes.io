@@ -6,8 +6,8 @@ var express = require("express");
 var path = require("path");
 var cors = require("cors")({
 	origin: "*",
-	methods: "GET,POST",
-	allowedHeaders: "X-Requested-With,Content-Type"
+	methods: "GET,POST,OPTIONS",
+	allowedHeaders: "X-Requested-With, Content-Type, Accept, Origin"
 });
 
 module.exports = function (app, config) {
