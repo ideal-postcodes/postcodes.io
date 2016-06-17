@@ -46,6 +46,7 @@ var createCsvStream = function (file) {
 		if (index === 0 && skipFirstLine) {
 			return null;
 		}
+		console.log(row[nameIndex])
 		output[row[codeIndex]] = row[nameIndex];
 		return row;
 	}
@@ -53,7 +54,7 @@ var createCsvStream = function (file) {
 	return function (callback) {
 		stream = csv()
 			.from
-			.stream(fs.createReadStream(file), {
+			.stream(fs.createReadStream(file, { encoding: 'utf-8' }), {
 				delimiter: delimiter
 			})
 			.transform(transform)

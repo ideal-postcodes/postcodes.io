@@ -11,7 +11,7 @@ describe("Preflight Requests (OPTIONS)", function () {
 		  .end(function(error, response){
 		    if (error) return done(error);
 		    assert.equal(response.headers['access-control-allow-origin'], "*");
-		    assert.equal(response.headers['access-control-allow-methods'], "GET,POST");
+		    assert.equal(response.headers['access-control-allow-methods'], "GET,POST,OPTIONS");
 		    done();
 		  });
 	});

@@ -134,8 +134,8 @@ function allowsCORS (response) {
 
 function validCorsOptions(response) {
 	assert.equal(response.headers["access-control-allow-origin"], "*");
-	assert.equal(response.headers["access-control-allow-methods"], "GET,POST");
-	assert.equal(response.headers["access-control-allow-headers"], "X-Requested-With,Content-Type");	
+	assert.equal(response.headers["access-control-allow-methods"], "GET,POST,OPTIONS");
+	assert.equal(response.headers["access-control-allow-headers"], "X-Requested-With, Content-Type, Accept, Origin");	
 }
 
 function isPostcodeObject(o) {
