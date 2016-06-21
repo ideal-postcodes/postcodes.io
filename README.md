@@ -8,7 +8,7 @@ Documentation can be found at [postcodes.io](http://postcodes.io)
 
 Please make sure you have the following available:
 
-- Node (>= v0.10) [(Instructions)](http://nodejs.org/)
+- Node.js v4.x [(Instructions)](http://nodejs.org/)
 - Postgres with PostGIS extension [(Instructions)](http://postgis.net/install)
 
 We also have an end-to-end guide to install Postcodes.io on a fresh virtual machine [in the wiki](https://github.com/ideal-postcodes/postcodes.io/wiki/Server-Provisioning-&-Installation).
@@ -54,6 +54,8 @@ $ npm test
 ## Upgrade Notes & Changelog
 
 Any changes, including backwards incompatible changes will be listed here
+
+*3.0.0* Drop support for node.js 0.10 and 0.12
 
 *2.0.1* Expanded accept headers and HTTP methods in CORS preflight requests
 *2.0.0* Updated dataset to February 2016
