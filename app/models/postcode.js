@@ -281,7 +281,7 @@ var nearestPostcodeQuery =  ["SELECT postcodes.*,",
 	"FROM postcodes",
 	toJoinString(),
 	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3)", 
-	"ORDER BY distance",
+	"ORDER BY distance ASC, postcode ASC",
 	"LIMIT $4"].join(" ");
 
 Postcode.prototype.nearestPostcodes = function (params, callback) {
