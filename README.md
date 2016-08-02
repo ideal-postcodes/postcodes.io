@@ -58,6 +58,7 @@ Any changes, including backwards incompatible changes will be listed here
 *3.0.0* Drop support for node.js 0.10 and 0.12
 
 *2.0.1* Expanded accept headers and HTTP methods in CORS preflight requests
+
 *2.0.0* Updated dataset to February 2016
 
 ## License 
