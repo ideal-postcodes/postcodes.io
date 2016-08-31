@@ -55,6 +55,7 @@ Outcode.prototype.seedData = function (callback) {
 			var outcode = row.outcode;
 			Postcode.findOutcode(outcode, function (error, outcode) {
 				if (error) return callback(error);
+				if (outcode === null) return;
 				outcode.northings = parseInt(outcode.northings, 10) || 0;
 				outcode.eastings = parseInt(outcode.eastings, 10) || 0;
 				self._create(outcode, callback);
