@@ -199,7 +199,7 @@ describe("Postcode Model", function () {
 			});
 		});
 		it ("should return null if no matching outcode", function (done) {
-			Postcode.findOutcode("BOGUSOUTCODE", function (error, result) {
+			Postcode.findOutcode("EZ12", function (error, result) {
 				if (error) return done(error);
 				assert.equal(result, null);
 				done();
