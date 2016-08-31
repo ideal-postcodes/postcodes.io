@@ -400,8 +400,8 @@ Postcode.prototype.findOutcode = function (outcode, callback) {
 	var self = this;
 	outcode = outcode.trim().toUpperCase();
 
-	if (!Pc.validOutcode(outcode)) {
-		return callback(null, null);
+	if (!Pc.validOutcode(outcode) && outcode !== "GIR") {
+		return callback(new Error(`Invalid outcode: ${outcode}`), null);
 	}
 
 	self._query(outcodeQuery, [outcode], function (error, result) {

@@ -55,6 +55,8 @@ $ npm test
 
 Any changes, including backwards incompatible changes will be listed here
 
+*3.0.1* Added some missing GSS codes. Fix import script for Aug 2016 ONSPD
+
 *3.0.0* Drop support for node.js 0.10 and 0.12
 
 *2.0.1* Expanded accept headers and HTTP methods in CORS preflight requests
