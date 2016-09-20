@@ -67,24 +67,24 @@ Any changes, including backwards incompatible changes will be listed here
 
 ##External Libraries
 
-###1. [Java Library] (href="https://github.com/spdeepak/postcodes-io-java") of postcodes_io by [Deepak Sunanda Prabhakar](href="https://github.com/spdeepak")
+1. [Java Library] (href="https://github.com/spdeepak/postcodes-io-java") of postcodes_io by [Deepak Sunanda Prabhakar](href="https://github.com/spdeepak")
 
-###2. PHP Libraries
-<b>i)[postcodes-io-bundle] (https://github.com/boxuk/postcodes-io-bundle) by the people at [Box UK] (https://www.boxuk.com/). Read the [Blog post] (https://www.boxuk.com/insight/tech-posts/geocoding-postcodes-symfony2)
-ii)[postcodes-io laravel] (https://github.com/adityamenon/postcodes-io-laravel) package by [Aditya Menon] (http://adityamenon.co)
-iii)[PHP Class for Postcodes.io] (https://github.com/hart1994/Postcodes-IO-PHP) by [Ryan] (https://github.com/hart1994/)</b>
+2. PHP Libraries
+	* i)[postcodes-io-bundle] (https://github.com/boxuk/postcodes-io-bundle) by the people at [Box UK] (https://www.boxuk.com/). Read the [Blog post] (https://www.boxuk.com/insight/tech-posts/geocoding-postcodes-symfony2)<br/>
+	* ii)[postcodes-io laravel] (https://github.com/adityamenon/postcodes-io-laravel) package by [Aditya Menon] (http://adityamenon.co)<br/>
+	* iii)[PHP Class for Postcodes.io] (https://github.com/hart1994/Postcodes-IO-PHP) by [Ryan] (https://github.com/hart1994/)<br/>
 
-###3. [Ruby Library] (postcodes_io) by [James Ruston] ((https://github.com/jamesruston))
+3. [Ruby Library] (postcodes_io) by [James Ruston] ((https://github.com/jamesruston))
 
-###4. [Node.JS Library] (https://github.com/cuvva/postcodesio-client-node) by [billinghamj] (https://github.com/billinghamj) 
+4. [Node.JS Library] (https://github.com/cuvva/postcodesio-client-node) by [billinghamj] (https://github.com/billinghamj) 
 
-###5. [Python Library] (https://github.com/previousdeveloper/PythonPostcodesWrapper) by [Gokhan Karadas] (https://github.com/previousdeveloper)
+5. [Python Library] (https://github.com/previousdeveloper/PythonPostcodesWrapper) by [Gokhan Karadas] (https://github.com/previousdeveloper)
 
-###6. [C# Library] (https://github.com/markembling/MarkEmbling.PostcodesIO) by [Mark Embling] (https://github.com/markembling)
+6. [C# Library] (https://github.com/markembling/MarkEmbling.PostcodesIO) by [Mark Embling] (https://github.com/markembling)
 
-###7. [R Library] (https://github.com/erzk/PostcodesioR) by [Eryk Walczak] (http://walczak.org). Read the [blog post] (http://walczak.org/2016/07/postcode-and-geolocation-api-for-the-uk/).
+7. [R Library] (https://github.com/erzk/PostcodesioR) by [Eryk Walczak] (http://walczak.org). Read the [blog post] (http://walczak.org/2016/07/postcode-and-geolocation-api-for-the-uk/).
 
-###8. [Google Sheets Addon] (https://chrome.google.com/webstore/detail/uk-postcode-geocoder/bjkecdilmiedfkihpgfhfikchkghliia?utm_source=permalink) by [Ed Patrick] (http://edwebdeveloper.com/)
+8. [Google Sheets Addon] (https://chrome.google.com/webstore/detail/uk-postcode-geocoder/bjkecdilmiedfkihpgfhfikchkghliia?utm_source=permalink) by [Ed Patrick] (http://edwebdeveloper.com/)
 
 ## License 
 
