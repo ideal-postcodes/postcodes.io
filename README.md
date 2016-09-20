@@ -67,7 +67,7 @@ Any changes, including backwards incompatible changes will be listed here
 
 ##External Libraries
 
-1. [Java Library] (https://github.com/spdeepak/postcodes-io-java) of postcodes_io by [Deepak Sunanda Prabhakar](https://github.com/spdeepak)
+1. [Java Library] (https://github.com/spdeepak/postcodes-io-java) by [Deepak Sunanda Prabhakar](https://github.com/spdeepak)
 
 2. PHP Libraries
 	* i)[postcodes-io-bundle] (https://github.com/boxuk/postcodes-io-bundle) by the people at [Box UK] (https://www.boxuk.com/). Read the [Blog post] (https://www.boxuk.com/insight/tech-posts/geocoding-postcodes-symfony2)<br/>
