@@ -11,7 +11,7 @@ Please make sure you have the following available:
 - Node.js v4.x [(Instructions)](http://nodejs.org/)
 - Postgres with PostGIS extension [(Instructions)](http://postgis.net/install)
 
-We also have an end-to-end guide to install Postcodes.io on a fresh virtual machine [in the wiki](https://github.com/ideal-postcodes/postcodes.io/wiki/Server-Provisioning-&-Installation).
+We also have an end-to-end guide to install Postcodes.io on a fresh virtual machine [in the wiki](https://github.com/ideal-postcodes/postcodes.io/wiki/Installing-Postcodes.io).
 
 ## Install & Download Data & Run
 
