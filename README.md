@@ -70,9 +70,9 @@ Any changes, including backwards incompatible changes will be listed here
 1. [Java Library] (https://github.com/spdeepak/postcodes-io-java) by [Deepak Sunanda Prabhakar](https://github.com/spdeepak) 
 
 2. PHP Libraries
-	* i)[postcodes-io-bundle] (https://github.com/boxuk/postcodes-io-bundle) by the people at [Box UK] (https://www.boxuk.com/). Read the [Blog post] (https://www.boxuk.com/insight/tech-posts/geocoding-postcodes-symfony2)<br/>
-	* ii)[postcodes-io laravel] (https://github.com/adityamenon/postcodes-io-laravel) package by [Aditya Menon] (http://adityamenon.co)<br/>
-	* iii)[PHP Class for Postcodes.io] (https://github.com/hart1994/Postcodes-IO-PHP) by [Ryan] (https://github.com/hart1994/)<br/>
+	* [postcodes-io-bundle] (https://github.com/boxuk/postcodes-io-bundle) by the people at [Box UK] (https://www.boxuk.com/). Read the [Blog post] (https://www.boxuk.com/insight/tech-posts/geocoding-postcodes-symfony2)<br/>
+	* [postcodes-io laravel] (https://github.com/adityamenon/postcodes-io-laravel) package by [Aditya Menon] (http://adityamenon.co)<br/>
+	* [PHP Class for Postcodes.io] (https://github.com/hart1994/Postcodes-IO-PHP) by [Ryan] (https://github.com/hart1994/)<br/>
 
 3. [Ruby Library] (postcodes_io) by [James Ruston] (https://github.com/jamesruston)
 
