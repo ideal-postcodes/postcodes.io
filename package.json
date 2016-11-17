@@ -42,7 +42,7 @@
     "async": "~1.5.0",
     "body-parser": "~1.15.0",
     "bunyan": "~1.8.5",
-    "bunyan-syslog": "~0.3.1",
+    "bunyan-syslog": "github:mcavage/node-bunyan-syslog",
     "commonlog-bunyan": "~0.4.3",
     "cors": "~2.8.1",
     "csv": "~0.3.0",
