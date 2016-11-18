@@ -79,8 +79,8 @@
     },
     "bunyan-syslog": {
       "version": "0.3.1",
-      "from": "mcavage/node-bunyan-syslog",
-      "resolved": "git://github.com/mcavage/node-bunyan-syslog.git#9bdb9eb62a763c7d30e032a619138032d5ff8771"
+      "from": "ideal-postcodes/node-bunyan-syslog",
+      "resolved": "git://github.com/ideal-postcodes/node-bunyan-syslog.git#9bdb9eb62a763c7d30e032a619138032d5ff8771"
     },
     "bytes": {
       "version": "2.4.0",
@@ -104,7 +104,7 @@
     },
     "commonlog-bunyan": {
       "version": "0.4.3",
-      "from": "commonlog-bunyan@0.4.3",
+      "from": "commonlog-bunyan@>=0.4.3 <0.5.0",
       "resolved": "https://registry.npmjs.org/commonlog-bunyan/-/commonlog-bunyan-0.4.3.tgz"
     },
     "concat-map": {
@@ -520,7 +520,7 @@
     },
     "postcode": {
       "version": "0.2.5",
-      "from": "postcode@0.2.5",
+      "from": "postcode@>=0.2.5 <0.3.0",
       "resolved": "https://registry.npmjs.org/postcode/-/postcode-0.2.5.tgz"
     },
     "postgres-array": {
