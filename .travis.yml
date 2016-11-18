@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - "4.4"
+  - "6.9"
 env:
  - CXX=g++-4.8
 addons:
@@ -10,4 +11,5 @@ addons:
   packages:
    - g++-4.8
 before_script:
+  - mkdir logs && touch logs/test.log
   - POSTGRES_USER=postgres npm run setup_test_db
