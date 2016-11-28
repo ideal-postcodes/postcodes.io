@@ -4,7 +4,7 @@
  *
  * This script checks for missing ONS Codes in the ONS Postcode Directory
  *
- * To run: node data_points.js /path/to/postcode/directory.csv
+ * To run: find_missing.js /path/to/postcode/directory.csv
  *
  * This parses every line of the directory returns result to stdout
  *
