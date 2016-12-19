@@ -1,29 +1,30 @@
-var	csv = require("csv");
-var util = require("util");
-var path = require("path");
-var async = require("async");
-var OSPoint = require("ospoint");
-var assert = require("chai").assert;
-var randomString = require("random-string");
-var rootPath = path.join(__dirname, "../../");
-var env = process.env.NODE_ENV || "development";
-var NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
-var Base = require(path.join(rootPath, "app/models"));
-var config = require(path.join(rootPath + "/config/config"))(env);
-var seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
+"use strict";
+
+const util = require("util");
+const path = require("path");
+const async = require("async");
+const OSPoint = require("ospoint");
+const assert = require("chai").assert;
+const randomString = require("random-string");
+const rootPath = path.join(__dirname, "../../");
+const env = process.env.NODE_ENV || "development";
+const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
+const Base = require(path.join(rootPath, "app/models"));
+const config = require(path.join(rootPath + "/config/config"))(env);
+const seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
 
 // Load models
-var AttributeBase = require(path.join(rootPath, "app/models/attribute_base"));
-var Postcode = require(path.join(rootPath, "app/models/postcode"));
-var District = require(path.join(rootPath, "app/models/district"));
-var Parish = require(path.join(rootPath, "app/models/parish"));
-var County = require(path.join(rootPath, "app/models/county"));
-var Ccg = require(path.join(rootPath, "app/models/ccg"));
-var Nuts = require(path.join(rootPath, "app/models/nuts"));
-var Ward = require(path.join(rootPath, "app/models/ward"));
-var Outcode = require(path.join(rootPath, "app/models/outcode"));
+const AttributeBase = require(path.join(rootPath, "app/models/attribute_base"));
+const Postcode = require(path.join(rootPath, "app/models/postcode"));
+const District = require(path.join(rootPath, "app/models/district"));
+const Parish = require(path.join(rootPath, "app/models/parish"));
+const County = require(path.join(rootPath, "app/models/county"));
+const Ccg = require(path.join(rootPath, "app/models/ccg"));
+const Nuts = require(path.join(rootPath, "app/models/nuts"));
+const Ward = require(path.join(rootPath, "app/models/ward"));
+const Outcode = require(path.join(rootPath, "app/models/outcode"));
 
-var CSV_INDEX = {
+const CSV_INDEX = {
 	postcode: 2,
 	northings: 10,
 	eastings: 9
@@ -32,8 +33,8 @@ var CSV_INDEX = {
 // Location with nearby postcodes to be used in lonlat test requests
 
 
-var locationWithNearbyPostcodes = function (callback) {
-	var postcodeWithNearbyPostcodes = "AB14 0LP";
+const locationWithNearbyPostcodes = function (callback) {
+	const postcodeWithNearbyPostcodes = "AB14 0LP";
 	Postcode.find(postcodeWithNearbyPostcodes, function (error, result) {
 		if (error) return callback(error, null);
 		return callback(null, result);
@@ -41,7 +42,7 @@ var locationWithNearbyPostcodes = function (callback) {
 }
 
 function getCustomRelation () {
-	var relationName = randomString({
+	const relationName = randomString({
 			  length: 8,
 			  numeric: false,
 			  letters: true,
@@ -66,7 +67,7 @@ function seedPostcodeDb (callback) {
 		return callback(null);
 	}
 
-	var instructions = [];
+	const instructions = [];
 	instructions.push(function (callback) {
 		Postcode._setupTable(seedPostcodePath, callback);
 	});
@@ -88,7 +89,7 @@ function clearPostcodeDb(callback, force) {
 	Postcode._destroyRelation(callback);
 }
 
-var getRandom = function (max) {
+const getRandom = function (max) {
 	return Math.floor(Math.random() * max);
 }
 
@@ -124,7 +125,7 @@ function lookupRandomPostcode(callback) {
 
 function jsonpResponseBody (response) {
 	// Rough regex to extract json object
-	var result = response.text.match(/\(.*\)/);
+	const result = response.text.match(/\(.*\)/);
 	return JSON.parse(result[0].slice(1, result[0].length - 1));
 }
 
@@ -133,78 +134,143 @@ function allowsCORS (response) {
 }
 
 function validCorsOptions(response) {
-	assert.equal(response.headers["access-control-allow-origin"], "*");
-	assert.equal(response.headers["access-control-allow-methods"], "GET,POST,OPTIONS");
-	assert.equal(response.headers["access-control-allow-headers"], "X-Requested-With, Content-Type, Accept, Origin");	
+	assert.equal(response.headers["access-control-allow-origin"], 
+		"*");
+	assert.equal(response.headers["access-control-allow-methods"], 
+		"GET,POST,OPTIONS");
+	assert.equal(response.headers["access-control-allow-headers"], 
+		"X-Requested-With, Content-Type, Accept, Origin");	
 }
 
 function isPostcodeObject(o) {
-	var nonProperties = ["id", "location", "pc_compact", "admin_county_id", 
-		"admin_district_id", "parish_id", "ccg_id", "admin_ward_id", "nuts_id", "nuts_code"];
+	[
+		"id",
+		"location",
+		"pc_compact",
+		"admin_county_id",
+		"admin_district_id",
+		"parish_id",
+		"ccg_id",
+		"admin_ward_id",
+		"nuts_id",
+		"nuts_code"
+	].forEach(prop => assert.notProperty(o, prop));
 
-	nonProperties.forEach(function (prop) {
-		assert.notProperty(o, prop);
-	});
+	[
+		"nhs_ha",
+		"country",
+		"quality",
+		"postcode",
+		"eastings",
+		"latitude",
+		"northings",
+		"longitude",
+		"admin_ward",
+		"admin_county",
+		"admin_district",
+		"parliamentary_constituency",
+		"european_electoral_region",
+		"parish",
+		"lsoa",
+		"msoa",
+		"nuts",
+		"ccg",
+		"primary_care_trust",
+		"incode",
+		"outcode",
+		"codes"
+	].forEach(prop => assert.property(o, prop));
 
-	var properties = ["nhs_ha","country","quality","postcode","eastings","latitude",
-		"northings","longitude","admin_ward","admin_county","admin_district",
-		"parliamentary_constituency","european_electoral_region","parish","lsoa",
-		"msoa","nuts","ccg","primary_care_trust","incode","outcode", "codes"];
-
-	properties.forEach(function (prop) {
-		assert.property(o, prop);
-	});
-
-	var codeProperties = ["admin_county", "admin_district", "parish", "ccg", "admin_ward", "nuts"];
-
-	codeProperties.forEach(function (prop) {
-		assert.property(o, prop);
-	});
+	[
+		"admin_county",
+		"admin_district",
+		"parish",
+		"ccg",
+		"admin_ward",
+		"nuts"
+	].forEach(prop => assert.property(o, prop));
 }
 
 function isRawPostcodeObject(o) {
-	var properties = ["id", "nhs_ha", "country", "quality", "postcode", "eastings", "latitude", "location", 
-	"northings",  "longitude", "pc_compact", "admin_ward", "admin_county", "admin_district",
-	"parliamentary_constituency", "european_electoral_region", "parish", "lsoa", "msoa",
-	"nuts", "ccg", "primary_care_trust", "incode", "outcode", "admin_district", "nuts_id", "nuts_code",
-	"admin_county_id", "admin_district_id", "parish_id", "ccg_id", "admin_ward_id"];
-
-	properties.forEach(function (prop) {
-		assert.property(o, prop);
-	});
+	[
+		"id",
+		"nhs_ha",
+		"country",
+		"quality",
+		"postcode",
+		"eastings",
+		"latitude",
+		"location",
+		"northings",
+		"longitude",
+		"pc_compact",
+		"admin_ward",
+		"admin_county",
+		"admin_district",
+		"parliamentary_constituency",
+		"european_electoral_region",
+		"parish",
+		"lsoa",
+		"msoa",
+		"nuts",
+		"ccg",
+		"primary_care_trust",
+		"incode",
+		"outcode",
+		"admin_district",
+		"nuts_id",
+		"nuts_code",
+		"admin_county_id",
+		"admin_district_id",
+		"parish_id",
+		"ccg_id",
+		"admin_ward_id"
+	].forEach(prop => assert.property(o, prop));
 }
 
 function isOutcodeObject(o) {
-	var nonProperties = ["id", "location"];
+	["id", "location"].forEach(prop => assert.notProperty(o, prop));
 
-	nonProperties.forEach(function (prop) {
-		assert.notProperty(o, prop);
-	});
-
-	var properties = ["eastings", "latitude", "northings", "longitude", 
-	"admin_ward", "admin_county", "admin_district", "parish", "outcode"];
-
-	properties.forEach(function (prop) {
-		assert.property(o, prop);
-	});	
+	[
+		"eastings",
+		"latitude",
+		"northings",
+		"longitude",
+		"admin_ward",
+		"admin_county",
+		"admin_district",
+		"parish",
+		"outcode"
+	].forEach(prop => assert.property(o, prop));	
 }
 
 function isRawOutcodeObject(o) {
-	var properties = ["id", "eastings", "latitude", "location", "northings", 
-	"longitude", "admin_ward", "admin_county", "admin_district", "parish", "outcode"];
-
-	properties.forEach(function (prop) {
-		assert.property(o, prop);
-	});	
+	[
+		"id",
+		"eastings",
+		"latitude",
+		"location",
+		"northings",
+		"longitude",
+		"admin_ward",
+		"admin_county",
+		"admin_district",
+		"parish",
+		"outcode"
+	].forEach(prop => assert.property(o, prop))
 }
 
 function testOutcode(o) {
-	var properties = ["longitude", "latitude", "northings", "eastings", "admin_ward", 
-	"admin_district", "admin_county", "parish"];
-
-	properties.forEach(function (prop) {
-		assert.property(o, prop);
-	});
+	[
+		"longitude", 
+		"latitude", 
+		"northings", 
+		"eastings", 
+		"admin_ward", 
+		"admin_district", 
+		"admin_county", 
+		"parish"
+	].forEach(prop => assert.property(o, prop));
 }
 
 module.exports = {
