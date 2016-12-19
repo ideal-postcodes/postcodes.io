@@ -1,11 +1,13 @@
-var pg = require("pg");
-var copyFrom = require("pg-copy-streams").from;
-var async = require("async");
-var path = require("path");
-var csv = require("csv");
-var env = process.env.NODE_ENV || "development";
-var defaults = require(path.join(__dirname, "../../config/config.js"))(env);
-var config = defaults.postgres;
+"use strict";
+
+const pg = require("pg");
+const copyFrom = require("pg-copy-streams").from;
+const async = require("async");
+const path = require("path");
+const csv = require("csv");
+const env = process.env.NODE_ENV || "development";
+const defaults = require(path.join(__dirname, "../../config/config.js"))(env);
+const config = defaults.postgres;
 
 // All models inherit from base
 // Requires schema and relation name
@@ -23,12 +25,15 @@ Base.prototype._query = function (query, params, callback) {
 	}
 
 	if (!config) {
-		var err = new Error("Database connection not yet configured.");
-		callback(err, null);
+		return callback(
+			new Error("Database connection not yet configured."), 
+			null
+		);
 	}
-	pg.connect(config, function (error, client, done) {
+
+	pg.connect(config, (error, client, done) => {
 		if (error) return callback(error, null);
-		client.query(query, params, function (error, result) {
+		client.query(query, params, (error, result) => {
 			callback(error, result);
 			done();
 		});
@@ -36,107 +41,109 @@ Base.prototype._query = function (query, params, callback) {
 };
 
 Base.prototype._create = function (newRecord, callback) {
-	var query = ["INSERT INTO", this.relation],
-			cols = [], 
-			values = [];
+	const query = [`INSERT INTO ${this.relation}`];
+	const cols = [];
+	const values = [];
 
-	for (col in newRecord) {
-		if (!this.schema[col]) return callback(new Error("Could not create record.", col, "does not exist"), null);
+	for (let col in newRecord) {
+		if (!this.schema[col]) {
+			return callback(
+				new Error("Could not create record.", col, "does not exist"), 
+				null
+			);
+		}
 		cols.push(col);
 		values.push(newRecord[col]);
 	}
 	
-	query.push("(" + cols.join(", ") + ")");
-	query.push("VALUES (" + dollarise(values) + ")");
-	this._query(query.join(" "), values,callback);
+	query.push(`(${ cols.join(", ") })`);
+	query.push(`VALUES (${ dollarise(values) })`);
+	this._query(query.join(" "), values, callback);
 };
 
 Base.prototype.all = function (callback) {
-	this._query("SELECT * FROM " + this.relation, callback);
+	this._query(`SELECT * FROM ${this.relation}`, callback);
 };
 
 Base.prototype.clear = function (callback) {
-	this._query("DELETE FROM " + this.relation, callback);
+	this._query(`DELETE FROM ${this.relation}`, callback);
 };
 
 Base.prototype._createRelation = function (callback) {
-	var query = ["CREATE TABLE IF NOT EXISTS", this.relation].join(" "),
-			columns = [],
-			schema = this.schema;
+	const query = [`CREATE TABLE IF NOT EXISTS ${this.relation}`];
+	const columns = [];
+	const schema = this.schema;
 
-	for (column in schema) {
+	for (let column in schema) {
 		columns.push(column + " " + schema[column]);
 	}
 
-	query += " ( " + columns.join(", ") + " ) ";
+	query.push(`(${ columns.join(", ") })`);
 
-	this._query(query, callback);
+	this._query(query.join(" "), callback);
 };
 
 Base.prototype._destroyRelation = function (callback) {
-	this._query("DROP TABLE IF EXISTS " + this.relation + " CASCADE", callback);
+	this._query(`DROP TABLE IF EXISTS ${this.relation} CASCADE`, callback);
 };
 
 Base.prototype.createIndexes = function (callback) {
-	var self = this;
-	var indexExecution = [];
-	var	returnInstruction = function (index) {
-		var instruction = ["CREATE"];
+	const indexExecution = [];
+	const returnInstruction = index => {
+		const instruction = ["CREATE"];
 		if (index.unique) {
 			instruction.push("UNIQUE INDEX");
 		} else {
 			instruction.push("INDEX");
 		}
-		instruction.push("ON " + self.relation);
-		instruction.push("USING " + (index.type || "BTREE"));
-		instruction.push("(");
-		instruction.push(index.column);
+		instruction.push(`ON ${this.relation}`);
+		instruction.push(`USING ${(index.type || "BTREE")}`);
 		if (index.opClass) {
-			instruction.push(index.opClass);
+			instruction.push(`(${index.column} ${index.opClass})`);	
+		} else {
+			instruction.push(`(${index.column})`);
 		}
-		instruction.push(")");
 		return instruction.join(" ");
 	}
 
-	for (var i = 0; i < this.indexes.length; i += 1) {
+	for (let i = 0; i < this.indexes.length; i += 1) {
 		indexExecution.push(returnInstruction(this.indexes[i]));
 	}
 
-	async.series(indexExecution.map(function (instruction) {
-		return function (callback) {
-			self._query(instruction, callback);
-		}
+	async.series(indexExecution.map(instruction => {
+		return callback => this._query(instruction, callback)
 	}), callback);
 };
 
-Base.prototype._csvSeed = function (filePath, columns, transform, callback) {
+Base.prototype._csvSeed = function (filePath, columns, t, callback) {
 	if (arguments.length !== 4) throw new Error("Insufficient number of arguments specified");
 
-	transform = transform || function (row, index) {return row;};
+	const transform = t || function (row, _) { return row };
+	const query = `COPY ${this.relation} (${columns}) FROM STDIN DELIMITER ',' CSV`;
 
-	var query = "COPY " + this.relation + " (" + columns + ") FROM STDIN DELIMITER ',' CSV",
-			pgStream;
-
-	pg.connect(config, function (error, client, done) {
-		pgStream = client.query(copyFrom(query));
+	let pgStream;
+	pg.connect(config, (error, client, done) => {
+		pgStream = client.query(copyFrom(query))
+			.on("end", () => {
+				done();
+				return callback();
+			})
+			.on("error", error => {
+				done();
+				return callback(error);
+			});
 		csv().from.path(filePath).transform(transform).pipe(pgStream);
-		pgStream.on("end", function () {
-			done();
-			return callback();
-		});
-		pgStream.on("error", function (error) {
-			done();
-			return callback(error);
-		});
 	});
 };
 
 Base.prototype._destroyAll = function (callback) {
 	if (process.env.NODE_ENV !== "test") {
-		throw new Error("Tried to wipe database outside of testing environment. " + 
-										"Now go stand in a corner and think about what you've done");
+		return callback(
+			`Aborting. Tried to wipe database outside of testing environment`
+		);
 	}
-	this._query("drop schema public cascade", function (error, result) {
+
+	this._query("drop schema public cascade", (error, result) => {
 		if (error) return callback(error, null);
 		this._query("create public schema", callback);
 	});
@@ -146,21 +153,13 @@ Base.prototype._getClient = function (callback) {
 	pg.connect(config, callback);
 };
 
-var dollarise = function (values) {
-	var result = [];
-	values.forEach(function (elem, index) {
-		result.push("$" + (index + 1));
-	});
-	return result.join(", ");
-};
+const dollarise = values => values.map((_, i) => `$${i + 1}`).join(", ");
 
 module.exports = {
 	connect: function (configObj, callback) {
-		var cb = callback || function(){};
-		// config = configObj.postgres;
+		const cb = callback || function(){};
 		pg.connect(config, cb);	
 		return pg;
 	},
 	Base: Base
 };
-
