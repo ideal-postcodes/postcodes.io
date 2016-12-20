@@ -9,6 +9,20 @@ const async = require("async");
 const argv = require('minimist')(process.argv.slice(2));
 const fs = require("fs");
 const csv = require("csv");
+const parser = csv.parse({
+	delimiter: "	";
+});
+const transformer = csv.transform((row, index) => {
+	if (skipFirstLine && !firstLineConsumed) {
+		firstLineConsumed = true;
+		return null;
+	}
+	output[row[codeIndex]] = {
+		code: row[innerCodeIndex],
+		name: row[nameIndex]
+	}
+	return row;
+});
 
 if (argv.h) {
 	console.log(
@@ -25,6 +39,7 @@ const codeIndex = argv.i || 0;
 const innerCodeIndex = argv.ci || 4;
 const nameIndex = argv.ni || 5;
 const skipFirstLine = argv.skip === undefined ? true : argv.skip;
+let firstLineConsumed = false;
 
 const files = argv._;
 if (files.length === 0) {
@@ -39,31 +54,15 @@ if (files.length === 0) {
 	});
 }
 
-const delimiter = "	";
-
 const output = {};
 
 const createCsvStream = file => {
-	const transform = (row, index) => {
-		if (index === 0 && skipFirstLine) return null;
-		output[row[codeIndex]] = {
-			code: row[innerCodeIndex],
-			name: row[nameIndex]
-		}
-		return row;
-	}
-
 	return callback => {
-		stream = csv()
-			.from
-			.stream(fs.createReadStream(file, { encoding: 'utf-8' }), {
-				delimiter: delimiter
-			})
-			.transform(transform)
-			.on('end', () => {
-				callback();
-			})
-			.on('error', callback);
+		fs.createReadStream(file, { encoding: 'utf-8' })
+			.pipe(parser)
+			.pipe(transformer)
+			.on("end", callback)
+			.on("error", callback);
 	}
 };
 
