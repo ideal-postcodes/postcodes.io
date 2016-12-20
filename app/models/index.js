@@ -1,5 +1,6 @@
 "use strict";
 
+const fs = require("fs");
 const pg = require("pg");
 const copyFrom = require("pg-copy-streams").from;
 const async = require("async");
@@ -115,10 +116,11 @@ Base.prototype.createIndexes = function (callback) {
 	}), callback);
 };
 
-Base.prototype._csvSeed = function (filePath, columns, t, callback) {
-	if (arguments.length !== 4) throw new Error("Insufficient number of arguments specified");
-
-	const transform = t || function (row, _) { return row };
+Base.prototype._csvSeed = function (options, callback) {
+	const filepath = options.filepath;
+	const columns = options.columns;
+	const transform = options.transform || (row => row);
+	const transformer = csv.transform(transform);
 	const query = `COPY ${this.relation} (${columns}) FROM STDIN DELIMITER ',' CSV`;
 
 	let pgStream;
@@ -132,7 +134,12 @@ Base.prototype._csvSeed = function (filePath, columns, t, callback) {
 				done();
 				return callback(error);
 			});
-		csv().from.path(filePath).transform(transform).pipe(pgStream);
+		// csv().from.path(filePath).transform(transform).pipe(pgStream);
+		fs.createReadStream(filepath, {encoding: "utf8"})
+			.pipe(csv.parse())
+			.pipe(transformer)
+			.pipe(csv.stringify())
+			.pipe(pgStream);
 	});
 };
 

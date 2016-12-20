@@ -518,34 +518,30 @@ Postcode.prototype._setupTable = function (filePath, callback) {
 };
 
 Postcode.prototype.seedPostcodes = function (filePath, callback) {
-	var self = this;
-	var csvColumns = 	"postcode, pc_compact, eastings, northings, longitude," +
-										" latitude, country, nhs_ha," + 
-										" admin_county_id, admin_district_id, admin_ward_id, parish_id, quality," +
-										" parliamentary_constituency , european_electoral_region, region, " +
-										" primary_care_trust, lsoa, msoa, nuts_id, incode, outcode, ccg_id";
-	var dataPath = path.join(__dirname, "../../data/");
-	var countries = JSON.parse(fs.readFileSync(dataPath + "countries.json"));
-	var nhsHa = JSON.parse(fs.readFileSync(dataPath + "nhsHa.json"));
-	var constituencies = JSON.parse(fs.readFileSync(dataPath + "constituencies.json"));
-	var european_registers = JSON.parse(fs.readFileSync(dataPath + "european_registers.json"));
-	var regions = JSON.parse(fs.readFileSync(dataPath + "regions.json"));
-	var pcts = JSON.parse(fs.readFileSync(dataPath + "pcts.json"));
-	var lsoa = JSON.parse(fs.readFileSync(dataPath + "lsoa.json"));
-	var msoa = JSON.parse(fs.readFileSync(dataPath + "msoa.json"));
+	const self = this;
+	const csvColumns = `
+		postcode, pc_compact, eastings, northings, longitude, latitude, country, nhs_ha,
+		admin_county_id, admin_district_id, admin_ward_id, parish_id, quality, 
+		parliamentary_constituency , european_electoral_region, region, 
+		primary_care_trust, lsoa, msoa, nuts_id, incode, outcode, ccg_id
+	`;
+	const pcts = require("../../data/pcts.json");
+	const lsoa = require("../../data/lsoa.json");
+	const msoa = require("../../data/msoa.json");
+	const nhsHa = require("../../data/nhsHa.json");
+	const regions = require("../../data/regions.json");
+	const countries = require("../../data/countries.json");
+	const constituencies = require("../../data/constituencies.json");
+	const european_registers = require("../../data/european_registers.json");
 
-	var transform = function (row, index) {
+	const transform = row => {
 		// Skip if header
-		if (index === 0 && row[0] === "pcd") {
-			return null;
-		}
+		if (row[0] === "pcd") return null;
 
 		// Skip row if terminated
-		if (row[4].length !== 0) {
-			return null;
-		}
+		if (row[4].length !== 0) return null;
 
-		var finalRow = [];
+		const finalRow = [];
 
 		finalRow.push(row[2]);  												// postcode
 		finalRow.push(row[2].replace(/\s/g, ""));				// pc_compact
@@ -587,7 +583,11 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		return finalRow;
 	}
 
-	self._csvSeed(filePath, csvColumns, transform, callback);
+	self._csvSeed({
+		filepath: filePath, 
+		columns: csvColumns, 
+		transform: transform
+	}, callback);
 }
 
 Postcode.prototype.populateLocation = function (callback) {
