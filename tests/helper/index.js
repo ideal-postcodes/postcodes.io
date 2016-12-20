@@ -307,10 +307,8 @@ module.exports = {
 	Nuts: Nuts,
 	Ward: Ward,
 	Outcode: Outcode,
-
 	seedPaths: {
 		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
 		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv")
 	}
-}
-
+};
