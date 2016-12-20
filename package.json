@@ -45,7 +45,7 @@
     "bunyan-syslog": "github:ideal-postcodes/node-bunyan-syslog",
     "commonlog-bunyan": "~0.4.3",
     "cors": "~2.8.1",
-    "csv": "~0.3.0",
+    "csv": "~1.1.0",
     "csv-parse": "~1.0.0",
     "express": "~4.14.0",
     "jade": "~1.9.2",
@@ -65,7 +65,6 @@
   },
   "devDependencies": {
     "chai": "~3.5.0",
-    "iconv": "~2.2.1",
     "mocha": "~3.1.0",
     "supertest": "~2.0.1"
   }
