@@ -1,18 +1,19 @@
 "use strict";
 
-var fs = require("fs");
-var S = require("string");
-var util = require("util");
-var path = require("path");
-var Pc = require("postcode");
-var async = require("async");
-var OSPoint = require("ospoint");
-var Base = require("./index").Base;
-var QueryStream = require("pg-query-stream");
-var env = process.env.NODE_ENV || "development";
-var defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
+const fs = require("fs");
+const S = require("string");
+const util = require("util");
+const path = require("path");
+const Pc = require("postcode");
+const async = require("async");
+const OSPoint = require("ospoint");
+const Base = require("./index").Base;
+const QueryStream = require("pg-query-stream");
+const env = process.env.NODE_ENV || "development";
+const configPath = path.join(__dirname, "../../config/config.js");
+const defaults = require(configPath)(env).defaults;
 
-var postcodeSchema = {
+const postcodeSchema = {
 	"id": "SERIAL PRIMARY KEY",
 	"postcode" : "VARCHAR(10)",
 	"pc_compact" : "VARCHAR(9)",
@@ -40,7 +41,7 @@ var postcodeSchema = {
 	"ccg_id" : "VARCHAR(32)"
 };
 
-var indexes = [{
+const indexes = [{
 	unique: true,
 	column: "postcode"
 }, {
@@ -54,7 +55,7 @@ var indexes = [{
 	column: "outcode"
 }];
 
-var relationships = [{
+const relationships = [{
 	table: "districts",
 	key: "admin_district_id",
 	foreignKey: "code"
@@ -80,14 +81,16 @@ var relationships = [{
 	foreignKey: "code"
 }];
 
-var toJoinString = function () {
-	return relationships.map(function (r) {
-		return ["LEFT OUTER JOIN", r.table, "ON", "postcodes." + r.key, 
-						"=", r.table + "." + r.foreignKey].join(" ");
+const toJoinString = () => {
+	return relationships.map(r => {
+		return `
+			LEFT OUTER JOIN ${r.table} 
+				ON postcodes.${r.key}=${r.table}.${r.foreignKey}
+		`;
 	}).join(" ");
 };
 
-var foreignColumns = [{
+const foreignColumns = [{
 	field: "districts.name",
 	as: "admin_district"
 }, {
@@ -110,9 +113,9 @@ var foreignColumns = [{
 	as: "nuts_code"
 }];
 
-var toColumnsString = function () {
-	return foreignColumns.map(function(elem) {
-		return [elem.field, "as", elem.as ].join(" ");
+const toColumnsString = () => {
+	return foreignColumns.map(elem => {
+		return `${elem.field} as ${elem.as}`;
 	}).join(",");
 };
 
@@ -123,54 +126,42 @@ function Postcode () {
 
 util.inherits(Postcode, Base);
 
-var findQuery = ["SELECT postcodes.*,",
-								toColumnsString(),
-								"FROM postcodes",
-								toJoinString(),
-								"WHERE pc_compact=$1"].join(" ");
+const findQuery = `
+	SELECT 
+		postcodes.*, ${toColumnsString()}
+	FROM 
+		postcodes 
+	${toJoinString()}
+	WHERE pc_compact=$1
+`;
 
 Postcode.prototype.find = function (postcode, callback) {
-	if (typeof postcode !== "string") {
-		return callback(null, null);
-	} 
-
+	if (typeof postcode !== "string") return callback(null, null);
 	postcode = postcode.trim().toUpperCase();
-
-	if (!new Pc(postcode).valid()) {
-		return callback(null, null);
-	}
-
-	this._query(findQuery, [postcode.replace(/\s/g, "")], function(error, result) {
+	if (!new Pc(postcode).valid()) return callback(null, null);
+	this._query(findQuery, [postcode.replace(/\s/g, "")], (error, result) => {
 		if (error) return callback(error, null);
-		if (result.rows.length === 0) {
-			return callback(null, null);
-		}
+		if (result.rows.length === 0) return callback(null, null);
 		callback(null, result.rows[0]);
 	});
-}
+};
 
 Postcode.prototype.loadPostcodeIds = function (type, callback) {
-	var self = this;
-
 	if (typeof type === 'function') {
 		callback = type;
 		type = "_all";
 	}
 
-	self._getClient(function (error, client, done) {
-		var cleanUp = function (error, ids) {
+	this._getClient((error, client, done) => {
+		const cleanUp = (error, ids) => {
 			done();
-			if (callback) {
-				return callback(error, ids);
-			} else {
-				return null;
-			}
+			if (callback) callback(error, ids);
 		};
 		if (error) return cleanUp(error);
 
-		var params = [];
-		var countQuery = "SELECT count(id) FROM postcodes";
-		var idQuery = "SELECT id FROM postcodes";
+		const params = [];
+		let countQuery = "SELECT count(id) FROM postcodes";
+		let idQuery = "SELECT id FROM postcodes";
 
 		if (type !== "_all") {
 			countQuery += " WHERE outcode = $1";
@@ -178,19 +169,19 @@ Postcode.prototype.loadPostcodeIds = function (type, callback) {
 			params.push(type.replace(/\s/g, "").toUpperCase());
 		}
 
-		client.query(countQuery, params, function (error, result) {
+		client.query(countQuery, params, (error, result) => {
 			if (error) return cleanUp(error);
-			var i = 0;
-			var count = result.rows[0].count;
+			let i = 0;
+			const count = result.rows[0].count;
 			if (count === 0) return callback(null, null);
-			var idStore = new Array(count);
+			const idStore = new Array(count);
 			client.query(new QueryStream(idQuery, params))
-				.on("end", function () {
-					self.idCache[type] = idStore;
+				.on("end", () => {
+					this.idCache[type] = idStore;
 					cleanUp(null, idStore);
 				})
 				.on("error", cleanUp)
-				.on("data", function (data) {
+				.on("data", data => {
 					idStore[i] = data.id;
 					i++;
 				});
@@ -199,60 +190,63 @@ Postcode.prototype.loadPostcodeIds = function (type, callback) {
 };
 
 Postcode.prototype.random = function (options, callback) {
-	var self = this;
-
 	if (typeof options === 'function') {
 		callback = options;
 		options = {};
 	}
 
-	var randomType = typeof options.outcode === 'string' && options.outcode.length ? options.outcode : "_all";
-	var idCache = self.idCache[randomType];
+	const randomType = typeof options.outcode === 'string' 
+		&& options.outcode.length ? options.outcode : "_all";
+	const idCache = this.idCache[randomType];
 
 	if (!idCache) {
-		return self.loadPostcodeIds(randomType, function (error, ids) {
+		return this.loadPostcodeIds(randomType, (error, ids) => {
 			if (error) return callback(error);
-			return self.randomFromIds(ids, callback);
+			return this.randomFromIds(ids, callback);
 		});
 	}
 
-	return self.randomFromIds(idCache, callback);
+	return this.randomFromIds(idCache, callback);
 };
 
-var findByIdQuery = 
-	["SELECT postcodes.*,",
-	toColumnsString(),
-	"FROM postcodes",
-	toJoinString(),
-	"WHERE id=$1"].join(" ");
+const findByIdQuery = `
+	SELECT 
+		postcodes.*, ${toColumnsString()} 
+	FROM 
+		postcodes 
+	${toJoinString()}
+	WHERE id=$1
+`;
 
 // Use an in memory array of IDs to retrieve random postcode
 
 Postcode.prototype.randomFromIds = function (ids, callback) {
-	var length = ids.length;
-	var randomId = ids[Math.floor(Math.random() * length)];
-	this._query(findByIdQuery, [randomId], function (error, result) {
+	const length = ids.length;
+	const randomId = ids[Math.floor(Math.random() * length)];
+	this._query(findByIdQuery, [randomId], (error, result) => {
 		if (error) return callback(error, null);
-		if (result.rows.length === 0) {
-			return callback(null, null);
-		}
+		if (result.rows.length === 0) return callback(null, null);
 		callback(null, result.rows[0]);
 	});
 };
 
-var searchRegexp = /\W/g;
+const searchRegexp = /\W/g;
 
-var	searchQuery = ["SELECT postcodes.*,",
-									toColumnsString(),
-									"FROM postcodes",
-									toJoinString(),
-									"WHERE pc_compact ~ $1",
-									"LIMIT $2"].join(" ");
+const	searchQuery = `
+	SELECT 
+		postcodes.*, ${toColumnsString()}
+	FROM 
+		postcodes
+	${toJoinString()}
+	WHERE 
+		pc_compact ~ $1 
+	LIMIT $2
+`;
 
 Postcode.prototype.search = function (postcode, options, callback) {
-	var DEFAULT_LIMIT = defaults.search.limit.DEFAULT;
-	var MAX_LIMIT = defaults.search.limit.MAX;
-	var limit;
+	const DEFAULT_LIMIT = defaults.search.limit.DEFAULT;
+	const MAX_LIMIT = defaults.search.limit.MAX;
+	let limit;
 	if (typeof options === 'function') {
 		callback = options;
 		limit = 10;
@@ -261,103 +255,108 @@ Postcode.prototype.search = function (postcode, options, callback) {
 		if (isNaN(limit)) limit = DEFAULT_LIMIT;
 		if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 	}
-	
-	
-	// Strip spaces and any regex special characters
-	var re = "^" + postcode.toUpperCase().replace(searchRegexp, "") + ".*";
-			
-	this._query(searchQuery, [re, limit], function (error, result) {
+	const re = `^${postcode.toUpperCase().replace(searchRegexp, "")}.*`;		
+	this._query(searchQuery, [re, limit], (error, result) => {
 		if (error) return callback(error, null);
-		if (result.rows.length === 0) {
-			return callback(null, null);
-		}
+		if (result.rows.length === 0) return callback(null, null);
 		return callback(null, result.rows);
 	});
 }
 
-var nearestPostcodeQuery =  ["SELECT postcodes.*,", 
-	"ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance,", 
-	toColumnsString(),
-	"FROM postcodes",
-	toJoinString(),
-	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3)", 
-	"ORDER BY distance ASC, postcode ASC",
-	"LIMIT $4"].join(" ");
+const nearestPostcodeQuery = `
+	SELECT 
+		postcodes.*, 
+		ST_Distance(
+			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')
+		) AS distance,
+		${toColumnsString()} 
+	FROM 
+		postcodes 
+	${toJoinString()}
+	WHERE 
+		ST_DWithin(
+			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3
+		) 
+	ORDER BY 
+		distance ASC, postcode ASC 
+	LIMIT $4
+`;
 
 Postcode.prototype.nearestPostcodes = function (params, callback) {
-	var self = this;
-	var DEFAULT_RADIUS = defaults.nearest.radius.DEFAULT;
-	var MAX_RADIUS = defaults.nearest.radius.MAX;
-	var DEFAULT_LIMIT = defaults.nearest.limit.DEFAULT;
-	var MAX_LIMIT = defaults.nearest.limit.MAX;
+	const DEFAULT_RADIUS = defaults.nearest.radius.DEFAULT;
+	const MAX_RADIUS = defaults.nearest.radius.MAX;
+	const DEFAULT_LIMIT = defaults.nearest.limit.DEFAULT;
+	const MAX_LIMIT = defaults.nearest.limit.MAX;
 
-	var limit = parseInt(params.limit, 10) || DEFAULT_LIMIT;
+	let limit = parseInt(params.limit, 10) || DEFAULT_LIMIT;
 	if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 
-	var longitude = parseFloat(params.longitude);
+	const longitude = parseFloat(params.longitude);
 	if (isNaN(longitude)) return callback(new Error("Invalid longitude"), null);
 
-	var latitude = parseFloat(params.latitude);
+	const latitude = parseFloat(params.latitude);
 	if (isNaN(latitude)) return callback(new Error("Invalid latitude"), null);
 
-	var radius = parseFloat(params.radius) || DEFAULT_RADIUS;
+	let radius = parseFloat(params.radius) || DEFAULT_RADIUS;
 	if (radius > MAX_RADIUS) radius = MAX_RADIUS;
 
-	var handleResult = function (error, result) {
+	const handleResult = (error, result) => {
 		if (error) return callback(error, null);
-		if (result.rows.length === 0) {
-			return callback(null, null);
-		}
+		if (result.rows.length === 0) return callback(null, null);
 		return callback(null, result.rows);
 	};
 
-	// If a wideSearch query is requested, derive a suitable range which guarantees 
-	// postcode results over a much wider area
+	// If a wideSearch query is requested, derive a suitable range which 
+	// guarantees postcode results over a much wider area
 	if (params.wideSearch || params.widesearch) {
 		if (limit > DEFAULT_LIMIT) {
 			limit = DEFAULT_LIMIT;
 		}
-		return self._deriveMaxRange(params, function (error, maxRange) {
+		return this._deriveMaxRange(params, (error, maxRange) => {
 			if (error) return callback(error);
-			self._query(nearestPostcodeQuery, [longitude, latitude, maxRange, limit], handleResult);
+			const params = [longitude, latitude, maxRange, limit];
+			this._query(nearestPostcodeQuery, params, handleResult);
 		});
 	}
 
-	self._query(nearestPostcodeQuery, [longitude, latitude, radius, limit], handleResult);
+	const queryParams = [longitude, latitude, radius, limit];
+	this._query(nearestPostcodeQuery, queryParams, handleResult);
 };
 
-var nearestPostcodeCount =  ["SELECT postcodes.*, ",
-	"ST_Distance(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')) AS distance", 
-	"FROM postcodes",
-	"WHERE ST_DWithin(location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3)",
-	"LIMIT $4"].join(" ");
+const nearestPostcodeCount =  `
+	SELECT 
+		postcodes.*, 
+		ST_Distance(
+			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')
+		) AS distance  
+	FROM 
+		postcodes 
+	WHERE 
+		ST_DWithin(
+			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3
+		) 
+	LIMIT $4 
+`;
 
-var START_RANGE = 500; // 0.5km
-var MAX_RANGE = 20000; // 20km
-var SEARCH_LIMIT = 10;
-var INCREMENT = 1000;
+const START_RANGE = 500; // 0.5km
+const MAX_RANGE = 20000; // 20km
+const SEARCH_LIMIT = 10;
+const INCREMENT = 1000;
 
-// _deriveMaxRange returns a 'goldilocks' range which can be fed into a reverse geocode search
-// - Not so large that the query grinds to a halt because it has to process 000's of postcodes
-// - Not 0
-// Future improvement: Narrow down range in O(log n) time using bisect instead of linear search
+
 Postcode.prototype._deriveMaxRange = function (params, callback) {
-	var self = this;
-	var queryBound = function (params, range, callback) {
-		var queryParams = [params.longitude, params.latitude, range, SEARCH_LIMIT];
-		self._query(nearestPostcodeCount, queryParams, function (error, result) {
+	const queryBound = (params, range, callback) => {
+		const queryParams = [params.longitude, params.latitude, range, SEARCH_LIMIT];
+		this._query(nearestPostcodeCount, queryParams, (error, result) => {
 			if (error) return callback(error);
 			return callback(null, result.rows.length);
 		});
 	};
 
-	var handleResponse = function (error, count) {
+	const handleResponse = (error, count) => {
 		if (error) return callback(error);
-		if (count < SEARCH_LIMIT) {
-			return self._deriveMaxRange(params, callback);
-		} else {
-			return callback(null, params.lowerBound);
-		}
+		if (count < SEARCH_LIMIT) return this._deriveMaxRange(params, callback);
+		return callback(null, params.lowerBound);
 	};
 
 	if (!params.lowerBound) {
@@ -365,53 +364,106 @@ Postcode.prototype._deriveMaxRange = function (params, callback) {
 		queryBound(params, START_RANGE, handleResponse);
 	} else if (!params.upperBound) {
 		params.upperBound = MAX_RANGE;
-		queryBound(params, MAX_RANGE, function (error, count) {
-			if (count === 0) {
-				return callback(null, null);
-			} else {
-				return self._deriveMaxRange(params, callback);
-			};
+		queryBound(params, MAX_RANGE, (error, count) => {
+			if (count === 0) return callback(null, null);
+			return this._deriveMaxRange(params, callback);
 		});
 	} else {
 		params.lowerBound += INCREMENT;
-		if (params.lowerBound > MAX_RANGE) {
-			return callback(null, null);
-		}
+		if (params.lowerBound > MAX_RANGE) return callback(null, null);
 		queryBound(params, params.lowerBound, handleResponse);
 	}
 };
 
-var attributesQuery = [];
-attributesQuery.push("array(SELECT DISTINCT districts.name FROM postcodes LEFT OUTER JOIN districts ON postcodes.admin_district_id = districts.code WHERE outcode=$1 AND districts.name IS NOT NULL) as admin_district");
-attributesQuery.push("array(SELECT DISTINCT parishes.name FROM postcodes LEFT OUTER JOIN parishes ON postcodes.parish_id = parishes.code WHERE outcode=$1 AND parishes.name IS NOT NULL) as parish");
-attributesQuery.push("array(SELECT DISTINCT counties.name FROM postcodes LEFT OUTER JOIN counties ON postcodes.admin_county_id = counties.code WHERE outcode=$1 AND counties.name IS NOT NULL) as admin_county");
-attributesQuery.push("array(SELECT DISTINCT wards.name FROM postcodes LEFT OUTER JOIN wards ON postcodes.admin_ward_id = wards.code WHERE outcode=$1 AND wards.name IS NOT NULL) as admin_ward");
+const attributesQuery = [];
+attributesQuery.push(`
+	array(
+		SELECT 
+			DISTINCT districts.name 
+		FROM 
+			postcodes 
+		LEFT OUTER JOIN 
+			districts ON postcodes.admin_district_id = districts.code 
+		WHERE 
+			outcode=$1 AND districts.name IS NOT NULL
+	) as admin_district
+`);
 
+attributesQuery.push(`
+	array(
+		SELECT 
+			DISTINCT parishes.name 
+		FROM 
+			postcodes 
+		LEFT OUTER JOIN 
+			parishes ON postcodes.parish_id = parishes.code 
+		WHERE 
+			outcode=$1 AND parishes.name IS NOT NULL
+	) as parish
+`);
 
-var outcodeQuery = ["SELECT outcode, avg(northings) as northings, avg(eastings) as eastings,",
-	"avg(ST_X(location::geometry)) as longitude, avg(ST_Y(location::geometry)) as latitude,",
-	attributesQuery.join(","),
-	"FROM postcodes", 
-	"WHERE outcode=$1", 
-	"GROUP BY outcode;"].join(" ");
+attributesQuery.push(`
+	array(
+		SELECT 
+			DISTINCT counties.name 
+		FROM 
+			postcodes 
+		LEFT OUTER JOIN 
+			counties ON postcodes.admin_county_id = counties.code 
+		WHERE 
+			outcode=$1 AND counties.name IS NOT NULL
+	) as admin_county
+`);
 
+attributesQuery.push(`
+	array(
+		SELECT 
+			DISTINCT wards.name 
+		FROM 
+			postcodes 
+		LEFT OUTER JOIN 
+			wards ON postcodes.admin_ward_id = wards.code 
+		WHERE 
+			outcode=$1 AND wards.name IS NOT NULL
+	) as admin_ward
+`);
 
-Postcode.prototype.findOutcode = function (outcode, callback) {
-	var self = this;
-	outcode = outcode.trim().toUpperCase();
+const outcodeQuery = `
+	SELECT 
+		outcode, avg(northings) as northings, avg(eastings) as eastings, 
+		avg(ST_X(location::geometry)) as longitude, 
+		avg(ST_Y(location::geometry)) as latitude, 
+		${attributesQuery.join(",")} 
+	FROM 
+		postcodes 
+	WHERE 
+		outcode=$1 
+	GROUP BY 
+		outcode
+`;
+
+const outcodeAttributes = [
+	"admin_district",
+	"parish",
+	"admin_county",
+	"admin_ward"
+];
+
+Postcode.prototype.findOutcode = function (o, callback) {
+	const outcode = o.trim().toUpperCase();
 
 	if (!Pc.validOutcode(outcode) && outcode !== "GIR") {
 		return callback(null, null);
 	}
 
-	self._query(outcodeQuery, [outcode], function (error, result) {
+	this._query(outcodeQuery, [outcode], (error, result) => {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) return callback(null, null);
-		var outcodeResult = result.rows[0];
-		// Swap out null result for empty arrays
-		["admin_district", "parish", "admin_county", "admin_ward"].forEach(function (attribute) {
-			if (outcodeResult[attribute].length === 1 && outcodeResult[attribute][0] === null) {
-				outcodeResult[attribute] = [];
+		const outcodeResult = result.rows[0];
+		outcodeAttributes.forEach(attr => {
+			if (outcodeResult[attr].length === 1 && 
+					outcodeResult[attr][0] === null) {
+				outcodeResult[attr] = [];
 			}
 		});
 		return callback(null, outcodeResult);
@@ -498,33 +550,45 @@ Postcode.prototype.toJson = function (address) {
 */
 
 Postcode.prototype._setupTable = function (filePath, callback) {
-	var self = this;
-	self._createRelation(function (error, result) {
-		if (error) return callback(error, null);
-		self.clear(function (error, result) {
-			if (error) return callback(error, null);
-			self.seedPostcodes(filePath, function (error, result) {
-				if (error) return callback(error, null);
-				self.populateLocation(function (error, result) {
-					if (error) return callback(error, null);
-					self.createIndexes(function (error, result) {
-						if (error) return callback(error, null);
-						callback(null);
-					});
-				});
-			});
-		});
-	});
+	const self = this;
+	async.series([
+		self._createRelation.bind(self),
+		self.clear.bind(self),
+		function seedData (cb) {
+			self.seedPostcodes(filePath, cb);
+		},
+		self.populateLocation.bind(self),
+		self.createIndexes.bind(self),
+	], callback);
 };
 
 Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	const self = this;
-	const csvColumns = `
-		postcode, pc_compact, eastings, northings, longitude, latitude, country, nhs_ha,
-		admin_county_id, admin_district_id, admin_ward_id, parish_id, quality, 
-		parliamentary_constituency , european_electoral_region, region, 
-		primary_care_trust, lsoa, msoa, nuts_id, incode, outcode, ccg_id
-	`;
+	const csvColumns = [
+		"postcode",
+		"pc_compact",
+		"eastings",
+		"northings",
+		"longitude",
+		"latitude",
+		"country",
+		"nhs_ha",
+		"admin_county_id",
+		"admin_district_id",
+		"admin_ward_id",
+		"parish_id",
+		"quality",
+		"parliamentary_constituency" ,
+		"european_electoral_region",
+		"region",
+		"primary_care_trust",
+		"lsoa",
+		"msoa",
+		"nuts_id",
+		"incode",
+		"outcode",
+		"ccg_id"
+	];
 	const pcts = require("../../data/pcts.json");
 	const lsoa = require("../../data/lsoa.json");
 	const msoa = require("../../data/msoa.json");
@@ -548,7 +612,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(row[9]);													// Eastings
 		finalRow.push(row[10]);													// Northings
 
-		var location;
+		let location;
 		if (row[9].length === 0 || row[10].length === 0) {
 			location = {
 				longitude: "",
@@ -569,8 +633,8 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(row[7]);													// Ward
 		finalRow.push(row[44]);													// Parish
 		finalRow.push(row[11]);													// Quality
-		finalRow.push(constituencies[row[17]]);					// Westminster const.
-		finalRow.push(european_registers[row[18]]);			// European electoral region
+		finalRow.push(constituencies[row[17]]);					// Westminster const
+		finalRow.push(european_registers[row[18]]);			// EER
 		finalRow.push(regions[row[15]]);								// Region
 		finalRow.push(pcts[row[21]]);										// Primary Care Trusts
 		finalRow.push(lsoa[row[42]]);										// 2011 LSOA
@@ -578,24 +642,31 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(row[22]);													// NUTS
 		finalRow.push(row[2].split(" ")[1]);						// Incode
 		finalRow.push(row[2].split(" ")[0]);						// Outcode
-		finalRow.push(row[46]);													// Clinical Commissioning Group
+		finalRow.push(row[46]);													// CCG
 
 		return finalRow;
 	}
 
 	self._csvSeed({
 		filepath: filePath, 
-		columns: csvColumns, 
+		columns: csvColumns.join(","), 
 		transform: transform
 	}, callback);
 }
 
 Postcode.prototype.populateLocation = function (callback) {
-	var query = "UPDATE " + this.relation + " SET location=ST_GeogFromText" + 
-							"('SRID=4326;POINT(' || longitude || ' ' || latitude || ')')" + 
-							" WHERE northings!=0 AND EASTINGS!=0";
+	const query = `
+		UPDATE 
+			${this.relation} 
+		SET 
+			location=ST_GeogFromText(
+				'SRID=4326;POINT(' || longitude || ' ' || latitude || ')'
+			) 
+		WHERE 
+			northings!=0 
+			AND EASTINGS!=0
+	`;
 	this._query(query, callback);
-}
-
+};
 
 module.exports = new Postcode();
