@@ -117,30 +117,36 @@ Base.prototype.createIndexes = function (callback) {
 };
 
 Base.prototype._csvSeed = function (options, callback) {
-	const filepath = options.filepath;
+	let filepath = options.filepath;
+	if (Array.isArray(options.filepath)) {
+		filepath = options.filepath;
+	} else {
+		filepath = [options.filepath];
+	}
 	const columns = options.columns;
 	const transform = options.transform || (row => row);
 	const transformer = csv.transform(transform);
 	const query = `COPY ${this.relation} (${columns}) FROM STDIN DELIMITER ',' CSV`;
 
-	let pgStream;
-	pg.connect(config, (error, client, done) => {
-		pgStream = client.query(copyFrom(query))
+	async.eachSeries(filepath, (filepath, cb) => {
+		let pgStream;
+		pg.connect(config, (error, client, done) => {
+			pgStream = client.query(copyFrom(query))
 			.on("end", () => {
 				done();
-				return callback();
+				return cb();
 			})
 			.on("error", error => {
 				done();
-				return callback(error);
+				return cb(error);
 			});
-		// csv().from.path(filePath).transform(transform).pipe(pgStream);
-		fs.createReadStream(filepath, {encoding: "utf8"})
-			.pipe(csv.parse())
-			.pipe(transformer)
-			.pipe(csv.stringify())
-			.pipe(pgStream);
-	});
+			fs.createReadStream(filepath, {encoding: "utf8"})
+				.pipe(csv.parse())
+				.pipe(transformer)
+				.pipe(csv.stringify())
+				.pipe(pgStream);
+		});
+	}, callback);
 };
 
 Base.prototype._destroyAll = function (callback) {
