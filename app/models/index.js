@@ -125,24 +125,22 @@ Base.prototype._csvSeed = function (options, callback) {
 	}
 	const columns = options.columns;
 	const transform = options.transform || (row => row);
-	const transformer = csv.transform(transform);
 	const query = `COPY ${this.relation} (${columns}) FROM STDIN DELIMITER ',' CSV`;
 
 	async.eachSeries(filepath, (filepath, cb) => {
-		let pgStream;
 		pg.connect(config, (error, client, done) => {
-			pgStream = client.query(copyFrom(query))
-			.on("end", () => {
-				done();
-				return cb();
-			})
-			.on("error", error => {
-				done();
-				return cb(error);
-			});
+			const pgStream = client.query(copyFrom(query))
+				.on("end", () => {
+					done();
+					return cb();
+				})
+				.on("error", error => {
+					done();
+					return cb(error);
+				});
 			fs.createReadStream(filepath, {encoding: "utf8"})
 				.pipe(csv.parse())
-				.pipe(transformer)
+				.pipe(csv.transform(transform))
 				.pipe(csv.stringify())
 				.pipe(pgStream);
 		});
