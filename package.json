@@ -20,6 +20,7 @@
     "onsParseCode": "./bin/raw_code_parsing.js",
     "onsFindMissing": "./bin/find_missing.js",
     "onsImport": "./bin/import.js",
+    "osPlaceImport": "./bin/import_places.js",
     "onsUpdate": "./bin/update_ons.js"
   },
   "repository": {
