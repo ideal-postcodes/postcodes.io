@@ -12,6 +12,7 @@ const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
 const Base = require(path.join(rootPath, "app/models"));
 const config = require(path.join(rootPath + "/config/config"))(env);
 const seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
+const seedPlacesPath = path.join(rootPath, "tests/seed/places/")
 
 // Load models
 const AttributeBase = require(path.join(rootPath, "app/models/attribute_base"));
@@ -23,6 +24,7 @@ const Ccg = require(path.join(rootPath, "app/models/ccg"));
 const Nuts = require(path.join(rootPath, "app/models/nuts"));
 const Ward = require(path.join(rootPath, "app/models/ward"));
 const Outcode = require(path.join(rootPath, "app/models/outcode"));
+const Place = require(path.join(rootPath, "app/models/place"));
 
 const CSV_INDEX = {
 	postcode: 2,
@@ -78,6 +80,9 @@ function seedPostcodeDb (callback) {
 	instructions.push(Ccg._setupTable.bind(Ccg));
 	instructions.push(Ward._setupTable.bind(Ward));
 	instructions.push(Outcode._setupTable.bind(Outcode));
+	instructions.push(function (callback) {
+		Place._setupTable(seedPlacesPath, callback);
+	});
 
 	async.series(instructions, callback);
 }
@@ -140,6 +145,67 @@ function validCorsOptions(response) {
 		"GET,POST,OPTIONS");
 	assert.equal(response.headers["access-control-allow-headers"], 
 		"X-Requested-With, Content-Type, Accept, Origin");	
+}
+
+function isRawPlaceObject(o) {
+	[
+		"id",
+	  "code",
+	  "longitude",
+	  "latitude",
+	  "location",
+	  "eastings",
+	  "northings",
+	  "min_eastings",
+	  "min_northings",
+	  "max_eastings",
+	  "max_northings",
+	  "bounding_polygon",
+	  "local_type",
+	  "outcode",
+	  "name_1",
+	  "name_1_lang",
+	  "name_2",
+	  "county_unitary",
+	  "county_unitary_type",
+	  "district_borough",
+	  "district_borough_type",
+	  "region",
+	  "country",
+	  "polygon"
+	].forEach(prop => assert.property(o, prop));
+}
+
+function isPlaceObject(o) {
+	[
+		"id",
+	  "code",
+	  "longitude",
+	  "latitude",
+	  "eastings",
+	  "northings",
+	  "min_eastings",
+	  "min_northings",
+	  "max_eastings",
+	  "max_northings",
+	  "local_type",
+	  "outcode",
+	  "name_1",
+	  "name_1_lang",
+	  "name_2",
+	  "county_unitary",
+	  "county_unitary_type",
+	  "district_borough",
+	  "district_borough_type",
+	  "region",
+	  "country",
+	  "polygon"
+	].forEach(prop => assert.property(o, prop));
+	
+  [
+  	"location",
+    "bounding_polygon"
+  ].forEach(prop => assert.notProperty(o, prop));
 }
 
 function isPostcodeObject(o) {
@@ -282,6 +348,7 @@ module.exports = {
 	allowsCORS: allowsCORS,
 	testOutcode: testOutcode,
 	randomOutcode: randomOutcode,
+	isPlaceObject: isPlaceObject,
 	randomPostcode: randomPostcode,
 	randomLocation: randomLocation,
 	seedPostcodeDb: seedPostcodeDb,
@@ -289,6 +356,7 @@ module.exports = {
 	isOutcodeObject: isOutcodeObject,
 	validCorsOptions: validCorsOptions,
 	isPostcodeObject: isPostcodeObject,
+	isRawPlaceObject: isRawPlaceObject,
 	jsonpResponseBody: jsonpResponseBody,
 	getCustomRelation: getCustomRelation,
 	isRawOutcodeObject: isRawOutcodeObject,
@@ -307,6 +375,7 @@ module.exports = {
 	Nuts: Nuts,
 	Ward: Ward,
 	Outcode: Outcode,
+	Place: Place,
 	seedPaths: {
 		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
 		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv")
