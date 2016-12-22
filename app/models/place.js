@@ -58,9 +58,23 @@ function Place () {
 
 util.inherits(Place, Base);
 
+const findByCodeQuery = `
+	SELECT 
+		*, ST_AsText(bounding_polygon) AS polygon 
+	FROM 
+		places 
+	WHERE 
+		code=$1
+`;
+
 // Return place by `code`
 Place.prototype.findByCode = function (code, callback) {
-
+	if (typeof code !== "string") return callback(null, null);
+	this._query(findByCodeQuery, [code.toLowerCase()], (error, result) => {
+		if (error) return callback(error);
+		if (result.rowCount === 0) return callback(null, null);
+		return callback(null, result.rows[0]);
+	});
 };
 
 // Search for place by name
