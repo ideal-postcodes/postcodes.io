@@ -255,7 +255,7 @@ Postcode.prototype.search = function (postcode, options, callback) {
 		if (isNaN(limit)) limit = DEFAULT_LIMIT;
 		if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 	}
-	const re = `^${postcode.toUpperCase().replace(searchRegexp, "")}.*`;		
+	const re = `^${postcode.toUpperCase().replace(searchRegexp, "")}.*`;
 	this._query(searchQuery, [re, limit], (error, result) => {
 		if (error) return callback(error, null);
 		if (result.rows.length === 0) return callback(null, null);
