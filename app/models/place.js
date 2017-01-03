@@ -96,14 +96,6 @@ const searchQuery = `
 		OR name_2_search ~ unaccent($1) 
 	LIMIT $2
 `;
-// OR 
-// name_2_search ~ replace(
-// 	replace(
-// 		lower(
-// 			unaccent($1)
-// 		), 
-// 	'-', ' ')
-// , '''', '') 
 
 // Search for place by name
 Place.prototype.search = function (options, callback) {
