@@ -47,6 +47,11 @@ function populateLocation (callback) {
 	Place.populateLocation(callback);
 }
 
+function generateSearchFields (callback) {
+	console.log("Populating search data...");
+	Place.generateSearchFields(callback);
+}
+
 function createPostgisExtension(callback) {
 	console.log("Enabling POSTGIS extension...")
 	Place._query("CREATE EXTENSION IF NOT EXISTS postgis", callback);
@@ -58,6 +63,7 @@ const executionStack = [
 	createRelation, 
 	importRawCsv,
 	populateLocation, 
+	generateSearchFields, 
 	recreateIndexes
 ];
 

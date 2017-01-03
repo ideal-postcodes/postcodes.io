@@ -24,8 +24,10 @@ const placeSchema = {
 	"outcode": "VARCHAR(5)",
 	"name_1": "VARCHAR(128)",
 	"name_1_lang": "VARCHAR(10)",
+	"name_1_search": "VARCHAR(128)",
 	"name_2": "VARCHAR(128)",
-	"name_1_lang": "VARCHAR(10)",
+	"name_2_lang": "VARCHAR(10)",
+	"name_2_search": "VARCHAR(128)",
 	"county_unitary": "VARCHAR(128)",
 	"county_unitary_type": "VARCHAR(128)",
 	"district_borough": "VARCHAR(128)",
@@ -38,10 +40,10 @@ const indexes = [{
 	unique: true,
 	column: "code"
 }, {
-	column: "name_1",
+	column: "name_1_search",
 	opClass: "varchar_pattern_ops"
 }, {
-	column: "name_2",
+	column: "name_2_search",
 	opClass: "varchar_pattern_ops"
 }, {
 	type: "GIST",
@@ -58,9 +60,11 @@ function Place () {
 
 util.inherits(Place, Base);
 
+const returnAttributes = `*, ST_AsText(bounding_polygon) AS polygon`;
+
 const findByCodeQuery = `
 	SELECT 
-		*, ST_AsText(bounding_polygon) AS polygon 
+		${returnAttributes} 
 	FROM 
 		places 
 	WHERE 
@@ -77,6 +81,30 @@ Place.prototype.findByCode = function (code, callback) {
 	});
 };
 
+const searchQuery = `
+	SELECT 
+		${returnAttributes} 
+	FROM
+		places 
+	WHERE
+		replace(
+			replace(
+				lower(
+					unaccent(name_search_1)
+				), 
+			'-', ' ')
+		, '''', '') ~ $1 
+		OR 
+		replace(
+			replace(
+				lower(
+					unaccent(name_search_2)
+				), 
+			'-', ' ')
+		, '''', '') ~ $1 
+	LIMIT $2
+`;
+
 // Search for place by name
 Place.prototype.search = function (name, callback) {
 
@@ -84,6 +112,16 @@ Place.prototype.search = function (name, callback) {
 
 // Retrieve random place
 Place.prototype.random = function (callback) {
+
+};
+
+// Returns places that are contained by specified geolocation
+Place.prototype.contains = function (options, callback) {
+
+};
+
+// Returns nearest places close to place centroid location
+Place.prototype.nearest = function (options, callback) {
 
 };
 
@@ -133,12 +171,16 @@ const csvColumns = {
 Place.prototype._setupTable = function (directory, callback) {
 	const self = this;
 	async.series([
+		function (callback) {
+			self._query("CREATE EXTENSION IF NOT EXISTS unaccent", callback);
+		},
 		self._createRelation.bind(self),
 		self.clear.bind(self),
 		function seedData (cb) {
 			self.seedData(directory, cb);
 		},
 		self.populateLocation.bind(self),
+		self.generateSearchFields.bind(self),
 		self.createIndexes.bind(self),
 	], callback);
 };
@@ -151,7 +193,13 @@ Place.prototype.seedData = function (directory, callback) {
 		);
 	}
 	const typeIndex = csvColumns["type"];
-	const columnWhitelist = ["id", "location", "bounding_polygon"];
+	const columnWhitelist = [
+		"id",
+		"location",
+		"bounding_polygon",
+		"name_1_search",
+		"name_2_search"
+	];
 	const columns = Object.keys(placeSchema)
 		.filter(col => columnWhitelist.indexOf(col) === -1);
 	const typeRegex = /^.*\//;
@@ -202,6 +250,26 @@ Place.prototype.seedData = function (directory, callback) {
 	}, callback);
 };
 
+// Generates folded search fields name_*_search
+Place.prototype.generateSearchFields = function (callback) {
+	async.series(["name_1", "name_2"].map(field => {
+		return callback => {
+			this._query(`
+				UPDATE 
+					${this.relation} 
+				SET 
+					${field}_search=replace(
+						replace(
+							lower(
+								unaccent(${field})
+							), 
+						'-', ' ')
+					, '''', '')
+			`, callback);
+		}
+	}), callback);
+};
+
 // Generates location data including centroid and bounding box 
 Place.prototype.populateLocation = function (callback) {
 	const self = this;
@@ -233,11 +301,15 @@ Place.prototype.populateLocation = function (callback) {
 					const locations = [];
 					if (place.min_eastings * place.min_northings * 
 						place.max_eastings * place.max_northings === 0) return;
-					const initialLocation = new OSPoint("" + place.min_eastings, "" + place.min_northings).toWGS84();
+					const initialLocation = new OSPoint("" + place.min_eastings, 
+						"" + place.min_northings).toWGS84();
 					locations.push(initialLocation);
-					locations.push((new OSPoint("" + place.max_eastings, "" + place.min_northings).toWGS84()));
-					locations.push((new OSPoint("" + place.min_eastings, "" + place.max_northings).toWGS84()));
-					locations.push((new OSPoint("" + place.max_eastings, "" + place.max_northings).toWGS84()));
+					locations.push((new OSPoint("" + place.max_eastings, 
+						"" + place.min_northings).toWGS84()));
+					locations.push((new OSPoint("" + place.min_eastings, 
+						"" + place.max_northings).toWGS84()));
+					locations.push((new OSPoint("" + place.max_eastings, 
+						"" + place.max_northings).toWGS84()));
 					locations.push(initialLocation); // Round off polygon with initial location
 					updateBuffer.push(`
 						UPDATE 
