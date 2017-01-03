@@ -101,11 +101,16 @@ const searchQuery = `
 Place.prototype.search = function (options, callback) {
 	const name = options.name;
 	if (!name || name.length === 0) return callback(null, null);
-	const searchTerm = `^${escapeRegex(name.toLowerCase().trim().replace(/'/g,"").replace(/-/g, " "))}.*`;
+	const searchTerm = name
+		.toLowerCase()
+		.trim()
+		.replace(/'/g,"")
+		.replace(/-/g, " ");
+	const regex = `^${escapeRegex(searchTerm)}.*`;
 	let limit = options.limit || defaults.limit.DEFAULT;
 	if (typeof limit !== 'number' || limit < 0) limit = defaults.limit.DEFAULT; 
 	if (limit > defaults.limit.MAX) limit = defaults.limit.MAX;
-	this._query(searchQuery, [searchTerm, limit], (error, result) => {
+	this._query(searchQuery, [regex, limit], (error, result) => {
 		if (error) return callback(error);
 		if (result.rows.length === 0) return callback(null, null);
 		return callback(null, result.rows);
