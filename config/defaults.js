@@ -34,5 +34,11 @@ module.exports = {
 			DEFAULT: 10,
 			MAX: 100
 		}
+	},
+	placesSearch: {
+		limit: {
+			DEFAULT: 10,
+			MAX: 100
+		}
 	}
 };

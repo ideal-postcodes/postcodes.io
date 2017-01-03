@@ -1,11 +1,16 @@
 "use strict";
 
 const fs = require("fs");
+const path = require("path");
 const util = require("util");
 const async = require("async");
 const OSPoint = require("ospoint");
 const Base = require("./index").Base;
 const QueryStream = require("pg-query-stream");
+const env = process.env.NODE_ENV || "development";
+const escapeRegex = require('escape-string-regexp');
+const configPath = path.join(__dirname, "../../config/config.js");
+const defaults = require(configPath)(env).defaults.placesSearch;
 
 const placeSchema = {
 	"id": "SERIAL PRIMARY KEY",
@@ -87,27 +92,32 @@ const searchQuery = `
 	FROM
 		places 
 	WHERE
-		replace(
-			replace(
-				lower(
-					unaccent(name_search_1)
-				), 
-			'-', ' ')
-		, '''', '') ~ $1 
-		OR 
-		replace(
-			replace(
-				lower(
-					unaccent(name_search_2)
-				), 
-			'-', ' ')
-		, '''', '') ~ $1 
+		name_1_search ~ unaccent($1) 
+		OR name_2_search ~ unaccent($1) 
 	LIMIT $2
 `;
+// OR 
+// name_2_search ~ replace(
+// 	replace(
+// 		lower(
+// 			unaccent($1)
+// 		), 
+// 	'-', ' ')
+// , '''', '') 
 
 // Search for place by name
-Place.prototype.search = function (name, callback) {
-
+Place.prototype.search = function (options, callback) {
+	const name = options.name;
+	if (!name || name.length === 0) return callback(null, null);
+	const searchTerm = `^${escapeRegex(name.toLowerCase().trim().replace(/'/g,"").replace(/-/g, " "))}.*`;
+	let limit = options.limit || defaults.limit.DEFAULT;
+	if (typeof limit !== 'number' || limit < 0) limit = defaults.limit.DEFAULT; 
+	if (limit > defaults.limit.MAX) limit = defaults.limit.MAX;
+	this._query(searchQuery, [searchTerm, limit], (error, result) => {
+		if (error) return callback(error);
+		if (result.rows.length === 0) return callback(null, null);
+		return callback(null, result.rows);
+	});
 };
 
 // Retrieve random place
