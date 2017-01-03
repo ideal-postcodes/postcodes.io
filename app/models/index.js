@@ -18,7 +18,6 @@ function Base (relation, schema, indexes) {
 	this.indexes = indexes;
 }
 
-// To implement 'parameterised' queries
 Base.prototype._query = function (query, params, callback) {
 	if (typeof params === "function") {
 		callback = params;
