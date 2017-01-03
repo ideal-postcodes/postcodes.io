@@ -60,3 +60,7 @@ sleep 1
 echo "Enabling Postgis"
 
 $PSQL -d $DATABASE_NAME -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+
+echo "Enabling Unaccent Extension"
+
+$PSQL -d $DATABASE_NAME -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
