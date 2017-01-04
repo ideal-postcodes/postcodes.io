@@ -181,7 +181,6 @@ function isRawPlaceObject(o) {
 
 function isPlaceObject(o) {
 	[
-		"id",
 	  "code",
 	  "longitude",
 	  "latitude",
@@ -202,15 +201,16 @@ function isPlaceObject(o) {
 	  "district_borough",
 	  "district_borough_type",
 	  "region",
-	  "country",
-	  "polygon"
+	  "country"
 	].forEach(prop => assert.property(o, prop));
 	
   [
+	  "id",
   	"location",
   	"name_1_search",
   	"name_2_search",
-    "bounding_polygon"
+    "bounding_polygon",
+    "polygon"
   ].forEach(prop => assert.notProperty(o, prop));
 }
 

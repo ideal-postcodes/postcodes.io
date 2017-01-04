@@ -192,4 +192,17 @@ describe("Place Model", () => {
 			});
 		});
 	});	
+
+	describe("toJson", () => {
+		it ("formats place object for public consumption", done => {
+			const testCode = "osgb4000000074559125";
+			Place.findByCode(testCode, (error, place) => {
+				if (error) return done(error);
+				helper.isRawPlaceObject(place);
+				const formatted = Place.toJson(place);
+				helper.isPlaceObject(formatted);
+				done();
+			});
+		});
+	});
 });

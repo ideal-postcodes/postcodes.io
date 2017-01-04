@@ -133,8 +133,35 @@ Place.prototype.nearest = function (options, callback) {
 };
 
 // Format place object
+
+const whitelistedAttributes = [
+	"code",
+	"longitude",
+	"latitude",
+	"eastings",
+	"northings",
+	"min_eastings",
+	"min_northings",
+	"max_eastings",
+	"max_northings",
+	"local_type",
+	"outcode",
+	"name_1",
+	"name_1_lang",
+	"name_2",
+	"name_2_lang",
+	"county_unitary",
+	"county_unitary_type",
+	"district_borough",
+	"district_borough_type",
+	"region",
+	"country"
+];
+
 Place.prototype.toJson = function (place) {
-	return {};
+	const result = {};
+	whitelistedAttributes.forEach(attr => result[attr] = place[attr]);
+	return result;
 };
 
 const csvColumns = {
@@ -317,7 +344,7 @@ Place.prototype.populateLocation = function (callback) {
 						"" + place.max_northings).toWGS84()));
 					locations.push((new OSPoint("" + place.max_eastings, 
 						"" + place.max_northings).toWGS84()));
-					locations.push(initialLocation); // Round off polygon with initial location
+					locations.push(initialLocation); 
 					updateBuffer.push(`
 						UPDATE 
 							${self.relation} 
