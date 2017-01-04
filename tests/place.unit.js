@@ -81,7 +81,7 @@ describe("Place Model", () => {
 		it ("returns up to 10 results by default", done => {
 			Place.search({ name: "b" }, (error, results) => {
 				if (error) return done(error);
-				assert.isTrue(results.length < 10);
+				assert.equal(results.length, 10);
 				results.forEach(helper.isRawPlaceObject);
 				done();
 			});
@@ -92,7 +92,7 @@ describe("Place Model", () => {
 				limit: -1 
 			}, (error, results) => {
 				if (error) return done(error);
-				assert.isTrue(results.length < 10);
+				assert.equal(results.length, 10);
 				results.forEach(helper.isRawPlaceObject);
 				done();
 			});
