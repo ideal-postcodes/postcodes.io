@@ -54,6 +54,10 @@ block content
 
 					h3#Data Available Data Fields
 
+					h4 Postcode Data (Ordnance Survey Postcode Directory Dataset)
+
+					p Data returned by the <code>/postcodes</code> and <code>/outcodes</code> API
+
 					table.table.table-hover
 						thead
 							tr
@@ -93,7 +97,7 @@ block content
 								td country
 								td 
 									strong Country. 
-									| The code for the appropriate country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each postcode is assigned.
+									| The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each postcode is assigned.
 							tr#nhs_ha
 								td nhs_ha
 								td 
@@ -175,11 +179,114 @@ block content
 									strong Returns an ID or Code associated with the postcode. 
 									| Typically these are a 9 character code known as an ONS Code or GSS Code. This is currently only available for districts, parishes, counties, CCGs, NUTS and wards.
 
+					h4 Places Data (Ordnance Survey Open Names Dataset)
+
+					p Data returned by the <code>/places</code> API
+
+					table.table.table-hover
+						thead
+							tr
+								th Field
+								th Description
+						tbody
+							tr#places-code
+								td code
+								td 
+									strong code. 
+									| A unique identifier that enables records to be identified easily. The identifier will be persistent for all LocalTypes except Section of Named Road and Section of Numbered Road.
+							tr#places-eastings
+								td eastings
+								td 
+									strong Eastings. 
+									| The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.
+							tr#places-northings
+								td northings
+								td 
+									strong Northings. 
+									| The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.
+							tr#places-maxminnorthingseastings
+								td [max|min]_northings, [max|min]_eastings
+								td 
+									strong Maximum &amp; Minimum, Northings &amp; Eastings. 
+									| Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements.
+									| For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
+							tr#places-country
+								td country
+								td 
+									strong Country. 
+									| The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each place is assigned.
+							tr#places-longitude
+								td longitude
+								td
+									strong Longitude. 
+									| The WGS84 longitude given the Place's national grid reference
+							tr#places-latitude
+								td latitude
+								td
+									strong Latitude. 
+									| The WGS84 latitude given the Place's national grid reference
+							tr#places-local_type
+								td local_type
+								td
+									strong Local Type. 
+									| The Ordnance Survey classification for the named place being represented by the specific feature.
+									| E.g. <code>City</code>, <code>Town</code>, <code>Village</code>, <code>Hamlet</code>, <code>Other Settlement</code>, <code>Suburban Area</code>
+							tr#places-outcode
+								td outcode
+								td
+									strong Outcode. 
+									| The postcode district, for example, <code>SO15</code>
+							tr#places-name-1
+								td name_1
+								td
+									strong Name. 
+									| The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, ‘The Pennines’ not ‘Pennines, The’.
+							tr#places-name-1-lang
+								td name_1_lang
+								td
+									strong Language of Name. 
+									| The language type is only set where more than one name exists
+									| E.g. <code>cym</code> (Welsh), <code>eng</code> (English), <code>gla</code> (Scottish Gaelic)
+							tr#places-name-2
+								td name_2
+								td
+									strong Name (in case of multiple languages). 
+									| The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, ‘The Pennines’ not ‘Pennines, The’.
+							tr#places-name-2-lang
+								td name_2_lang
+								td
+									strong Language of Name. 
+									| The language type is only set where more than one name exists
+									| E.g. cym (Welsh), eng (English), gla (Scottish Gaelic)
+							tr#places-county-unitary
+								td county_unitary
+								td
+									strong Administrative Area. 
+									| The name of the County (non-metropolitan or Metropolitan), Unitary Authority or Greater London Authority administrative area that the point geometry for feature is within or nearest to.
+							tr#places-county-unitary-type
+								td county_unitary_type
+								td
+									strong Administrative Area Type. 
+									|  Classifies the type of administrative unit.
+							tr#places-district-borough
+								td district_borough
+								td
+									strong District or Borough. 
+									| The name of the District, Metropolitan District or London Borough administrative unit that the point geometry for the feature is within. 
+							tr#places-district-borough-type
+								td district_borough_type
+								td
+									strong Borough Type. 
+									|  Classifies the type of administrative unit.
+							tr#places-region
+								td region
+								td
+									strong Region. 
+									| The name of the European Region (was Government O ice Region) that the point geometry for the feature is within or nearest to.
 
 					h2#Methods.doc-header Methods
 
 					h4 The following is a list of available API methods
-
 
 					h3#Postcode-Lookup Postcode Lookup
 
@@ -379,6 +486,29 @@ block content
 						code radius=
 						|  (not required) Limits number of postcodes matches to return. Defaults to 5,000m. Needs to be less than 25,000m.
 
+					h3#Place-Lookup Place Lookup
+
+					p Lookup a place by code. Returns all available data if found. Returns 404 if place does not exist.
+					pre
+						h4 https://api.postcodes.io/places/:code
+
+					h3#Place-Query Place Query
+
+					p Submit a place query and receive a complete list of places matches and associated data.
+					pre
+						h4 
+							.http-method GET 
+							| https://api.postcodes.io/places?q=[query]
+
+					h4 Optional Query Parameters
+					p 
+						code query=
+						|  (not required) aliases to 
+						code q=
+					p
+						code limit=
+						|  (not required) Limits number of places matches to return. Defaults to 10. Needs to be less than 100.
+
 					h2#Install-notes.doc-header Install Notes
 
 					p There may be occasions where you want to host postcodes.io yourself. We've laid out instructions below on how to do this.
@@ -388,14 +518,12 @@ block content
 					pre
 						h4 $ git clone https://github.com/ideal-postcodes/postcodes.io.git
 
-					p The tricky part is importing the data. We currently provide 3 methods.
+					p We currently provide 3 methods to import the necessaru datasets
 
 					ol
 						li The easiest is to use our install script. This will require postgres superuser privileges to create and provision your database. It will then download the database and import the data from a pg_dump (hosted and created by us).
 						li You can download the pg_dump and attempt to import the database yourself with psql or pg_restore. 
 						li Lastly, you can retrieve the raw CSV data from the ONS and import it with our import script.
-
-					p The entire process should take around 10 minutes even on a virtual, low-spec, single core system.
 
 					h3#install-requirements Requirements
 
