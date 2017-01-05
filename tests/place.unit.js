@@ -205,4 +205,14 @@ describe("Place Model", () => {
 			});
 		});
 	});
+
+	describe("#random", () => {
+		it ("should return a random place", done => {
+			Place.random((error, place) => {
+				if (error) return done(error);
+				helper.isRawPlaceObject(place);
+				done();
+			});
+		});
+	});
 });

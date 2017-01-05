@@ -8,7 +8,7 @@ const OSPoint = require("ospoint");
 const Base = require("./index").Base;
 const QueryStream = require("pg-query-stream");
 const env = process.env.NODE_ENV || "development";
-const escapeRegex = require('escape-string-regexp');
+const escapeRegex = require("escape-string-regexp");
 const configPath = path.join(__dirname, "../../config/config.js");
 const defaults = require(configPath)(env).defaults.placesSearch;
 
@@ -108,7 +108,7 @@ Place.prototype.search = function (options, callback) {
 		.replace(/-/g, " ");
 	const regex = `^${escapeRegex(searchTerm)}.*`;
 	let limit = options.limit || defaults.limit.DEFAULT;
-	if (typeof limit !== 'number' || limit < 0) limit = defaults.limit.DEFAULT; 
+	if (typeof limit !== "number" || limit < 0) limit = defaults.limit.DEFAULT; 
 	if (limit > defaults.limit.MAX) limit = defaults.limit.MAX;
 	this._query(searchQuery, [regex, limit], (error, result) => {
 		if (error) return callback(error);
@@ -119,7 +119,41 @@ Place.prototype.search = function (options, callback) {
 
 // Retrieve random place
 Place.prototype.random = function (callback) {
+	if (!this.idCache || this.idCache.length === 0) {
+		return this.loadPlaceIds((error, ids) => {
+			if (error) return callback(error);
+			return this.randomFromIds(ids, callback);
+		});
+	}
+	return this.randomFromIds(this.idCache, callback);
+};
 
+Place.prototype.loadPlaceIds = function (callback) {
+	this._query(`SELECT id FROM ${this.relation}`, (error, result) => {
+		if (error) return callback(error);
+		const ids = result.rows.map(r => r.id);
+		this.idCache = ids;
+		return callback(null, this.idCache);
+	});
+};
+
+const findByIdQuery = `
+	SELECT 
+		${returnAttributes} 
+	FROM 
+		places 
+	WHERE 
+		id=$1
+`;
+
+Place.prototype.randomFromIds = function (ids, callback) {
+	const length = ids.length;
+	const randomId = ids[Math.floor(Math.random() * length)];
+	this._query(findByIdQuery, [randomId], (error, result) => {
+		if (error) return callback(error, null);
+		if (result.rows.length === 0) return callback(null, null);
+		callback(null, result.rows[0]);
+	});
 };
 
 // Returns places that are contained by specified geolocation
@@ -136,6 +170,18 @@ Place.prototype.nearest = function (options, callback) {
 
 const whitelistedAttributes = [
 	"code",
+	"name_1",
+	"name_1_lang",
+	"name_2",
+	"name_2_lang",
+	"local_type",
+	"outcode",
+	"county_unitary",
+	"county_unitary_type",
+	"district_borough",
+	"district_borough_type",
+	"region",
+	"country",
 	"longitude",
 	"latitude",
 	"eastings",
@@ -143,19 +189,7 @@ const whitelistedAttributes = [
 	"min_eastings",
 	"min_northings",
 	"max_eastings",
-	"max_northings",
-	"local_type",
-	"outcode",
-	"name_1",
-	"name_1_lang",
-	"name_2",
-	"name_2_lang",
-	"county_unitary",
-	"county_unitary_type",
-	"district_borough",
-	"district_borough_type",
-	"region",
-	"country"
+	"max_northings"
 ];
 
 Place.prototype.toJson = function (place) {
