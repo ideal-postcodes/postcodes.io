@@ -217,4 +217,19 @@ describe("Places Routes", () => {
 				});
 		});
 	});
+
+	describe("/random/places", () => {
+		it ("returns a random place", done => {
+			request(app)
+				.get("/random/places")
+				.expect(200)
+				.expect(helper.allowsCORS)
+				.end((error, response) => {
+					if (error) return done(error);
+					assert.equal(response.status, 200);
+					helper.isPlaceObject(response.body.result);
+					done();
+				});
+		});
+	});
 });

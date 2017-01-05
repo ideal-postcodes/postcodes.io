@@ -17,7 +17,6 @@ module.exports = app => {
 	
 	app.get("/postcodes", postcodes.query);
 	app.post("/postcodes", postcodes.bulk);
-	app.get("/random/postcodes", postcodes.random);
 	app.get("/postcodes/:postcode", postcodes.show);
 	app.get("/postcodes/:postcode/nearest", postcodes.nearest);
 	app.get("/postcodes/:postcode/validate", postcodes.valid);
@@ -29,8 +28,11 @@ module.exports = app => {
 	app.get("/outcodes/:outcode", outcodes.showOutcode);
 	app.get("/outcodes/:outcode/nearest", outcodes.nearest);
 
-	app.get("/places/:id", places.show);
 	app.get("/places", places.query);
+	app.get("/places/:id", places.show);
 	// Todo: Query for geolocation contained in polygon (geolocation contained in polygon)
 	// Todo: Query for geolocation near polygon (radius intersects polygon)
+
+	app.get("/random/places", places.random);
+	app.get("/random/postcodes", postcodes.random);
 };

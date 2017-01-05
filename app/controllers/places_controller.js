@@ -26,7 +26,18 @@ exports.show = (request, response, next) => {
 		}
 		next();
 	});
-}
+};
+
+exports.random = (request, response, next) => {
+	Place.random((error, place) => {
+		if (error) return next(error);
+		response.jsonApiResponse = {
+			status: 200,
+			result: Place.toJson(place)
+		}
+		return next();
+	})
+};
 
 exports.query = (request, response, next) => {
 	const query = request.query.query || request.query.q;
