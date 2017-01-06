@@ -10,7 +10,10 @@ const QueryStream = require("pg-query-stream");
 const env = process.env.NODE_ENV || "development";
 const escapeRegex = require("escape-string-regexp");
 const configPath = path.join(__dirname, "../../config/config.js");
-const defaults = require(configPath)(env).defaults.placesSearch;
+const defaults = require(configPath)(env).defaults;
+const searchDefaults = defaults.placesSearch;
+const nearestDefaults = defaults.placesNearest;
+const containsDefaults = defaults.placesContained;
 
 const placeSchema = {
 	"id": "SERIAL PRIMARY KEY",
@@ -107,9 +110,9 @@ Place.prototype.search = function (options, callback) {
 		.replace(/'/g,"")
 		.replace(/-/g, " ");
 	const regex = `^${escapeRegex(searchTerm)}.*`;
-	let limit = options.limit || defaults.limit.DEFAULT;
-	if (typeof limit !== "number" || limit < 0) limit = defaults.limit.DEFAULT; 
-	if (limit > defaults.limit.MAX) limit = defaults.limit.MAX;
+	let limit = options.limit || searchDefaults.limit.DEFAULT;
+	if (typeof limit !== "number" || limit < 0) limit = searchDefaults.limit.DEFAULT; 
+	if (limit > searchDefaults.limit.MAX) limit = searchDefaults.limit.MAX;
 	this._query(searchQuery, [regex, limit], (error, result) => {
 		if (error) return callback(error);
 		if (result.rows.length === 0) return callback(null, null);
@@ -157,13 +160,75 @@ Place.prototype.randomFromIds = function (ids, callback) {
 };
 
 // Returns places that are contained by specified geolocation
-Place.prototype.contains = function (options, callback) {
+const containsQuery = `
+	SELECT 
+		${returnAttributes}, 
+		ST_Distance(
+			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')
+		) AS distance  
+	FROM 
+		places 
+	WHERE 
+		ST_Intersects(
+			bounding_polygon,
+			ST_GeographyFromText('SRID=4326;POINT(' || $1 || ' ' || $2 || ')')
+		) 
+	ORDER BY 
+		distance ASC
+	LIMIT 
+		$3 
+`;
 
+Place.prototype.contains = function (options, callback) {
+	const longitude = parseFloat(options.longitude);
+	if (isNaN(longitude)) return callback(new Error("Invalid longitude"), null);
+	const latitude = parseFloat(options.latitude);
+	if (isNaN(latitude)) return callback(new Error("Invalid latitude"), null);
+	let limit = parseInt(options.limit, 10) || containsDefaults.limit.DEFAULT;
+	if (limit > containsDefaults.limit.MAX) {
+		limit = containsDefaults.limit.DEFAULT;
+	}
+	const params = [longitude, latitude, limit];
+	this._query(containsQuery, params, (error, result) => {
+		if (error) return callback(error, null);
+		if (result.rows.length === 0) return callback(null, null);
+		return callback(null, result.rows);
+	});
 };
 
-// Returns nearest places close to place centroid location
-Place.prototype.nearest = function (options, callback) {
+// Returns nearest places with polygons that intersect geolocation incl. radius
+const nearestQuery = `
+	SELECT 
+		${returnAttributes}, 
+		ST_Distance(
+			bounding_polygon, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')
+		) AS distance 
+	FROM 
+		places 
+	WHERE 
+		ST_DWithin(
+			bounding_polygon, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3
+		) 
+	ORDER BY 
+		distance ASC, name_1 ASC 
+	LIMIT $4 
+`;
 
+Place.prototype.nearest = function (options, callback) {
+	const longitude = parseFloat(options.longitude);
+	if (isNaN(longitude)) return callback(new Error("Invalid longitude"), null);
+	const latitude = parseFloat(options.latitude);
+	if (isNaN(latitude)) return callback(new Error("Invalid latitude"), null);
+	let limit = parseInt(options.limit, 10) || nearestDefaults.limit.DEFAULT;
+	if (limit > nearestDefaults.limit.MAX) limit = nearestDefaults.limit.DEFAULT;
+	let radius = parseFloat(options.radius) || nearestDefaults.radius.DEFAULT;
+	if (radius > nearestDefaults.radius.MAX) radius = nearestDefaults.radius.MAX;
+	const params = [longitude, latitude, radius, limit];
+	this._query(nearestQuery, params, (error, result) => {
+		if (error) return callback(error, null);
+		if (result.rows.length === 0) return callback(null, null);
+		return callback(null, result.rows);
+	});
 };
 
 // Format place object
@@ -369,15 +434,15 @@ Place.prototype.populateLocation = function (callback) {
 					const locations = [];
 					if (place.min_eastings * place.min_northings * 
 						place.max_eastings * place.max_northings === 0) return;
-					const initialLocation = new OSPoint("" + place.min_eastings, 
-						"" + place.min_northings).toWGS84();
+					const initialLocation = new OSPoint("" + place.min_northings, 
+						"" + place.min_eastings).toWGS84();
 					locations.push(initialLocation);
-					locations.push((new OSPoint("" + place.max_eastings, 
-						"" + place.min_northings).toWGS84()));
-					locations.push((new OSPoint("" + place.min_eastings, 
-						"" + place.max_northings).toWGS84()));
-					locations.push((new OSPoint("" + place.max_eastings, 
-						"" + place.max_northings).toWGS84()));
+					locations.push((new OSPoint("" + place.max_northings, 
+						"" + place.min_eastings).toWGS84()));
+					locations.push((new OSPoint("" + place.max_northings, 
+						"" + place.max_eastings).toWGS84()));
+					locations.push((new OSPoint("" + place.min_northings, 
+						"" + place.max_eastings).toWGS84()));
 					locations.push(initialLocation); 
 					updateBuffer.push(`
 						UPDATE 
@@ -385,7 +450,7 @@ Place.prototype.populateLocation = function (callback) {
 						SET 
 							bounding_polygon=ST_GeogFromText('SRID=4326;
 							POLYGON((${
-								locations.map(l => `${l.latitude} ${l.longitude}`).join(",")
+								locations.map(l => `${l.longitude} ${l.latitude}`).join(",")
 							}))') 
 						WHERE 
 							id=${place.id} 

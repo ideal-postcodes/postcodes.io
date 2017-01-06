@@ -193,6 +193,204 @@ describe("Place Model", () => {
 		});
 	});	
 
+	describe("contains", () => {
+		let validPlace;
+		before(done => {
+			Place.random((error, place) => {
+				if (error) return done(error);
+				validPlace = place;
+				done();
+			});
+		});
+
+		it ("returns a list of places which contain point", done => {
+			Place.contains({
+				longitude: validPlace.longitude,
+				latitude: validPlace.latitude
+			}, (error, places) => {
+				if (error) return done(error);
+				assert.isTrue(places.length > 0);
+				const result = places[0];
+				helper.isRawPlaceObject(result);
+				assert.equal(result.code, validPlace.code);
+				done();
+			});
+		});
+		it ("orders results by distance", done => {
+			Place.contains({
+				longitude: -3.2137291,
+				latitude: 58.96804
+			}, (error, places) => {
+				if (error) return done(error);
+				places.map(p => p.distance).reduce((acc, curr) => {
+					assert.isTrue(curr >= acc);
+					return curr;
+				}, 0);
+				done();
+			});
+		});
+		it ("is sensitive to limit", done => {
+			Place.contains({
+				longitude: -3.2137291,
+				latitude: 58.96804,
+				limit: 1
+			}, (error, places) => {
+				if (error) return done(error);
+				assert.equal(places.length, 1);
+				const result = places[0];
+				helper.isRawPlaceObject(result);
+				done();
+			});
+		});
+		it ("uses default limit if invalid", done => {
+			Place.contains({
+				longitude: 0,
+				latitude: 0,
+				limit: "Foo"
+			}, error => {
+				assert.isNull(error);
+				done();
+			});
+		});
+		it ("uses default limit greater than 100", done => {
+			Place.contains({
+				longitude: 0,
+				latitude: 0,
+				limit: 101
+			}, error => {
+				assert.isNull(error);
+				done();
+			});
+		});
+		it ("returns an error if invalid longitude", done => {
+			Place.contains({
+				longitude: "foo",
+				latitude: 0
+			}, error => {
+				assert.match(error.message, /invalid\slongitude/i);
+				done();
+			});
+		});
+		it ("returns an error if invalid latitude", done => {
+			Place.contains({
+				longitude: 0,
+				latitude: "foo"
+			}, error => {
+				assert.match(error.message, /invalid\slatitude/i);
+				done();
+			});
+		});
+	});
+
+	describe("nearest", () => {
+		let validPlace;
+		before(done => {
+			Place.random((error, place) => {
+				if (error) return done(error);
+				validPlace = place;
+				done();
+			});
+		});
+
+		it ("returns a list of places which contain point", done => {
+			Place.nearest({
+				longitude: validPlace.longitude,
+				latitude: validPlace.latitude
+			}, (error, places) => {
+				if (error) return done(error);
+				assert.isTrue(places.length > 0);
+				const result = places[0];
+				helper.isRawPlaceObject(result);
+				assert.equal(result.code, validPlace.code);
+				done();
+			});
+		});
+		it ("orders results by distance", done => {
+			Place.nearest({
+				longitude: -3.2137291,
+				latitude: 58.96804
+			}, (error, places) => {
+				if (error) return done(error);
+				places.map(p => p.distance).reduce((acc, curr) => {
+					assert.isTrue(curr >= acc);
+					return curr;
+				}, 0);
+				done();
+			});
+		});
+		it ("is sensitive to limit", done => {
+			Place.nearest({
+				longitude: -3.2137291,
+				latitude: 58.96804,
+				limit: 1
+			}, (error, places) => {
+				if (error) return done(error);
+				assert.equal(places.length, 1);
+				const result = places[0];
+				helper.isRawPlaceObject(result);
+				done();
+			});
+		});
+		it ("uses default limit if invalid", done => {
+			Place.nearest({
+				longitude: 0,
+				latitude: 0,
+				limit: "Foo"
+			}, error => {
+				assert.isNull(error);
+				done();
+			});
+		});
+		it ("uses default limit greater than 100", done => {
+			Place.nearest({
+				longitude: 0,
+				latitude: 0,
+				limit: 101
+			}, error => {
+				assert.isNull(error);
+				done();
+			});
+		});
+		it ("uses default radius if invalid", done => {
+			Place.nearest({
+				longitude: 0,
+				latitude: 0,
+				radius: "Foo"
+			}, error => {
+				assert.isNull(error);
+				done();
+			});
+		});
+		it ("uses default limit greater than max default", done => {
+			Place.nearest({
+				longitude: 0,
+				latitude: 0,
+				radius: 1000000
+			}, error => {
+				assert.isNull(error);
+				done();
+			});
+		});
+		it ("returns an error if invalid longitude", done => {
+			Place.nearest({
+				longitude: "foo",
+				latitude: 0
+			}, error => {
+				assert.match(error.message, /invalid\slongitude/i);
+				done();
+			});
+		});
+		it ("returns an error if invalid latitude", done => {
+			Place.nearest({
+				longitude: 0,
+				latitude: "foo"
+			}, error => {
+				assert.match(error.message, /invalid\slatitude/i);
+				done();
+			});
+		});
+	});
+
 	describe("toJson", () => {
 		it ("formats place object for public consumption", done => {
 			const testCode = "osgb4000000074559125";

@@ -7,7 +7,9 @@ const Place = require("../models/place");
 const path = require("path");
 const env = process.env.NODE_ENV || "development";
 const configPath = path.join(__dirname, "../../config/config.js");
-const defaults = require(configPath)(env).defaults.placesSearch;
+const defaults = require(configPath)(env).defaults;
+const searchDefaults = defaults.placesSearch;
+const containsDefaults = defaults.placesContained;
 
 exports.show = (request, response, next) => {
 	const id = request.params.id;
@@ -36,7 +38,7 @@ exports.random = (request, response, next) => {
 			result: Place.toJson(place)
 		}
 		return next();
-	})
+	});
 };
 
 exports.query = (request, response, next) => {
@@ -70,9 +72,9 @@ const searchPlace = (request, response, next) => {
 
 	let limit = parseInt(request.query.limit, 10) 
 		|| parseInt(request.query.l, 10) 
-		|| defaults.limit.DEFAULT;
+		|| searchDefaults.limit.DEFAULT;
 
-	if (isNaN(limit) || limit < 1) limit = defaults.limit.DEFAULT;
+	if (isNaN(limit) || limit < 1) limit = searchDefaults.limit.DEFAULT;
 
 	Place.search({
 		name: name,
