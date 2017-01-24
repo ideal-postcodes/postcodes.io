@@ -84,7 +84,7 @@ Any changes, including backwards incompatible changes will be listed here
 	* [postcodes-io laravel] (https://github.com/adityamenon/postcodes-io-laravel) package by [Aditya Menon] (http://adityamenon.co)<br/>
 	* [PHP Class for Postcodes.io] (https://github.com/hart1994/Postcodes-IO-PHP) by [Ryan] (https://github.com/hart1994/)<br/>
 
-3. [Ruby Library] (postcodes_io) by [James Ruston] (https://github.com/jamesruston)
+3. [Ruby Library] (https://github.com/jamesruston/postcodes_io) by [James Ruston] (https://github.com/jamesruston)
 
 4. [Node.JS Library] (https://github.com/cuvva/postcodesio-client-node) by [billinghamj] (https://github.com/billinghamj) 
 
