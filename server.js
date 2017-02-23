@@ -5,7 +5,7 @@ const env = process.env.NODE_ENV || "development";
 const config = require(path.join(__dirname, "config/config"))(env);
 
 if (env === "test" || process.env.PMX) {
-	require('pmx').init({
+	require("pmx").init({
 		http : true
 	});
 }
@@ -18,7 +18,7 @@ const server = app.listen(port);
 
 server.on("clientError", (error, socket) => {
 	if (!socket.destroyed) {
-		socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+		socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
 	}
 });
 

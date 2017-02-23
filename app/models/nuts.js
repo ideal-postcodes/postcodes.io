@@ -1,16 +1,15 @@
 "use strict";
 
-var TABLE_NAME = "nuts";
+const TABLE_NAME = "nuts";
 
-var fs = require("fs");
-var path = require("path");
-var util = require("util");
-var path = require("path");
-var async = require("async");
-var AttributeBase = require(path.join(__dirname, "attribute_base.js"));
+const fs = require("fs");
+const util = require("util");
+const path = require("path");
+const async = require("async");
+const AttributeBase = require(path.join(__dirname, "attribute_base.js"));
 
 function Model() {
-	var schemaAddition = {
+	const schemaAddition = {
 		"nuts_code": "VARCHAR(32) NOT NULL",
 	};
 
@@ -21,18 +20,20 @@ util.inherits(Model, AttributeBase);
 
 // Override Seed Data Method
 Model.prototype.seedData = function (callback) {
-	var self = this;
-	var dataPath = path.join(__dirname, "../../data/");
-	var dataObject = JSON.parse(fs.readFileSync(path.join(dataPath, self.relation + ".json")));
-	var insertQueue = [];
+	const self = this;
+	const dataPath = path.join(__dirname, "../../data/");
+	const dataObject = JSON.parse(fs.readFileSync(path.join(dataPath, self.relation + ".json")));
+	const insertQueue = [];
 
-	for (var code in dataObject) {
-		insertQueue.push([code, dataObject[code]["name"], dataObject[code]["code"]]);
+	for (let code in dataObject) {
+		insertQueue.push([code, dataObject[code].name, dataObject[code].code]);
 	}
 
-	async.parallel(insertQueue.map(function (elem) {
+	async.parallel(insertQueue.map(elem => {
 		return function (callback) {
-			var query = "INSERT INTO " + self.relation + " (code, name, nuts_code) VALUES ($1, $2, $3);"
+			const query = `
+				INSERT INTO ${self.relation} (code, name, nuts_code) VALUES ($1, $2, $3)
+			`;
 			self._query(query, elem, callback);
 		};
 	}), callback);

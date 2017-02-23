@@ -7,15 +7,13 @@
  *  The base requirement
  */ 
 
-var fs = require("fs");
-var util = require("util");
-var path = require("path");
-var async = require("async");
-var Base = require("./index").Base;
-var env = process.env.NODE_ENV || "development";
-var defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
+const fs = require("fs");
+const util = require("util");
+const path = require("path");
+const async = require("async");
+const Base = require("./index").Base;
 
-var requiredAttributes = {
+const requiredAttributes = {
 	"code": "VARCHAR(32) NOT NULL UNIQUE",
 	"name": "VARCHAR(255)"
 };
@@ -28,7 +26,7 @@ function AttributeBase(relation, schema, indexes) {
 	}
 
 	// Check if necessary attributes already exists, insert otherwise
-	for (var attr in requiredAttributes) {
+	for (let attr in requiredAttributes) {
 		if (requiredAttributes.hasOwnProperty(attr)) {
 			if (!schema[attr]) {
 				schema[attr] = requiredAttributes[attr];
@@ -41,7 +39,7 @@ function AttributeBase(relation, schema, indexes) {
 	}
 
 	// Check if necessary index already exists, insert index otherwise
-	var hasIndex = indexes.some(function (elem) {
+	const hasIndex = indexes.some(elem => {
 		return elem.unique && elem.column === "code";
 	});
 
@@ -58,30 +56,30 @@ function AttributeBase(relation, schema, indexes) {
 util.inherits(AttributeBase, Base);
 
 AttributeBase.prototype.seedData = function (callback) {
-	var self = this;
-	var dataPath = path.join(__dirname, "../../data/");
-	var dataObject = JSON.parse(fs.readFileSync(path.join(dataPath, self.relation + ".json")));
-	var insertQueue = [];
+	const self = this;
+	const dataPath = path.join(__dirname, "../../data/");
+	const dataObject = JSON.parse(fs.readFileSync(path.join(dataPath, self.relation + ".json")));
+	const insertQueue = [];
 
-	for (var code in dataObject) {
+	for (let code in dataObject) {
 		insertQueue.push([code, dataObject[code]]);
 	}
 
-	async.parallel(insertQueue.map(function (elem) {
-		return function (callback) {
-			var query = "INSERT INTO " + self.relation + " (code, name) VALUES ($1, $2);"
+	async.parallel(insertQueue.map(elem => {
+		return callback => {
+			const query = `INSERT INTO ${self.relation} (code, name) VALUES ($1, $2)`;
 			self._query(query, elem, callback);
 		};
 	}), callback);
 };
 
 AttributeBase.prototype._setupTable = function (callback) {
-	var self = this;
-	self._destroyRelation(function (error) {
+	const self = this;
+	self._destroyRelation(error => {
 		if (error) return callback(error);
-		self._createRelation(function (error) {
+		self._createRelation(error => {
 			if (error) return callback(error);
-			self.seedData(function (error) {
+			self.seedData(error => {
 				if (error) return callback(error);
 				self.createIndexes(callback);
 			});

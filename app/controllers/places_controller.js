@@ -1,15 +1,11 @@
 "use strict";
 
-const logger = require("commonlog-bunyan");
-const async = require("async");
-const S = require("string");
 const Place = require("../models/place");
 const path = require("path");
 const env = process.env.NODE_ENV || "development";
 const configPath = path.join(__dirname, "../../config/config.js");
 const defaults = require(configPath)(env).defaults;
 const searchDefaults = defaults.placesSearch;
-const containsDefaults = defaults.placesContained;
 
 exports.show = (request, response, next) => {
 	const id = request.params.id;
@@ -36,7 +32,7 @@ exports.random = (request, response, next) => {
 		response.jsonApiResponse = {
 			status: 200,
 			result: Place.toJson(place)
-		}
+		};
 		return next();
 	});
 };
@@ -70,9 +66,9 @@ const searchPlace = (request, response, next) => {
 		return next();
 	}
 
-	let limit = parseInt(request.query.limit, 10) 
-		|| parseInt(request.query.l, 10) 
-		|| searchDefaults.limit.DEFAULT;
+	let limit = parseInt(request.query.limit, 10) || 
+		parseInt(request.query.l, 10) || 
+		searchDefaults.limit.DEFAULT;
 
 	if (isNaN(limit) || limit < 1) limit = searchDefaults.limit.DEFAULT;
 
@@ -88,7 +84,7 @@ const searchPlace = (request, response, next) => {
 		response.jsonApiResponse = {
 			status: 200,
 			result: places.map(p => Place.toJson(p))
-		}
+		};
 		return next();
 	});
 };

@@ -1,10 +1,10 @@
 "use strict";
 
-var TABLE_NAME = "parishes";
+const TABLE_NAME = "parishes";
 
-var util = require("util");
-var path = require("path");
-var AttributeBase = require(path.join(__dirname, "attribute_base.js"));
+const util = require("util");
+const path = require("path");
+const AttributeBase = require(path.join(__dirname, "attribute_base.js"));
 
 function Model() {
 	AttributeBase.call(this, TABLE_NAME);

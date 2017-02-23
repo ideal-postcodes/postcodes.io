@@ -1,7 +1,5 @@
 "use strict";
 
-const fs = require("fs");
-const S = require("string");
 const util = require("util");
 const path = require("path");
 const Pc = require("postcode");
@@ -147,7 +145,7 @@ Postcode.prototype.find = function (postcode, callback) {
 };
 
 Postcode.prototype.loadPostcodeIds = function (type, callback) {
-	if (typeof type === 'function') {
+	if (typeof type === "function") {
 		callback = type;
 		type = "_all";
 	}
@@ -190,13 +188,13 @@ Postcode.prototype.loadPostcodeIds = function (type, callback) {
 };
 
 Postcode.prototype.random = function (options, callback) {
-	if (typeof options === 'function') {
+	if (typeof options === "function") {
 		callback = options;
 		options = {};
 	}
 
-	const randomType = typeof options.outcode === 'string' 
-		&& options.outcode.length ? options.outcode : "_all";
+	const randomType = typeof options.outcode === "string" && 
+		options.outcode.length ? options.outcode : "_all";
 	const idCache = this.idCache[randomType];
 
 	if (!idCache) {
@@ -247,7 +245,7 @@ Postcode.prototype.search = function (postcode, options, callback) {
 	const DEFAULT_LIMIT = defaults.search.limit.DEFAULT;
 	const MAX_LIMIT = defaults.search.limit.MAX;
 	let limit;
-	if (typeof options === 'function') {
+	if (typeof options === "function") {
 		callback = options;
 		limit = 10;
 	} else {
@@ -261,7 +259,7 @@ Postcode.prototype.search = function (postcode, options, callback) {
 		if (result.rows.length === 0) return callback(null, null);
 		return callback(null, result.rows);
 	});
-}
+};
 
 const nearestPostcodeQuery = `
 	SELECT 
@@ -468,16 +466,16 @@ Postcode.prototype.findOutcode = function (o, callback) {
 		});
 		return callback(null, outcodeResult);
 	});
-}
+};
 
 Postcode.prototype.toJson = function (address) {
 	address.codes = {
-		admin_district: address["admin_district_id"],
-		admin_county: address["admin_county_id"],
-		admin_ward: address["admin_ward_id"],
-		parish: address["parish_id"],
-		ccg: address["ccg_id"],
-		nuts: address["nuts_code"]
+		admin_district: address.admin_district_id,
+		admin_county: address.admin_county_id,
+		admin_ward: address.admin_ward_id,
+		parish: address.parish_id,
+		ccg: address.ccg_id,
+		nuts: address.nuts_code
 	};
 	delete address.id;
 	delete address.location;
@@ -490,7 +488,7 @@ Postcode.prototype.toJson = function (address) {
 	delete address.nuts_id;
 	delete address.nuts_code;
 	return address;
-}
+};
 
 /*
 *  	ONS CSV Data Reference
@@ -645,14 +643,14 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(row[46]);													// CCG
 
 		return finalRow;
-	}
+	};
 
 	self._csvSeed({
 		filepath: filePath, 
 		columns: csvColumns.join(","), 
 		transform: transform
 	}, callback);
-}
+};
 
 Postcode.prototype.populateLocation = function (callback) {
 	const query = `

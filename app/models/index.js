@@ -104,14 +104,14 @@ Base.prototype.createIndexes = function (callback) {
 			instruction.push(`(${index.column})`);
 		}
 		return instruction.join(" ");
-	}
+	};
 
 	for (let i = 0; i < this.indexes.length; i += 1) {
 		indexExecution.push(returnInstruction(this.indexes[i]));
 	}
 
 	async.series(indexExecution.map(instruction => {
-		return callback => this._query(instruction, callback)
+		return callback => this._query(instruction, callback);
 	}), callback);
 };
 
@@ -153,7 +153,7 @@ Base.prototype._destroyAll = function (callback) {
 		);
 	}
 
-	this._query("drop schema public cascade", (error, result) => {
+	this._query("drop schema public cascade", (error) => {
 		if (error) return callback(error, null);
 		this._query("create public schema", callback);
 	});

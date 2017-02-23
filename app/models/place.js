@@ -325,7 +325,7 @@ Place.prototype.seedData = function (directory, callback) {
 			new Error("Data directory should be supplied for OS places update")
 		);
 	}
-	const typeIndex = csvColumns["type"];
+	const typeIndex = csvColumns.type;
 	const columnWhitelist = [
 		"id",
 		"location",
@@ -351,8 +351,8 @@ Place.prototype.seedData = function (directory, callback) {
 	const transform = row => {
 		// Skip if not a "place"
 		if (row[typeIndex] !== "populatedPlace") return null;
-		const northings = row[csvColumns["northings"]];
-		const eastings = row[csvColumns["eastings"]];
+		const northings = row[csvColumns.northings];
+		const eastings = row[csvColumns.eastings];
 		let location;
 		if (northings.length * eastings.length === 0) {
 			location = {
@@ -367,7 +367,7 @@ Place.prototype.seedData = function (directory, callback) {
 			if (colName === "longitude") return location.longitude;
 			const columnIndex = csvColumns[colName];
 			const value = row[columnIndex];
-			const exception = transformExceptions[colName]
+			const exception = transformExceptions[colName];
 			return (exception ? exception(value) : value);
 		});
 	};
@@ -399,7 +399,7 @@ Place.prototype.generateSearchFields = function (callback) {
 						'-', ' ')
 					, '''', '')
 			`, callback);
-		}
+		};
 	}), callback);
 };
 
