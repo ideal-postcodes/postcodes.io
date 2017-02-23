@@ -10,14 +10,7 @@ if (env === "test" || process.env.PMX) {
 	});
 }
 
-const express = require("express");
-const app = express();
-
-require(path.join(__dirname, "/config/logger"))(app, config);
-require(path.join(__dirname, "/config/db"))(config);
-require(path.join(__dirname, "/config/express"))(app, config);
-require(path.join(__dirname, "/config/routes"))(app);
-require(path.join(__dirname, "/config/renderer"))(app);
+const app = require(path.join(__dirname, "app.js"))(config);
 
 const port = config.port || 8000;
 
