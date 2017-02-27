@@ -13,7 +13,7 @@ describe("Malformed request", () => {
 			process.version
 			.replace(/[a-z]/gi, "")
 			.split(".")[0]
-		);
+		, 10);
 
 		if (majorVersion < 6) return done(); // Skip if node < 6.x
 
@@ -26,6 +26,7 @@ describe("Malformed request", () => {
 				client.write("User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)\r\n\r\n\r\n\r\n");
 			})
 			.on("data", data => {
+				console.log(data.toString())
 				dataReceived = true;
 				assert.match(data.toString(), /400\sBad\sRequest/);
 			})
