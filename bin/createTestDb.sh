@@ -1,19 +1,22 @@
 #!/usr/bin/env node
 
-var	path = require("path");
-var helper = require(path.join(__dirname, "../tests/helper"));
+"use strict";
+
+const path = require("path");
+const helper = require(path.join(__dirname, "../tests/helper"));
+const handleError = error => {
+	if (!error) return;
+	console.log(`Error stopped test environment creation: ${error.message}`);
+	process.exit(1);
+};
 
 console.log("Wiping test database...");
-helper.clearPostcodeDb(function (error, result) {
-	if (error) {
-		throw error;
-	}
+helper.clearPostcodeDb((error, result) => {
+	handleError(error);
 	console.log("Done.");
 	console.log("Recreating test database...");
-	helper.seedPostcodeDb(function (error, result) {
-		if (error) {
-			throw error;
-		}
+	helper.seedPostcodeDb((error, result) => {
+		handleError(error);
 		console.log("Done.");
 		process.exit(0);
 	});

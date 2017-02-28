@@ -1,61 +1,108 @@
-var path = require("path");
-var async = require("async");
-var assert = require("chai").assert;
-var helper = require(__dirname + "/helper");
+"use strict";
+
+const path = require("path");
+const async = require("async");
+const assert = require("chai").assert;
+const helper = require(`${__dirname}/helper`);
 		
-var Postcode = helper.Postcode;
+const Postcode = helper.Postcode;
 
 describe("Postcode Model", function () {
-	var testPostcode;
+	let testPostcode, testOutcode;
 
 	before(function (done) {
 		this.timeout(0);
-		helper.clearPostcodeDb(function (error, result) {
-			if (error) return done(error);
-			helper.seedPostcodeDb(function (error, result) {
-				if (error) return done(error);
-				done();
-			});
-		});
+		async.series([
+			helper.clearPostcodeDb,
+			helper.seedPostcodeDb
+		], done);
 	});
 
-	beforeEach(function (done) {
-		helper.lookupRandomPostcode(function (result) {
+	beforeEach(done => {
+		helper.lookupRandomPostcode(result => {
 			testPostcode = result.postcode;
 			testOutcode = result.outcode;
 			done();	
 		});
 	});
 
-	after(function (done) {
-		helper.clearPostcodeDb(done);
+	after(helper.clearPostcodeDb);
+
+	describe("#toJson", () => {
+		it ("formats an address object", () => {
+			const address = {
+				other: "other",
+				admin_district_id: "admin_district_id",
+				admin_county_id: "admin_county_id",
+				admin_ward_id: "admin_ward_id",
+				parish_id: "parish_id",
+				ccg_id: "ccg_id",
+				nuts_code: "nuts_code",
+				id: "id",
+				location: "location",
+				pc_compact: "pc_compact",
+				admin_district_id: "admin_district_id",
+				admin_county_id: "admin_county_id",
+				admin_ward_id: "admin_ward_id",
+				parish_id: "parish_id",
+				ccg_id: "ccg_id",
+				nuts_id: "nuts_id",
+				nuts_code: "nuts_code"
+			};
+			const formatted = Postcode.toJson(JSON.parse(JSON.stringify(address)));
+			assert.equal(formatted.other, address.other)
+			assert.property(formatted, "codes");
+			assert.equal(formatted.codes.admin_district, address.admin_district_id);
+			assert.equal(formatted.codes.admin_county, address.admin_county_id);
+			assert.equal(formatted.codes.admin_ward, address.admin_ward_id);
+			assert.equal(formatted.codes.parish, address.parish_id);
+			assert.equal(formatted.codes.ccg, address.ccg_id);
+			assert.equal(formatted.codes.nuts, address.nuts_code);
+			assert.notProperty(formatted, "id");
+			assert.notProperty(formatted, "location");
+			assert.notProperty(formatted, "pc_compact");
+			assert.notProperty(formatted, "admin_district_id");
+			assert.notProperty(formatted, "admin_county_id");
+			assert.notProperty(formatted, "admin_ward_id");
+			assert.notProperty(formatted, "parish_id");
+			assert.notProperty(formatted, "ccg_id");
+			assert.notProperty(formatted, "nuts_id");
+			assert.notProperty(formatted, "nuts_code");
+		});
 	});
 
-	describe("#find", function () {
-		it ("should return postcode with the right attributes", function (done) {
-			Postcode.find(testPostcode, function (error, result) {
+	describe("#find", () => {
+		it ("should return postcode with the right attributes", done => {
+			Postcode.find(testPostcode, (error, result) => {
 				if (error) return done(error);
 				assert.equal(result.postcode, testPostcode);
 				helper.isRawPostcodeObject(result);
 				done();
 			});
 		});
-		it ("should return null for null/undefined postcode search", function (done) {
-			Postcode.find(null, function (error, result) {
+		it ("should return null for null/undefined postcode search", done => {
+			Postcode.find(null, (error, result) => {
 				if (error) return done(error);
 				assert.isNull(result);
 				done()
 			});
 		});
-		it ("should be insensitive to space", function (done) {
-			Postcode.find(testPostcode.replace(/\s/, ""), function (error, result) {
+		it ("returns null if invalid postcode", done => {
+			Postcode.find("1", (error, result) => {
+				if (error) return done(error);
+				assert.isNull(result);
+				done()
+			});
+		})
+		it ("should be insensitive to space", done => {
+			Postcode.find(testPostcode.replace(/\s/, ""), (error, result) => {
 				if (error) return done(error);
 				assert.equal(result.postcode, testPostcode);
 				done();
 			});
 		});
-		it ("should return null if postcode does not exist", function (done) {
-			Postcode.find("ID11QD", function (error, result) {
+		it ("should return null if postcode does not exist", done => {
+			Postcode.find("ID11QD", (error, result) => {
 				if (error) return done(error);
 				assert.isNull(result);
 				done();
@@ -63,104 +110,152 @@ describe("Postcode Model", function () {
 		});
 	});
 
-	describe("#search", function () {
-		it ("should return a list of candidate postcodes for given search term", function (done) {
+	describe("#search", () => {
+		it ("should return a list of candidate postcodes for given search term", done => {
 			testPostcode = testPostcode.slice(0, 2);
-			Postcode.search(testPostcode, function (error, result) {
+			Postcode.search(testPostcode, (error, result) => {
 				if (error) return done(error);
 				assert.notEqual(result.length, 0);
-				result.forEach(function (postcode) {
-					helper.isRawPostcodeObject(postcode);
-				});
+				result.forEach(p => helper.isRawPostcodeObject(p));
 				done();
 			});
 		});
-		it ("should be case insensitive", function (done) {
+		it ("should be case insensitive", done => {
 			testPostcode = testPostcode.slice(0, 2).toLowerCase();
-			Postcode.search(testPostcode, function (error, result) {
+			Postcode.search(testPostcode, (error, result) => {
 				if (error) return done(error);
 				assert.notEqual(result.length, 0);
-				result.forEach(function (postcode) {
-					helper.isRawPostcodeObject(postcode);
-				});
+				result.forEach(p => helper.isRawPostcodeObject(p));
 				done();
 			});
 		});
-		it ("should work regardless of spaces", function (done) {
+		it ("should work regardless of spaces", done => {
 			testPostcode = testPostcode.slice(0, 4).replace(" ", "");
-			Postcode.search(testPostcode, function (error, result) {
+			Postcode.search(testPostcode, (error, result) => {
 				if (error) return done(error);
 				assert.notEqual(result.length, 0);
-				result.forEach(function (postcode) {
-					helper.isRawPostcodeObject(postcode);
+				result.forEach(p => helper.isRawPostcodeObject(p));
+				done();
+			});
+		});
+		it ("should strip out non digits, numbers or spaces	for search", done => {
+			testPostcode = testPostcode.slice(0, 2) + "[]";
+			Postcode.search(testPostcode, (error, result) => {
+				if (error) return done(error);
+				assert.notEqual(result.length, 0);
+				result.forEach(p => helper.isRawPostcodeObject(p));
+				done();
+			});
+		});
+		it ("is sensitive to limit", done => {
+			const query = "A";
+			async.parallel([2,3].map(limit => {
+				return cb => {
+					Postcode.search(query, {limit: limit}, (error, result) => {
+						assert.equal(result.length, limit);
+						cb(error, result);
+					});	
+				} 
+			}), (error, results) => {
+				if (error) return done(error);
+				results.forEach(result => {
+					result.forEach(p => helper.isRawPostcodeObject(p));
 				});
 				done();
 			});
 		});
-		it ("should strip out non digits, numbers or spaces	for search", function (done) {
-			testPostcode = testPostcode.slice(0, 2) + "[]";
-			Postcode.search(testPostcode, function (error, result) {
+		it ("returns a default maximum number of results", done => {
+			const query = "A";
+			Postcode.search(query, {limit: 1000}, (error, result) => {
 				if (error) return done(error);
-				assert.notEqual(result.length, 0);
-				result.forEach(function (postcode) {
-					helper.isRawPostcodeObject(postcode);
-				});
+				assert.equal(result.length, helper.config.defaults.search.limit.MAX);
+				result.forEach(p => helper.isRawPostcodeObject(p));
+				done();
+			});
+		});
+		it ("returns 10 postcodes by default", done => {
+			const query = "A";
+			Postcode.search(query, (error, result) => {
+				if (error) return done(error);
+				assert.equal(result.length, 
+					helper.config.defaults.search.limit.DEFAULT);
+				result.forEach(p => helper.isRawPostcodeObject(p));
+				done();
+			});
+		});
+		it ("uses default limit if invalid limit supplied", done => {
+			const query = "A";
+			Postcode.search(query, { limit: "limit" }, (error, result) => {
+				if (error) return done(error);
+				assert.equal(result.length, 
+					helper.config.defaults.search.limit.DEFAULT);
+				result.forEach(p => helper.isRawPostcodeObject(p));
 				done();
 			});
 		});
 	});
 
-	describe("loadPostcodeIds", function () {
-		it ("loads a complete array of postcode IDs into Postcode model", function (done) {
+	describe("loadPostcodeIds", () => {
+		it ("loads a complete array of postcode IDs", done => {
 			Postcode.postcodeIds = undefined;
-			Postcode.loadPostcodeIds(function (error) {
+			Postcode.loadPostcodeIds(error => {
 				if (error) return done(error);
 				assert.isArray(Postcode.idCache['_all']);
 				assert.isTrue(Postcode.idCache['_all'].length > 0);
 				done();
 			});
 		});
+		it ("loads IDs by outcode if specified", done => {
+			Postcode.postcodeIds = undefined;
+			const outcode = "AB10"
+			Postcode.loadPostcodeIds(outcode, error => {
+				if (error) return done(error);
+				assert.isArray(Postcode.idCache[outcode]);
+				assert.isTrue(Postcode.idCache[outcode].length > 0);
+				done();
+			});
+		});
 	});
 
-	describe("#random", function () {
-		it ("should return a random postcode", function (done) {
-			Postcode.random(function (error, postcode) {
+	describe("#random", () => {
+		it ("should return a random postcode", done => {
+			Postcode.random((error, postcode) => {
 				if (error) return done(error);
 				helper.isRawPostcodeObject(postcode);
 				done();
 			});
 		});
-		describe("Outcode filter", function () {
-			it ("returns random postcode for within an outcode", function (done) {
+		describe("Outcode filter", () => {
+			it ("returns random postcode for within an outcode", done => {
 				var outcode = "AB10";
-				Postcode.random({outcode: outcode}, function (error, postcode) {
+				Postcode.random({outcode: outcode}, (error, postcode) => {
 					if (error) return done(error);
 					helper.isRawPostcodeObject(postcode);
 					assert.equal(postcode.outcode, outcode);
 					done();
 				});
 			});
-			it ("is case and space insensitive", function (done) {
+			it ("is case and space insensitive", done => {
 				var outcode = "aB 10 ";
-				Postcode.random({outcode: outcode}, function (error, postcode) {
+				Postcode.random({outcode: outcode}, (error, postcode) => {
 					if (error) return done(error);
 					helper.isRawPostcodeObject(postcode);
 					assert.equal(postcode.outcode, "AB10");
 					done();
 				});
 			});
-			it ("caches requests", function (done) {
+			it ("caches requests", done => {
 				var outcode = "AB12";
-				Postcode.random({outcode: outcode}, function (error, postcode) {
+				Postcode.random({outcode: outcode}, (error, postcode) => {
 					if (error) return done(error);
 					helper.isRawPostcodeObject(postcode);
 					assert.isTrue(Postcode.idCache[outcode].length > 0);
 					done();
 				});
 			})
-			it ("returns null if invalid outcode", function (done) {
+			it ("returns null if invalid outcode", done => {
 				var outcode = "BOGUS";
-				Postcode.random({outcode: outcode}, function (error, postcode) {
+				Postcode.random({outcode: outcode}, (error, postcode) => {
 					if (error) return done(error);
 					assert.isNull(postcode);
 					done();
@@ -169,7 +264,7 @@ describe("Postcode Model", function () {
 		});
 	});
 
-	describe("#randomFromIds", function () {
+	describe("#randomFromIds", () => {
 		before(function (done) {
 			Postcode.loadPostcodeIds(done);
 		});
@@ -182,9 +277,9 @@ describe("Postcode Model", function () {
 		});
 	});
 
-	describe("#findOutcode", function () {
-		it ("should return the outcode with the right attributes", function (done) {
-			Postcode.findOutcode(testOutcode, function (error, result) {
+	describe("#findOutcode", () => {
+		it ("should return the outcode with the right attributes", done => {
+			Postcode.findOutcode(testOutcode, (error, result) => {
 				if (error) return done(error);
 				assert.equal(result.outcode, testOutcode);
 				assert.property(result, "northings");
@@ -198,22 +293,36 @@ describe("Postcode Model", function () {
 				done();
 			});
 		});
-		it ("should return null if no matching outcode", function (done) {
-			Postcode.findOutcode("EZ12", function (error, result) {
+		it ("should return null if no matching outcode", done => {
+			Postcode.findOutcode("EZ12", (error, result) => {
 				if (error) return done(error);
 				assert.equal(result, null);
 				done();
 			});
 		});
-		it ("should return null for a plausible but non-existent postcode", function (done) {
-			Postcode.findOutcode("EJ12", function (error, result) {
+		it ("should return null if invalid outcode", done => {
+			Postcode.findOutcode("1", (error, result) => {
 				if (error) return done(error);
 				assert.equal(result, null);
 				done();
 			});
 		});
-		it ("should be insensitive to space", function (done) {
-			Postcode.findOutcode(testOutcode + "    ", function (error, result) {
+		it ("should return null if girobank outcode", done => {
+			Postcode.findOutcode("GIR", (error, result) => {
+				if (error) return done(error);
+				assert.equal(result, null);
+				done();
+			});
+		});
+		it ("should return null for a plausible but non-existent postcode", done => {
+			Postcode.findOutcode("EJ12", (error, result) => {
+				if (error) return done(error);
+				assert.equal(result, null);
+				done();
+			});
+		});
+		it ("should be insensitive to space", done => {
+			Postcode.findOutcode(testOutcode + "    ", (error, result) => {
 				if (error) return done(error);
 				assert.equal(result.outcode, testOutcode);
 				assert.property(result, "northings");
@@ -224,7 +333,7 @@ describe("Postcode Model", function () {
 			});
 		});
 		it ("should be insensitive to case", function (done) {
-			Postcode.findOutcode(testOutcode.toLowerCase(), function (error, result) {
+			Postcode.findOutcode(testOutcode.toLowerCase(), (error, result) => {
 				if (error) return done(error);
 				assert.equal(result.outcode, testOutcode);
 				assert.property(result, "northings");
@@ -236,11 +345,11 @@ describe("Postcode Model", function () {
 		});
 	});
 
-	describe("#_deriveMaxRange", function () {
-		var postcode, location;
+	describe("#_deriveMaxRange", () => {
+		let postcode, location;
 
-		beforeEach(function (done) {
-			helper.locationWithNearbyPostcodes(function (error, postcode) {
+		beforeEach(done => {
+			helper.locationWithNearbyPostcodes((error, postcode) => {
 				if (error) return done(error);
 				location = postcode;
 				done();
@@ -248,31 +357,31 @@ describe("Postcode Model", function () {
 		});
 
 		it ("returns start range if many postcodes nearby", function (done) {
-			Postcode._deriveMaxRange(location, function (error, result) {
+			Postcode._deriveMaxRange(location, (error, result) => {
 				if (error) return done(error);
 				assert.equal(result, 500);
 				done();
 			});
 		});
 
-		it ("returns null if nearest postcode is outside of max range", function (done) {
+		it ("returns null if nearest postcode is outside of max range", done => {
 			location = {
 				longitude: -0.12466272904588,
 				latitude: 51.4998404539774
 			};
-			Postcode._deriveMaxRange(location, function (error, result) {
+			Postcode._deriveMaxRange(location, (error, result) => {
 				if (error) return done(error);
 				assert.isNull(result);
 				done();
 			});
 		});
 
-		it ("returns a range which has at least 10 postcodes", function (done) {
+		it ("returns a range which has at least 10 postcodes", done => {
 			location = {
 				longitude: -2.12659411941741,
 				latitude: 57.2465923827836
 			};
-			Postcode._deriveMaxRange(location, function (error, range) {
+			Postcode._deriveMaxRange(location, (error, range) => {
 				if (error) return done(error);
 				assert.isNumber(range);
 				assert.isTrue(range > 500);
@@ -282,177 +391,171 @@ describe("Postcode Model", function () {
 	});
 
 	describe("#nearestPostcodes", function () {
-		var location;
+		let location;
 
-		beforeEach(function (done) {
-			helper.locationWithNearbyPostcodes(function (error, postcode) {
+		beforeEach(done => {
+			helper.locationWithNearbyPostcodes((error, postcode) => {
 				if (error) return done(error);
 				location = postcode;
 				done();
 			});
 		});
 
-		it ("should return a list of nearby postcodes", function (done) {
-			var params = location;
-			
-			Postcode.nearestPostcodes(params, function (error, postcodes) {
+		it ("should return a list of nearby postcodes", done => {
+			const params = location;
+			Postcode.nearestPostcodes(params, (error, postcodes) => {
 				if (error) return done(error);
 				assert.isArray(postcodes);
-				postcodes.forEach(function (postcode) {
-					helper.isRawPostcodeObject(postcode);
-				});
+				postcodes.forEach(p => helper.isRawPostcodeObject(p));
 				done();
 			});
 		});
-		it ("should be sensitive to limit", function (done) {
-			var params = {
+		it ("should be sensitive to limit", done => {
+			const params = {
 				longitude: location.longitude,
 				latitude: location.latitude,
 				limit: 1
 			}
-			Postcode.nearestPostcodes(params, function (error, postcodes) {
+			Postcode.nearestPostcodes(params, (error, postcodes) => {
 				if (error) return done(error);
 				assert.isArray(postcodes);
 				assert.equal(postcodes.length, 1);
-				postcodes.forEach(function (postcode) {
-					helper.isRawPostcodeObject(postcode);
-				});
+				postcodes.forEach(p => helper.isRawPostcodeObject(p));
 				done();
 			});
 		});
-		it ("should be sensitive to distance param", function (done) {
-			var nearby = {
-					longitude: location.longitude,
-					latitude: location.latitude,
-				},
-				farAway = {
-					longitude: location.longitude,
-					latitude: location.latitude,
-					radius: 1000
-				};
-
-			Postcode.nearestPostcodes(nearby, function (error, postcodes) {
+		it ("should be sensitive to distance param", done => {
+			const nearby = {
+				longitude: location.longitude,
+				latitude: location.latitude,
+			};
+			const farAway = {
+				longitude: location.longitude,
+				latitude: location.latitude,
+				radius: 1000
+			};
+			Postcode.nearestPostcodes(nearby, (error, postcodes) => {
 				if (error) return done(error);
-				Postcode.nearestPostcodes(farAway, function (error, farawayPostcodes) {
+				Postcode.nearestPostcodes(farAway, (error, farawayPostcodes) => {
 					if (error) return done(error);
 					assert.isTrue(farawayPostcodes.length >= postcodes.length);
 					done();
 				});
 			});
 		});
-		it ("should default limit to 10 if invalid", function (done) {
-			var params = {
+		it ("should default limit to 10 if invalid", done => {
+			const params = {
 				longitude: location.longitude,
 				latitude: location.latitude,
 				limit: "Bogus"
 			};
-			Postcode.nearestPostcodes(params, function (error, postcodes) {
+			Postcode.nearestPostcodes(params, (error, postcodes) => {
 				if (error) return done(error);
 				assert.isTrue(postcodes.length <= 10);
 				done();
 			});
 		});
-		it ("should default radius to 100 if invalid", function (done) {
-			var nearby = {
-					longitude: location.longitude,
-					latitude: location.latitude,
-					radius: "BOGUS"
-				},
-				farAway = {
-					longitude: location.longitude,
-					latitude: location.latitude,
-					radius: 1000
-				};
+		it ("should default radius to 100 if invalid", done => {
+			const nearby = {
+				longitude: location.longitude,
+				latitude: location.latitude,
+				radius: "BOGUS"
+			};
+			const farAway = {
+				longitude: location.longitude,
+				latitude: location.latitude,
+				radius: 1000
+			};
 
-			Postcode.nearestPostcodes(nearby, function (error, postcodes) {
+			Postcode.nearestPostcodes(nearby, (error, postcodes) => {
 				if (error) return done(error);
-				Postcode.nearestPostcodes(farAway, function (error, farawayPostcodes) {
+				Postcode.nearestPostcodes(farAway, (error, farawayPostcodes) => {
 					if (error) return done(error);
 					assert.isTrue(farawayPostcodes.length >= postcodes.length);
 					done();
 				});
 			});
 		});
-		it ("should raise an error if invalid longitude", function (done) {
-			var params = {
+		it ("should raise an error if invalid longitude", done => {
+			const params = {
 				longitude: "Bogus",
 				latitude: location.latitude,
 			};
-			Postcode.nearestPostcodes(params, function (error, postcodes) {
+			Postcode.nearestPostcodes(params, (error, postcodes) => {
 				assert.isNotNull(error);
 				assert.match(error.message, /invalid longitude/i);
 				done();
 			});
 		});
-		it ("should raise an error if invalid latitude", function (done) {
-			var params = {
+		it ("should raise an error if invalid latitude", done => {
+			const params = {
 				longitude: location.longitude,
 				latitude: "Bogus",
 			};
-			Postcode.nearestPostcodes(params, function (error, postcodes) {
+			Postcode.nearestPostcodes(params, (error, postcodes) => {
 				assert.isNotNull(error);
 				assert.match(error.message, /invalid latitude/i);
 				done();
 			});
 		});
-		describe("Wide Search", function () {
-			var params;
-			beforeEach(function () {
+		describe("Wide Search", () => {
+			let params;
+			beforeEach(() => {
 				params = {
 					longitude: -2.12659411941741,
 					latitude: 57.2465923827836
 				};
 			});
-			it ("performs an incremental search if flag is passed", function (done) {
-				Postcode.nearestPostcodes(params, function (error, postcodes) {
+			it ("performs an incremental search if flag is passed", done => {
+				Postcode.nearestPostcodes(params, (error, postcodes) => {
 					if (error) return done(error);
 					assert.isNull(postcodes);
 					params.wideSearch = true;
-					Postcode.nearestPostcodes(params, function (error, postcodes) {
+					Postcode.nearestPostcodes(params, (error, postcodes) => {
 						if (error) return done(error);
 						assert.equal(postcodes.length, 10);
 						done();
 					});
 				});
 			});
-			it ("performs an incremental search if 'widesearch' flag is passed", function (done) {
-				Postcode.nearestPostcodes(params, function (error, postcodes) {
+			it ("performs an incremental search if 'widesearch' flag is passed", done => {
+				Postcode.nearestPostcodes(params, (error, postcodes) => {
 					if (error) return done(error);
 					assert.isNull(postcodes);
 					params.widesearch = true;
-					Postcode.nearestPostcodes(params, function (error, postcodes) {
+					Postcode.nearestPostcodes(params, (error, postcodes) => {
 						if (error) return done(error);
 						assert.equal(postcodes.length, 10);
 						done();
 					});
 				});
 			});
-			it ("returns null if point is too far from nearest postcode", function (done) {
+			it ("returns null if point is too far from nearest postcode", done => {
 				params = {
 					longitude: 0,
 					latitude: 0,
 					wideSearch: true
 				};
-				Postcode.nearestPostcodes(params, function (error, postcodes) {
+				Postcode.nearestPostcodes(params, (error, postcodes) => {
 					if (error) return done(error);
 					assert.isNull(postcodes);
 					done();
 				});
 			});
-			it ("resets limit to a maximum of 10 if it is exceeded", function (done) {
+			it ("resets limit to a maximum of 10 if it is exceeded", done => {
 				params.wideSearch = true;
 				params.limit = 20;
-				Postcode.nearestPostcodes(params, function (error, postcodes) {
+				Postcode.nearestPostcodes(params, (error, postcodes) => {
 					if (error) return done(error);
 					assert.equal(postcodes.length, 10);
 					done();
 				});
 			});
-			it ("maintains limit if less than 10", function (done) {
-				var limit = 2;
+			it ("maintains limit if less than 10", done => {
+				const limit = 2;
 				params.wideSearch = true;
 				params.limit = limit;
-				Postcode.nearestPostcodes(params, function (error, postcodes) {
+				Postcode.nearestPostcodes(params, (error, postcodes) => {
 					if (error) return done(error);
 					assert.equal(postcodes.length, limit);
 					done();
@@ -461,5 +564,3 @@ describe("Postcode Model", function () {
 		});
 	});
 });
-
-

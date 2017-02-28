@@ -1,53 +1,50 @@
-var fs = require("fs");
-var path = require("path");
-var async = require("async");
-var assert = require("chai").assert;
-var helper = require(__dirname + "/helper");
+"use strict";
 
-/* Modify model here */
-var Model = helper.Ward;
-/* Modify model here */
+const fs = require("fs");
+const path = require("path");
+const async = require("async");
+const assert = require("chai").assert;
+const helper = require(`${__dirname}/helper`);
 
-var data = JSON.parse(fs.readFileSync(path.join(helper.rootPath, "data/"+ Model.relation +".json")));
-var dataCount = 0;
+const Model = helper.Ward;
 
-for (var d in data) {
+const data = JSON.parse(fs.readFileSync(path.join(helper.rootPath, "data/"+ Model.relation +".json")));
+let dataCount = 0;
+
+for (let d in data) {
 	if (data.hasOwnProperty(d)) {
 		dataCount += 1;
 	}
 }
 
-describe(Model.relation + " model", function () {
-	before(function (done) {
+describe(`${Model.relation} model`, () => {
+	before(function(done) {
 		this.timeout(0);
-		helper.clearPostcodeDb(function (error, result) {
+		helper.clearPostcodeDb((error) => {
 			if (error) return done(error);
-			helper.seedPostcodeDb(function (error, result) {
-				if (error) return done(error);
-				done();
-			});
+			helper.seedPostcodeDb(done);
 		});
 	});
 
 	// Rebuild table after tests
-	after(function (done) {
+	after(function(done) {
 		this.timeout(0);
 		Model._setupTable(done);
 	});
 
-	describe("seedData", function () {
+	describe("seedData", () => {
 		// Recreate clean table
-		before(function (done) {
-			Model._destroyRelation(function (error) {
+		before(done => {
+			Model._destroyRelation(error => {
 				if (error) return done(error);
 				Model._createRelation(done);
 			});
 		});
-		it ("loads correct data from data directory", function (done) {
+		it ("loads correct data from data directory", function(done) {
 			this.timeout(0);
-			Model.seedData(function (error) {
+			Model.seedData(error => {
 				if (error) return done(error);
-				Model._query("SELECT count(*) FROM " + Model.relation , function (error, result) {
+				Model._query(`SELECT count(*) FROM ${Model.relation}` , (error, result) => {
 					if (error) return done(error);
 					assert.equal(result.rows[0].count, dataCount);
 					done();
@@ -56,12 +53,12 @@ describe(Model.relation + " model", function () {
 		});
 	});
 
-	describe("_setupTable", function (done) {
-		it ("creates a table, associated indexes and populates with data", function (done) {
+	describe("_setupTable", () => {
+		it ("creates a table, associated indexes and populates with data", function(done) {
 			this.timeout(0);
-			Model._setupTable(function (error) {
+			Model._setupTable(error => {
 				if (error) return done(error);
-				Model._query("SELECT count(*) FROM " + Model.relation , function (error, result) {
+				Model._query(`SELECT count(*) FROM ${Model.relation}`, (error, result) => {
 					if (error) return done(error);
 					assert.equal(result.rows[0].count, dataCount);
 					done();

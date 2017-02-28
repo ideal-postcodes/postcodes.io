@@ -1,4 +1,6 @@
-var logger = require("commonlog-bunyan").logger;
+"use strict";
+
+const logger = require("commonlog-bunyan").logger;
 
 /**
  * Returns JSON response on behalf of routes that return `response.jsonApiResponse`
@@ -9,7 +11,7 @@ var logger = require("commonlog-bunyan").logger;
  */
 
 function jsonApiResponseRenderer (request, response, next) {
-	var jsonResponse = response.jsonApiResponse;
+	const jsonResponse = response.jsonApiResponse;
 	if (!jsonResponse) return next();
 
 	if (request.query.callback) {
@@ -24,7 +26,8 @@ function jsonApiResponseRenderer (request, response, next) {
  */
 
 function errorRenderer (error, request, response, next) {
-	var message = "Something went wrong: " + error.message;
+	/*jshint unused:false */
+	let message = `Something went wrong: ${error.message}`;
 	
 	if (process.env.NODE_ENV !== "test") {
 		console.log(error.stack);	
@@ -36,7 +39,7 @@ function errorRenderer (error, request, response, next) {
 
 	response.status(500).send(message);
 	
-	logger.error({error: error})
+	logger.error({error: error});
 }
 
 /**
@@ -47,8 +50,8 @@ function notFoundRenderer (request, response) {
 	response.status(404).render("404");
 }
 
-module.exports = function (app) {
+module.exports = app => {
 	app.use(jsonApiResponseRenderer);
 	app.use(errorRenderer);
 	app.use(notFoundRenderer);
-}
+};

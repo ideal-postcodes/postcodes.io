@@ -1,9 +1,10 @@
-var path = require("path");
-var bsyslog = require("bunyan-syslog");
-var rootPath = path.join(__dirname, '../');
-var defaults = require("./defaults");
+"use strict";
 
-var config = {
+const path = require("path");
+const rootPath = path.join(__dirname, "../");
+const defaults = require("./defaults");
+
+const config = {
 
 	/*
 	* Development Environment (Default) Configuration Object ($ node server.js)
@@ -93,7 +94,7 @@ var config = {
 };
 
 module.exports = function (environment) {
-	var cfg = config[environment] || config["development"];
+	const cfg = config[environment] || config.development;
 
 	cfg.defaults = defaults;
 

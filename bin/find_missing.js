@@ -10,15 +10,32 @@
  *
  */
 
-var	fs = require("fs");
-var path = require("path");
-var csv = require("csv");
-var argv = require('minimist')(process.argv.slice(2));
+"use strict";
 
-var codeTypes = ["nhsHa", "counties", "districts", "wards", "parishes", "constituencies", 
-	"european_registers", "regions", "pcts", "lsoa", "msoa", "nuts", "ccgs"];
+const fs = require("fs");
+const path = require("path");
+const csv = require("csv");
+const parse = csv.parse;
+const transform = csv.transform;
+const argv = require('minimist')(process.argv.slice(2));
 
-var typeOffset = {
+const codeTypes = [
+	"nhsHa",
+	"counties",
+	"districts",
+	"wards",
+	"parishes",
+	"constituencies",
+	"european_registers",
+	"regions",
+	"pcts",
+	"lsoa",
+	"msoa",
+	"nuts",
+	"ccgs"
+];
+
+const typeOffset = {
 	nhsHa: 12,
 	counties: 5,
 	districts: 6,
@@ -34,15 +51,15 @@ var typeOffset = {
 	ccgs: 46
 };
 
-var source = argv._[0];
+const source = argv._[0];
 if (!source || !fs.existsSync(source)) {
 	console.log("Please specificy ONSPD Directory source file");
 	process.exit(0);
 }
 
-var type = argv.type;
+const type = argv.type;
 if (type) {
-	if (!codeTypes.some(function (codeType) { return codeType === type })) {
+	if (!codeTypes.some(codeType => codeType === type )) {
 		console.log("Please specify a valid code type using --type=", codeTypes);
 		process.exit(0);
 	} else {
@@ -51,15 +68,15 @@ if (type) {
 }
 
 // Load data sources
-var data = {};
-var missingData = {};
-codeTypes.forEach(function (codeType) {
+const data = {};
+const missingData = {};
+codeTypes.forEach(codeType => {
 	missingData[codeType] = {};
-	data[codeType] = JSON.parse(fs.readFileSync(path.join(__dirname, "../data/") + codeType + ".json"));
+	data[codeType] = require(`../data/${codeType}.json`);
 });
 
-var check = function (row, type) {
-	var elem = row[typeOffset[type]];
+const check = (row, type) => {
+	const elem = row[typeOffset[type]];
 	if (elem === "") {
 		return;
 	} else {
@@ -72,26 +89,20 @@ var check = function (row, type) {
 		}
 	}
 };
-			
-var transform = function (row, index) {
-	// Skip row if terminated postcode
-	if (row[4].length !== 0) return null;
-	
-	codeTypes.forEach(function (codeType) {
-		check(row, codeType);
-	});
-};
 
-var stream = csv({delimiter: "	"})
-	.from.stream(fs.createReadStream(source))
-	.transform(transform)
-	.on('end', function(count){
-	  console.log(JSON.stringify(missingData, 2, 2));
+const parser = parse({delimiter: ","});
+
+fs.createReadStream(source)
+	.pipe(parser)
+	.on("data", row => {
+		if (row[4].length !== 0) return null; // Skip row if terminated postcode
+		codeTypes.forEach(codeType => check(row, codeType));
+	})
+	.on("end", () => {
+		console.log(JSON.stringify(missingData, 2, 2));
 	  process.exit(0);
 	})
-	.on('error', function(error){
-	  console.log(error.message);
-	  process.exit(0);
+	.on("error", error => {
+		console.log(error.message);
+	  process.exit(1);
 	});
-
-

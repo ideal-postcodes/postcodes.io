@@ -1,14 +1,8 @@
 "use strict";
 
-var logger = require("commonlog-bunyan");
-var async = require("async");
-var S = require("string");
-var Outcode = require("../models/outcode");
-var path = require("path");
-var env = process.env.NODE_ENV || "development";
-var defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
+const Outcode = require("../models/outcode");
 
-exports.query = function (request, response, next) {
+exports.query = (request, response, next) => {
 	if (request.query.latitude && request.query.longitude) {
 		request.params.latitude = request.query.latitude;
 		request.params.longitude = request.query.longitude;
@@ -30,10 +24,10 @@ exports.query = function (request, response, next) {
 	return next();
 };
 
-exports.showOutcode = function (request, response, next) {
-	var outcode = request.params.outcode;
+exports.showOutcode = (request, response, next) => {
+	const outcode = request.params.outcode;
 
-	Outcode.find(outcode, function (error, result) {
+	Outcode.find(outcode, (error, result) => {
 		if (error) return next(error);
 		if (!result) {
 			response.jsonApiResponse = {
@@ -50,10 +44,10 @@ exports.showOutcode = function (request, response, next) {
 	});
 };
 
-exports.nearest = function (request, response, next) {
-	var outcode = request.params.outcode;
+exports.nearest = (request, response, next) => {
+	const outcode = request.params.outcode;
 
-	Outcode.find(outcode, function (error, outcode) {
+	Outcode.find(outcode, (error, outcode) => {
 		if (error) {
 			return next(error);
 		}
@@ -69,13 +63,14 @@ exports.nearest = function (request, response, next) {
 			};
 			return next();
 		}
-	})
+	});
 };
 
 function nearestOutcodes (request, response, next) {
-	var longitude = parseFloat(request.params.longitude),
-			latitude = parseFloat(request.params.latitude),
-			limit, radius, params = {};
+	const longitude = parseFloat(request.params.longitude);
+	const latitude = parseFloat(request.params.latitude);
+	let limit, radius; 
+	const params = {};
 
 	if (isNaN(longitude) || isNaN(latitude)) {
 		response.jsonApiResponse = {
@@ -114,7 +109,7 @@ function nearestOutcodes (request, response, next) {
 		}
 	}
 
-	Outcode.nearest(params, function (error, results) {
+	Outcode.nearest(params, (error, results) => {
 		if (error) return next(error);
 		if (!results) {
 			response.jsonApiResponse = {
@@ -125,9 +120,7 @@ function nearestOutcodes (request, response, next) {
 		} else {
 			response.jsonApiResponse = {
 				status: 200,
-				result: results.map(function (outcode) {
-					return Outcode.toJson(outcode);
-				})
+				result: results.map(outcode => Outcode.toJson(outcode))
 			};
 			return next();
 		}

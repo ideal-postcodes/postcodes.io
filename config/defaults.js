@@ -34,5 +34,27 @@ module.exports = {
 			DEFAULT: 10,
 			MAX: 100
 		}
+	},
+	placesSearch: {
+		limit: {
+			DEFAULT: 10,
+			MAX: 100
+		}
+	},
+	placesContained: {
+		limit: {
+			DEFAULT: 10,
+			MAX: 100
+		}
+	},
+	placesNearest: {
+		limit: {
+			DEFAULT: 10,
+			MAX: 100
+		},
+		radius: {
+			DEFAULT: 1000,
+			MAX: 10000
+		}
 	}
 };

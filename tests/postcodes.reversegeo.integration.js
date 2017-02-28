@@ -1,48 +1,47 @@
-var path = require("path");
-var app = require(path.join(__dirname, "../server"));
-var request = require("supertest");
-var assert = require("chai").assert;
-var helper = require(path.join(__dirname + "/helper"));
-var async = require("async");
+"use strict";
 
-describe("Postcodes routes", function () {
-	var testPostcode;
+const path = require("path");
+const app = require(path.join(__dirname, "../server"));
+const request = require("supertest");
+const assert = require("chai").assert;
+const helper = require(path.join(`${__dirname}/helper`));
+const async = require("async");
 
-	before(function (done) {
+describe("Postcodes routes", () => {
+	let testPostcode;
+
+	before(function(done) {
 		this.timeout(0);
-		helper.clearPostcodeDb(function (error, result) {
+		helper.clearPostcodeDb(error => {
 			if (error) return done(error);
-			helper.seedPostcodeDb(function (error, result) {
-				if (error) return done(error);
-				done();
-			});
+			helper.seedPostcodeDb(done);
 		});
 	});
 
-	beforeEach(function (done) {
-		helper.lookupRandomPostcode(function (result) {
+	beforeEach(done => {
+		helper.lookupRandomPostcode(result => {
 			testPostcode = result.postcode;
 			done();	
 		});
 	});
 
-	after(function (done) {
+	after(done => {
 		helper.clearPostcodeDb(done);
 	});
 
-	describe("GET /postcodes/lon/:longitude/lat/latitude", function () {
-		var loc;
+	describe("GET /postcodes/lon/:longitude/lat/latitude", () => {
+		let loc;
 
-		beforeEach(function (done) {
-			helper.locationWithNearbyPostcodes(function (error, postcode) {
+		beforeEach(done => {
+			helper.locationWithNearbyPostcodes((error, postcode) => {
 				if (error) return done(error);
 				loc = postcode;
 				done();
 			});
 		});
 
-		it ("should return a list of nearby postcodes", function (done) {
-			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
+		it ("should return a list of nearby postcodes", done => {
+			const uri = encodeURI(`/postcodes/lon/${loc.longitude}/lat/${loc.latitude}`);
 
 			request(app)
 			.get(uri)
@@ -53,16 +52,16 @@ describe("Postcodes routes", function () {
 				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
-				response.body.result.forEach(function (postcode) {
+				response.body.result.forEach(postcode => {
 					helper.isPostcodeObject(postcode);
 				});
-				assert.isTrue(response.body.result.some(function (elem) {
+				assert.isTrue(response.body.result.some(elem => {
 					return elem.postcode === loc.postcode;
 				}));
 				done();
 			});
 		});
-		it ("should be sensitive to distance query", function (done) {
+		it ("should be sensitive to distance query", done => {
 			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 			request(app)
 			.get(uri)
@@ -82,7 +81,7 @@ describe("Postcodes routes", function () {
 				});
 			});
 		});
-		it ("should be sensitive to limit query", function (done) {
+		it ("should be sensitive to limit query", done => {
 			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 			request(app)
 			.get(uri)
@@ -96,7 +95,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should throw a 400 error if invalid longitude", function (done) {
+		it ("should throw a 400 error if invalid longitude", done => {
 			var uri = encodeURI("/postcodes/lon/" + "BOGUS" + "/lat/" + loc.latitude);
 			request(app)
 			.get(uri)
@@ -106,7 +105,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should throw a 400 error if invalid latitude", function (done) {
+		it ("should throw a 400 error if invalid latitude", done => {
 			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + "BOGUS");
 			request(app)
 			.get(uri)
@@ -116,7 +115,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should throw a 400 error if invalid limit", function (done) {
+		it ("should throw a 400 error if invalid limit", done => {
 			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 			request(app)
 			.get(uri)
@@ -129,7 +128,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should throw a 400 error if invalid distance", function (done) {
+		it ("should throw a 400 error if invalid distance", done => {
 			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 			request(app)
 			.get(uri)
@@ -142,7 +141,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("returns null if no postcodes nearby", function (done) {
+		it ("returns null if no postcodes nearby", done => {
 			var uri = encodeURI("/postcodes/lon/0/lat/0");
 			request(app)
 			.get(uri)
@@ -153,7 +152,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("should respond to options", function (done) {
+		it ("should respond to options", done => {
 			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude);
 			request(app)
 			.options(uri)
@@ -169,7 +168,7 @@ describe("Postcodes routes", function () {
 	describe("GET /postcodes?lon=:longitude&lat=:latitude", function () {
 		var loc, uri;
 
-		beforeEach(function (done) {
+		beforeEach(done => {
 			uri = "/postcodes/";
 			helper.locationWithNearbyPostcodes(function (error, postcode) {
 				if (error) return done(error);
@@ -178,7 +177,7 @@ describe("Postcodes routes", function () {
 			});
 		});
 
-		it ("returns a list of nearby postcodes", function (done) {
+		it ("returns a list of nearby postcodes", done => {
 			request(app)
 			.get(uri)
 			.query({
@@ -201,7 +200,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("accepts full spelling of longitude and latitude", function (done) {
+		it ("accepts full spelling of longitude and latitude", done => {
 			request(app)
 			.get(uri)
 			.query({
@@ -224,7 +223,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("falls back to a postcode query if longitude is missing", function (done) {
+		it ("falls back to a postcode query if longitude is missing", done => {
 			request(app)
 			.get(uri)
 			.query({
@@ -239,7 +238,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("falls back to a postcode query if latitude is missing", function (done) {
+		it ("falls back to a postcode query if latitude is missing", done => {
 			request(app)
 			.get(uri)
 			.query({
@@ -254,7 +253,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("is sensitive to distance query", function (done) {
+		it ("is sensitive to distance query", done => {
 			request(app)
 			.get(uri)
 			.query({
@@ -279,7 +278,7 @@ describe("Postcodes routes", function () {
 				});
 			});
 		});
-		it ("is sensitive to limit query", function (done) {
+		it ("is sensitive to limit query", done => {
 			request(app)
 			.get(uri)
 			.query({
@@ -294,7 +293,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("returns a 400 error if invalid longitude", function (done) {
+		it ("returns a 400 error if invalid longitude", done => {
 			request(app)
 			.get(uri)
 			.query({
@@ -307,7 +306,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("returns a 400 error if invalid latitude", function (done) {
+		it ("returns a 400 error if invalid latitude", done => {
 			request(app)
 			.get(uri)
 			.query({
@@ -320,7 +319,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("returns a 400 error if invalid limit", function (done) {
+		it ("returns a 400 error if invalid limit", done => {
 			request(app)
 			.get(uri)
 			.query({ 
@@ -334,7 +333,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("returns a 400 error if invalid distance", function (done) {
+		it ("returns a 400 error if invalid distance", done => {
 			request(app)
 			.get(uri)
 			.query({
@@ -348,7 +347,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("returns null if no postcodes nearby", function (done) {
+		it ("returns null if no postcodes nearby", done => {
 			var uri = encodeURI("/postcodes");
 			request(app)
 			.get(uri)
@@ -363,7 +362,7 @@ describe("Postcodes routes", function () {
 				done();
 			});
 		});
-		it ("responds to options", function (done) {
+		it ("responds to options", done => {
 			request(app)
 			.options(uri)
 			.expect(204)
@@ -379,7 +378,7 @@ describe("Postcodes routes", function () {
 				longitude = -2.12659411941741;
 				latitude = 57.2465923827836;
 			});
-			it ("allows search over a larger area", function (done) {
+			it ("allows search over a larger area", done => {
 				request(app)
 					.get("/postcodes")
 					.query({
@@ -397,7 +396,7 @@ describe("Postcodes routes", function () {
 					});
 			});
 
-			it ("allows search over a larger area using 'widesearch'", function (done) {
+			it ("allows search over a larger area using 'widesearch'", done => {
 				request(app)
 					.get("/postcodes")
 					.query({
@@ -415,7 +414,7 @@ describe("Postcodes routes", function () {
 					});
 			});
 
-			it ("does not allow limit to exceed 10", function (done) {
+			it ("does not allow limit to exceed 10", done => {
 				request(app)
 					.get("/postcodes")
 					.query({
@@ -434,7 +433,7 @@ describe("Postcodes routes", function () {
 					});
 			});
 
-			it ("does allows limit to be below 10", function (done) {
+			it ("does allows limit to be below 10", done => {
 				request(app)
 					.get("/postcodes")
 					.query({

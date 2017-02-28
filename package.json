@@ -1,8 +1,8 @@
 {
   "name": "postcodes.io",
-  "version": "3.0.3",
+  "version": "4.0.0",
   "description": "A postcode lookup API",
-  "main": "server.js",
+  "main": "app.js",
   "directories": {
     "test": "tests"
   },
@@ -14,12 +14,14 @@
     "setup_test_db": "./bin/setup_test.sh",
     "test:seed": "./bin/generate_test_data.js",
     "test:create": "./bin/createTestDb.sh",
-    "test:clear": "./bin/clearTestDb.sh"
+    "test:clear": "./bin/clearTestDb.sh",
+    "lint": "./node_modules/.bin/jshint ."
   },
   "bin": {
     "onsParseCode": "./bin/raw_code_parsing.js",
     "onsFindMissing": "./bin/find_missing.js",
     "onsImport": "./bin/import.js",
+    "osPlaceImport": "./bin/import_places.js",
     "onsUpdate": "./bin/update_ons.js"
   },
   "repository": {
@@ -45,8 +47,9 @@
     "bunyan-syslog": "github:ideal-postcodes/node-bunyan-syslog",
     "commonlog-bunyan": "~0.4.3",
     "cors": "~2.8.1",
-    "csv": "~0.3.0",
+    "csv": "~1.1.0",
     "csv-parse": "~1.0.0",
+    "escape-string-regexp": "~1.0.5",
     "express": "~4.14.0",
     "jade": "~1.9.2",
     "minimist": "~1.1.1",
@@ -65,7 +68,7 @@
   },
   "devDependencies": {
     "chai": "~3.5.0",
-    "iconv": "~2.2.1",
+    "jshint": "~2.9.4",
     "mocha": "~3.1.0",
     "supertest": "~2.0.1"
   }
