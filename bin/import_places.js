@@ -53,12 +53,18 @@ function generateSearchFields (callback) {
 }
 
 function createPostgisExtension(callback) {
-	console.log("Enabling POSTGIS extension...")
+	console.log("Enabling POSTGIS extension...");
 	Place._query("CREATE EXTENSION IF NOT EXISTS postgis", callback);
+}
+
+function createUnaccentExtension(callback) {
+	console.log("Enabling UNACCENT extension...");
+	Place._query("CREATE EXTENSION IF NOT EXISTS unaccent", callback);
 }
 
 const executionStack = [
 	createPostgisExtension,
+	createUnaccentExtension,
 	dropRelation, 
 	createRelation, 
 	importRawCsv,
