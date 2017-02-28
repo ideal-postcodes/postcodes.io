@@ -298,9 +298,9 @@ describe("Place Model", () => {
 			}, (error, places) => {
 				if (error) return done(error);
 				assert.isTrue(places.length > 0);
-				const result = places[0];
-				helper.isRawPlaceObject(result);
-				assert.equal(result.code, validPlace.code);
+				assert.isTrue(places.length > 0);
+				helper.isRawPlaceObject(places[0]);
+				assert.isTrue(places.some(place => place.code === validPlace.code));
 				done();
 			});
 		});
