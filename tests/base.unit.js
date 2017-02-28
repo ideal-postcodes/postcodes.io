@@ -1,3 +1,5 @@
+"use strict";
+
 var assert = require("chai").assert,
 		helper = require(__dirname + "/helper");
 
