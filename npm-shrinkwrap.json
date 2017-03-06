@@ -32,11 +32,6 @@
       "from": "array-flatten@1.1.1",
       "resolved": "https://registry.npmjs.org/array-flatten/-/array-flatten-1.1.1.tgz"
     },
-    "assert-plus": {
-      "version": "0.1.5",
-      "from": "assert-plus@0.1.5",
-      "resolved": "https://registry.npmjs.org/assert-plus/-/assert-plus-0.1.5.tgz"
-    },
     "async": {
       "version": "1.5.2",
       "from": "async@>=1.5.0 <1.6.0",
@@ -73,21 +68,9 @@
       "resolved": "https://registry.npmjs.org/buffer-writer/-/buffer-writer-1.0.1.tgz"
     },
     "bunyan": {
-      "version": "1.8.5",
+      "version": "1.8.8",
       "from": "bunyan@>=1.8.5 <1.9.0",
-      "resolved": "https://registry.npmjs.org/bunyan/-/bunyan-1.8.5.tgz"
-    },
-    "bunyan-syslog": {
-      "version": "0.3.1",
-      "from": "ideal-postcodes/node-bunyan-syslog",
-      "resolved": "git://github.com/ideal-postcodes/node-bunyan-syslog.git#9bdb9eb62a763c7d30e032a619138032d5ff8771",
-      "dependencies": {
-        "nan": {
-          "version": "2.4.0",
-          "from": "nan@>=2.4.0 <2.5.0",
-          "resolved": "https://registry.npmjs.org/nan/-/nan-2.4.0.tgz"
-        }
-      }
+      "resolved": "https://registry.npmjs.org/bunyan/-/bunyan-1.8.8.tgz"
     },
     "bytes": {
       "version": "2.4.0",
@@ -639,9 +622,9 @@
       "resolved": "https://registry.npmjs.org/rimraf/-/rimraf-2.4.5.tgz"
     },
     "safe-json-stringify": {
-      "version": "1.0.3",
+      "version": "1.0.4",
       "from": "safe-json-stringify@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/safe-json-stringify/-/safe-json-stringify-1.0.3.tgz",
+      "resolved": "https://registry.npmjs.org/safe-json-stringify/-/safe-json-stringify-1.0.4.tgz",
       "optional": true
     },
     "semver": {
