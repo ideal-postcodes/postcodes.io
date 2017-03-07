@@ -9,7 +9,8 @@ Documentation can be found at [postcodes.io](http://postcodes.io)
 Please make sure you have the following available:
 
 - Node.js v4.x [(Instructions)](http://nodejs.org/)
-- Postgres with PostGIS extension [(Instructions)](http://postgis.net/install)
+- Postgres (9.5 or greater)
+- PostGIS extension [(Instructions)](http://postgis.net/install)
 
 We also have an end-to-end guide to install Postcodes.io on a fresh virtual machine [in the wiki](https://github.com/ideal-postcodes/postcodes.io/wiki/Installing-Postcodes.io).
 
