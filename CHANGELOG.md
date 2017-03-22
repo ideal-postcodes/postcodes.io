@@ -2,6 +2,9 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 4.0.1 (23/2/2017)
+- Update express & body-parser
+
 ## 4.0.0 (23/2/2017)
 - Incorporate OS Places dataset
 - npm package now points to `app.js` which exports instance postcodes.io express app
