@@ -33,7 +33,7 @@ $(function () {
 		.fail(error);
 	}
 
-	var simplePostcodeRegex = /^[a-z0-9]{1,4}\s*?\d[a-z]{2}$/i;
+	var simplePostcodeRegex = /(^[A-Z]{1,2}[0-9R][0-9A-Z]?[\s]?[0-9][ABD-HJLNP-UW-Z]{2}$)/i;
 
 	var queryCache = {};
 
