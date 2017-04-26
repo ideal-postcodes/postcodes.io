@@ -52,7 +52,7 @@ $ npm run setup_test_db # create test database
 $ npm test
 ```
 
-##External Libraries
+## External Libraries
 
 1. [Java Library](https://github.com/spdeepak/postcodes-io-java) by [Deepak Sunanda Prabhakar](https://github.com/spdeepak) 
 
@@ -73,7 +73,9 @@ $ npm test
 
 8. [Hack Library](https://github.com/Matt-Barber/HackPostcodes) HackPostcodes by [Matt Barber](https://recursiveiterator.wordpress.com/) 
 
-9. [Google Sheets Addon](https://chrome.google.com/webstore/detail/uk-postcode-geocoder/bjkecdilmiedfkihpgfhfikchkghliia?utm_source=permalink) by [Ed Patrick] (http://edwebdeveloper.com/)
+9. [Wolfram Language Library](https://github.com/arnoudbuzing/postcode) Postcode by [Arnoud Buzing](https://github.com/arnoudbuzing) 
+
+10. [Google Sheets Addon](https://chrome.google.com/webstore/detail/uk-postcode-geocoder/bjkecdilmiedfkihpgfhfikchkghliia?utm_source=permalink) by [Ed Patrick](http://edwebdeveloper.com/)
 
 ## License 
 
