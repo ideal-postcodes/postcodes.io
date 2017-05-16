@@ -228,7 +228,77 @@ Postcode.prototype.randomFromIds = function (ids, callback) {
 	});
 };
 
-const searchRegexp = /\W/g;
+// Parses postcode search options, returns object with limit
+
+const parseSearchOptions = options => {
+	let limit = parseInt(options.limit, 10);
+	if (isNaN(limit) || limit < 1) limit = defaults.search.limit.DEFAULT;
+	if (limit > defaults.search.limit.MAX) limit = defaults.search.limit.MAX;
+	return { limit: limit };
+};
+
+/* 
+ *	Search for partial/complete postcode matches
+ *  Search Methodology below: 
+ *  1) Check if string is feasible outcode, then search by that outcode
+ *  2) Check if string is space separated, then perform space-sensitive search
+ *  3) If above fail, perform space-insensitive search
+ */
+
+const whitespaceRe = /\s+/g;
+
+Postcode.prototype.search = function (options, callback) {
+	const postcode = options.postcode.toUpperCase().trim();
+	const pcCompact = postcode.replace(whitespaceRe, "");
+
+	// Returns substring matches on postcode
+	const extractPartialMatches = r => {
+		return r.filter(r => r.postcode.replace(whitespaceRe, "").includes(pcCompact));
+	};
+
+	// Returns exact matches on postcode
+	const extractMatches = r => {
+		return r.filter(r => r.postcode.replace(whitespaceRe, "") === pcCompact);
+	};
+
+	// Inspects results for partial matches
+	// - if no matches fallback to pc_compact search
+	const inspectResult = (error, result) => {
+		if (error) return callback(error);
+		const matches = extractPartialMatches(result.rows);
+		if (matches.length === 0) {
+			options.query = postcode;
+			return this.searchPcCompact(options, returnResult);
+		} 
+		return returnResult(error, result);
+	};
+
+	// Parses and formats results, includes:
+	// - returns null if empty array
+	// - filters for partial postcode matches
+	// - if full match detected, only return full match
+	const returnResult = (error, result) => {
+		if (error) return callback(error, null);
+		const matches = extractPartialMatches(result.rows);
+		if (matches.length === 0) return callback(null, null);
+		const exactMatches = extractMatches(matches);
+		if (exactMatches.length > 0) return callback(null, exactMatches);
+		return callback(null, matches);
+	};
+
+	if (Pc.validOutcode(postcode)) {
+		options.query = postcode + " ";
+		return this.searchPostcode(options, inspectResult);
+	}
+
+	if (postcode.match(/^\w+\s+\w+$/)) {
+		options.query = postcode.split(/\s+/).join(" ");
+		return this.searchPostcode(options, inspectResult);
+	}
+
+	options.query = postcode;
+	return this.searchPcCompact(options, returnResult);
+};
 
 const	searchQuery = `
 	SELECT 
@@ -237,28 +307,37 @@ const	searchQuery = `
 		postcodes
 	${toJoinString()}
 	WHERE 
-		pc_compact ~ $1 
+		postcode >= $1 
+	ORDER BY 
+		postcode ASC 
 	LIMIT $2
 `;
 
-Postcode.prototype.search = function (postcode, options, callback) {
-	const DEFAULT_LIMIT = defaults.search.limit.DEFAULT;
-	const MAX_LIMIT = defaults.search.limit.MAX;
-	let limit;
-	if (typeof options === "function") {
-		callback = options;
-		limit = 10;
-	} else {
-		limit = parseInt(options.limit, 10);
-		if (isNaN(limit)) limit = DEFAULT_LIMIT;
-		if (limit > MAX_LIMIT) limit = MAX_LIMIT;
-	}
-	const re = `^${postcode.toUpperCase().replace(searchRegexp, "")}.*`;
-	this._query(searchQuery, [re, limit], (error, result) => {
-		if (error) return callback(error, null);
-		if (result.rows.length === 0) return callback(null, null);
-		return callback(null, result.rows);
-	});
+// Space sensitive search for postcode (uses postcode column/btree)
+Postcode.prototype.searchPostcode = function (options, callback) {
+	const postcode = options.query;
+	const limit = parseSearchOptions(options).limit;
+	this._query(searchQuery, [postcode, limit], callback);
+};
+
+const	pccompactSearchQuery = `
+	SELECT 
+		postcodes.*, ${toColumnsString()}
+	FROM 
+		postcodes
+	${toJoinString()}
+	WHERE 
+		pc_compact >= $1 
+	ORDER BY 
+		pc_compact ASC 
+	LIMIT $2
+`;
+
+// Space insensitive search for postcode (uses pc_compact column/btree)
+Postcode.prototype.searchPcCompact = function (options, callback) {
+	const postcode = options.query;
+	const limit = parseSearchOptions(options).limit;
+	this._query(pccompactSearchQuery, [postcode, limit], callback);
 };
 
 const nearestPostcodeQuery = `
