@@ -44,6 +44,9 @@ const indexes = [{
 	column: "postcode"
 }, {
 	unique: true,
+	column: "pc_compact"
+}, {
+	unique: true,
 	column: "pc_compact",
 	opClass: "varchar_pattern_ops"
 }, {
