@@ -256,12 +256,7 @@ Postcode.prototype.search = function (options, callback) {
 
 	// Returns substring matches on postcode
 	const extractPartialMatches = r => {
-		return r.filter(r => r.postcode.replace(whitespaceRe, "").includes(pcCompact));
-	};
-
-	// Returns exact matches on postcode
-	const extractMatches = r => {
-		return r.filter(r => r.postcode.replace(whitespaceRe, "") === pcCompact);
+		return r.filter(r => r.pc_compact.includes(pcCompact));
 	};
 
 	// Inspects results for partial matches
@@ -284,7 +279,7 @@ Postcode.prototype.search = function (options, callback) {
 		if (error) return callback(error, null);
 		const matches = extractPartialMatches(result.rows);
 		if (matches.length === 0) return callback(null, null);
-		const exactMatches = extractMatches(matches);
+		const exactMatches = matches.filter(r => r.pc_compact === pcCompact);
 		if (exactMatches.length > 0) return callback(null, exactMatches);
 		return callback(null, matches);
 	};
