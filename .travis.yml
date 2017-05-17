@@ -2,10 +2,13 @@ language: node_js
 node_js:
   - "4"
   - "6"
+services:
+ - postgresql
 env:
  - CXX=g++-4.8
 addons:
  apt:
+  postgresql: "9.4"
   sources:
    - ubuntu-toolchain-r-test
   packages:
