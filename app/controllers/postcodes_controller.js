@@ -215,10 +215,10 @@ exports.query = (request, response, next) => {
 		return;
 	}
 
-	const searchTerm = request.query.q || request.query.query;
+	const postcode = request.query.q || request.query.query;
 	const limit = request.query.limit;
 
-	if (S(searchTerm).isEmpty()) {
+	if (S(postcode).isEmpty()) {
 		response.jsonApiResponse = {
 			status: 400,
 			error: "No postcode query submitted. Remember to include query parameter"
@@ -226,7 +226,10 @@ exports.query = (request, response, next) => {
 		return next();
 	}
 
-	Postcode.search(searchTerm, {limit: limit}, (error, results) => {
+	Postcode.search({
+		postcode: postcode, 
+		limit: limit
+	}, (error, results) => {
 		if (error) return next(error);
 		if (!results) {
 			response.jsonApiResponse = {
@@ -245,10 +248,13 @@ exports.query = (request, response, next) => {
 };
 
 exports.autocomplete = (request, response, next) => {
-	const searchTerm = request.params.postcode;
+	const postcode = request.params.postcode;
 	const limit = request.query.limit;
 
-	Postcode.search(searchTerm, {limit: limit}, (error, results) => {
+	Postcode.search({
+		postcode: postcode, 
+		limit: limit
+	}, (error, results) => {
 		if (error) return next(error);
 		if (!results) {
 			response.jsonApiResponse = {
