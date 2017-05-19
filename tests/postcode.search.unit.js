@@ -77,6 +77,14 @@ describe("Postcode Model", function () {
 		});
 
 		describe("outcode queries", () => {
+			before(done => {
+				Postcode._query("SELECT 'AB16 9ZZ' < 'AB1 9LD'", (error, result) => {
+					if (error) return done(error);
+					console.log(result.rows);
+					done();
+				})
+			});
+
 			it ("returns strict outcode matches first", done => {
 				testOutcode = "AB1";
 				Postcode.search({postcode: testOutcode}, (error, result) => {
