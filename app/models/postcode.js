@@ -13,8 +13,8 @@ const defaults = require(configPath)(env).defaults;
 
 const postcodeSchema = {
 	"id": "SERIAL PRIMARY KEY",
-	"postcode" : "VARCHAR(10)",
-	"pc_compact" : "VARCHAR(9)",
+	"postcode" : 'VARCHAR(10) COLLATE "C"',  // C Provides desirable ordering
+	"pc_compact" : 'VARCHAR(9) COLLATE "C"', // for pc autocomplete & partials
 	"quality" : "INTEGER",
 	"eastings" : "INTEGER",
 	"northings" : "INTEGER",
