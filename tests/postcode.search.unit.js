@@ -76,15 +76,105 @@ describe("Postcode Model", function () {
 			});
 		});
 
-		describe("outcode queries", () => {
-			before(done => {
-				Postcode._query("SELECT 'AB16 9ZZ' < 'AB1 9LD'", (error, result) => {
+		describe("ordering", () => {
+			it ("returns M1 < M11 for 'M1'", done => {
+				const postcode = "M1";
+				Postcode.search({postcode: postcode}, (error, result) => {
 					if (error) return done(error);
-					console.log(result.rows);
+					assert.equal(result.length, 2);
+					assert.equal(result[0].postcode, "M1 1AD");
+					assert.equal(result[1].postcode, "M11 1AA");
 					done();
-				})
+				});
 			});
+			it ("returns M1 < M11 for 'M1 '", done => {
+				const postcode = "M1 ";
+				Postcode.search({postcode: postcode}, (error, result) => {
+					if (error) return done(error);
+					assert.equal(result.length, 2);
+					assert.equal(result[0].postcode, "M1 1AD");
+					assert.equal(result[1].postcode, "M11 1AA");
+					done();
+				});
+			});
+			it ("returns M1 < M11 for 'M1 1'", done => {
+				const postcode = "M1 1";
+				Postcode.search({postcode: postcode}, (error, result) => {
+					if (error) return done(error);
+					assert.equal(result.length, 2);
+					assert.equal(result[0].postcode, "M1 1AD");
+					assert.equal(result[1].postcode, "M11 1AA");
+					done();
+				});
+			});
+			it ("returns M11 for 'M11'", done => {
+				const postcode = "M11";
+				Postcode.search({postcode: postcode}, (error, result) => {
+					if (error) return done(error);
+					assert.equal(result.length, 1);
+					assert.equal(result[0].postcode, "M11 1AA");
+					done();
+				});
+			});
+			it ("returns M11 for 'M11 '", done => {
+				const postcode = "M11 ";
+				Postcode.search({postcode: postcode}, (error, result) => {
+					if (error) return done(error);
+					assert.equal(result.length, 1);
+					assert.equal(result[0].postcode, "M11 1AA");
+					done();
+				});
+			});
+			it ("returns SE1 < SE1P for 'SE1'", done => {
+				const postcode = "SE1";
+				Postcode.search({postcode: postcode}, (error, result) => {
+					if (error) return done(error);
+					assert.equal(result.length, 2);
+					assert.equal(result[0].postcode, "SE1 9ZZ");
+					assert.equal(result[1].postcode, "SE1P 5ZZ");
+					done();
+				});
+			});
+			it ("returns SE1 for 'SE1 '", done => {
+				const postcode = "SE1 ";
+				Postcode.search({postcode: postcode}, (error, result) => {
+					if (error) return done(error);
+					assert.equal(result.length, 2);
+					assert.equal(result[0].postcode, "SE1 9ZZ");
+					assert.equal(result[1].postcode, "SE1P 5ZZ");
+					done();
+				});
+			});
+			it ("returns SE1 for 'SE1 9'", done => {
+				const postcode = "SE1 9";
+				Postcode.search({postcode: postcode}, (error, result) => {
+					if (error) return done(error);
+					assert.equal(result.length, 1);
+					assert.equal(result[0].postcode, "SE1 9ZZ");
+					done();
+				});
+			});
+			it ("returns SE1P for 'SE1P'", done => {
+				const postcode = "SE1P";
+				Postcode.search({postcode: postcode}, (error, result) => {
+					if (error) return done(error);
+					assert.equal(result.length, 1);
+					assert.equal(result[0].postcode, "SE1P 5ZZ");
+					done();
+				});
+			});
+			it ("returns SE1P for 'SE1P '", done => {
+				const postcode = "SE1P ";
+				Postcode.search({postcode: postcode}, (error, result) => {
+					if (error) return done(error);
+					assert.equal(result.length, 1);
+					assert.equal(result[0].postcode, "SE1P 5ZZ");
+					done();
+				});
+			});
+		});
 
+		describe("sensible outcode matching", () => {
 			it ("returns strict outcode matches first", done => {
 				testOutcode = "AB1";
 				Postcode.search({postcode: testOutcode}, (error, result) => {
