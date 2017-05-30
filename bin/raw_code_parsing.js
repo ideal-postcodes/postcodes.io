@@ -5,11 +5,12 @@
  *
  */
 
-var async = require("async");
-var argv = require('minimist')(process.argv.slice(2));
-var fs = require("fs");
-var csv = require("csv");
-var path = require("path");
+"use strict";
+
+const fs = require("fs");
+const csv = require("csv");
+const async = require("async");
+const argv = require('minimist')(process.argv.slice(2));
 
 if (argv.h) {
 	console.log("Commands:");
@@ -20,16 +21,16 @@ if (argv.h) {
 	process.exit(0);
 }
 
-var codeIndex = argv.ci || 0;
-var nameIndex = argv.ni || 1;
-var skipFirstLine = argv.skip;
+const codeIndex = argv.ci || 0;
+const nameIndex = argv.ni || 1;
+const skipFirstLine = argv.skip;
 
-var files = argv._;
+const files = argv._;
 if (files.length === 0) {
 	console.log("Please specifiy a file path or multiple paths");
 	process.exit(0);
 } else {
-	files.forEach(function (file) {
+	files.forEach(file => {
 		if (!fs.existsSync(file)) {
 			console.log(file, "is not a valid file");
 			process.exit(0);
@@ -37,37 +38,29 @@ if (files.length === 0) {
 	});
 }
 
-var delimiter = "	";
+const delimiter = "	";
 
-var output = {};
+const output = {};
 
-var createCsvStream = function (file) {
-	var transform = function (row, index) {
-		if (index === 0 && skipFirstLine) {
-			return null;
-		}
-		console.log(row[nameIndex])
+const createCsvStream = file => {
+	let index = -1;
+	const parseData = row => {
+		index += 1;
+		if (index === 0 && skipFirstLine) return null;
 		output[row[codeIndex]] = row[nameIndex];
 		return row;
 	}
 
-	return function (callback) {
-		stream = csv()
-			.from
-			.stream(fs.createReadStream(file, { encoding: 'utf-8' }), {
-				delimiter: delimiter
-			})
-			.transform(transform)
-			.on('end', function () {
-				callback(null);
-			})
-			.on('error', callback);
-	}
+	return callback => {
+		fs.createReadStream(file, { encoding: 'utf8' })
+		.pipe(csv.parse({ delimiter: delimiter }))
+		.on("data", parseData)
+		.on('finish', () => callback(null))
+		.on('error', callback);
+	};
 };
 
-async.series(files.map(function (file) {
-	return createCsvStream(file);
-}), function (error) {
+async.series(files.map(f => createCsvStream(f)), error => {
 	if (error) {
 		console.log("An error occurred", error);
 		process.exit(0);
@@ -75,4 +68,3 @@ async.series(files.map(function (file) {
 	console.log(JSON.stringify(output, 2, 2));
 	process.exit(0);
 });
-
