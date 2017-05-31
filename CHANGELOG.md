@@ -2,6 +2,12 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 5.0.0 (24/5/2017)
+
+- *Breaking Change* Postcode schema has been modified to facilitate faster and better quality
+- Faster and better quality postcode search and autocomplete
+- Add missing wards for ONSPD May 2017
+
 ## 4.0.1 (23/2/2017)
 - Update express & body-parser
 

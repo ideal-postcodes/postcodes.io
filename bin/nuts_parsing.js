@@ -9,9 +9,6 @@ const async = require("async");
 const argv = require('minimist')(process.argv.slice(2));
 const fs = require("fs");
 const csv = require("csv");
-const parser = csv.parse({
-	delimiter: "	";
-});
 const transformer = csv.transform((row, index) => {
 	if (skipFirstLine && !firstLineConsumed) {
 		firstLineConsumed = true;
@@ -39,7 +36,6 @@ const codeIndex = argv.i || 0;
 const innerCodeIndex = argv.ci || 4;
 const nameIndex = argv.ni || 5;
 const skipFirstLine = argv.skip === undefined ? true : argv.skip;
-let firstLineConsumed = false;
 
 const files = argv._;
 if (files.length === 0) {
@@ -57,18 +53,24 @@ if (files.length === 0) {
 const output = {};
 
 const createCsvStream = file => {
+	let index = -1;
 	return callback => {
-		fs.createReadStream(file, { encoding: 'utf-8' })
-			.pipe(parser)
-			.pipe(transformer)
-			.on("end", callback)
-			.on("error", callback);
+		return fs.createReadStream(file, {encoding: 'utf8'})
+		.pipe(csv.parse({delimiter: "	"}))
+		.on("data", row => {
+			index += 1;
+			if (skipFirstLine && index === 0) return null;
+			output[row[codeIndex]] = {
+				code: row[innerCodeIndex],
+				name: row[nameIndex]
+			};
+		})
+		.on("end", callback)
+		.on("error", callback);
 	}
 };
 
-async.series(files.map(file => {
-	return createCsvStream(file);
-}), error => {
+async.series(files.map(file => createCsvStream(file)), error => {
 	if (error) {
 		console.log("An error occurred", error);
 		console.log(error);
