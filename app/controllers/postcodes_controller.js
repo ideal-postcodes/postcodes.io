@@ -322,7 +322,7 @@ const nearestPostcodes = (request, response, next) => {
 		if (!results) {
 			response.jsonApiResponse = {
 				status: 200,
-				result: null
+				result: []
 			};
 			return next();
 		} else {
