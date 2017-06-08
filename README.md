@@ -59,6 +59,7 @@ $ npm test
 2. PHP Libraries
 	* [postcodes-io-bundle](https://github.com/boxuk/postcodes-io-bundle) by the people at [Box UK](https://www.boxuk.com/). Read the [Blog post](https://www.boxuk.com/insight/tech-posts/geocoding-postcodes-symfony2)<br/>
 	* [postcodes-io laravel](https://github.com/adityamenon/postcodes-io-laravel) package by [Aditya Menon](http://adityamenon.co)<br/>
+	* [Postcodes Laravel 5+](https://github.com/codescheme/postcodes) package by [Codescheme](https://github.com/codescheme)<br/>
 	* [PHP Class for Postcodes.io](https://github.com/hart1994/Postcodes-IO-PHP) by [Ryan](https://github.com/hart1994/)<br/>
 
 3. [Ruby Library](https://github.com/jamesruston/postcodes_io) by [James Ruston](https://github.com/jamesruston)
