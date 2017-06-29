@@ -1,15 +1,16 @@
-var path = require("path");
-var app = require(path.join(__dirname, "../server"));
-var request = require("supertest");
-var assert = require("chai").assert;
-var helper = require(path.join(__dirname + "/helper"));
+"use strict";
 
-describe("Outcodes routes", function () {
+const app = require("../server");
+const request = require("supertest");
+const assert = require("chai").assert;
+const helper = require("./helper");
+
+describe("Outcodes routes", () => {
 	before(function (done) {
 		this.timeout(0);
-		helper.clearPostcodeDb(function (error, result) {
+		helper.clearPostcodeDb((error, result) => {
 			if (error) return done(error);
-			helper.seedPostcodeDb(function (error, result) {
+			helper.seedPostcodeDb((error, result) => {
 				if (error) return done(error);
 				done();
 			});
