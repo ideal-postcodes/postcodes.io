@@ -1,16 +1,18 @@
-var path = require("path");
-var async = require("async");
-var assert = require("chai").assert;
-var helper = require(__dirname + "/helper");
-		
-var Outcode = helper.Outcode;
+"use strict";
 
-describe("Outcode Model", function () {
+const path = require("path");
+const async = require("async");
+const assert = require("chai").assert;
+const helper = require("./helper");
+		
+const Outcode = helper.Outcode;
+
+describe("Outcode Model", () => {
 	before(function (done) {
 		this.timeout(0);
-		helper.clearPostcodeDb(function (error, result) {
+		helper.clearPostcodeDb((error, result) => {
 			if (error) return done(error);
-			helper.seedPostcodeDb(function (error, result) {
+			helper.seedPostcodeDb((error, result) => {
 				if (error) return done(error);
 				done();
 			});
@@ -21,8 +23,8 @@ describe("Outcode Model", function () {
 		helper.clearPostcodeDb(done);
 	});
 
-	describe("populateLocation", function () {
-		before(function (done) {
+	describe("populateLocation", () => {
+		before(done => {
 			Outcode._destroyRelation(function (error) {
 				if (error) return done(error);
 				Outcode._createRelation(function (error) {
@@ -31,12 +33,14 @@ describe("Outcode Model", function () {
 				});
 			});
 		});
-		after(function (done) {
+
+		after(function (done) { 
 			Outcode._setupTable(done);
 		});
-		it ("generates a location using longitude and latitude", function (done) {
-			var outcode = 'AA10';
-			Outcode._create({ 
+
+		it ("generates a location using longitude and latitude", done => {
+			const outcode = 'AA10';
+			const record = { 
 		    outcode: outcode,
 		    longitude: -2.12002322052475,
 		    latitude: 57.135241767364,
@@ -45,22 +49,24 @@ describe("Outcode Model", function () {
 		    admin_district: [ 'Aberdeen City' ],
 		    parish: [],
 		    admin_county: [],
-		    admin_ward:[ 'Torry/Ferryhill'] }, 
-		    function (error) {
-		    	if (error) return done(error);
-		    	Outcode.populateLocation(function (error) {
-		    		if (error) return done(error);
-		    		Outcode.find(outcode, function (error, outcode) {
-		    			if (error) return done(error);
-		    			assert.isNotNull(outcode.location);
-		    			done();
-		    		});
-		    	});
+		    admin_ward:[ 'Torry/Ferryhill'] 
+		  };
+
+			Outcode._create(record, error => {
+	    	if (error) return done(error);
+	    	Outcode.populateLocation(error => {
+	    		if (error) return done(error);
+	    		Outcode.find(outcode, (error, outcode) => {
+	    			if (error) return done(error);
+	    			assert.isNotNull(outcode.location);
+	    			done();
+	    		});
+	    	});
 	    });
 		});
-		it ("does not generate a location when northings = 0, eastings = 0", function (done) {
-			var outcode = 'AA11';
-			Outcode._create({ 
+		it ("does not generate a location when northings = 0, eastings = 0", done => {
+			const outcode = 'AA11';
+			const record = { 
 		    outcode: outcode,
 		    longitude: -2.12002322052475,
 		    latitude: 57.135241767364,
@@ -69,44 +75,47 @@ describe("Outcode Model", function () {
 		    admin_district: [ 'Aberdeen City' ],
 		    parish: [],
 		    admin_county: [],
-		    admin_ward:[ 'Torry/Ferryhill'] }, 
-		    function (error) {
-		    	if (error) return done(error);
-		    	Outcode.populateLocation(function (error) {
-		    		if (error) return done(error);
-		    		Outcode.find(outcode, function (error, outcode) {
-		    			if (error) return done(error);
-		    			assert.isNull(outcode.location);
-		    			done();
-		    		});
-		    	});
+		    admin_ward:[ 'Torry/Ferryhill'] 
+		  };
+			Outcode._create(record, error => {
+	    	if (error) return done(error);
+	    	Outcode.populateLocation((error) => {
+	    		if (error) return done(error);
+	    		Outcode.find(outcode, (error, outcode) => {
+	    			if (error) return done(error);
+	    			assert.isNull(outcode.location);
+	    			done();
+	    		});
+	    	});
 	    });
 		});
 	});
 
-	describe("seedData", function () {
-		before(function (done) {
-			Outcode._destroyRelation(function (error) {
+	describe("seedData", () => {
+		before(done => {
+			Outcode._destroyRelation(error => {
 				if (error) return error;
 				Outcode._createRelation(done);
 			});
 		});
+
 		after(function (done) {
 			Outcode._setupTable(done);
 		});
+
 		it ("seeds outcode table", function (done) {
 			this.timeout(0);
-			var allOutcodes = function (callback) {
-				return Outcode.all( function (error, result) {
+			const allOutcodes = callback => {
+				return Outcode.all((error, result) => {
 					if (error) return done(error);
 					return callback(result.rows);
 				});
-			}
-			allOutcodes(function (outcodes) {
+			};
+			allOutcodes(outcodes => {
 				assert.equal(outcodes.length, 0);
-				Outcode.seedData(function (error) {
+				Outcode.seedData(error => {
 					if (error) return done(error);
-					allOutcodes(function (outcodes) {
+					allOutcodes(outcodes => {
 						assert.isTrue(outcodes.length > 0);
 						done();
 					});
@@ -115,17 +124,19 @@ describe("Outcode Model", function () {
 		});
 	});
 
-	describe("_setupTable", function () {
+	describe("_setupTable", () => {
 		before(function (done) {
 			Outcode._destroyRelation(done);
 		});
+
 		after(function (done) {
 			Outcode._setupTable(done);
 		});
-		it ("creates and populates outcode table", function (done) {
-			Outcode._setupTable(function (error) {
+
+		it ("creates and populates outcode table", done => {
+			Outcode._setupTable(error => {
 				if (error) return done(error);
-				Outcode.all(function (error, outcodes) {
+				Outcode.all((error, outcodes) => {
 					if (error) return done(error);
 					assert.isTrue(outcodes.rows.length > 0);
 					done()
@@ -134,48 +145,50 @@ describe("Outcode Model", function () {
 		});
 	})
 
-	describe("find", function () {
+	describe("find", () => {
 		before(function (done) {
 			Outcode._setupTable(done);
 		});
+
 		after(function (done) {
 			Outcode._setupTable(done);
 		});
-		it ("returns outcode", function (done) {
-			var term = "AB10";
-			Outcode.find(term, function (error, outcode) {
+
+		it ("returns outcode", done => {
+			const term = "AB10";
+			Outcode.find(term, (error, outcode) => {
 				if (error) return done(error);
 				assert.equal(outcode.outcode, term);
 				done();
 			});
 		});
-		it ("returns null if not string", function (done) {
-			var term;
-			Outcode.find(term, function (error, outcode) {
+		it ("returns null if not string", done => {
+			let term;
+			Outcode.find(term, (error, outcode) => {
 				if (error) return done(error);
 				assert.isNull(outcode);
 				done();
 			});
 		});
-		it ("returns null if outcode does not exist", function (done) {
-			var term = "ZZ10";
-			Outcode.find(term, function (error, outcode) {
+		it ("returns null if outcode does not exist", done => {
+			const term = "ZZ10";
+			Outcode.find(term, (error, outcode) => {
 				if (error) return done(error);
 				assert.isNull(outcode);
 				done();
 			});
 		});
-		it ("is case insensitive", function (done) {
-			var term = "ab10";
-			Outcode.find(term, function (error, outcode) {
+		it ("is case insensitive", done => {
+			const term = "ab10";
+			Outcode.find(term, (error, outcode) => {
 				if (error) return done(error);
 				assert.equal(outcode.outcode, term.toUpperCase());
 				done();
 			});
 		});
-		it ("is space insensitive", function (done) {
-			var term = " AB 10 ";
-			Outcode.find(term, function (error, outcode) {
+		it ("is space insensitive", done => {
+			const term = " AB 10 ";
+			Outcode.find(term, (error, outcode) => {
 				if (error) return done(error);
 				assert.equal(outcode.outcode, term.replace(/\s/g, ""));
 				done();
@@ -183,59 +196,56 @@ describe("Outcode Model", function () {
 		});
 	});
 	
-	describe("nearest", function () {
-		var params;
-		beforeEach(function () {
+	describe("nearest", () => {
+		let params;
+
+		beforeEach(() => {
 			params = {
 				longitude: -2.09301393644196,
 				latitude: 57.1392691975667
 			};
 		});
 
-		it ("returns a list of nearby outcodes", function (done) {
+		it ("returns a list of nearby outcodes", done => {
 			Outcode.nearest(params, function (error, outcodes) {
 				if (error) return done(error);
 				assert.isTrue(outcodes.length > 0);
-				outcodes.forEach(function (outcode) {
-					helper.isRawOutcodeObject(outcode);
-				});
+				outcodes.forEach(o => helper.isRawOutcodeObject(o));
 				done();
 			});
 		});
-		it ("is sensitive to limit", function (done) {
+		it ("is sensitive to limit", done => {
 			params.limit = 1;
-			Outcode.nearest(params, function (error, outcodes) {
+			Outcode.nearest(params, (error, outcodes) => {
 				if (error) return done(error);
 				assert.equal(outcodes.length, 1);
-				outcodes.forEach(function (outcode) {
-					helper.isRawOutcodeObject(outcode);
-				});
+				outcodes.forEach(o => helper.isRawOutcodeObject(o));
 				done();
 			});
 		});
-		it ("is sensitive to radius", function (done) {
+		it ("is sensitive to radius", done => {
 			params.radius = 1000;
-			Outcode.nearest(params, function (error, outcodes) {
+			Outcode.nearest(params, (error, outcodes) => {
 				if (error) return done(error);
 				params.radius = 25000;
-				Outcode.nearest(params, function (error, newOutcodes) {
+				Outcode.nearest(params, (error, newOutcodes) => {
 					if (error) return done(error);
 					assert.isTrue(newOutcodes.length > outcodes.length);
 					done();
 				});
 			});
 		});
-		it ("raises an error if invalid longitude", function (done) {
+		it ("raises an error if invalid longitude", done => {
 			params.longitude = "foo";
-			Outcode.nearest(params, function (error, outcodes) {
+			Outcode.nearest(params, (error, outcodes) => {
 				assert.isNotNull(error);
 				assert.match(error.message, /invalid\slongitude/i);
 				done();
 			});
 		});
-		it ("raises an error if invalid latitude", function (done) {
+		it ("raises an error if invalid latitude", done => {
 			params.latitude = "foo";
-			Outcode.nearest(params, function (error, outcodes) {
+			Outcode.nearest(params, (error, outcodes) => {
 				assert.isNotNull(error);
 				assert.match(error.message, /invalid\slatitude/i);
 				done();

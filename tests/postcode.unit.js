@@ -205,6 +205,7 @@ describe("Postcode Model", function () {
 				assert.isArray(result["admin_district"]);
 				assert.isArray(result["admin_county"]);
 				assert.isArray(result["parish"]);
+				assert.isArray(result["country"]);
 				done();
 			});
 		});
