@@ -19,7 +19,8 @@ const outcodeSchema = {
 	"admin_district": "VARCHAR(255)[]",
 	"parish": "VARCHAR(255)[]",
 	"admin_county": "VARCHAR(255)[]",
-	"admin_ward": "VARCHAR(255)[]"
+	"admin_ward": "VARCHAR(255)[]",
+	"country": "VARCHAR(255)[]"
 };
 
 const indexes = [{
