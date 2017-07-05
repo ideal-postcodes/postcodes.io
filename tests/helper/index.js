@@ -312,7 +312,8 @@ function isOutcodeObject(o) {
 		"admin_county",
 		"admin_district",
 		"parish",
-		"outcode"
+		"outcode",
+		"country"
 	].forEach(prop => assert.property(o, prop));	
 }
 
@@ -328,7 +329,8 @@ function isRawOutcodeObject(o) {
 		"admin_county",
 		"admin_district",
 		"parish",
-		"outcode"
+		"outcode",
+		"country"
 	].forEach(prop => assert.property(o, prop))
 }
 
@@ -341,7 +343,8 @@ function testOutcode(o) {
 		"admin_ward", 
 		"admin_district", 
 		"admin_county", 
-		"parish"
+		"parish",
+		"country"
 	].forEach(prop => assert.property(o, prop));
 }
 

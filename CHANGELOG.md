@@ -2,6 +2,11 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 6.0.0 (29/6/2017)
+
+- *Breaking Change* Outcode schema has been modified to include country. When upgrading it's sufficient to rebuild support tables with `npm run rebuild_support_tables`
+- `/outcodes/:outcode`, `/outcodes/:outcode/nearest` and `/outcodes` now also return a `country` array in the outcode result
+
 ## 5.0.0 (24/5/2017)
 
 - *Breaking Change* Postcode schema has been modified to facilitate faster and better quality

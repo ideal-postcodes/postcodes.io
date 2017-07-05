@@ -13,8 +13,8 @@ const defaults = require(configPath)(env).defaults;
 
 const postcodeSchema = {
 	"id": "SERIAL PRIMARY KEY",
-	"postcode" : 'VARCHAR(10) COLLATE "C"',  // C Provides desirable ordering
-	"pc_compact" : 'VARCHAR(9) COLLATE "C"', // for pc autocomplete & partials
+	"postcode" : `VARCHAR(10) COLLATE "C"`,  // C Provides desirable ordering
+	"pc_compact" : `VARCHAR(9) COLLATE "C"`, // for pc autocomplete & partials
 	"quality" : "INTEGER",
 	"eastings" : "INTEGER",
 	"northings" : "INTEGER",
@@ -503,6 +503,17 @@ attributesQuery.push(`
 	) as admin_ward
 `);
 
+attributesQuery.push(`
+	array(
+		SELECT 
+			DISTINCT country 
+		FROM 
+			postcodes 
+		WHERE
+			outcode=$1
+	) as country
+`);
+
 const outcodeQuery = `
 	SELECT 
 		outcode, avg(northings) as northings, avg(eastings) as eastings, 
@@ -516,6 +527,7 @@ const outcodeQuery = `
 	GROUP BY 
 		outcode
 `;
+
 
 const outcodeAttributes = [
 	"admin_district",

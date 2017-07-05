@@ -1,12 +1,13 @@
-var path = require("path"),
-		app = require(path.join(__dirname, "../server")),
-		request = require("supertest"),
-		assert = require("chai").assert,
-		helper = require(__dirname + "/helper")
-		async = require("async");
+"use strict";
 
-describe("Outcodes routes", function () {
-	var testOutcode;
+const app = require("../server");
+const request = require("supertest");
+const assert = require("chai").assert;
+const helper = require("./helper");
+const async = require("async");
+
+describe("Outcodes routes", () => {
+	let testOutcode, uri;
 
 	before(function (done) {
 		this.timeout(0);
@@ -19,41 +20,35 @@ describe("Outcodes routes", function () {
 		});
 	});
 
-	beforeEach(function () {
+	beforeEach(() => {
 		testOutcode = "AB10";
+		uri = `/outcodes/${encodeURI(testOutcode)}/nearest`;
 	});
 
-	// after(function (done) {
-	// 	helper.clearPostcodeDb(done);
-	// });
+	after(done => {
+		helper.clearPostcodeDb(done);
+	});
 
-	describe("GET /outcodes/:outcode/nearest", function () {
-
-		it ("should return a list of nearby outcodes", function (done) {
-			var uri = encodeURI("/outcodes/" + testOutcode + "/nearest");
-
+	describe("GET /outcodes/:outcode/nearest", () => {
+		it ("should return a list of nearby outcodes", done => {
 			request(app)
 			.get(uri)
 			.expect("Content-Type", /json/)
 			.expect(helper.allowsCORS)
 			.expect(200)
-			.end(function (error, response) {
+			.end((error, response) => {
 				if (error) return done(error);
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
-				response.body.result.forEach(function (outcode) {
-					helper.isOutcodeObject(outcode);
-				});
+				response.body.result.forEach(o => helper.isOutcodeObject(o));
 				done();
 			});
 		});
-		it ("should be sensitive to distance query", function (done) {
-			var uri = encodeURI("/outcodes/" + testOutcode + "/nearest");
-
+		it ("should be sensitive to distance query", done => {
 			request(app)
 			.get(uri)
 			.expect(200)
-			.end(function (error, firstResponse) {
+			.end((error, firstResponse) => {
 				if (error) return done(error);
 				request(app)
 				.get(uri)
@@ -61,7 +56,7 @@ describe("Outcodes routes", function () {
 					radius: 25000
 				})
 				.expect(200)
-				.end(function (error, secondResponse) {
+				.end((error, secondResponse) => {
 					if (error) return done(error);
 					assert.isTrue(secondResponse.body.result.length >= firstResponse.body.result.length);
 					done();
@@ -69,75 +64,67 @@ describe("Outcodes routes", function () {
 			});
 		});
 		
-		it ("should be sensitive to limit query", function (done) {
-			var uri = encodeURI("/outcodes/" + testOutcode + "/nearest");
-
+		it ("should be sensitive to limit query", done => {
 			request(app)
 			.get(uri)
 			.query({
 				limit: 1
 			})
 			.expect(200)
-			.end(function (error, response) {
+			.end((error, response) => {
 				if (error) return done(error);
 				assert.equal(response.body.result.length, 1);
 				done();
 			});
 		});
 		
-		it ("should throw a 400 error if invalid limit", function (done) {
-			var uri = encodeURI("/outcodes/" + testOutcode + "/nearest");
-
+		it ("should throw a 400 error if invalid limit", done => {
 			request(app)
 			.get(uri)
 			.query({
 				limit: "bogus"
 			})
 			.expect(400)
-			.end(function (error, response) {
+			.end((error, response) => {
 				if (error) return done(error);
 				assert.equal(response.body.error, "Invalid result limit submitted");
 				done();
 			});
 		});
 
-		it ("should throw a 400 error if invalid distance", function (done) {
-			var uri = encodeURI("/outcodes/" + testOutcode + "/nearest");
-
+		it ("should throw a 400 error if invalid distance", done => {
 			request(app)
 			.get(uri)
 			.query({
 				radius: "bogus"
 			})
 			.expect(400)
-			.end(function (error, response) {
+			.end((error, response) => {
 				if (error) return done(error);
 				assert.equal(response.body.error, "Invalid lookup radius submitted")
 				done();
 			});
 		});
 
-		it ("should respond to options", function (done) {
-			var uri = encodeURI("/outcodes/" + testOutcode + "/nearest");
-
+		it ("should respond to options", done => {
 			request(app)
 			.options(uri)
 			.expect(204)
-			.end(function (error, response) {
+			.end((error, response) => {
 				if (error) done(error);
 				helper.validCorsOptions(response);
 				done();
 			});
 		});
 
-		it ("should return 404 if outcode not found", function (done) {
-			var testOutcode = "ZZ10";
-			var path = ["/outcodes/", encodeURI(testOutcode), "/nearest"].join("");
+		it ("should return 404 if outcode not found", done => {
+			const testOutcode = "ZZ10";
+			const path = ["/outcodes/", encodeURI(testOutcode), "/nearest"].join("");
 			request(app)
 				.get(path)
 				.expect("Content-Type", /json/)
 				.expect(404)
-				.end(function (error, response) {
+				.end((error, response) => {
 					if (error) return done(error);
 					assert.equal(response.body.error, "Outcode not found");
 					done();
