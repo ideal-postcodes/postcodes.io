@@ -8,8 +8,8 @@ block main
 					h1.mast-text Postcode &amp; Geolocation API for the UK
 					h3 Free, Open Source and based solely on Open Data
 					.gitlinks
-						iframe.gitlink(src="http://ghbtns.com/github-btn.html?user=ideal-postcodes&repo=postcodes.io&type=watch&count=true", width="90", height="20")
-						iframe.gitlink(src="http://ghbtns.com/github-btn.html?user=ideal-postcodes&repo=postcodes.io&type=fork&count=true", width="90", height="20")
+						iframe.gitlink(src="https://ghbtns.com/github-btn.html?user=ideal-postcodes&repo=postcodes.io&type=watch&count=true", width="90", height="20")
+						iframe.gitlink(src="https://ghbtns.com/github-btn.html?user=ideal-postcodes&repo=postcodes.io&type=fork&count=true", width="90", height="20")
 
 block content
 	.header
@@ -19,8 +19,8 @@ block content
 					.points
 						img(src="images/github.png",alt="github")
 						h4 Open Source
-						p MIT licensed. Maintained and freely available on 
-							a(href="https://github.com/ideal-postcodes/postcodes.io") Github. 
+						p MIT licensed. Maintained and freely available on
+							a(href="https://github.com/ideal-postcodes/postcodes.io") Github.
 							| Fork it, make a contribution or even set up your own
 				.col-xs-4
 					.points
@@ -40,8 +40,8 @@ block content
 
 					.api-method
 						h4.method-title Lookup a postcode
-						h4 
-							span.http-method GET 
+						h4
+							span.http-method GET
 							| api.postcodes.io/postcodes/
 							input.rest-resource(value=":postcode")#single-postcode-input
 							a(href="#")#single-postcode Request
@@ -55,7 +55,7 @@ block content
 							a(href="#")#bulk-postcodes Request
 						.json-post
 							textarea#bulk-postcodes-input
-								| { 
+								| {
 								|   "postcodes" : ["OX49 5NU", "M32 0JG", "NE30 1DP"]
 								| }
 						pre.code-box#bulk-postcodes-result
@@ -79,7 +79,7 @@ block content
 							a(href="#")#bulk-reverse Request
 						.json-post
 							textarea#bulk-reverse-input
-								| { 
+								| {
 								|   "geolocations" : [{
 								|   	"longitude":  0.629834723775309,
 								|   	"latitude": 51.7923246977375
@@ -95,15 +95,15 @@ block content
 					.api-method
 						h4.method-title Get a random postcode
 						h4
-							span.http-method GET 
+							span.http-method GET
 							| api.postcodes.io/random/postcodes
 							a(href="#")#random-postcode Request
 						pre.code-box#random-postcode-result
-							
+
 					.api-method
 						h4.method-title Validate a postcode
 						h4
-							span.http-method GET  
+							span.http-method GET
 							| api.postcodes.io/postcodes/
 							input.rest-resource(value=":postcode")#validate-postcode-input
 							| /validate
@@ -113,7 +113,7 @@ block content
 					.api-method
 						h4.method-title Nearest postcodes for postcode
 						h4
-							span.http-method GET  
+							span.http-method GET
 							| api.postcodes.io/postcodes/
 							input.rest-resource(value=":postcode")#nearest-postcode-input
 							| /nearest
@@ -168,5 +168,3 @@ block content
 							input.rest-resource(value=":latitude")#lat-outcode-input
 							a(href="#")#geocode-outcode Request
 						pre.code-box#geocode-outcode-result
-
-						
