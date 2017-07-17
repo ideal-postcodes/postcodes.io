@@ -12,16 +12,12 @@ const jsonApiResponseFilter = (request,response,next) => {
 
 
   if (!Array.isArray(jsonResponse.result)) {
-    jsonResponse.result = filterFunc (jsonResponse.result);
-    return next();
+      jsonResponse.result = filterFunc (jsonResponse.result);
+      return next();
+    }
 
-  } else if (!Array.isArray(jsonResponse.result[0].result)){
-    jsonResponse.result.forEach(element => {
-      element.result = filterFunc(element.result);
-    });
-    return next();
 
-  } else {
+  if (Array.isArray(jsonResponse.result[0].result)) {
     jsonResponse.result.forEach( element => {
       element.result.forEach( (el,index,resultArray) => {
         resultArray[index] = filterFunc(resultArray[index]);
@@ -30,7 +26,20 @@ const jsonApiResponseFilter = (request,response,next) => {
     return next();
   }
 
+  if (jsonResponse.result[0].result) {
+    jsonResponse.result.forEach(element => {
+      element.result = filterFunc(element.result);
+    });
+    return next();
+  } else {
+    jsonResponse.result.forEach( (element, index, resultArray) => {
+      resultArray[index] = filterFunc(element);
+    })
+    return next();
+  }
 
 }
+
+
 
 module.exports = jsonApiResponseFilter;

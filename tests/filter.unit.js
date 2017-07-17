@@ -137,8 +137,8 @@ describe("Filter middleware: ", () =>{
       filter(request, response, () => {
         assert.deepEqual(response.jsonApiResponse.result, [{"query": "M32 0JG", "result" : {"postcode": "M32 0JG","eastings": 379988}},
         {"query": "OX49 5NU", "result" : {"postcode": "OX49 5NU", "eastings": 464447}}]);
+        done();
       } )
-      done();
     });
 
   })
@@ -317,5 +317,50 @@ describe("Filter middleware: ", () =>{
     })
 
   });
-  })
+});
+  describe("Nearest Postcodes filter", () => {
+    let request,response;
+    beforeEach(() => {
+      request = {query: {filter:"quALitY,foo,EaStings"}};
+      response = { jsonApiResponse : {
+          "status": 200,
+          "result": [
+              {
+                  "postcode": "N1 0UT",
+                  "quality": 1,
+                  "eastings": 530369,
+                  "northings": 183760,
+                  "country": "England"
+              },
+              {
+                  "postcode": "N1 0UR",
+                  "quality": 1,
+                  "eastings": 530368,
+                  "northings": 183763,
+                  "country": "England"
+              }
+          ]
+      }}
+    })
+    it("Works correctly for the nearest postcodes query", done => {
+      request.query.filter = "NOrThings, foo, QUAlity";
+      assert.strictEqual(request.query.filter, "NOrThings, foo, QUAlity");
+      filter(request,response, () => {
+        assert.deepEqual(response.jsonApiResponse, {
+            "status": 200,
+            "result": [
+                {
+                    "quality": 1,
+                    "northings": 183760
+                },
+                {
+                    "quality": 1,
+                    "northings": 183763
+                }
+            ]
+        })
+        done();
+      })
+    })
+  });
 })
