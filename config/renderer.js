@@ -1,6 +1,7 @@
 "use strict";
 
 const logger = require("commonlog-bunyan").logger;
+const jsonApiResponseFilter = require("./filter");
 
 /**
  * Returns JSON response on behalf of routes that return `response.jsonApiResponse`
@@ -28,17 +29,17 @@ function jsonApiResponseRenderer (request, response, next) {
 function errorRenderer (error, request, response, next) {
 	/*jshint unused:false */
 	let message = `Something went wrong: ${error.message}`;
-	
+
 	if (process.env.NODE_ENV !== "test") {
-		console.log(error.stack);	
+		console.log(error.stack);
 	}
-	
+
 	if (process.env.NODE_ENV === "production") {
 		message = "500 Server Error. Something went wrong. If you need this fixed urgently please email support@ideal-postcodes.co.uk";
 	}
 
 	response.status(500).send(message);
-	
+
 	logger.error({error: error});
 }
 
@@ -51,6 +52,7 @@ function notFoundRenderer (request, response) {
 }
 
 module.exports = app => {
+	app.use(jsonApiResponseFilter)
 	app.use(jsonApiResponseRenderer);
 	app.use(errorRenderer);
 	app.use(notFoundRenderer);
