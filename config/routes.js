@@ -7,6 +7,7 @@ const utils = require(path.join(controllerPath, "/utils_controller"));
 const places = require(path.join(controllerPath, "/places_controller"));
 const outcodes = require(path.join(controllerPath, "/outcodes_controller"));
 const postcodes = require(path.join(controllerPath, "/postcodes_controller"));
+const filterMiddleware = require("./filter");
 
 module.exports = app => {
 	app.get("/", pages.home);
@@ -16,7 +17,7 @@ module.exports = app => {
 	app.get("/explore", pages.explore);
 	
 	app.get("/postcodes", postcodes.query);
-	app.post("/postcodes", postcodes.bulk);
+	app.post("/postcodes", postcodes.bulk, filterMiddleware);
 	app.get("/postcodes/:postcode", postcodes.show);
 	app.get("/postcodes/:postcode/nearest", postcodes.nearest);
 	app.get("/postcodes/:postcode/validate", postcodes.valid);
