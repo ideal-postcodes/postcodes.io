@@ -316,6 +316,10 @@ block content
 						|   "postcodes" : ["PR3 0SG", "M45 6GN", "EX165BL"]
 						| }
 
+					h4 Optional Query Parameters
+					p
+						code filter=
+						|  (not required) A comma separated whitelist of attributes to be returned in the result object(s). E.g. <code>filter=postcode,longitude,latitude</code>. <code>null</code> responses will continue to return <code>null</code>. If no attributes match the result object, an empty object is returned
 
 					h3#Geocode-Postcode Reverse Geocoding
 
@@ -365,12 +369,20 @@ block content
 						|   	"longitude" : -3.15807731271522,
 						|   	"latitude" : 51.4799900627036
 						|   },{
-						| 		"longitude" : -1.12935802905177,
+						|   	"longitude" : -1.12935802905177,
 						|   	"latitude" : 50.7186356978817,
 						|   	"limit" : 100,
 						|   	"radius" : 500
 						|   }]
 						| }
+
+					h4 Optional Query Parameters
+					p
+						code filter=
+						|  (not required) A comma separated whitelist of attributes to be returned in the result object(s). E.g. <code>filter=postcode,longitude,latitude</code>. <code>null</code> responses will continue to return <code>null</code>. If no attributes match the result object, an empty object is returned
+					p
+						code wideSearch=
+						|  (not required) Search up to 20km radius, but subject to a maximum of 10 results
 
 					h3#Postcode-Query Postcode Query
 
