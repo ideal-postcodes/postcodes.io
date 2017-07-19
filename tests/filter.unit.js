@@ -10,12 +10,19 @@ describe("Filter middleware: ", () =>{
 
     beforeEach(() =>{
       request = {query: {filter:"fOo,bar,qUAlity,country"}};
-      response = {jsonApiResponse:{
-        result: {"quality" : "1",
-                  "longitude" : "453",
-                  "country": "United Kingdom"},
-        status: 200
-      }}
+      response = {
+        jsonApiResponse:{
+          result: [{
+            query: {},
+            result: {
+              "quality" : "1",
+              "longitude" : "453",
+              "country": "United Kingdom"
+            }
+          }],
+          status: 200
+        }
+      };
     });
 
     it ("invokes next if there's no jsonResponse", done => {
@@ -41,7 +48,21 @@ describe("Filter middleware: ", () =>{
       assert.notEqual(response.jsonApiResponse.status,200);
       filter(request,response,done);
     });
-  })
+    it ("ignores attributes which are not whitelisted", done => {
+      let result = response.jsonApiResponse.result;
+      request.query.filter += ",notallowed";
+      result = result.map(r => {
+        r.result.notallowed = "bad";
+        return r;
+      });
+      filter(request, response, () => {
+        response.jsonApiResponse.result.forEach(r => {
+          assert.isUndefined(r.result.notallowed);
+        });
+        done();
+      });
+    });
+  });
   describe("Bulk lookup postcodes: filters an array of results", () => {
     let request, response
     beforeEach( () => {

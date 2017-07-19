@@ -1,5 +1,9 @@
 "use strict";
 
+const env = process.env.NODE_ENV || "development";
+const config = require("../config/config")(env);
+const whitelistedAttributes = new Set(config.defaults.filterableAttributes);
+
 const isObject = o => Object.prototype.toString.call(o) === "[object Object]";
 const isArray = o => Object.prototype.toString.call(o) === "[object Array]";
 
@@ -31,7 +35,8 @@ const requiresFilter = (request, response) => {
 const filterArray = request => {
   return request.query.filter.replace(/\s/g, "")
                              .toLowerCase()
-                             .split(",");
+                             .split(",")
+                             .filter(e => whitelistedAttributes.has(e));
 };
 
 const filterMiddleware = (request, response, next) => {
@@ -39,7 +44,7 @@ const filterMiddleware = (request, response, next) => {
   if (!requiresFilter(request, response)) return next();
   
   const filteredArray = filterArray(request, next);
-  
+  console.log(response);
   const resultData = response.jsonApiResponse.result;
         
   resultData.forEach(obj => {
