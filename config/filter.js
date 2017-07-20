@@ -40,19 +40,13 @@ const filterArray = request => {
 };
 
 const filterMiddleware = (request, response, next) => {
-
   if (!requiresFilter(request, response)) return next();
-  
   const filteredArray = filterArray(request, next);
-  console.log(response);
   const resultData = response.jsonApiResponse.result;
-        
   resultData.forEach(obj => {
     obj.result = filter(obj.result, filteredArray); //obj.result either an object or an array
   });
-  
   return next();
-  
 };
 
 module.exports = filterMiddleware;
