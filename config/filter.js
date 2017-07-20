@@ -49,4 +49,50 @@ const filterMiddleware = (request, response, next) => {
   return next();
 };
 
-module.exports = filterMiddleware;
+
+
+const bulkFilter = (request, response, next) => {
+  if (!requiresFilter(request, response)) return next();
+  const filteredArray = filterArray(request);
+  const resultData = response.jsonApiResponse.result;
+  
+  resultData.forEach(obj => {
+    if (obj.result) obj.result = objFilter(obj.result, filteredArray);
+  })
+  return next();
+}
+
+const queryFilter = (request, response, next) => {
+  if (!requiresFilter(request, response)) return next();
+  const filteredArray = filterArray(request);
+  const resultData = response.jsonApiResponse;
+  
+  resultData.result = objFilter(resultData.result, filteredArray);
+  return next();
+}
+
+module.exports = {
+  query: queryFilter,
+  bulk: bulkFilter
+}
+
+
+
+
+
+
+
+
+
+/* const filterMiddleware = (request, response, next) => {
+  if (!requiresFilter(request, response)) return next();
+  const filteredArray = filterArray(request, next);
+  const resultData = response.jsonApiResponse.result;
+  resultData.forEach(obj => {
+    obj.result = filter(obj.result, filteredArray); //obj.result either an object or an array
+  });
+  return next();
+};
+
+*/
+

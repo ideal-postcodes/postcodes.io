@@ -12,7 +12,7 @@ const cors = require("cors")({
 
 module.exports = (app, config) => {
 	app.enable("trust proxy");
-	app.disable("x-powered-by");
+ 	app.disable("x-powered-by");
 	app.set("views", path.join(config.root, "app/views"));
   app.set("view engine", "jade");
 

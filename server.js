@@ -24,4 +24,4 @@ server.on("clientError", (error, socket) => {
 
 console.log("Postcode API listening on port", port);
 
-exports = module.exports = app;
+module.exports = app;

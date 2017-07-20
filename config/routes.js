@@ -17,8 +17,8 @@ module.exports = app => {
 	app.get("/explore", pages.explore);
 	
 	app.get("/postcodes", postcodes.query);
-	app.post("/postcodes", postcodes.bulk, filterMiddleware);
-	app.get("/postcodes/:postcode", postcodes.show);
+	app.post("/postcodes", postcodes.bulk, filterMiddleware.bulk);
+	app.get("/postcodes/:postcode", postcodes.show, filterMiddleware.query);
 	app.get("/postcodes/:postcode/nearest", postcodes.nearest);
 	app.get("/postcodes/:postcode/validate", postcodes.valid);
 	app.get("/postcodes/:postcode/autocomplete", postcodes.autocomplete);	

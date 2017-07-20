@@ -26,6 +26,35 @@ describe("Filter method", function () {
 	});
 
 	after(helper.clearPostcodeDb);
+	
+	describe("Single postcode lookup", () => {
+		it ("Handles 'Postcode not found' results correctly", done => {
+			request(app)
+				.get("/postcodes/222sfsds" )
+				.query({filter: "quality,EAstings"})
+				.expect(404)
+				.end((error, response) => {
+					if (error) return done(error);
+					assert.notExists(response.body.result);
+					assert.isTrue(response.body.error === "Postcode not found");
+					assert.isTrue(response.body.status === 404);
+					done();
+				})
+		})
+		it ("Handles legitimate postcodes correctly", done => {
+			request(app)
+					.get("/postcodes/" + testPostcode)
+					.query({filter:" QuaLiTy,  eastingS  "})
+					.expect(200)
+					.end((error, response) => {
+						if (error) return done(error);
+						assert.isTrue(Object.keys(response.body.result).length === 2)
+						assert.exists(response.body.result["quality"])
+						assert.exists(response.body.result["eastings"])
+						done();
+					})
+		})
+	})
 
 	describe("Bulk postcode lookup", () => {
     it ("filteres by filter attributes", done => {
