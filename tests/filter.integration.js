@@ -44,7 +44,6 @@ describe("Filter method", function () {
 					response.body.result.forEach(resultObj => {
 						assert.exists(resultObj.result["postcode"]);
 						assert.isTrue(Object.keys(resultObj.result).length === 1);
-						
 					})
           done();
         });
