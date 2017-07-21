@@ -18,15 +18,6 @@ const arrFilter = (arr, filterArray) => { //filters an array of objects with obj
   return arr.map(obj => objFilter(obj,filterArray));
 };
 
-const filter = (jsonResultProp, filterArray) => {
-  if (jsonResultProp === null) return null;
-  if (isObject(jsonResultProp)) {
-    return objFilter(jsonResultProp, filterArray);
-  } else if (isArray(jsonResultProp)) {
-    return arrFilter(jsonResultProp, filterArray);
-  }
-};
-
 const requiresFilter = (request, response) => {
   const jsonResponse = response.jsonApiResponse;
   return (jsonResponse && request.query.filter && jsonResponse.status === 200);
@@ -38,18 +29,6 @@ const filterArray = request => {
                              .split(",")
                              .filter(e => whitelistedAttributes.has(e));
 };
-
-const filterMiddleware = (request, response, next) => {
-  if (!requiresFilter(request, response)) return next();
-  const filteredArray = filterArray(request, next);
-  const resultData = response.jsonApiResponse.result;
-  resultData.forEach(obj => {
-    obj.result = filter(obj.result, filteredArray); //obj.result either an object or an array
-  });
-  return next();
-};
-
-
 
 const bulkFilter = (request, response, next) => {
   if (!requiresFilter(request, response)) return next();
@@ -67,7 +46,7 @@ const queryFilter = (request, response, next) => {
   const filteredArray = filterArray(request);
   const resultData = response.jsonApiResponse;
   
-  resultData.result = objFilter(resultData.result, filteredArray);
+  resultData.result = arrFilter(resultData.result, filteredArray);
   return next();
 }
 
@@ -77,22 +56,4 @@ module.exports = {
 }
 
 
-
-
-
-
-
-
-
-/* const filterMiddleware = (request, response, next) => {
-  if (!requiresFilter(request, response)) return next();
-  const filteredArray = filterArray(request, next);
-  const resultData = response.jsonApiResponse.result;
-  resultData.forEach(obj => {
-    obj.result = filter(obj.result, filteredArray); //obj.result either an object or an array
-  });
-  return next();
-};
-
-*/
 

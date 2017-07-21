@@ -27,104 +27,64 @@ describe("Filter middleware: ", () =>{
         }
       };
     });
-
-    it ("invokes next if there's no jsonResponse", done => {
-      delete response.jsonApiResponse;
-      assert.notExists(response.jsonApiResponse);
-      filter(request,response,done);
-    });
-
-    describe("Invokes next if there's no filter/it's empty string", () => {
-      it ("Invokes next if there's no filter", done => {
-        delete request.query.filter;
-        assert.notExists(request.query.filter);
-        filter(request,response,done);
+    
+    ["query", "bulk"].forEach(method => {
+      const filterMethod = filter[method];
+        
+        
+      it ("invokes next if there's no jsonResponse", done => {
+        delete response.jsonApiResponse;
+        assert.notExists(response.jsonApiResponse);
+        filterMethod(request,response,done);
       });
-
-      it ("Invokes next if filter is an empty string", done => {
-        request.query.filter = "";
-        assert(request.query.filter === "");
-        filter(request,response,done);
-      });
-    });
-
-    it ("invokes next if status is not 200 ", done => {
-      response.jsonApiResponse.status = 3321424;
-      assert.notEqual(response.jsonApiResponse.status,200);
-      filter(request,response,done);
-    });
-
-    it ("ignores attributes which are not whitelisted", done => {
-      let result = response.jsonApiResponse.result;
-      request.query.filter += ",notallowed";
-      result = result.map(r => {
-        r.result.notallowed = "bad";
-        return r;
-      });
-      filter(request, response, () => {
-        response.jsonApiResponse.result.forEach(r => {
-          assert.isUndefined(r.result.notallowed);
+      
+      describe("Invokes next if there's no filter/it's empty string", () => {
+        it ("Invokes next if there's no filter", done => {
+          delete request.query.filter;
+          assert.notExists(request.query.filter);
+          filterMethod(request,response,done);
         });
-        done();
+        
+        it ("Invokes next if filter is an empty string", done => {
+          request.query.filter = "";
+          assert(request.query.filter === "");
+          filterMethod(request,response,done);
+        });
       });
-    });
-  });
-  
-  describe("Simplest responses: filters results that are a single object ONLY", () =>{
-    describe("Check that filter implementation is correct", () => {
-      let request, response;
-
-      beforeEach(() =>{
-        request = {query: {filter:"fOo,bar,qUAlity,country"}};
-        response = {jsonApiResponse:{
-          result: {"quality" : "1",
-                    "longitude" : "453",
-                    "country": "United Kingdom"},
-          status: 200
-        }}
+      
+      it ("invokes next if status is not 200 ", done => {
+        response.jsonApiResponse.status = 3321424;
+        assert.notEqual(response.jsonApiResponse.status,200);
+        filterMethod(request,response,done);
       });
-      it ("Handles 'postcode not found' correctly", done => {
-        response = {jsonApiResponse: {
-    "status": 404,
-    "error": "Postcode not found"
-      }}
-      filter.query(request,response, () => {
-        assert.deepEqual(response.jsonApiResponse, {
-    "status": 404,
-    "error": "Postcode not found"
-})
-      done();
-      })
-    });
-      it ("if no valid filters, result object is empty", done => {
-        request.query.filter="invalid,filteer";
-        assert.strictEqual(request.query.filter, "invalid,filteer");
-        filter.query(request,response, () => {
-          assert.deepEqual(response.jsonApiResponse.result, {});
+      
+      it ("ignores attributes which are not whitelisted", done => {
+        let result = response.jsonApiResponse.result;
+        console.log(result);
+        request.query.filter += ",notallowed";
+        result = result.map(r => {
+          r.result.notallowed = "bad";
+          return r;
+        });
+        filterMethod(request, response, () => {
+          response.jsonApiResponse.result.forEach(r => {
+            assert.isUndefined(r.result.notallowed);
+          });
           done();
         });
       });
-      it ("Works correctly whether filters are Upper/Lower cased", done => {
-        request.query.filter="fOo,qUAlity,country";
-        assert.strictEqual(request.query.filter, "fOo,qUAlity,country");
-        filter.query(request,response, () => {
-          assert.deepEqual(response.jsonApiResponse.result,
-            {"quality" : "1",
-            "country": "United Kingdom"
-          });
-          done();})
-      });
-      it ("Works correctly whether filters have spaces before/after commas ", done => {
-        request.query.filter=" fOo ,  qUAlity   ,     country";
-        assert.strictEqual(request.query.filter, " fOo ,  qUAlity   ,     country");
-        filter.query(request,response, () => {
-          assert.deepEqual(response.jsonApiResponse.result,
-            {"quality" : "1",
-            "country": "United Kingdom"
-          });
-          done();})
-      });
-    })
+    });
+    
+    
+    
+
+  });
+  
+  describe("Query postcodes filter", () => {
+    it ("Handles 'No postcode query submitted' ");
+    it ("Handles result = null");
+    it ("Handles a postcode query");
+    it("Handles an outcode query");
   })
 
   describe("Bulk lookup postcodes: filters an array of results", () => {

@@ -16,14 +16,15 @@ module.exports = app => {
 	app.get("/docs", pages.documentation);
 	app.get("/explore", pages.explore);
 	
-	app.get("/postcodes", postcodes.query);
+	app.get("/postcodes", postcodes.query, filterMiddleware.query);
 	app.post("/postcodes", postcodes.bulk, filterMiddleware.bulk);
-	app.get("/postcodes/:postcode", postcodes.show, filterMiddleware.query);
+	app.get("/postcodes/:postcode", postcodes.show);
 	app.get("/postcodes/:postcode/nearest", postcodes.nearest);
 	app.get("/postcodes/:postcode/validate", postcodes.valid);
 	app.get("/postcodes/:postcode/autocomplete", postcodes.autocomplete);	
 	app.get("/postcodes/lon/:longitude/lat/:latitude", postcodes.lonlat);
 	app.get("/postcodes/lat/:latitude/lon/:longitude", postcodes.lonlat);
+	app.use((request,response,next) => {console.log(request.route); return next();});
 
 	app.get("/outcodes", outcodes.query);
 	app.get("/outcodes/:outcode", outcodes.showOutcode);
