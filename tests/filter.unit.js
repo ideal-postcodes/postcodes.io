@@ -1,7 +1,7 @@
 "use strict"
 
 const assert = require("chai").assert;
-const filter = require("../config/filter.js");
+const filter = require("../config/filter");
 const bulkPostcodeResult = require("./seed/bulk_postcode.json");
 const bulkGeocodingResult = require("./seed/bulk_geocoding.json");
 const cloneObject = o => JSON.parse(JSON.stringify(o));
@@ -12,7 +12,7 @@ describe("Filter middleware: ", () =>{
     let request, response;
 
     beforeEach(() =>{
-      request = {query: {filter:"fOo,bar,qUAlity,country"}};
+      request = {query: {filter:"fOo,bar,qUAlity,country"},route: {path:"/postcodes"}};
       response = {
         jsonApiResponse:{
           result: [{
@@ -28,52 +28,45 @@ describe("Filter middleware: ", () =>{
       };
     });
     
-    ["query", "bulk"].forEach(method => {
-      const filterMethod = filter[method];
-        
         
       it ("invokes next if there's no jsonResponse", done => {
         delete response.jsonApiResponse;
         assert.notExists(response.jsonApiResponse);
-        filterMethod(request,response,done);
+        filter(request,response,done);
       });
       
-      describe("Invokes next if there's no filter/it's empty string", () => {
-        it ("Invokes next if there's no filter", done => {
-          delete request.query.filter;
-          assert.notExists(request.query.filter);
-          filterMethod(request,response,done);
-        });
-        
-        it ("Invokes next if filter is an empty string", done => {
-          request.query.filter = "";
-          assert(request.query.filter === "");
-          filterMethod(request,response,done);
-        });
+      it ("Invokes next if there's no filter", done => {
+        delete request.query.filter;
+        assert.notExists(request.query.filter);
+        filter(request,response,done);
+      });
+      
+      it ("Invokes next if filter is an empty string", done => {
+        request.query.filter = "";
+        assert(request.query.filter === "");
+        filter(request,response,done);
       });
       
       it ("invokes next if status is not 200 ", done => {
         response.jsonApiResponse.status = 3321424;
         assert.notEqual(response.jsonApiResponse.status,200);
-        filterMethod(request,response,done);
+        filter(request,response,done);
       });
       
       it ("ignores attributes which are not whitelisted", done => {
         let result = response.jsonApiResponse.result;
-        console.log(result);
         request.query.filter += ",notallowed";
         result = result.map(r => {
           r.result.notallowed = "bad";
           return r;
         });
-        filterMethod(request, response, () => {
+        filter(request, response, () => {
           response.jsonApiResponse.result.forEach(r => {
             assert.isUndefined(r.result.notallowed);
           });
           done();
         });
       });
-    });
     
     
     
@@ -94,7 +87,8 @@ describe("Filter middleware: ", () =>{
       request = {
         query: {
           filter:"quALitY,foo,EaStings"
-        }
+        },
+        route: {path: "/postcodes"}
       };
       response = { 
         jsonApiResponse : {
@@ -107,7 +101,7 @@ describe("Filter middleware: ", () =>{
     it ("returns empty results objects if no valid filters (none of the results are null)" , done => {
       request.query.filter = "inVaLidFilter,anotherInvaliDFILTER";
       assert.strictEqual(request.query.filter, "inVaLidFilter,anotherInvaliDFILTER");
-      filter.bulk(request,response, () => {
+      filter(request,response, () => {
         const expectedResult = [
           {"query": "M32 0JG", "result" : {}},
           {"query": "OX49 5NU", "result" : {}}
@@ -120,7 +114,7 @@ describe("Filter middleware: ", () =>{
     it ("returns the right result array given only some filters (that have spaces in between commas) are correct (none of the results are null)", done => {
       request.query.filter = "posTCOde , foo,BaR,   eaSTings ";
       assert.strictEqual(request.query.filter, "posTCOde , foo,BaR,   eaSTings ");
-      filter.bulk(request, response, () => {
+      filter(request, response, () => {
         const expectedResult = [
           {
             "query": "M32 0JG", 
@@ -147,7 +141,7 @@ describe("Filter middleware: ", () =>{
       response.jsonApiResponse.result[1].result = null;
       response.jsonApiResponse.result[1].query = "OX49 NU";
       assert.strictEqual(request.query.filter, "posTCOde , foo,BaR,   eaSTings ");
-      filter.bulk(request, response, () => {
+      filter(request, response, () => {
         const expectedResult = [
           {
             "query": "M32 0JG",
@@ -174,7 +168,8 @@ describe("Filter middleware: ", () =>{
       request = {
         query: {
           filter: "quALitY,foo,EaStings"
-        }
+        },
+        route: {path: "/postcodes"}
       };
 
       response = {

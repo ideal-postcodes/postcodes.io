@@ -30,30 +30,29 @@ const filterArray = request => {
                              .filter(e => whitelistedAttributes.has(e));
 };
 
-const bulkFilter = (request, response, next) => {
-  if (!requiresFilter(request, response)) return next();
-  const filteredArray = filterArray(request);
+
+const postRequestFilter = (request, response, filteredArray) => {
+  
   const resultData = response.jsonApiResponse.result;
-  
   resultData.forEach(obj => {
-    if (obj.result) obj.result = objFilter(obj.result, filteredArray);
-  })
-  return next();
-}
+    if (isObject(obj.result)) obj.result = objFilter(obj.result, filteredArray);
+    else if (isArray(obj.result)) obj.result = arrFilter(obj.result, filteredArray);
+  });
+};
 
-const queryFilter = (request, response, next) => {
+
+
+const filterMapper = {
+  "/postcodes": postRequestFilter
+};
+
+const filterResponse = (request, response, next) => {
   if (!requiresFilter(request, response)) return next();
   const filteredArray = filterArray(request);
-  const resultData = response.jsonApiResponse;
+  const filter = filterMapper[request.route.path];
   
-  resultData.result = arrFilter(resultData.result, filteredArray);
+  if (filter) filter(request, response, filteredArray);
   return next();
-}
+};
 
-module.exports = {
-  query: queryFilter,
-  bulk: bulkFilter
-}
-
-
-
+module.exports = filterResponse;
