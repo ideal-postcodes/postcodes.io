@@ -56,5 +56,24 @@ module.exports = {
 			DEFAULT: 1000,
 			MAX: 10000
 		}
-	}
+	},
+	filterableAttributes: [
+		"postcode",
+		"quality",
+		"eastings",
+		"northings",
+		"country",
+		"nhs_ha",
+		"longitude",
+		"latitude",
+		"parliamentary_constituency",
+		"european_electoral_region",
+		"primary_care_trust",
+		"region",
+		"lsoa",
+		"msoa",
+		"incode",
+		"outcode",
+		"codes"
+	]
 };
