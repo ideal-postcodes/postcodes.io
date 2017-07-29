@@ -61,7 +61,7 @@ const config = {
 		log: {
 			name : "postcodes.io",
 			streams: [{
-				path : path.join(rootPath, "/logs/test.log")	
+				path : path.join(rootPath, "/test.log")	
 			}]
 		}
 	},
