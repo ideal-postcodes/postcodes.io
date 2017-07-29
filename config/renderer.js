@@ -1,6 +1,7 @@
 "use strict";
 
 const logger = require("commonlog-bunyan").logger;
+const jsonApiResponseFilter = require("./filter");
 
 /**
  * Returns JSON response on behalf of routes that return `response.jsonApiResponse`
@@ -9,7 +10,6 @@ const logger = require("commonlog-bunyan").logger;
  * If JSONP is detected, a 200 response is returned regardless of success.
  *
  */
-
 function jsonApiResponseRenderer (request, response, next) {
 	const jsonResponse = response.jsonApiResponse;
 	if (!jsonResponse) return next();
@@ -51,6 +51,7 @@ function notFoundRenderer (request, response) {
 }
 
 module.exports = app => {
+	app.use(jsonApiResponseFilter);
 	app.use(jsonApiResponseRenderer);
 	app.use(errorRenderer);
 	app.use(notFoundRenderer);
