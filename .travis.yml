@@ -1,18 +1,21 @@
 language: node_js
 node_js:
-  - "4"
-  - "6"
+- '4'
+- '6'
 services:
- - postgresql
+- postgresql
 env:
- - CXX=g++-4.8
+- CXX=g++-4.8
 addons:
- postgresql: "9.4"
- apt:
-  sources:
-   - ubuntu-toolchain-r-test
-  packages:
-   - g++-4.8
+  postgresql: '9.4'
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
 before_script:
-  - mkdir logs && touch logs/test.log
-  - POSTGRES_USER=postgres npm run setup_test_db
+- mkdir logs && touch logs/test.log
+- POSTGRES_USER=postgres npm run setup_test_db
+notifications:
+  slack:
+    secure: bAIkYqrY0txMF1phVffh+9lhvprgHvjB5oG1EtZ11EZYpa5K1gBLjbDzWe4SWCjgNEeK1yI6YvsPXNleFaPRrQjPk21K+xByh3NeOJtiQfrlMQyd6L/6ykTu8v9fwDOnEUgpHaOHsFwy2w3bT3k7OknXd27w74mpUN7PD0Az5rM=

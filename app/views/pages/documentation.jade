@@ -35,7 +35,7 @@ block content
 
 					h3#Error-Handling Error Handling
 
-					p To check for errors, examine the HTTP response code. 200 response indicates success while any other code will provide important information about why an error occured. 
+					p To check for errors, examine the HTTP response code. 200 response indicates success while any other code will provide important information about why an error occured.
 
 					p Alternatively, you can examine status code in the 'status' property in the result body.
 
@@ -60,6 +60,8 @@ block content
 
 					p Data returned by the <code>/postcodes</code> and <code>/outcodes</code> API
 
+					p <b>Note:</b> Some fields may be <code>null</code> if not applicable or populated. These fields return type is specified as <code>type|null</code>
+
 					table.table.table-hover
 						thead
 							tr
@@ -67,123 +69,158 @@ block content
 								th Description
 						tbody
 							tr#postcode
-								td postcode
-								td 
-									strong Postcode. 
+								td postcode <br/> <code>string</code>
+
+								td
+									strong Postcode.
 									| All current (‘live’) postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received monthly from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code.
 							tr#quality
-								td quality
-								td 
-									strong Positional Quality. 
+								td quality <br/> <code>integer</code>
+								td
+									strong Positional Quality.
 									| Shows the status of the assigned grid reference.
 									ul
 										li 1 = within the building of the matched address closest to the postcode mean
 										li 2 = as for status value 1, except by visual inspection of Landline maps (Scotland only)
 										li 3 = approximate to within 50m
 										li 4 = postcode unit mean (mean of matched addresses with the same postcode, but not snapped to a building)
-										li 5 = imputed by ONS, by reference to surrounding postcode grid references 
+										li 5 = imputed by ONS, by reference to surrounding postcode grid references
 										li 6 = postcode sector mean, (mainly	| PO Boxes)
 										li 8 = postcode terminated prior to Gridlink® initiative, last known ONS postcode grid reference1
 										li 9 = no grid reference available
 							tr#eastings
-								td eastings
-								td 
-									strong Eastings. 
+								td eastings <br/> <code>integer|null</code>
+								td
+									strong Eastings.
 									| The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system.
 							tr#northings
-								td northings
-								td 
-									strong Northings. 
+								td northings <br/> <code>integer|null</code>
+								td
+									strong Northings.
 									| The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system.
 							tr#country
-								td country
-								td 
-									strong Country. 
+								td country <br/> <code>string</code>
+								td
+									strong Country.
 									| The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each postcode is assigned.
 							tr#nhs_ha
-								td nhs_ha
-								td 
-									strong Strategic Health Authority. 
+								td nhs_ha <br/> <code>string|null</code>
+								td
+									strong Strategic Health Authority.
 									| The health area code for the postcode.
 							tr#admin_county
-								td admin_county
-								td 
-									strong County. 
+								td admin_county <br/> <code>string|null</code>
+								td
+									strong County.
 									| The current county to which the postcode has been assigned.
 							tr#admin_district
-								td admin_district
-								td 
+								td admin_district <br/> <code>string|null</code>
+								td
 									strong District.
 									| The current district/unitary authority to which the postcode has been assigned.
 							tr#admin_ward
-								td admin_ward
-								td 
-									strong Ward. 
+								td admin_ward <br/> <code>string|null</code>
+								td
+									strong Ward.
 									| The current administrative/electoral area to which the postcode has been assigned.
 							tr#longitude
-								td longitude
+								td longitude <br/> <code>double float</code>
 								td
-									strong Longitude. 
+									strong Longitude.
 									| The WGS84 longitude given the Postcode's national grid reference
 							tr#latitude
-								td latitude
+								td latitude <br/> <code>double float</code>
 								td
-									strong Latitude. 
+									strong Latitude.
 									| The WGS84 latitude given the Postcode's national grid reference
 							tr#parliamentary_constituency
-								td parliamentary_constituency
-								td 
-									strong Westminster Parliamentary Constituency. 
+								td parliamentary_constituency <br/> <code>string|null</code>
+								td
+									strong Westminster Parliamentary Constituency.
 									| The Westminster Parliamentary Constituency code for each postcode.
 							tr#european_electoral_region
-								td european_electoral_region
+								td european_electoral_region <br/> <code>string|null</code>
 								td
-									strong European Electoral Region (EER). 
+									strong European Electoral Region (EER).
 									| The European Electoral Region code for each postcode.
 							tr#primary_care_trust
-								td primary_care_trust
+								td primary_care_trust <br/> <code>string|null</code>
 								td
-									strong Primary Care Trust (PCT). 
+									strong Primary Care Trust (PCT).
 									| The code for the Primary Care areas in England, LHBs in Wales, CHPs in Scotland, LCG in Northern Ireland and PHD in the Isle of Man; there are no equivalent areas in the Channel Islands. Care Trust/ Care Trust Plus (CT)/ local health board (LHB)/ community health partnership (CHP)/ local commissioning group (LCG)/ primary healthcare directorate (PHD).
 							tr#region
-								td region
+								td region <br/> <code>string|null</code>
 								td
-									strong Region (formerly GOR). 
+									strong Region (formerly GOR).
 									| The Region code for each postcode. The nine GORs were abolished on 1 April 2011 and are now known as ‘Regions’. They were the primary statistical subdivisions of England and also the areas in which the Government Offices for the Regions fulfilled their role. Each GOR covered a number of local authorities.
 							tr#parish
-								td parish
+								td parish <br/> <code>string|null</code>
 								td
 									strong Parish (England)/ community (Wales).
-									| The smallest type of administrative area in England is the parish (also known as 'civil parish'); the equivalent units in Wales are communities. 
+									| The smallest type of administrative area in England is the parish (also known as 'civil parish'); the equivalent units in Wales are communities.
 							tr#lsoa
-								td lsoa
+								td lsoa <br/> <code>string|null</code>
 								td
-									strong 2011Census lower layer super output area (LSOA). 
+									strong 2011Census lower layer super output area (LSOA).
 									| The 2011 Census lower layer SOA code for England and Wales, SOA code for Northern Ireland and data zone code for Scotland.
 							tr#msoa
-								td msoa
+								td msoa <br/> <code>string|null</code>
 								td
-									strong 2011 Census middle layer super output area (MSOA). 
+									strong 2011 Census middle layer super output area (MSOA).
 									| The 2011 Census middle layer SOA (MSOA) code for England and Wales and intermediate zone for Scotland.
 							tr#ccg
-								td ccg
+								td ccg <br/> <code>string|null</code>
 								td
-									strong Clinical Commissioning Group. 
+									strong Clinical Commissioning Group.
 									| Clinical commissioning groups (CCGs) are NHS organisations set up by the Health and Social Care Act 2012 to organise the delivery of NHS services in England.
 							tr#nuts
-								td nuts
-								td 
-									strong Nomenclature of Units for Territorial Statistics (NUTS) / Local Administrative Units (LAU) areas. 
+								td nuts <br/> <code>string|null</code>
+								td
+									strong Nomenclature of Units for Territorial Statistics (NUTS) / Local Administrative Units (LAU) areas.
 									| The LAU2 code for each postcode. NUTS is a hierarchical classification of spatial units that provides a breakdown of the European Union’s territory for producing regional statistics which are comparable across the Union. The NUTS area classification in the United Kingdom comprises current national administrative and electoral areas, except in Scotland where some NUTS areas comprise whole and/or part Local Enterprise Regions. NUTS levels 1-3 are frozen for a minimum of three years and NUTS levels 4 and 5 are now local Administrative Units (LAU) levels 1 and 2 respectively.
 							tr#codes
-								td codes
-								td 
-									strong Returns an ID or Code associated with the postcode. 
+								td codes <br/> <code>Object</code>
+								td
+									strong Returns an ID or Code associated with the postcode.
 									| Typically these are a 9 character code known as an ONS Code or GSS Code. This is currently only available for districts, parishes, counties, CCGs, NUTS and wards.
+
+							tr
+								td codes.admin_district <br/> <code>string|null</code>
+								td
+									| See description of <code>admin_district</code> field.
+
+							tr
+								td codes.admin_county <br/> <code>string|null</code>
+								td
+									| See description of <code>admin_county</code> field.
+
+							tr
+								td codes.admin_ward <br/> <code>string|null</code>
+								td
+									| See description of <code>admin_ward</code> field.
+
+							tr
+								td codes.parish <br/> <code>string|null</code>
+								td
+									| See description of <code>parish</code> field.
+
+
+							tr
+								td codes.ccg <br/> <code>string|null</code>
+								td
+									| See description of <code>ccg</code> field.
+
+							tr
+								td codes.nuts <br/> <code>string|null</code>
+								td
+									| See description of <code>nuts</code> field.
 
 					h4 Places Data (Ordnance Survey Open Names Dataset)
 
 					p Data returned by the <code>/places</code> API
+
+					p <b>Note:</b> Some fields may be <code>null</code> if not applicable or populated. These fields return type is specified as <code>type|null</code>
+
 
 					table.table.table-hover
 						thead
@@ -192,98 +229,98 @@ block content
 								th Description
 						tbody
 							tr#places-code
-								td code
-								td 
-									strong code. 
+								td code <br/> <code>string</code>
+								td
+									strong code.
 									| A unique identifier that enables records to be identified easily. The identifier will be persistent for all LocalTypes except Section of Named Road and Section of Numbered Road.
 							tr#places-eastings
-								td eastings
-								td 
-									strong Eastings. 
+								td eastings <br/> <code>integer</code>
+								td
+									strong Eastings.
 									| The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.
 							tr#places-northings
-								td northings
-								td 
-									strong Northings. 
+								td northings <br/> <code>integer</code>
+								td
+									strong Northings.
 									| The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.
 							tr#places-maxminnorthingseastings
-								td [max|min]_northings, [max|min]_eastings
-								td 
-									strong Maximum &amp; Minimum, Northings &amp; Eastings. 
+								td [max|min]_northings, [max|min]_eastings <br/> <code>integer</code>
+								td
+									strong Maximum &amp; Minimum, Northings &amp; Eastings.
 									| Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements.
 									| For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
 							tr#places-country
-								td country
-								td 
-									strong Country. 
+								td country <br/> <code>string</code>
+								td
+									strong Country.
 									| The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each place is assigned.
 							tr#places-longitude
-								td longitude
+								td longitude <br/> <code>double float</code>
 								td
-									strong Longitude. 
+									strong Longitude.
 									| The WGS84 longitude given the Place's national grid reference
 							tr#places-latitude
-								td latitude
+								td latitude <br/> <code>double float</code>
 								td
-									strong Latitude. 
+									strong Latitude.
 									| The WGS84 latitude given the Place's national grid reference
 							tr#places-local_type
-								td local_type
+								td local_type <br/> <code>string</code>
 								td
-									strong Local Type. 
+									strong Local Type.
 									| The Ordnance Survey classification for the named place being represented by the specific feature.
 									| E.g. <code>City</code>, <code>Town</code>, <code>Village</code>, <code>Hamlet</code>, <code>Other Settlement</code>, <code>Suburban Area</code>
 							tr#places-outcode
-								td outcode
+								td outcode <br/> <code>string</code>
 								td
-									strong Outcode. 
+									strong Outcode.
 									| The postcode district, for example, <code>SO15</code>
 							tr#places-name-1
-								td name_1
+								td name_1 <br/> <code>string</code>
 								td
-									strong Name. 
+									strong Name.
 									| The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, ‘The Pennines’ not ‘Pennines, The’.
 							tr#places-name-1-lang
-								td name_1_lang
+								td name_1_lang <br/> <code>string|null</code>
 								td
-									strong Language of Name. 
+									strong Language of Name.
 									| The language type is only set where more than one name exists
 									| E.g. <code>cym</code> (Welsh), <code>eng</code> (English), <code>gla</code> (Scottish Gaelic)
 							tr#places-name-2
-								td name_2
+								td name_2 <br/> <code>string|null</code>
 								td
-									strong Name (in case of multiple languages). 
+									strong Name (in case of multiple languages).
 									| The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, ‘The Pennines’ not ‘Pennines, The’.
 							tr#places-name-2-lang
-								td name_2_lang
+								td name_2_lang <br/> <code>string|null</code>
 								td
-									strong Language of Name. 
+									strong Language of Name.
 									| The language type is only set where more than one name exists
 									| E.g. cym (Welsh), eng (English), gla (Scottish Gaelic)
 							tr#places-county-unitary
-								td county_unitary
+								td county_unitary <br/> <code>string|null</code>
 								td
-									strong Administrative Area. 
+									strong Administrative Area.
 									| The name of the County (non-metropolitan or Metropolitan), Unitary Authority or Greater London Authority administrative area that the point geometry for feature is within or nearest to.
 							tr#places-county-unitary-type
-								td county_unitary_type
+								td county_unitary_type <br/> <code>string|null</code>
 								td
-									strong Administrative Area Type. 
+									strong Administrative Area Type.
 									|  Classifies the type of administrative unit.
 							tr#places-district-borough
-								td district_borough
+								td district_borough <br/> <code>string|null</code>
 								td
-									strong District or Borough. 
-									| The name of the District, Metropolitan District or London Borough administrative unit that the point geometry for the feature is within. 
+									strong District or Borough.
+									| The name of the District, Metropolitan District or London Borough administrative unit that the point geometry for the feature is within.
 							tr#places-district-borough-type
-								td district_borough_type
+								td district_borough_type <br/> <code>string|null</code>
 								td
-									strong Borough Type. 
+									strong Borough Type.
 									|  Classifies the type of administrative unit.
 							tr#places-region
-								td region
+								td region <br/> <code>string</code>
 								td
-									strong Region. 
+									strong Region.
 									| The name of the European Region (was Government O ice Region) that the point geometry for the feature is within or nearest to.
 
 					h2#Methods.doc-header Methods
@@ -326,8 +363,8 @@ block content
 					p Returns nearest postcodes for a given longitude and latitude.
 
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/postcodes?lon=:longitude&amp;lat=:latitude
 
 					h4 Optional Query Parameters
@@ -346,8 +383,8 @@ block content
 					p Note that the old style of reverse geocoding (including optional headers above) will still be supported. Namely,
 
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
 
 					h3#Bulk-Geocode-Postcode Bulk Reverse Geocoding
@@ -355,8 +392,8 @@ block content
 					p Bulk translates geolocations into Postcodes. Accepts up to 100 geolocations.
 
 					pre
-						h4 
-							.http-method POST 
+						h4
+							.http-method POST
 							| https://api.postcodes.io/postcodes
 
 					h4 Post Data
@@ -388,14 +425,14 @@ block content
 
 					p Submit a postcode query and receive a complete list of postcode matches and all associated postcode data.
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/postcodes?q=[query]
 
 					h4 Optional Query Parameters
-					p 
+					p
 						code query=
-						|  (not required) aliases to 
+						|  (not required) aliases to
 						code q=
 					p
 						code limit=
@@ -407,8 +444,8 @@ block content
 					p Convenience method to validate a postcode. Returns true or false (meaning valid or invalid respectively)
 
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/postcodes/:postcode/validate
 
 					h3#Nearest-Postcode Nearest Postcode
@@ -416,8 +453,8 @@ block content
 					p Returns nearest postcodes for a given postcode.
 
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/postcodes/:postcode/nearest
 
 					h4 Optional Query Parameters
@@ -433,8 +470,8 @@ block content
 					p Convenience method to return an list of matching postcodes.
 
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/postcodes/:postcode/autocomplete
 
 					h4 Optional Query Parameters
@@ -448,8 +485,8 @@ block content
 					p Returns a random postcode and all available data for that postcode.
 
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/random/postcodes
 
 					h4 Optional Query Parameters
@@ -462,8 +499,8 @@ block content
 					p Geolocation data for the centroid of the outward code specified. The outward code represents the first half of any postcode (separated by a space).
 
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/outcodes/:outcode
 
 					h3#Geocode-Outcode Outcode Reverse Geocoding
@@ -471,8 +508,8 @@ block content
 					p Returns nearest outcodes for a given longitude and latitude.
 
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/outcodes?lon=:longitude&amp;lat=:latitude
 
 					h4 Optional Query Parameters
@@ -488,8 +525,8 @@ block content
 					p Returns nearest outcodes for a given outcode.
 
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/outcodes/:outcode/nearest
 
 					h4 Optional Query Parameters
@@ -510,14 +547,14 @@ block content
 
 					p Submit a place query and receive a complete list of places matches and associated data.
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/places?q=[query]
 
 					h4 Optional Query Parameters
-					p 
+					p
 						code query=
-						|  (not required) aliases to 
+						|  (not required) aliases to
 						code q=
 					p
 						code limit=
@@ -528,8 +565,8 @@ block content
 					p Returns a random place and all associated data
 
 					pre
-						h4 
-							.http-method GET 
+						h4
+							.http-method GET
 							| https://api.postcodes.io/random/places
 
 					h2#Install-notes.doc-header Install Notes
@@ -545,36 +582,36 @@ block content
 
 					ol
 						li The easiest is to use our install script. This will require postgres superuser privileges to create and provision your database. It will then download the database and import the data from a pg_dump (hosted and created by us).
-						li You can download the pg_dump and attempt to import the database yourself with psql or pg_restore. 
+						li You can download the pg_dump and attempt to import the database yourself with psql or pg_restore.
 						li Lastly, you can retrieve the raw CSV data from the ONS and import it with our import script.
 
 					h3#install-requirements Requirements
 
 					ul
-						li 
+						li
 							a(href="http://nodejs.org") Node.js
-						li 
+						li
 							a(href="http://postgis.net/install/") Postgresql and Postgis
 
 					h3#data-download Data Download
 
-					p Data is sourced and can be downloaded from the 
-						a(href="https://geoportal.statistics.gov.uk/geoportal/catalog/main/home.page") Office for National Statistics Data Portal. 
+					p Data is sourced and can be downloaded from the
+						a(href="https://geoportal.statistics.gov.uk/geoportal/catalog/main/home.page") Office for National Statistics Data Portal.
 						| The dataset is often not easy to find. The simplest way is to search for "Postcode Directory".
 
-					p Alternatively you can download a 
-						a(href="http://www.postgresql.org/docs/9.3/static/app-pgdump.html") pg_dump 
-						| of the postcode database which is hosted by us. This is the same dump which is used by the install script. The link to the latest dump can be found in our 
+					p Alternatively you can download a
+						a(href="http://www.postgresql.org/docs/9.3/static/app-pgdump.html") pg_dump
+						| of the postcode database which is hosted by us. This is the same dump which is used by the install script. The link to the latest dump can be found in our
 						a(href="https://github.com/ideal-postcodes/postcodes.io/blob/master/latest") repository.
 
 					h3#install-script Install Script
 
-					p Currently the install process targets *nix systems. We've provisioned and tested on OS X Mavericks &amp; Ubuntu 14.04. Please 
+					p Currently the install process targets *nix systems. We've provisioned and tested on OS X Mavericks &amp; Ubuntu 14.04. Please
 						a(href="/about") let us know
 						|  if you have issues on other operating systems.
 
-					p Postcodes.io is packaged with a 
-						a(href="https://github.com/ideal-postcodes/postcodes.io/blob/master/bin/setup.sh") script 
+					p Postcodes.io is packaged with a
+						a(href="https://github.com/ideal-postcodes/postcodes.io/blob/master/bin/setup.sh") script
 						| to provision postgres and download a dump (pg_dump) of the ONS Postcode Directory (hosted by us). The script will do the following,
 					ul
 						li Prompt you for your postgres superuser credentials (most of the setup steps require this level of privilege)
