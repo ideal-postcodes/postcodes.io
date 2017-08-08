@@ -28,7 +28,7 @@ describe("Filter method", function () {
 	after(helper.clearPostcodeDb);
 
 	describe("Bulk postcode lookup", () => {
-    it ("filteres by filter attributes", done => {
+    it ("filters by filter attributes", done => {
 			let filter = "postcode";
       request(app)
         .post("/postcodes")
@@ -44,7 +44,7 @@ describe("Filter method", function () {
 					response.body.result.forEach(resultObj => {
 						assert.exists(resultObj.result["postcode"]);
 						assert.isTrue(Object.keys(resultObj.result).length === 1);
-					})
+					});
           done();
         });
     });
