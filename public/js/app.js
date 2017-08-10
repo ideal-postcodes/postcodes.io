@@ -6,6 +6,19 @@ $(function () {
 	var displayJsonResult = function ($context, data) {
 		$context.html(JSON.stringify(data, null, 4)).slideDown();
 	}
+	
+	$("#single-terminated-postcode").click(function (event) {
+		event.preventDefault();
+		var $result = $("#single-terminated-postcode-result").slideUp(),
+				postcode = $("#single-terminated-postcode-input").val();
+		$.get(encodeURI("/terminated_postcodes/" + postcode))
+		.done(function (data) {
+			displayJsonResult($result, data);
+		})
+		.fail(function (error) {
+			displayJsonResult($result, error.responseJSON);
+		});
+	});
 
 	$("#single-postcode").click(function (event) {
 		event.preventDefault();

@@ -37,7 +37,7 @@ block content
 			.col-lg-12
 				h1.api-header API Endpoint &amp; Methods
 				.api-demo
-
+				
 					.api-method
 						h4.method-title Lookup a postcode
 						h4
@@ -138,6 +138,15 @@ block content
 							input.rest-resource(value=":postcode")#query-postcode-input
 							a(href="#")#query-postcode Request
 						pre.code-box#query-postcode-result
+
+					.api-method
+						h4.method-title Lookup terminated postcode
+						h4
+							span.http-method GET
+							| api.postcodes.io/terminated_postcodes/
+							input.rest-resource(value=":postcode")#single-terminated-postcode-input
+							a(href="#")#single-terminated-postcode Request
+						pre.code-box#single-terminated-postcode-result
 
 					.api-method
 						h4.method-title Lookup Outward Code
