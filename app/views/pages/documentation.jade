@@ -215,6 +215,34 @@ block content
 								td
 									| See description of <code>nuts</code> field.
 
+
+					h4 Terminated Postcode Data (Ordnance Survey Postcode Directory Dataset)
+
+					p Data returned by the <code>/terminated_postcodes</code> API
+
+					table.table.table-hover
+						thead
+							tr
+								th Field
+								th Description
+						tbody
+							tr#postcode
+								td postcode <br/> <code>string</code>
+
+								td
+									strong Postcode. 
+									| All currently terminated postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received every 3 months from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code.
+							tr#year-terminated
+								td year_terminated <br/> <code>integer</code>
+								td
+									strong Termination year.
+									| Year of termination of a postcode
+							tr#month-terminated
+								td month_terminated <br/> <code>integer</code>
+								td
+									strong Termination month.
+									| Month of termination of a postcode. 1-January, 2-February, ..., 12-December
+
 					h4 Places Data (Ordnance Survey Open Names Dataset)
 
 					p Data returned by the <code>/places</code> API
@@ -536,6 +564,12 @@ block content
 					p
 						code radius=
 						|  (not required) Limits number of postcodes matches to return. Defaults to 5,000m. Needs to be less than 25,000m.
+						
+					h3#Terminated Terminated Postcode Lookup
+
+					p Lookup a terminated postcode. Returns the postcode, year and month of termination. Returns 404 if postcode does not exist in our database of terminated postcodes or not valid.
+					pre
+						h4 https://api.postcodes.io/terminated_postcodes/:postcode
 
 					h3#Place-Lookup Place Lookup
 
