@@ -9,15 +9,15 @@ const isArray = o => Object.prototype.toString.call(o) === "[object Array]";
 
 /**
  * Filters an object with valid filters in the filterArray returns an Object
- * @param  {[type]} obj         [description]
- * @param  {[type]} filterArray [description]
- * @return {[type]}             [description]
+ * @param  {Object} obj           - Source object to be filtered
+ * @param  {string[]} filterArray - List of attributes to be returned in result
+ * @return {Object}               - Filtered source object
  */
 const objFilter = (obj, filterArray) => { 
 	return filterArray.reduce((acc,curr) => {
 	 if (obj[curr]) acc[curr] = obj[curr];
 	 return acc;
- } , {});
+ }, {});
 };
 
 /**
@@ -32,8 +32,8 @@ const arrFilter = (arr, filterArray) => {
 
 /**
  * Test if query response requires filtering
- * @param  {[type]} request  - Express request instance
- * @param  {[type]} response - Express response instance
+ * @param  {Object} request  - Express request instance
+ * @param  {Object} response - Express response instance
  * @return {boolean}         - Returns true if result requires filter
  */
 const requiresFilter = (request, response) => {
