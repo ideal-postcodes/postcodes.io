@@ -1,0 +1,44 @@
+[
+  {
+      "query": {
+          "longitude": "0.629834723775309",
+          "latitude": "51.7923246977375"
+      },
+      "result": [
+          {
+              "postcode": "CM8 1EF",
+              "quality": 1,
+              "eastings": 581459,
+              "northings": 213679
+          },
+          {
+              "postcode": "CM8 1EU",
+              "quality": 1,
+              "eastings": 581508,
+              "northings": 213652
+          }
+      ]
+  },
+  {
+      "query": {
+          "longitude": "-2.49690382054704",
+          "latitude": "53.5351312861402",
+          "radius": "1000",
+          "limit": "5"
+      },
+      "result": [
+          {
+              "postcode": "M46 9WU",
+              "quality": 1,
+              "eastings": 367163,
+              "northings": 404390
+          },
+          {
+              "postcode": "M46 9XF",
+              "quality": 1,
+              "eastings": 367155,
+              "northings": 404364
+          }
+      ]
+  }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "query": "M32 0JG",
+        "result": {
+            "postcode": "M32 0JG",
+            "quality": 1,
+            "eastings": 379988,
+            "northings": 395476,
+            "codes": {
+                "admin_district": "E08000009"
+            }
+        }
+    },
+    {
+        "query": "OX49 5NU",
+        "result": {
+            "postcode": "OX49 5NU",
+            "quality": 1,
+            "eastings": 464447,
+            "northings": 195647,
+            "codes": {
+                "admin_district": "E07000179"
+            }
+        }
+    }
+]

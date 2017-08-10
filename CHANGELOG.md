@@ -2,6 +2,10 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 6.0.1 (29/7/2017)
+
+- Bulk postcode lookups now accept a `filter` parameter to restrict the attributes of the returned result set
+
 ## 6.0.0 (29/6/2017)
 
 - *Breaking Change* Outcode schema has been modified to include country. When upgrading it's sufficient to rebuild support tables with `npm run rebuild_support_tables`
