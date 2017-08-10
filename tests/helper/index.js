@@ -454,11 +454,8 @@ module.exports = {
 	getCustomRelation: getCustomRelation,
 	isRawOutcodeObject: isRawOutcodeObject,
 	isRawPostcodeObject: isRawPostcodeObject,
-<<<<<<< HEAD
 	isRawPostcodeObjectWithFC: isRawPostcodeObjectWithFC,
 	isRawPostcodeObjectWithFCandDistance: isRawPostcodeObjectWithFCandDistance,
-=======
->>>>>>> 628d0f5... Implement terminated postcode model
 	lookupRandomPostcode: lookupRandomPostcode,
 	listDatabaseRelations: listDatabaseRelations,
 	listDatabaseIndexes: listDatabaseIndexes,

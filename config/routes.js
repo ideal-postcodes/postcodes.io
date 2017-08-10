@@ -7,6 +7,7 @@ const utils = require(path.join(controllerPath, "/utils_controller"));
 const places = require(path.join(controllerPath, "/places_controller"));
 const outcodes = require(path.join(controllerPath, "/outcodes_controller"));
 const postcodes = require(path.join(controllerPath, "/postcodes_controller"));
+const terminatedPostcodes = require(path.join(controllerPath, "/terminated_postcodes_controller"));
 
 module.exports = app => {
 	app.get("/", pages.home);
@@ -35,4 +36,6 @@ module.exports = app => {
 
 	app.get("/random/places", places.random);
 	app.get("/random/postcodes", postcodes.random);
+	
+	app.get("/terminated_postcodes/:postcode", terminatedPostcodes.show);
 };
