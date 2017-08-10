@@ -12,6 +12,7 @@ var env = process.env.NODE_ENV || "development";
 var Base = require(path.join(__dirname, "../app/models"));
 var config = require(path.join(__dirname, "../config/config"))(env);
 var Postcode = require(path.join(__dirname, "../app/models/postcode.js"));
+var TerminatedPostcode = require(path.join(__dirname, "../app/models/terminated_postcode.js"))
 var District = require(path.join(__dirname, "../app/models/district.js"));
 var Ward = require(path.join(__dirname, "../app/models/ward.js"));
 var Nuts = require(path.join(__dirname, "../app/models/nuts.js"));
@@ -44,7 +45,7 @@ function recreateIndexes(callback) {
 }
 
 function importRawCsv (callback) {
-	console.log("Importing CSV data from", sourceFile);
+	console.log("Seeding CSV data from", sourceFile);
 	Postcode.seedPostcodes(sourceFile, callback);
 }
 
@@ -77,6 +78,11 @@ function createPostgisExtension(callback) {
 	Postcode._query("CREATE EXTENSION IF NOT EXISTS postgis", callback);
 }
 
+function setupTerminatedPostcodes (callback) {
+	console.log("Building terminated postcodes table");
+	TerminatedPostcode._setupTable(sourceFile, callback);
+}
+
 var executionStack = [createPostgisExtension,
 											dropRelation, 
 											setupSupportTables,
@@ -84,7 +90,8 @@ var executionStack = [createPostgisExtension,
 											importRawCsv,
 											populateLocation, 
 											recreateIndexes,
-											setupOutcodeTable];
+											setupOutcodeTable,
+										  setupTerminatedPostcodes];
 
 function startImport () {
 	async.series(executionStack, function (error, result) {
