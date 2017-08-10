@@ -25,6 +25,7 @@ const Nuts = require(path.join(rootPath, "app/models/nuts"));
 const Ward = require(path.join(rootPath, "app/models/ward"));
 const Outcode = require(path.join(rootPath, "app/models/outcode"));
 const Place = require(path.join(rootPath, "app/models/place"));
+const TerminatedPostcode = require(path.join(rootPath, "app/models/terminated_postcode"));
 
 const CSV_INDEX = {
 	postcode: 2,
@@ -45,10 +46,10 @@ const locationWithNearbyPostcodes = function (callback) {
 
 function getCustomRelation () {
 	const relationName = randomString({
-			  length: 8,
-			  numeric: false,
-			  letters: true,
-			  special: false
+				length: 8,
+				numeric: false,
+				letters: true,
+				special: false
 			}),
 			schema = {
 				"id" : "serial PRIMARY KEY",
@@ -64,6 +65,18 @@ function getCustomRelation () {
 	return new CustomRelation();
 }
 
+function seedTerminatedPostcodeDb (callback) {
+	if (NO_RELOAD_DB) {
+		return callback(null);
+	}
+	const instructions = [];
+	instructions.push(function (callback) {
+		TerminatedPostcode._setupTable(seedPostcodePath, callback);
+	});
+	async.series(instructions, callback);
+}
+
+
 function seedPostcodeDb (callback) {
 	if (NO_RELOAD_DB) {
 		return callback(null);
@@ -72,6 +85,9 @@ function seedPostcodeDb (callback) {
 	const instructions = [];
 	instructions.push(function (callback) {
 		Postcode._setupTable(seedPostcodePath, callback);
+	});
+	instructions.push(function (callback) {
+		TerminatedPostcode._setupTable(seedPostcodePath, callback);
 	});
 	instructions.push(District._setupTable.bind(District));
 	instructions.push(Parish._setupTable.bind(Parish));
@@ -87,6 +103,14 @@ function seedPostcodeDb (callback) {
 	async.series(instructions, callback);
 }
 
+function clearTerminatedPostcodesDb(callback, force) {
+	if (NO_RELOAD_DB) {
+		return callback(null);
+	}
+	TerminatedPostcode._destroyRelation(callback);
+}
+
+// Runs before each test to clear test database
 function clearPostcodeDb(callback, force) {
 	if (NO_RELOAD_DB) {
 		return callback(null);
@@ -94,8 +118,28 @@ function clearPostcodeDb(callback, force) {
 	Postcode._destroyRelation(callback);
 }
 
+//Generates a random integer from 1 to max inclusive
 const getRandom = function (max) {
-	return Math.floor(Math.random() * max);
+	return Math.ceil(Math.random() * max);
+}
+
+const QueryTerminatedPostcode = `
+	SELECT
+		postcode
+	FROM
+		terminated_postcodes LIMIT 1
+	OFFSET $1
+`;
+
+
+function randomTerminatedPostcode (callback) {
+	const randomId = getRandom(8); // 9 terminated postcodes in the
+																 // testing database
+	TerminatedPostcode._query(QueryTerminatedPostcode, [randomId], (error, result) => {
+		if (error) return callback(error, null);
+		if (result.rows.length === 0) return callback(null, null);
+		callback(null, result.rows[0]);
+	});
 }
 
 function randomPostcode(callback) {
@@ -139,79 +183,79 @@ function allowsCORS (response) {
 }
 
 function validCorsOptions(response) {
-	assert.equal(response.headers["access-control-allow-origin"], 
+	assert.equal(response.headers["access-control-allow-origin"],
 		"*");
-	assert.equal(response.headers["access-control-allow-methods"], 
+	assert.equal(response.headers["access-control-allow-methods"],
 		"GET,POST,OPTIONS");
-	assert.equal(response.headers["access-control-allow-headers"], 
-		"X-Requested-With, Content-Type, Accept, Origin");	
+	assert.equal(response.headers["access-control-allow-headers"],
+		"X-Requested-With, Content-Type, Accept, Origin");
 }
 
 function isRawPlaceObject(o) {
 	[
 		"id",
-	  "code",
-	  "longitude",
-	  "latitude",
-	  "location",
-	  "eastings",
-	  "northings",
-	  "min_eastings",
-	  "min_northings",
-	  "max_eastings",
-	  "max_northings",
-	  "bounding_polygon",
-	  "local_type",
-	  "outcode",
-	  "name_1",
-	  "name_1_lang",
-	  "name_1_search",
-	  "name_2",
-	  "name_2_lang",
-  	"name_2_search",
-	  "county_unitary",
-	  "county_unitary_type",
-	  "district_borough",
-	  "district_borough_type",
-	  "region",
-	  "country",
-	  "polygon"
+		"code",
+		"longitude",
+		"latitude",
+		"location",
+		"eastings",
+		"northings",
+		"min_eastings",
+		"min_northings",
+		"max_eastings",
+		"max_northings",
+		"bounding_polygon",
+		"local_type",
+		"outcode",
+		"name_1",
+		"name_1_lang",
+		"name_1_search",
+		"name_2",
+		"name_2_lang",
+		"name_2_search",
+		"county_unitary",
+		"county_unitary_type",
+		"district_borough",
+		"district_borough_type",
+		"region",
+		"country",
+		"polygon"
 	].forEach(prop => assert.property(o, prop));
 }
 
 function isPlaceObject(o) {
 	[
-	  "code",
-	  "longitude",
-	  "latitude",
-	  "eastings",
-	  "northings",
-	  "min_eastings",
-	  "min_northings",
-	  "max_eastings",
-	  "max_northings",
-	  "local_type",
-	  "outcode",
-	  "name_1",
-	  "name_1_lang",
-	  "name_2",
-	  "name_2_lang",
-	  "county_unitary",
-	  "county_unitary_type",
-	  "district_borough",
-	  "district_borough_type",
-	  "region",
-	  "country"
+		"code",
+		"longitude",
+		"latitude",
+		"eastings",
+		"northings",
+		"min_eastings",
+		"min_northings",
+		"max_eastings",
+		"max_northings",
+		"local_type",
+		"outcode",
+		"name_1",
+		"name_1_lang",
+		"name_2",
+		"name_2_lang",
+		"county_unitary",
+		"county_unitary_type",
+		"district_borough",
+		"district_borough_type",
+		"region",
+		"country"
 	].forEach(prop => assert.property(o, prop));
-	
-  [
-	  "id",
-  	"location",
-  	"name_1_search",
-  	"name_2_search",
-    "bounding_polygon",
-    "polygon"
-  ].forEach(prop => assert.notProperty(o, prop));
+
+	[
+		"id",
+		"location",
+		"name_1_search",
+		"name_2_search",
+		"bounding_polygon",
+		"polygon"
+	].forEach(prop => assert.notProperty(o, prop));
 }
 
 function isPostcodeObject(o) {
@@ -300,6 +344,19 @@ function isRawPostcodeObject(o) {
 	].forEach(prop => assert.property(o, prop));
 }
 
+const terminatedPostcodeAttributes = TerminatedPostcode.whitelistedAttributes;
+const rawTerminatedPostcodeAttributes = Object.keys(TerminatedPostcode.schema);
+
+function isTerminatedPostcodeObject(o) {
+	terminatedPostcodeAttributes.forEach(attr => assert(o, attr));
+	assert.equal(Object.keys(o).length, terminatedPostcodeAttributes.length);
+}
+
+function isRawTerminatedPostcodeObject(o) {
+	rawTerminatedPostcodeAttributes.forEach(attr => assert(o, attr));
+	assert.equal(Object.keys(o).length, rawTerminatedPostcodeAttributes.length);
+}
+
 function isOutcodeObject(o) {
 	["id", "location"].forEach(prop => assert.notProperty(o, prop));
 
@@ -314,7 +371,7 @@ function isOutcodeObject(o) {
 		"parish",
 		"outcode",
 		"country"
-	].forEach(prop => assert.property(o, prop));	
+	].forEach(prop => assert.property(o, prop));
 }
 
 function isRawOutcodeObject(o) {
@@ -336,41 +393,104 @@ function isRawOutcodeObject(o) {
 
 function testOutcode(o) {
 	[
-		"longitude", 
-		"latitude", 
-		"northings", 
-		"eastings", 
-		"admin_ward", 
-		"admin_district", 
-		"admin_county", 
+		"longitude",
+		"latitude",
+		"northings",
+		"eastings",
+		"admin_ward",
+		"admin_district",
+		"admin_county",
 		"parish",
 		"country"
 	].forEach(prop => assert.property(o, prop));
 }
 
+// Credit: https://www.peterbe.com/plog/select-all-relations-in-postgresql
+const databaseRelationsQuery = `
+	SELECT
+		c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table'
+		WHEN 'v' THEN 'view'
+		WHEN 'm' THEN 'materialized view'
+		WHEN 'i' THEN 'index'
+		WHEN 'S' THEN 'sequence'
+		WHEN 's' THEN 'special'
+		WHEN 'f' THEN 'foreign table' END as "Type"
+	FROM pg_catalog.pg_class c
+			 LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('r','v','m','S','f','')
+				AND n.nspname <> 'pg_catalog'
+				AND n.nspname <> 'information_schema'
+				AND n.nspname !~ '^pg_toast'
+		AND pg_catalog.pg_table_is_visible(c.oid);
+`;
+
+// List relations in database
+function listDatabaseRelations(cb) {
+	Base.Base.prototype._query(databaseRelationsQuery, cb);
+}
+
+// Credit: https://stackoverflow.com/questions/6777456/list-all-index-names-column-names-and-its-table-name-of-a-postgresql-database
+const databaseIndexesQuery = `
+	SELECT i.relname as indname,
+	       i.relowner as indowner,
+	       idx.indrelid::regclass,
+	       am.amname as indam,
+	       idx.indkey,
+	       ARRAY(
+	       SELECT pg_get_indexdef(idx.indexrelid, k + 1, true)
+	       FROM generate_subscripts(idx.indkey, 1) as k
+	       ORDER BY k
+	       ) as indkey_names,
+	       idx.indexprs IS NOT NULL as indexprs,
+	       idx.indpred IS NOT NULL as indpred
+	FROM   pg_index as idx
+	JOIN   pg_class as i
+	ON     i.oid = idx.indexrelid
+	JOIN   pg_am as am
+	ON     i.relam = am.oid
+	JOIN   pg_namespace as ns
+	ON     ns.oid = i.relnamespace
+	AND    ns.nspname = ANY(current_schemas(false));
+`;
+
+// Lists indexes in database
+function listDatabaseIndexes(cb) {
+	Base.Base.prototype._query(databaseIndexesQuery, cb);
+}
+
 module.exports = {
-	// Data	
+	// Data
 	config: config,
 	rootPath: rootPath,
+	seedPostcodePath: seedPostcodePath,
 
 	// Methods
+
 	allowsCORS: allowsCORS,
 	testOutcode: testOutcode,
 	randomOutcode: randomOutcode,
 	isPlaceObject: isPlaceObject,
 	randomPostcode: randomPostcode,
+	randomTerminatedPostcode: randomTerminatedPostcode,
 	randomLocation: randomLocation,
 	seedPostcodeDb: seedPostcodeDb,
+	seedTerminatedPostcodeDb: seedTerminatedPostcodeDb,
 	clearPostcodeDb: clearPostcodeDb,
+	clearTerminatedPostcodesDb: clearTerminatedPostcodesDb,
 	isOutcodeObject: isOutcodeObject,
 	validCorsOptions: validCorsOptions,
 	isPostcodeObject: isPostcodeObject,
+	isTerminatedPostcodeObject: isTerminatedPostcodeObject,
+	isRawTerminatedPostcodeObject: isRawTerminatedPostcodeObject,
 	isRawPlaceObject: isRawPlaceObject,
 	jsonpResponseBody: jsonpResponseBody,
 	getCustomRelation: getCustomRelation,
 	isRawOutcodeObject: isRawOutcodeObject,
-	isRawPostcodeObject: isRawPostcodeObject, 
+	isRawPostcodeObject: isRawPostcodeObject,
 	lookupRandomPostcode: lookupRandomPostcode,
+	listDatabaseRelations: listDatabaseRelations,
+	listDatabaseIndexes: listDatabaseIndexes,
 	locationWithNearbyPostcodes: locationWithNearbyPostcodes,
 
 	// Models
@@ -385,6 +505,7 @@ module.exports = {
 	Ward: Ward,
 	Outcode: Outcode,
 	Place: Place,
+	TerminatedPostcode: TerminatedPostcode,
 	seedPaths: {
 		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
 		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv")
