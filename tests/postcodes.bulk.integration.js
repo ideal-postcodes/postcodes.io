@@ -292,6 +292,7 @@ describe("Postcodes routes", function () {
 			.expect(400)
 			.end(function (error, response) {
 				if (error) return done(error);
+				assert.match(response.body.error, /ensure that Content-Type is set to application\/json/);
 				done();
 			});
 		});
