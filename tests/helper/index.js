@@ -223,7 +223,10 @@ const postcodeAttributes = Postcode.whitelistedAttributes;
 //baseObject is the main template of an object
 //additionalArr is an array of extra attributes on the postcode object
 //blackListedAttr is an array of attributes that Postcode object not supposed to have
-function isSomeObject(o, baseObjectAttr, additionalAttr = [], blackListedAttr = []) {
+function isSomeObject(o, baseObjectAttr, additionalAttr, blackListedAttr) {
+	if (!additionalAttr) additionalAttr = [];
+	if (!blackListedAttr) blackListedAttr = [];
+
 	const whiteBaseObjAttr = baseObjectAttr.reduce((acc,curr) => {
 		if (!blackListedAttr.includes(curr)) {acc.push(curr)}
 		return acc;
@@ -236,7 +239,9 @@ function isSomeObject(o, baseObjectAttr, additionalAttr = [], blackListedAttr = 
 	assert.equal(Object.keys(o).length, expectedObjLen);
 }
 
-function isPostcodeObject(o, additionalAttr = [], blackListedAttr = []) {
+function isPostcodeObject(o, additionalAttr, blackListedAttr) {
+	if (!additionalAttr) additionalAttr = [];
+	if (!blackListedAttr) blackListedAttr = [];
 	isSomeObject(o, postcodeAttributes, additionalAttr, blackListedAttr);
 }
 
@@ -244,11 +249,15 @@ function isPostcodeWithDistanceObject(o) {
 	isPostcodeObject(o, ["distance"]);
 }
 //raw Object is the one that only has properties specified in the schema
-function isRawPostcodeObject(o, additionalAttr = [], blackListedAttr = []) {
+function isRawPostcodeObject(o, additionalAttr, blackListedAttr) {
+	if (!additionalAttr) additionalAttr = [];
+	if (!blackListedAttr) blackListedAttr = [];
 	isSomeObject(o, rawPostcodeAttributes, additionalAttr, blackListedAttr);
 }
 
-function isRawPostcodeObjectWithFC(o, additionalAttr = [], blackListedAttr = []) {
+function isRawPostcodeObjectWithFC(o, additionalAttr, blackListedAttr) {
+	if (!additionalAttr) additionalAttr = [];
+	if (!blackListedAttr) blackListedAttr = [];
 	isRawPostcodeObject(o, Postcode.getForeignColNames().concat(additionalAttr), blackListedAttr);
 }
 
