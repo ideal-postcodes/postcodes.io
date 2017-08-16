@@ -2,6 +2,13 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 6.1.0 (4/9/2017)
+
+- Minimum required version of node.js bumped to 6.x
+- Added terminated postcodes relation and /terminated_postcodes API
+- Postcode responses now include a GSS code for parliamentary constituencies
+- Extraction scripts data files (`data/*.json`) now stored in `data/scripts/` and will effectively document how the data files are generated
+
 ## 6.0.1 (29/7/2017)
 
 - Bulk postcode lookups now accept a `filter` parameter to restrict the attributes of the returned result set
