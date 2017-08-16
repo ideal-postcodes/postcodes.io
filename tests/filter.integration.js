@@ -197,12 +197,21 @@ describe("Filter method", function () {
         .expect(200)
         .end((error, response) => {
           if (error) return done(error);
-					assert.isTrue(response.body.result[0].result === null);
-					response.body.result[1].result.forEach(obj => {
-						assert.isTrue(Object.keys(obj).length === 2);
-						assert.exists(obj["country"]);
-						assert.exists(obj["northings"]);
-					})
+          const result = response.body.result;
+
+          result
+            .filter(r => r.query.longitude === 0)
+            .forEach(r => assert.isNull(r.result));
+
+          result
+            .filter(r => r.query.longitude !== 0)
+            .forEach(r => {
+              r.result.forEach(obj => {
+                assert.isTrue(Object.keys(obj).length === 2);
+                assert.exists(obj["country"]);
+                assert.exists(obj["northings"]);
+              });
+            });
           done();
         });
     });
