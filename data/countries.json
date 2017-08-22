@@ -1,8 +1,8 @@
 {
-	"E92000001":"England",
-	"N92000002":"Northern Ireland",
-	"S92000003":"Scotland",
-	"W92000004":"Wales",
-	"L93000001":"Channel Islands",
-	"M83000003":"Isle of Man"
+  "E92000001": "England",
+  "L93000001": "Channel Islands",
+  "M83000003": "Isle of Man",
+  "N92000002": "Northern Ireland",
+  "S92000003": "Scotland",
+  "W92000004": "Wales"
 }
