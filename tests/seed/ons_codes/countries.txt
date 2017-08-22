@@ -1,0 +1,7 @@
+CTRY12CD	CTRY12CDO	CTRY12NM	CTRY12NMW
+E92000001	921		England		Lloegr
+N92000002	922		Northern Ireland	Gogledd Iwerddon
+S92000003	923		Scotland	Yr Alban
+W92000004	924		Wales		Cymru
+L93000001	931		Channel Islands	
+M83000003	833		Isle of Man	
