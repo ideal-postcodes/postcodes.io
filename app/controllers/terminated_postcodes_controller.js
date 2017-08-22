@@ -4,7 +4,7 @@ const Pc = require("postcode");
 
 exports.show = (request, response, next) => {
 	const postcode = request.params.postcode;
-	if (!new Pc(postcode).valid()) {
+	if (!new Pc(postcode.trim()).valid()) {
 		response.jsonApiResponse = {
 			status: 404,
 			error: "Invalid postcode"

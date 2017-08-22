@@ -3,12 +3,20 @@
 const async = require("async");
 const S = require("string");
 const Postcode = require("../models/postcode");
+const Pc = require("postcode");
 const path = require("path");
 const env = process.env.NODE_ENV || "development";
 const defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
 
 exports.show = (request, response, next) => {
 	const postcode = request.params.postcode;
+	if (!new Pc(postcode.trim()).valid()) {
+		response.jsonApiResponse = {
+			status: 404,
+			error: "Invalid postcode"
+		};
+		return next();
+	}
 
 	Postcode.find(postcode, (error, address) => {
 		if (error) {
