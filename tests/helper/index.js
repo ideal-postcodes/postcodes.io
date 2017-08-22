@@ -313,12 +313,12 @@ const terminatedPostcodeAttributes = TerminatedPostcode.whitelistedAttributes;
 const rawTerminatedPostcodeAttributes = Object.keys(TerminatedPostcode.schema);
 
 function isTerminatedPostcodeObject(o) {
-	terminatedPostcodeAttributes.forEach(attr => assert(o, attr));
+	terminatedPostcodeAttributes.forEach(attr => assert.property(o, attr));
 	assert.equal(Object.keys(o).length, terminatedPostcodeAttributes.length);
 }
 
 function isRawTerminatedPostcodeObject(o) {
-	rawTerminatedPostcodeAttributes.forEach(attr => assert(o, attr));
+	rawTerminatedPostcodeAttributes.forEach(attr => assert.property(o, attr));
 	assert.equal(Object.keys(o).length, rawTerminatedPostcodeAttributes.length);
 }
 

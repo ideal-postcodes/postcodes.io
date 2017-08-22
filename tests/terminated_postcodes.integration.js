@@ -49,6 +49,21 @@ describe("terminated postcode route", () => {
         done();
       });
     });
+		it ("returns 200 with the correct data if terminated postcode has extra spaces", done => {
+			testTerminatedPostcode = "  " + testTerminatedPostcode + "  ";
+      path = `/terminated_postcodes/${encodeURI(testTerminatedPostcode)}`;
+      request(app)
+      .get(path)
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .end( (error, response) => {
+        if (error) return done(error);
+        assert.equal(response.body.status, 200);
+        assert.equal(Object.keys(response.body).length, 2);
+        helper.isTerminatedPostcodeObject(response.body.result);
+        done();
+      });
+    });
 		it ("errors if legitimate postcode has special characters", done => {
 			const firstSlice = testTerminatedPostcode.slice(0,3);
 			const secondSlice = testTerminatedPostcode.slice(3);
