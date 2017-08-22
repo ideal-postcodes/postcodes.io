@@ -98,3 +98,18 @@ exports.extract = options => {
 		return done(null, output);
 	});
 };
+
+/**
+ * Transforms map of result to a JSON object ordered by keys
+ * @param  {map} map 	- Map of response object
+ * @return {string}		- JSON respresentation of result
+ */
+exports.toJson = map => {
+	const result = Array.from(map.keys())
+		.sort()
+		.reduce((acc, key) => {
+			acc[key] = map.get(key);
+			return acc;
+		}, {});
+	return JSON.stringify(result, 2, 2);
+};

@@ -2,7 +2,8 @@
 
 const path = require("path");
 const assert = require("chai").assert;
-const {extract} = require("../data/scripts/index.js");
+const randomString = require("random-string");
+const {extract, toJson} = require("../data/scripts/index.js");
 
 describe("ONS Code Extraction", () => {
 	it ("returns an error if no data directory provided", done => {
@@ -70,6 +71,35 @@ describe("ONS Code Extraction", () => {
 						done();
 					}
 				});
+			});
+		});
+
+		describe("toJson", () => {
+			let data;
+
+			beforeEach(() => {
+				data = new Map();
+				const ranConfig = {
+					length: 8,
+					numeric: false,
+					letters: true,
+					special: false
+				};
+				for (let i = 0; i < 100; i++) {
+					data.set(randomString(ranConfig), randomString(ranConfig));
+				}
+			});
+
+			it ("converts a map to an JSON object ordered by keys", () => {
+				const result = JSON.parse(toJson(data));
+				const keys = Object.keys(result);
+				assert.equal(keys.length, data.size);
+				data.forEach((value, key) => assert.equal(result[key], value));
+				keys.reduce((acc, key) => {
+					if (acc === null) return key;
+					assert.isTrue(key > acc);
+					return acc;
+				}, null);
 			});
 		});
 	});
