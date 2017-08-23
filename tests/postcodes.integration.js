@@ -189,7 +189,21 @@ describe("Postcodes routes", function () {
 			.end(function (error, response) {
 				if (error) return done(error);
 				assert.equal(response.body.status, 404);
-				assert.property(response.body, "error");
+				assert.match(response.body.error, /postcode not found/i);
+				done();
+			});
+		});
+		it ("returns invalid postcode if postcode doesn't match format", function (done) {
+			testPostcode = "FOO";
+			var path = ["/postcodes/", encodeURI(testPostcode)].join("");
+			request(app)
+			.get(path)
+			.expect('Content-Type', /json/)
+			.expect(404)
+			.end(function (error, response) {
+				if (error) return done(error);
+				assert.equal(response.body.status, 404);
+				assert.match(response.body.error, /invalid postcode/i);
 				done();
 			});
 		});
