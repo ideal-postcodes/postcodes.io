@@ -21,6 +21,7 @@ const District = require(path.join(rootPath, "app/models/district"));
 const Parish = require(path.join(rootPath, "app/models/parish"));
 const County = require(path.join(rootPath, "app/models/county"));
 const Ccg = require(path.join(rootPath, "app/models/ccg"));
+const Constituency = require(path.join(rootPath, "app/models/constituency"));
 const Nuts = require(path.join(rootPath, "app/models/nuts"));
 const Ward = require(path.join(rootPath, "app/models/ward"));
 const Outcode = require(path.join(rootPath, "app/models/outcode"));
@@ -77,6 +78,7 @@ function seedPostcodeDb (callback) {
 	instructions.push(Parish._setupTable.bind(Parish));
 	instructions.push(Nuts._setupTable.bind(Nuts));
 	instructions.push(County._setupTable.bind(County));
+	instructions.push(Constituency._setupTable.bind(Constituency));
 	instructions.push(Ccg._setupTable.bind(Ccg));
 	instructions.push(Ward._setupTable.bind(Ward));
 	instructions.push(Outcode._setupTable.bind(Outcode));
@@ -139,12 +141,12 @@ function allowsCORS (response) {
 }
 
 function validCorsOptions(response) {
-	assert.equal(response.headers["access-control-allow-origin"], 
+	assert.equal(response.headers["access-control-allow-origin"],
 		"*");
-	assert.equal(response.headers["access-control-allow-methods"], 
+	assert.equal(response.headers["access-control-allow-methods"],
 		"GET,POST,OPTIONS");
-	assert.equal(response.headers["access-control-allow-headers"], 
-		"X-Requested-With, Content-Type, Accept, Origin");	
+	assert.equal(response.headers["access-control-allow-headers"],
+		"X-Requested-With, Content-Type, Accept, Origin");
 }
 
 function isRawPlaceObject(o) {
@@ -203,7 +205,7 @@ function isPlaceObject(o) {
 	  "region",
 	  "country"
 	].forEach(prop => assert.property(o, prop));
-	
+
   [
 	  "id",
   	"location",
@@ -214,90 +216,53 @@ function isPlaceObject(o) {
   ].forEach(prop => assert.notProperty(o, prop));
 }
 
-function isPostcodeObject(o) {
-	[
-		"id",
-		"location",
-		"pc_compact",
-		"admin_county_id",
-		"admin_district_id",
-		"parish_id",
-		"ccg_id",
-		"admin_ward_id",
-		"nuts_id",
-		"nuts_code"
-	].forEach(prop => assert.notProperty(o, prop));
+const rawPostcodeAttributes = Object.keys(Postcode.schema);
+const postcodeAttributes = Postcode.whitelistedAttributes;
 
-	[
-		"nhs_ha",
-		"country",
-		"quality",
-		"postcode",
-		"eastings",
-		"latitude",
-		"northings",
-		"longitude",
-		"admin_ward",
-		"admin_county",
-		"admin_district",
-		"parliamentary_constituency",
-		"european_electoral_region",
-		"parish",
-		"lsoa",
-		"msoa",
-		"nuts",
-		"ccg",
-		"primary_care_trust",
-		"incode",
-		"outcode",
-		"codes"
-	].forEach(prop => assert.property(o, prop));
 
-	[
-		"admin_county",
-		"admin_district",
-		"parish",
-		"ccg",
-		"admin_ward",
-		"nuts"
-	].forEach(prop => assert.property(o, prop));
+//baseObject is the main template of an object
+//additionalArr is an array of extra attributes on the postcode object
+//blackListedAttr is an array of attributes that Postcode object not supposed to have
+function isSomeObject(o, baseObjectAttr, additionalAttr, blackListedAttr) {
+	if (!additionalAttr) additionalAttr = [];
+	if (!blackListedAttr) blackListedAttr = [];
+
+	const whiteBaseObjAttr = baseObjectAttr.reduce((acc,curr) => {
+		if (!blackListedAttr.includes(curr)) {acc.push(curr)}
+		return acc;
+	}, []);
+	whiteBaseObjAttr.forEach(attr => assert.property(o, attr));
+	if (additionalAttr) {
+		additionalAttr.forEach(attr => assert.property(o, attr));
+	}
+	const expectedObjLen = whiteBaseObjAttr.length + additionalAttr.length;
+	assert.equal(Object.keys(o).length, expectedObjLen);
 }
 
-function isRawPostcodeObject(o) {
-	[
-		"id",
-		"nhs_ha",
-		"country",
-		"quality",
-		"postcode",
-		"eastings",
-		"latitude",
-		"location",
-		"northings",
-		"longitude",
-		"pc_compact",
-		"admin_ward",
-		"admin_county",
-		"admin_district",
-		"parliamentary_constituency",
-		"european_electoral_region",
-		"parish",
-		"lsoa",
-		"msoa",
-		"nuts",
-		"ccg",
-		"primary_care_trust",
-		"incode",
-		"outcode",
-		"admin_district",
-		"nuts_id",
-		"nuts_code",
-		"admin_county_id",
-		"admin_district_id",
-		"parish_id",
-		"ccg_id",
-		"admin_ward_id"
-	].forEach(prop => assert.property(o, prop));
+function isPostcodeObject(o, additionalAttr, blackListedAttr) {
+	if (!additionalAttr) additionalAttr = [];
+	if (!blackListedAttr) blackListedAttr = [];
+	isSomeObject(o, postcodeAttributes, additionalAttr, blackListedAttr);
+}
+
+function isPostcodeWithDistanceObject(o) {
+	isPostcodeObject(o, ["distance"]);
+}
+//raw Object is the one that only has properties specified in the schema
+function isRawPostcodeObject(o, additionalAttr, blackListedAttr) {
+	if (!additionalAttr) additionalAttr = [];
+	if (!blackListedAttr) blackListedAttr = [];
+	isSomeObject(o, rawPostcodeAttributes, additionalAttr, blackListedAttr);
+}
+
+function isRawPostcodeObjectWithFC(o, additionalAttr, blackListedAttr) {
+	if (!additionalAttr) additionalAttr = [];
+	if (!blackListedAttr) blackListedAttr = [];
+	isRawPostcodeObject(o, Postcode.getForeignColNames().concat(additionalAttr), blackListedAttr);
+}
+
+function isRawPostcodeObjectWithFCandDistance(o) {
+	isRawPostcodeObjectWithFC(o, ["distance"])
 }
 
 function isOutcodeObject(o) {
@@ -314,7 +279,7 @@ function isOutcodeObject(o) {
 		"parish",
 		"outcode",
 		"country"
-	].forEach(prop => assert.property(o, prop));	
+	].forEach(prop => assert.property(o, prop));
 }
 
 function isRawOutcodeObject(o) {
@@ -336,20 +301,20 @@ function isRawOutcodeObject(o) {
 
 function testOutcode(o) {
 	[
-		"longitude", 
-		"latitude", 
-		"northings", 
-		"eastings", 
-		"admin_ward", 
-		"admin_district", 
-		"admin_county", 
+		"longitude",
+		"latitude",
+		"northings",
+		"eastings",
+		"admin_ward",
+		"admin_district",
+		"admin_county",
 		"parish",
 		"country"
 	].forEach(prop => assert.property(o, prop));
 }
 
 module.exports = {
-	// Data	
+	// Data
 	config: config,
 	rootPath: rootPath,
 
@@ -366,10 +331,13 @@ module.exports = {
 	validCorsOptions: validCorsOptions,
 	isPostcodeObject: isPostcodeObject,
 	isRawPlaceObject: isRawPlaceObject,
+	isPostcodeWithDistanceObject: isPostcodeWithDistanceObject,
 	jsonpResponseBody: jsonpResponseBody,
 	getCustomRelation: getCustomRelation,
 	isRawOutcodeObject: isRawOutcodeObject,
-	isRawPostcodeObject: isRawPostcodeObject, 
+	isRawPostcodeObject: isRawPostcodeObject,
+	isRawPostcodeObjectWithFC: isRawPostcodeObjectWithFC,
+	isRawPostcodeObjectWithFCandDistance: isRawPostcodeObjectWithFCandDistance,
 	lookupRandomPostcode: lookupRandomPostcode,
 	locationWithNearbyPostcodes: locationWithNearbyPostcodes,
 
@@ -381,6 +349,7 @@ module.exports = {
 	Parish: Parish,
 	County: County,
 	Ccg: Ccg,
+	Constituency: Constituency,
 	Nuts: Nuts,
 	Ward: Ward,
 	Outcode: Outcode,

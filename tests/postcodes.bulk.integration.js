@@ -23,7 +23,7 @@ describe("Postcodes routes", function () {
 		helper.lookupRandomPostcode(function (result) {
 			testPostcode = result.postcode;
 			testOutcode = result.outcode;
-			done();	
+			done();
 		});
 	});
 
@@ -43,7 +43,7 @@ describe("Postcodes routes", function () {
 					if (error) return done(error);
 					testLocations = locations;
 					done();
-				});				
+				});
 			});
 
 			it ("should return postcodes for specified geolocations", function (done) {
@@ -62,7 +62,7 @@ describe("Postcodes routes", function () {
 						assert.property(lookup, "result");
 						assert.isArray(lookup.result);
 						lookup.result.forEach(function (result) {
-							helper.isPostcodeObject(result);
+							helper.isPostcodeWithDistanceObject(result);
 						});
 					});
 					done();
@@ -128,7 +128,7 @@ describe("Postcodes routes", function () {
 					if (error) return done(error);
 					assert.equal(response.body.result.length, 1);
 					assert.equal(response.body.result[0].result.length, 1);
-					helper.isPostcodeObject(response.body.result[0].result[0]);
+					helper.isPostcodeWithDistanceObject(response.body.result[0].result[0]);
 					done();
 				});
 			});
@@ -149,7 +149,7 @@ describe("Postcodes routes", function () {
 					var query = response.body.result[0].query;
 					assert.isDefined(query.limit);
 					assert.equal(query.radius, testLocation.radius);
-					helper.isPostcodeObject(response.body.result[0].result[0]);
+					helper.isPostcodeWithDistanceObject(response.body.result[0].result[0]);
 					testLocation.radius = 1000;
 					request(app)
 						.post("/postcodes")
@@ -214,7 +214,7 @@ describe("Postcodes routes", function () {
 					if (error) return done(error);
 					testPostcodes = postcodes;
 					done();
-				});				
+				});
 			});
 
 			it ("should return addresses for postcodes", function (done) {
@@ -281,9 +281,9 @@ describe("Postcodes routes", function () {
 					if (error) return done(error);
 					done();
 				});
-			});	
+			});
 		});
-		
+
 		it ("should return a 400 error if array not submitted", function (done) {
 			request(app)
 			.post("/postcodes")

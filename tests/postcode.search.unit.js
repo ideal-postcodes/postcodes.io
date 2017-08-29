@@ -5,7 +5,7 @@ const path = require("path");
 const async = require("async");
 const assert = require("chai").assert;
 const helper = require(`${__dirname}/helper`);
-		
+
 const Postcode = helper.Postcode;
 
 describe("Postcode Model", function () {
@@ -23,11 +23,11 @@ describe("Postcode Model", function () {
 		helper.lookupRandomPostcode(result => {
 			testPostcode = result.postcode;
 			testOutcode = result.outcode;
-			done();	
+			done();
 		});
 	});
 
-	after(helper.clearPostcodeDb);
+	//after(helper.clearPostcodeDb);
 
 	describe("#search", () => {
 		it ("returns single result if exact match", done => {
@@ -44,7 +44,7 @@ describe("Postcode Model", function () {
 			Postcode.search({postcode: testPostcode}, (error, result) => {
 				if (error) return done(error);
 				assert.notEqual(result.length, 0);
-				result.forEach(p => helper.isRawPostcodeObject(p));
+				result.forEach(p => helper.isRawPostcodeObjectWithFC(p));
 				done();
 			});
 		});
@@ -53,7 +53,7 @@ describe("Postcode Model", function () {
 			Postcode.search({postcode: testPostcode}, (error, result) => {
 				if (error) return done(error);
 				assert.notEqual(result.length, 0);
-				result.forEach(p => helper.isRawPostcodeObject(p));
+				result.forEach(p => helper.isRawPostcodeObjectWithFC(p));
 				done();
 			});
 		});
@@ -62,7 +62,7 @@ describe("Postcode Model", function () {
 			Postcode.search({postcode: testPostcode}, (error, result) => {
 				if (error) return done(error);
 				assert.notEqual(result.length, 0);
-				result.forEach(p => helper.isRawPostcodeObject(p));
+				result.forEach(p => helper.isRawPostcodeObjectWithFC(p));
 				done();
 			});
 		});
@@ -233,12 +233,12 @@ describe("Postcode Model", function () {
 						Postcode.search({postcode: query, limit: limit}, (error, result) => {
 							assert.equal(result.length, limit);
 							cb(error, result);
-						});	
-					} 
+						});
+					}
 				}), (error, results) => {
 					if (error) return done(error);
 					results.forEach(result => {
-						result.forEach(p => helper.isRawPostcodeObject(p));
+						result.forEach(p => helper.isRawPostcodeObjectWithFC(p));
 					});
 					done();
 				});
@@ -248,7 +248,7 @@ describe("Postcode Model", function () {
 				Postcode.search({postcode: query, limit: 1000}, (error, result) => {
 					if (error) return done(error);
 					assert.equal(result.length, helper.config.defaults.search.limit.MAX);
-					result.forEach(p => helper.isRawPostcodeObject(p));
+					result.forEach(p => helper.isRawPostcodeObjectWithFC(p));
 					done();
 				});
 			});
@@ -256,9 +256,9 @@ describe("Postcode Model", function () {
 				const query = "A";
 				Postcode.search({postcode: query}, (error, result) => {
 					if (error) return done(error);
-					assert.equal(result.length, 
+					assert.equal(result.length,
 						helper.config.defaults.search.limit.DEFAULT);
-					result.forEach(p => helper.isRawPostcodeObject(p));
+					result.forEach(p => helper.isRawPostcodeObjectWithFC(p));
 					done();
 				});
 			});
@@ -266,9 +266,9 @@ describe("Postcode Model", function () {
 				const query = "A";
 				Postcode.search({postcode: query, limit: 0}, (error, result) => {
 					if (error) return done(error);
-					assert.equal(result.length, 
+					assert.equal(result.length,
 						helper.config.defaults.search.limit.DEFAULT);
-					result.forEach(p => helper.isRawPostcodeObject(p));
+					result.forEach(p => helper.isRawPostcodeObjectWithFC(p));
 					done();
 				});
 			});
@@ -276,9 +276,9 @@ describe("Postcode Model", function () {
 				const query = "A";
 				Postcode.search({postcode: query, limit: "limit"}, (error, result) => {
 					if (error) return done(error);
-					assert.equal(result.length, 
+					assert.equal(result.length,
 						helper.config.defaults.search.limit.DEFAULT);
-					result.forEach(p => helper.isRawPostcodeObject(p));
+					result.forEach(p => helper.isRawPostcodeObjectWithFC(p));
 					done();
 				});
 			});
