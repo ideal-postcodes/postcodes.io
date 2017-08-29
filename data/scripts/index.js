@@ -99,6 +99,17 @@ exports.extract = options => {
 	});
 };
 
+const pseudocodeRegex = /^\w99999999$/;
+
+/**
+ * Returns true if string matches pseudocode (e.g. `S99999999`)
+ * @param  {string} code GSS Code to be tested
+ * @return {boolean}
+ */
+exports.isPseudoCode = code => {
+	return code.trim().match(pseudocodeRegex) !== null;
+};
+
 /**
  * Transforms map of result to a JSON object ordered by keys
  * @param  {map} map 	- Map of response object

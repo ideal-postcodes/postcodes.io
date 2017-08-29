@@ -3,7 +3,7 @@
 const path = require("path");
 const assert = require("chai").assert;
 const randomString = require("random-string");
-const {extract, toJson} = require("../data/scripts/index.js");
+const {extract, toJson, isPseudoCode} = require("../data/scripts/index.js");
 
 describe("ONS Code Extraction", () => {
 	it ("returns an error if no data directory provided", done => {
@@ -71,6 +71,24 @@ describe("ONS Code Extraction", () => {
 						done();
 					}
 				});
+			});
+		});
+
+		describe("isPseudoCode", () => {
+			it ("returns true if pseudocode", () => {
+				[
+					"W99999999",
+					"S99999999",
+					"N99999999",
+					"L99999999",
+					"M99999999"
+				].forEach(code => assert.isTrue(isPseudoCode(code)));
+			});
+			it ("returns false if not pseudocode", () => {
+				[
+					"E12000001",
+					"E12000002"
+				].forEach(code => assert.isFalse(isPseudoCode(code)));
 			});
 		});
 
