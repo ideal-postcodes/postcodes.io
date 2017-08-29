@@ -36,6 +36,22 @@ const testFilesPresent = files => {
 };
 
 /**
+ * Default handler if no done method specified for `extract`
+ * Program will either terminate with status code 0 (success) or 1 (error)
+ * @param  {Error} error   - Error to be handled
+ * @param  {string} result - JSON string to be printed
+ * @return {undefined} 
+ */
+const defaultHandler = (error, result) => {
+	if (error) {
+		console.log(error);
+		process.exit(1);
+	}
+	console.log(toJson(result));
+	process.exit(0);
+};
+
+/**
  * @callback ExtractionTransform
  * @param {string[]} row - Row of data to be transformed
  * @param {Number} index - Index number of row
@@ -59,23 +75,25 @@ const testFilesPresent = files => {
 exports.extract = options => {
 	const {configs, done} = options;
 
+	const callback = (typeof done === "function") ? done : defaultHandler;
+
 	let dataDirectory;
 	try {
 		dataDirectory = extractDataDirectory();
 	} catch (e) {
-		return done(new Error("Please specify a data path with `-d`"));
+		return callback(new Error("Please specify a data path with `-d`"));
 	}
 
 	const toFilePath = f => path.join(dataDirectory, "/", f);
 	
 	const missing = testFilesPresent(configs.map(c => toFilePath(c.file)));
 	if (missing.length) {
-		return done(new Error(`Following files cannot be resolved: ${missing.join(", ")}`));
+		return callback(new Error(`Following files cannot be resolved: ${missing.join(", ")}`));
 	}
 
 	const output = new Map();
 
-	async.each(configs, (config, done) => {
+	async.each(configs, (config, next) => {
 		const delimiter = config.delimiter || "	";
 		const file = toFilePath(config.file);
 		const transform = config.transform;
@@ -85,8 +103,8 @@ exports.extract = options => {
 
 		fs.createReadStream(file, { encoding: "utf8" })
 		.pipe(csv.parse(parseOptions))
-		.on("end", done)
-		.on("error", done)
+		.on("end", next)
+		.on("error", next)
 		.on("data", (row, index) => {
 			const parsedRow = transform(row);
 			if (parsedRow.length) {
@@ -94,8 +112,8 @@ exports.extract = options => {
 			}
 		});
 	}, error => {
-		if (error) return done(error);
-		return done(null, output);
+		if (error) return callback(error);
+		return callback(null, output);
 	});
 };
 
@@ -115,7 +133,7 @@ exports.isPseudoCode = code => {
  * @param  {map} map 	- Map of response object
  * @return {string}		- JSON respresentation of result
  */
-exports.toJson = map => {
+const toJson = exports.toJson = map => {
 	const result = Array.from(map.keys())
 		.sort()
 		.reduce((acc, key) => {

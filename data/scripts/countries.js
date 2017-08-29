@@ -1,6 +1,6 @@
 "use strict";
 
-const {extract, toJson} = require("./index");
+const {extract} = require("./index");
 
 /**
  * @module DataParser/countries
@@ -29,14 +29,4 @@ const configs = [
 	}
 ];
 
-extract({
-	configs,
-	done: (error, result) => {
-		if (error) {
-			console.log(error);
-			process.exit(1);
-		}
-		console.log(toJson(result));
-		process.exit(0);
-	}
-});
+extract({ configs });

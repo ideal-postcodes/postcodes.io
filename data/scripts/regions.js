@@ -1,6 +1,6 @@
 "use strict";
 
-const {extract, toJson, isPseudoCode} = require("./index");
+const {extract, isPseudoCode} = require("./index");
 
 /**
  * @module DataParser/regions
@@ -26,14 +26,4 @@ const configs = [
 	}
 ];
 
-extract({
-	configs,
-	done: (error, result) => {
-		if (error) {
-			console.log(error);
-			process.exit(1);
-		}
-		console.log(toJson(result));
-		process.exit(0);
-	}
-});
+extract({ configs });
