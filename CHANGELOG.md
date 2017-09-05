@@ -47,6 +47,7 @@ Following the formalisation, some data files were rebuilt and the following data
 "Aneurin Bevan" => "Aneurin Bevan University Health Board"
 "Cardiff and Vale University" => "Cardiff and Vale University Health Board"
 ```
+- CCG: Naming is more consistent. CCG suffix will always be dropped (previously there were 5 exceptions)
 
 For the exact changes, you can may inspect the most recent commit applied to the file
 
