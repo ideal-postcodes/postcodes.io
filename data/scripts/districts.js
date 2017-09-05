@@ -11,7 +11,7 @@ const {extract, isPseudoCode} = require("./index");
  * - Pseudocodes are ignored
  * - Some etnries in "Parish LAD names and codes UK as at 12_15.txt" lack a district (1)
  * - NI codes (/95\w/) are drawn from an older file not found in the ONSPD 
- * Document files: LA_UA names and codes UK as at 12_14.txt : Can be retrieved from 
+ * Document files: LA_UA names and codes UK as at 12_14 v2.txt : Can be retrieved from 
  * https://data.england.nhs.uk/dataset/ods-data-supplied-by-the-office-of-national-statistics/resource/a7157e08-2cd4-42d1-9a9f-3647e7dea078
  * 
  * - Pertinent codes for NI are:
@@ -52,7 +52,6 @@ const NI_transform = row => {
 	const code = row[NI_CODE_OFFSET];
 	const value = row[NI_VALUE_OFFSET];
 	if (code === "LAD14CD") return []; // Escape if header
-	console.log(code);
 	if (!code.match(niCodeRegex)) return []; // Escape if not NI code
 	return [code, value];
 };
