@@ -13,6 +13,24 @@ Any changes, including backwards incompatible changes will be listed here
 
 - Bulk postcode lookups now accept a `filter` parameter to restrict the attributes of the returned result set
 
+### Data File Changes
+
+The extraction process for the key/value (JSON) representation of GSS codes stored in the `data/` directory is now documented with code in the `data/scripts/` directory. See the README.md for more information
+
+Following the formalisation, some data files were rebuilt and the following datasets have been modified:
+
+- Districts: A small number of GSS names have been updated
+```
+"Eilean Siar" is now "Na h-Eileanan Siar"
+"Armagh, Banbridge and Craigavon" is now "Armagh City, Banbridge and Craigavon"
+"Derry and Strabane" is now "Derry City and Strabane"
+"North Down and Ards" is now "Ards and North Down"
+```
+- LSOA: A large number of Scottish LSOAs have been expanded to include more information. E.g. For code `S01013429`, "Blackridge" is now "Blackridge, Westfield and Torphichen - 01"
+- MSOA: A large number of Scottish LSOAs have been expanded to include more information. E.g. For code `S02001501`, "Altonhill South" is now "Altonhill South, Longpark and Hillhead"
+
+For the exact changes, you can may inspect the most recent commit applied to the file
+
 ## 6.0.0 (29/6/2017)
 
 - *Breaking Change* Outcode schema has been modified to include country. When upgrading it's sufficient to rebuild support tables with `npm run rebuild_support_tables`
