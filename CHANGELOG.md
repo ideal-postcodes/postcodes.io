@@ -19,7 +19,7 @@ The extraction process for the key/value (JSON) representation of GSS codes stor
 
 Following the formalisation, some data files were rebuilt and the following datasets have been modified:
 
-- Districts: A small number of GSS names have been updated
+- Districts: 4 names have been updated
 ```
 "Eilean Siar" is now "Na h-Eileanan Siar"
 "Armagh, Banbridge and Craigavon" is now "Armagh City, Banbridge and Craigavon"
@@ -29,13 +29,14 @@ Following the formalisation, some data files were rebuilt and the following data
 - LSOA: A large number of Scottish LSOAs have been expanded to include more information. E.g. For code `S01013429`, "Blackridge" is now "Blackridge, Westfield and Torphichen - 01"
 - MSOA: A large number of Scottish LSOAs have been expanded to include more information. E.g. For code `S02001501`, "Altonhill South" is now "Altonhill South, Longpark and Hillhead"
 - NHSHA: Dropping codes S08000001 to S08000014 as they appear to no longer feature in ONSPD
-- NHSHA: 4 Code names have been modified
+- NHSHA: 4 names have been modified
 ```
 "Health & Social Care Board" => "ZB001"
 "Jersey" => "Jersey Health Authority"
 "Guernsey (including Sark and Herm)" => "Guernsey Health Authority"
 "Alderney " => "Sark Health Authority"
 ```
+- Parishes: ~60 names have been updated for various reasons. Some have had a preceeding backslash remove, some have been expanded, some are renamed
 
 For the exact changes, you can may inspect the most recent commit applied to the file
 
