@@ -15,7 +15,7 @@ Any changes, including backwards incompatible changes will be listed here
 
 ### Data File Changes
 
-The extraction process for the key/value (JSON) representation of GSS codes stored in the `data/` directory is now documented with code in the `data/scripts/` directory. See the README.md for more information
+The extraction process for the key/value (JSON) representation of GSS codes stored in the `data/` directory is now formally documented with code in the `data/scripts/` directory. See the README.md for more information
 
 Following the formalisation, some data files were rebuilt and the following datasets have been modified:
 
@@ -37,6 +37,16 @@ Following the formalisation, some data files were rebuilt and the following data
 "Alderney " => "Sark Health Authority"
 ```
 - Parishes: ~60 names have been updated for various reasons. Some have had a preceeding backslash remove, some have been expanded, some are renamed
+- PCTS: 7 names have been expanded
+```
+"Betsi Cadwaladr University" => "Betsi Cadwaladr University Health Board"
+"Powys Teaching" => "Powys Teaching Health Board"
+"Hywel Dda" => "Hywel Dda University Health Board"
+"Abertawe Bro Morgannwg University" => "Abertawe Bro Morgannwg University Health Board"
+"Cwm Taf" => "Cwm Taf University Health Board"
+"Aneurin Bevan" => "Aneurin Bevan University Health Board"
+"Cardiff and Vale University" => "Cardiff and Vale University Health Board"
+```
 
 For the exact changes, you can may inspect the most recent commit applied to the file
 
