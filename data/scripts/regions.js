@@ -11,12 +11,15 @@ const {extract, isPseudoCode} = require("./index");
  * - Pseudocodes are ignored
  */
 
+const CODE_OFFSET = 0;
+const VALUE_OFFSET = 2;
+
 const transform = row => {
-	const keyIndex = 0;
-	const valueIndex = 2;
-	if (row[keyIndex] === "GOR10CD") return []; // Escape if header
-	if (isPseudoCode(row[keyIndex])) return [];
-	return [row[keyIndex], row[valueIndex]];
+	const code = row[CODE_OFFSET];
+	const value = row[VALUE_OFFSET];
+	if (code === "GOR10CD") return []; // Escape if header
+	if (isPseudoCode(code)) return [];
+	return [code, value];
 };
 
 const configs = [

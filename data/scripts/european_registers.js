@@ -8,11 +8,14 @@ const {extract, toJson} = require("./index");
  * Writes european_registers.json to stdout
  */
 
+const CODE_OFFSET = 0;
+const VALUE_OFFSET = 2;
+
 const transform = row => {
-	const keyIndex = 0;
-	const valueIndex = 2;
-	if (row[keyIndex] === "EER10CD") return []; // Escape if header
-	return [row[keyIndex], row[valueIndex]];
+	const code = row[CODE_OFFSET];
+	const value = row[VALUE_OFFSET];
+	if (code === "EER10CD") return []; // Escape if header
+	return [code, value];
 };
 
 const configs = [
