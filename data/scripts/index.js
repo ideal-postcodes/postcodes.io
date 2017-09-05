@@ -13,6 +13,8 @@ const path = require("path");
 const async = require("async");
 const minimist = require('minimist');
 
+const time = (new Date()).toJSON();
+
 /**
  * Extracts data directory from command line flag `-d`
  * @return {string} Path to data directory
@@ -21,6 +23,15 @@ const extractDataDirectory = () => {
 	const argv = minimist(process.argv.slice(2));
 	fs.statSync(argv.d);
 	return argv.d;
+};
+
+/**
+ * Extracts code type `-c`, defaults to empty string
+ * @return {string} Type of code to be extracted
+ */
+const extractCodeType = () => {
+	const argv = minimist(process.argv.slice(2));
+	return argv.c || "";
 };
 
 // Returns files paths which cannot be resolved
@@ -47,8 +58,27 @@ const defaultHandler = (error, result) => {
 		console.log(error);
 		process.exit(1);
 	}
-	console.log(toJson(result));
+	writeToFile(toJson(result));
+	console.log("ONSPD code extraction complete");
 	process.exit(0);
+};
+
+/**
+ * Produces file name with full path
+ * @return {string} 
+ */
+const filePath = () => {
+	const type = (extractCodeType() === "") ? "output" : extractCodeType();
+	return path.join(__dirname, `${type}-${time}.json`);
+};
+
+/**
+ * Writes JSON data to file specified by code (with -c flat)
+ * @param  {string} result
+ * @return {undefined}
+ */
+const writeToFile = result => {
+	fs.writeFileSync(filePath(), result, { encoding: "utf8" });
 };
 
 /**
@@ -101,11 +131,12 @@ exports.extract = options => {
 			delimiter: delimiter
 		}, config.parseOptions || {});
 
-		fs.createReadStream(file, { encoding: "utf8" })
+		fs.createReadStream(file, { encoding: "binary" })
 		.pipe(csv.parse(parseOptions))
 		.on("end", next)
 		.on("error", next)
 		.on("data", (row, index) => {
+			if (row.join("").trim().length === 0) return;
 			const parsedRow = transform(row);
 			if (parsedRow.length) {
 				output.set(parsedRow[0], parsedRow[1]);
