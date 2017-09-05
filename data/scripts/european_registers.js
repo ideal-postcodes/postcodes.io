@@ -1,11 +1,14 @@
 "use strict";
 
-const {extract, toJson} = require("./index");
+const {extract, toJson, isPseudoCode} = require("./index");
 
 /**
  * @module DataParser/european_registers
  *
  * Writes european_registers.json to stdout
+ *
+ * Notes:
+ * - Drop pseudocodes
  */
 
 const CODE_OFFSET = 0;
@@ -15,6 +18,7 @@ const transform = row => {
 	const code = row[CODE_OFFSET];
 	const value = row[VALUE_OFFSET];
 	if (code === "EER10CD") return []; // Escape if header
+	if (isPseudoCode(code)) return [];
 	return [code, value];
 };
 
@@ -25,14 +29,4 @@ const configs = [
 	}
 ];
 
-extract({
-	configs,
-	done: (error, result) => {
-		if (error) {
-			console.log(error);
-			process.exit(1);
-		}
-		console.log(toJson(result));
-		process.exit(0);
-	}
-});
+extract({ configs });
