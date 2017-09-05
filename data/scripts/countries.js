@@ -12,11 +12,14 @@ const {extract} = require("./index");
  * `relax_column_count: true`
  */
 
+const CODE_OFFSET = 0;
+const VALUE_OFFSET = 3;
+
 const transform = row => {
-	const keyIndex = 0;
-	const valueIndex = 3;
-	if (row[keyIndex] === "CTRY12CD") return []; // Escape if header
-	return [row[keyIndex], row[valueIndex]];
+	const code = row[CODE_OFFSET];
+	const value = row[VALUE_OFFSET];
+	if (code === "CTRY12CD") return []; // Escape if header
+	return [code, value];
 };
 
 const parseOptions = { relax_column_count: true };
