@@ -1,6 +1,6 @@
 "use strict";
 
-const {extract} = require("./index");
+const {extract, isPseudoCode} = require("./index");
 
 /**
  * @module DataParser/constituencies
@@ -8,6 +8,7 @@ const {extract} = require("./index");
  * Writes constituencies.json to stdout
  * 
  * Notes:
+ * - Pseudocodes are dropped 
  * - Values need to be trimmed as some contain superfluous padding
  */
 
@@ -19,6 +20,7 @@ const transform = row => {
 	const code = row[CODE_OFFSET];
 	const value = row[VALUE_OFFSET];
 	if (code === "PCON14CD") return []; // Escape if header
+	if (isPseudoCode(code)) return [];
 	return [code, value.trim()]; 
 };
 
