@@ -77,7 +77,7 @@ describe("Postcodes routes", () => {
 						assert.property(lookup, "query");
 						assert.property(lookup, "result");
 						assert.isArray(lookup.result);
-						lookup.result.forEach(result => helper.isPostcodeObject(result));
+						lookup.result.forEach(result => helper.isPostcodeWithDistanceObject(result));
 					});
 					done();
 				});

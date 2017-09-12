@@ -8,7 +8,7 @@ const Pc = require("postcode");
 
 const error404Message = "Terminated postcode not found";
 
-describe("terminated postcode route", () => {
+describe("Terminated postcode route", () => {
   let testTerminatedPostcode;
 	let path;
 
@@ -95,20 +95,6 @@ describe("terminated postcode route", () => {
 			.expect("Content-Type", /json/)
 			.expect(404)
 			.end(() => done());
-		});
-		it ("returns 404 if :postcode is empty and does not populate the response.body", done => {
-			testTerminatedPostcode = "";
-			let path = `/terminated_postcodes/${encodeURI(testTerminatedPostcode)}`;
-			request(app)
-			.get(path)
-			.expect(404)
-			.end((error, response) => {
-				if (error) return done(error);
-				assert.notProperty(response.body, "status");
-				assert.notProperty(response.body, "result");
-				assert.notProperty(response.body, "error");
-				done();
-			});
 		});
     it ("should return 404 and the correct result if terminated postcode not found", done => {
       testTerminatedPostcode = "ID11QE";
