@@ -8,6 +8,8 @@ Any changes, including backwards incompatible changes will be listed here
 - Added terminated postcodes relation and /terminated_postcodes API
 - Postcode responses now include a GSS code for parliamentary constituencies
 - Extraction scripts data files (`data/*.json`) now stored in `data/scripts/` and will effectively document how the data files are generated
+- Mispecified resources (404 errors) now return JSON instead of application/text
+- Invalid JSON post requests return 400 errors instead of 500 HTTP response codes
 
 ## 6.0.1 (29/7/2017)
 
