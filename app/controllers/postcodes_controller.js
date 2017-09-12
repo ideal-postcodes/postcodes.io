@@ -76,8 +76,8 @@ exports.random = (request, response, next) => {
 	});
 };
 
-const invalidPostMessage = [
-	"Invalid JSON submitted.", 
+const invalidJSONQueryMessage = [
+	"Invalid JSON query submitted.", 
 	"You need to submit a JSON object with an array of postcodes or geolocation objects.",
 	"Also ensure that Content-Type is set to application/json"
 ].join(" ");
@@ -90,7 +90,7 @@ exports.bulk = (request, response, next) => {
 	} else {
 		response.jsonApiResponse = {
 			status: 400,
-			error: invalidPostMessage
+			error: invalidJSONQueryMessage
 		};
 		return next();
 	}
