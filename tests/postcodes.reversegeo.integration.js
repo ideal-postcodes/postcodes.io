@@ -53,7 +53,7 @@ describe("Postcodes routes", () => {
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
 				response.body.result.forEach(postcode => {
-					helper.isPostcodeObject(postcode);
+					helper.isPostcodeWithDistanceObject(postcode);
 				});
 				assert.isTrue(response.body.result.some(elem => {
 					return elem.postcode === loc.postcode;
@@ -192,7 +192,7 @@ describe("Postcodes routes", () => {
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
 				response.body.result.forEach(function (postcode) {
-					helper.isPostcodeObject(postcode);
+					helper.isPostcodeWithDistanceObject(postcode);
 				});
 				assert.isTrue(response.body.result.some(function (elem) {
 					return elem.postcode === loc.postcode;
@@ -215,7 +215,7 @@ describe("Postcodes routes", () => {
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
 				response.body.result.forEach(function (postcode) {
-					helper.isPostcodeObject(postcode);
+					helper.isPostcodeWithDistanceObject(postcode);
 				});
 				assert.isTrue(response.body.result.some(function (elem) {
 					return elem.postcode === loc.postcode;

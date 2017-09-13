@@ -1,6 +1,6 @@
 {
   "name": "postcodes.io",
-  "version": "6.0.1",
+  "version": "6.1.0",
   "description": "A postcode lookup API",
   "main": "app.js",
   "directories": {
@@ -18,8 +18,6 @@
     "lint": "./node_modules/.bin/jshint ."
   },
   "bin": {
-    "onsParseCode": "./bin/raw_code_parsing.js",
-    "onsFindMissing": "./bin/find_missing.js",
     "onsImport": "./bin/import.js",
     "osPlaceImport": "./bin/import_places.js",
     "onsUpdate": "./bin/update_ons.js"

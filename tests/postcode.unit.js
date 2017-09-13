@@ -4,7 +4,7 @@ const path = require("path");
 const async = require("async");
 const assert = require("chai").assert;
 const helper = require(`${__dirname}/helper`);
-		
+
 const Postcode = helper.Postcode;
 
 describe("Postcode Model", function () {
@@ -22,7 +22,7 @@ describe("Postcode Model", function () {
 		helper.lookupRandomPostcode(result => {
 			testPostcode = result.postcode;
 			testOutcode = result.outcode;
-			done();	
+			done();
 		});
 	});
 
@@ -76,7 +76,7 @@ describe("Postcode Model", function () {
 			Postcode.find(testPostcode, (error, result) => {
 				if (error) return done(error);
 				assert.equal(result.postcode, testPostcode);
-				helper.isRawPostcodeObject(result);
+				helper.isRawPostcodeObjectWithFC(result);
 				done();
 			});
 		});
@@ -136,7 +136,7 @@ describe("Postcode Model", function () {
 		it ("should return a random postcode", done => {
 			Postcode.random((error, postcode) => {
 				if (error) return done(error);
-				helper.isRawPostcodeObject(postcode);
+				helper.isRawPostcodeObjectWithFC(postcode);
 				done();
 			});
 		});
@@ -145,7 +145,7 @@ describe("Postcode Model", function () {
 				var outcode = "AB10";
 				Postcode.random({outcode: outcode}, (error, postcode) => {
 					if (error) return done(error);
-					helper.isRawPostcodeObject(postcode);
+					helper.isRawPostcodeObjectWithFC(postcode);
 					assert.equal(postcode.outcode, outcode);
 					done();
 				});
@@ -154,7 +154,7 @@ describe("Postcode Model", function () {
 				var outcode = "aB 10 ";
 				Postcode.random({outcode: outcode}, (error, postcode) => {
 					if (error) return done(error);
-					helper.isRawPostcodeObject(postcode);
+					helper.isRawPostcodeObjectWithFC(postcode);
 					assert.equal(postcode.outcode, "AB10");
 					done();
 				});
@@ -163,7 +163,7 @@ describe("Postcode Model", function () {
 				var outcode = "AB12";
 				Postcode.random({outcode: outcode}, (error, postcode) => {
 					if (error) return done(error);
-					helper.isRawPostcodeObject(postcode);
+					helper.isRawPostcodeObjectWithFC(postcode);
 					assert.isTrue(Postcode.idCache[outcode].length > 0);
 					done();
 				});
@@ -186,7 +186,7 @@ describe("Postcode Model", function () {
 		it ("should return a random postcode using an in memory ID store", function (done) {
 			Postcode.randomFromIds(Postcode.idCache['_all'], function (error, postcode) {
 				if (error) return done(error);
-				helper.isRawPostcodeObject(postcode);
+				helper.isRawPostcodeObjectWithFC(postcode);
 				done();
 			});
 		});
@@ -322,7 +322,7 @@ describe("Postcode Model", function () {
 			Postcode.nearestPostcodes(params, (error, postcodes) => {
 				if (error) return done(error);
 				assert.isArray(postcodes);
-				postcodes.forEach(p => helper.isRawPostcodeObject(p));
+				postcodes.forEach(p => helper.isRawPostcodeObjectWithFCandDistance(p));
 				done();
 			});
 		});
@@ -336,7 +336,7 @@ describe("Postcode Model", function () {
 				if (error) return done(error);
 				assert.isArray(postcodes);
 				assert.equal(postcodes.length, 1);
-				postcodes.forEach(p => helper.isRawPostcodeObject(p));
+				postcodes.forEach(p => helper.isRawPostcodeObjectWithFCandDistance(p));
 				done();
 			});
 		});
