@@ -15,7 +15,7 @@ const isArray = o => Object.prototype.toString.call(o) === "[object Array]";
  */
 const objFilter = (obj, filterArray) => { 
 	return filterArray.reduce((acc,curr) => {
-	 if (obj[curr]) acc[curr] = obj[curr];
+	 if (obj[curr] !== undefined) acc[curr] = obj[curr];
 	 return acc;
  }, {});
 };
