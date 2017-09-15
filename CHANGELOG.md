@@ -10,6 +10,8 @@ Any changes, including backwards incompatible changes will be listed here
 - Extraction scripts data files (`data/*.json`) now stored in `data/scripts/` and will effectively document how the data files are generated
 - Mispecified resources (404 errors) now return JSON instead of application/text
 - Invalid JSON post requests return 400 errors instead of 500 HTTP response codes
+- Updated ONSPD dataset to Aug 2017
+- Updated OS Names dataset to July 2017
 
 ## 6.0.1 (29/7/2017)
 
