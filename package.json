@@ -15,7 +15,9 @@
     "test:seed": "./bin/generate_test_data.js",
     "test:create": "./bin/createTestDb.sh",
     "test:clear": "./bin/clearTestDb.sh",
-    "lint": "./node_modules/.bin/jshint ."
+    "lint": "./node_modules/.bin/jshint .",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "bin": {
     "onsImport": "./bin/import.js",
@@ -40,7 +42,7 @@
   },
   "dependencies": {
     "async": "~1.5.0",
-    "body-parser": "~1.17.0",
+    "body-parser": "~1.18.2",
     "bunyan": "~1.8.5",
     "commonlog-bunyan": "~0.4.3",
     "cors": "~2.8.1",
@@ -61,12 +63,14 @@
     "prompt": "~0.2.14",
     "random-string": "~0.2.0",
     "serve-favicon": "~2.4.0",
-    "string": "~3.3.1"
+    "string": "~3.3.1",
+    "snyk": "^1.41.1"
   },
   "devDependencies": {
     "chai": "~4.1.0",
     "jshint": "~2.9.4",
     "mocha": "~3.3.0",
     "supertest": "~3.0.0"
-  }
+  },
+  "snyk": true
 }
