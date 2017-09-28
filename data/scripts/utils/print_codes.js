@@ -24,7 +24,7 @@ let count = 0;
 const increment = () => {
 	count += 1;
 	if (count % 100000 === 0) console.log(`Lines read: ${count}`);
-}
+};
 
 console.log(`
 	Reading from ${onspdFilePath}
@@ -41,7 +41,7 @@ fs.createReadStream(onspdFilePath)
 		increment();
 	})
 	.on("end", () => {
-		fs.writeFileSync(outputFilePath, Array.from(result), { encoding: "UTF8" })
+		fs.writeFileSync(outputFilePath, Array.from(codes), { encoding: "UTF8" });
 	  process.exit(0);
 	})
 	.on("error", error => {

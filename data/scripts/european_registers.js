@@ -1,6 +1,6 @@
 "use strict";
 
-const {extract, toJson, isPseudoCode} = require("./index");
+const {extract, isPseudoCode} = require("./index");
 
 /**
  * @module DataParser/european_registers

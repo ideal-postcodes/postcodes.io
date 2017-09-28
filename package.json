@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "NODE_ENV=test npm run test:create && npm run mocha && NODE_ENV=test npm run test:clear",
+    "test": "NODE_ENV=test npm run test:create && npm run mocha && NODE_ENV=test npm run test:clear && npm run lint",
     "mocha": "NODE_ENV=test NO_RELOAD_DB=true node_modules/.bin/mocha tests/ -R spec",
     "coverage": "node_modules/.bin/nyc report --reporter=text-lcov | node_modules/.bin/coveralls",
     "start": "node server.js",
@@ -73,7 +73,7 @@
     "coveralls": "~2.13.2",
     "jshint": "~2.9.4",
     "mocha": "~3.5.3",
-    "mocha-lcov-reporter": "^1.3.0",
+    "mocha-lcov-reporter": "~1.3.0",
     "nyc": "~11.2.1",
     "supertest": "~3.0.0"
   }
