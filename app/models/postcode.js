@@ -158,8 +158,8 @@ Postcode.prototype.getForeignColNames = function () {
 	return foreignColumns.reduce((acc, curr) => {
 		acc.push(curr.as);
 		return acc;
-	}, [])
-}
+	}, []);
+};
 
 Postcode.prototype.whitelistedAttributes = [
 	"nhs_ha",
@@ -724,7 +724,6 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	const nhsHa = require("../../data/nhsHa.json");
 	const regions = require("../../data/regions.json");
 	const countries = require("../../data/countries.json");
-	const constituencies = require("../../data/constituencies.json");
 	const european_registers = require("../../data/european_registers.json");
 
 	const transform = row => {

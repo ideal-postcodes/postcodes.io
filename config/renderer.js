@@ -35,7 +35,7 @@ const serverErrorMessage = [
 /**
  * Handles Requests that have resulted in an error. Invoked by next(someError)
  */
-function errorRenderer (error, request, response, next) {
+function errorRenderer (error, request, response, next) {/*jshint unused: false */
 	logger.error({error: error.message});
 	if (process.env.NODE_ENV !== "test") console.log(error.stack);
 	

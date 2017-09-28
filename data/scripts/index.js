@@ -11,7 +11,7 @@ const fs = require("fs");
 const csv = require("csv");
 const path = require("path");
 const async = require("async");
-const minimist = require('minimist');
+const minimist = require("minimist");
 
 const time = (new Date()).toJSON();
 
@@ -135,7 +135,7 @@ exports.extract = options => {
 		.pipe(csv.parse(parseOptions))
 		.on("end", next)
 		.on("error", next)
-		.on("data", (row, index) => {
+		.on("data", row => {
 			if (row.join("").trim().length === 0) return;
 			const parsedRow = transform(row);
 			if (parsedRow.length) {

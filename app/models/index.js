@@ -10,6 +10,9 @@ const env = process.env.NODE_ENV || "development";
 const defaults = require(path.join(__dirname, "../../config/config.js"))(env);
 const config = defaults.postgres;
 
+// Instantiate postgres client pool
+const pool = pg.Pool(config);
+
 // All models inherit from base
 // Requires schema and relation name
 function Base (relation, schema, indexes) {
@@ -31,7 +34,7 @@ Base.prototype._query = function (query, params, callback) {
 		);
 	}
 
-	pg.connect(config, (error, client, done) => {
+	pool.connect((error, client, done) => {
 		if (error) return callback(error, null);
 		client.query(query, params, (error, result) => {
 			callback(error, result);
@@ -127,7 +130,7 @@ Base.prototype._csvSeed = function (options, callback) {
 	const query = `COPY ${this.relation} (${columns}) FROM STDIN DELIMITER ',' CSV`;
 
 	async.eachSeries(filepath, (filepath, cb) => {
-		pg.connect(config, (error, client, done) => {
+		pool.connect((error, client, done) => {
 			const pgStream = client.query(copyFrom(query))
 				.on("end", () => {
 					done();
@@ -160,16 +163,11 @@ Base.prototype._destroyAll = function (callback) {
 };
 
 Base.prototype._getClient = function (callback) {
-	pg.connect(config, callback);
+	pool.connect(callback);
 };
 
 const dollarise = values => values.map((_, i) => `$${i + 1}`).join(", ");
 
 module.exports = {
-	connect: function (configObj, callback) {
-		const cb = callback || function(){};
-		pg.connect(config, cb);	
-		return pg;
-	},
 	Base: Base
 };

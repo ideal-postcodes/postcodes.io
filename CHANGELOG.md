@@ -2,6 +2,11 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 6.1.1 (28/9/2017)
+
+- Updated dependencies
+- [Dev] Run code coverage and linter by default
+
 ## 6.1.0 (4/9/2017)
 
 - Minimum required version of node.js bumped to 6.x

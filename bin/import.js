@@ -22,7 +22,6 @@ var Ccg = require(path.join(__dirname, "../app/models/ccg.js"));
 var Outcode = require(path.join(__dirname, "../app/models/outcode.js"));
 var Constituency = require(path.join(__dirname, "../app/models/constituency.js"));
 
-var pg = Base.connect(config);
 // Performing checks
 
 if (!sourceFile) {

@@ -13,7 +13,6 @@
  * 
  */
 
-const fs = require("fs");
 const path = require("path");
 const utils = require("./index.js");
 const argv = utils.argv();

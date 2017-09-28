@@ -17,6 +17,7 @@ addons:
 before_script:
 - mkdir logs && touch logs/test.log
 - POSTGRES_USER=postgres npm run setup_test_db
+after_success: npm run coverage
 notifications:
   slack:
     secure: bAIkYqrY0txMF1phVffh+9lhvprgHvjB5oG1EtZ11EZYpa5K1gBLjbDzWe4SWCjgNEeK1yI6YvsPXNleFaPRrQjPk21K+xByh3NeOJtiQfrlMQyd6L/6ykTu8v9fwDOnEUgpHaOHsFwy2w3bT3k7OknXd27w74mpUN7PD0Az5rM=

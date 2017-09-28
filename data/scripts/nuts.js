@@ -28,7 +28,7 @@ const VALUE_OFFSET = 5;
 
 const transform = row => {
 	const code = row[CODE_OFFSET];
-	const nutsCode = row[NUTS_CODE_OFFSET]
+	const nutsCode = row[NUTS_CODE_OFFSET];
 	const value = row[VALUE_OFFSET];
 	if (code === "LAU217CD") return []; // Escape if header
 	return [code, {
