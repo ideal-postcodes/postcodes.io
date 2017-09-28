@@ -20,7 +20,6 @@ var Parish = require(path.join(__dirname, "../app/models/parish.js"));
 var Ccg = require(path.join(__dirname, "../app/models/ccg.js"));
 var Outcode = require(path.join(__dirname, "../app/models/outcode.js"));
 
-var pg = Base.connect(config);
 // Performing checks
 
 Postcode.relation = "postcodes_new";

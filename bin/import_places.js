@@ -15,7 +15,6 @@ const Base = require(path.join(__dirname, "../app/models"));
 const config = require(path.join(__dirname, "../config/config"))(env);
 const Place = require(path.join(__dirname, "../app/models/place.js"));
 
-const pg = Base.connect(config);
 // Performing checks
 
 if (!sourceDirectory) {
