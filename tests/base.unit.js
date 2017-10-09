@@ -1,21 +1,11 @@
 "use strict";
 
-var assert = require("chai").assert,
-		helper = require(__dirname + "/helper");
+const helper = require("./helper");
+const assert = require("chai").assert;
 
-var Base = helper.Base;
+const Base = helper.Base;
 
 describe("Base model", function () {
-	describe("Connect", function () {
-		it ("should connect to postgresql database", function (done) {
-			var pg = Base.connect(helper.config, function (error, client, returnClient) {
-				if (error) return done(error);
-				assert.isNotNull(client);
-				returnClient();
-				done();
-			});
-		});
-	});
 	describe("Base model instance methods", function () {
 		describe("#_query", function () {
 			it ("should execute a query", function (done) {

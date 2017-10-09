@@ -13,14 +13,15 @@ var County = require(path.join(__dirname, "../app/models/county.js"));
 var Parish = require(path.join(__dirname, "../app/models/parish.js"));
 var Ccg = require(path.join(__dirname, "../app/models/ccg.js"));
 var Outcode = require(path.join(__dirname, "../app/models/outcode.js"));
+var Constituency = require(path.join(__dirname, "../app/models/constituency.js"));
 
-var pg = Base.connect(config);
 // Performing checks
 
 function setupSupportTables (callback) {
 	console.log("Setting up support tables...");
 	var instructions = [
 		District._setupTable.bind(District),
+		Constituency._setupTable.bind(Constituency),
 		County._setupTable.bind(County),
 		Ccg._setupTable.bind(Ccg),
 		Ward._setupTable.bind(Ward),

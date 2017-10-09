@@ -46,7 +46,7 @@ describe("Postcodes routes", function () {
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
 				response.body.result.forEach(function (postcode) {
-					helper.isPostcodeObject(postcode);
+					helper.isPostcodeWithDistanceObject(postcode);
 				});
 				done();
 			});

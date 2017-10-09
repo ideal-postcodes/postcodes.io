@@ -3,12 +3,20 @@
 const async = require("async");
 const S = require("string");
 const Postcode = require("../models/postcode");
+const Pc = require("postcode");
 const path = require("path");
 const env = process.env.NODE_ENV || "development";
 const defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
 
 exports.show = (request, response, next) => {
 	const postcode = request.params.postcode;
+	if (!new Pc(postcode.trim()).valid()) {
+		response.jsonApiResponse = {
+			status: 404,
+			error: "Invalid postcode"
+		};
+		return next();
+	}
 
 	Postcode.find(postcode, (error, address) => {
 		if (error) {
@@ -68,8 +76,8 @@ exports.random = (request, response, next) => {
 	});
 };
 
-const invalidPostMessage = [
-	"Invalid JSON submitted.", 
+const invalidJSONQueryMessage = [
+	"Invalid JSON query submitted.", 
 	"You need to submit a JSON object with an array of postcodes or geolocation objects.",
 	"Also ensure that Content-Type is set to application/json"
 ].join(" ");
@@ -82,7 +90,7 @@ exports.bulk = (request, response, next) => {
 	} else {
 		response.jsonApiResponse = {
 			status: 400,
-			error: invalidPostMessage
+			error: invalidJSONQueryMessage
 		};
 		return next();
 	}

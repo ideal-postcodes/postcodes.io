@@ -26,17 +26,17 @@ const postcodeSchema = {
 	"longitude" : "DOUBLE PRECISION",
 	"latitude" : "DOUBLE PRECISION",
 	"location" : "GEOGRAPHY(Point, 4326)",
-	"parliamentary_constituency" : "VARCHAR(255)",
 	"european_electoral_region" : "VARCHAR(255)",
-	"primary_care_trust" : "VARCHAR(255)", 
-	"region" : "VARCHAR(255)", 
-	"parish_id" : "VARCHAR(32)", 
-	"lsoa" : "VARCHAR(255)", 
+	"primary_care_trust" : "VARCHAR(255)",
+	"region" : "VARCHAR(255)",
+	"parish_id" : "VARCHAR(32)",
+	"lsoa" : "VARCHAR(255)",
 	"msoa" : "VARCHAR(255)",
 	"nuts_id" : "VARCHAR(32)",
 	"incode" : "VARCHAR(5)",
 	"outcode" : "VARCHAR(5)",
-	"ccg_id" : "VARCHAR(32)"
+	"ccg_id" : "VARCHAR(32)",
+	"constituency_id" : "VARCHAR(32)"
 };
 
 const indexes = [{
@@ -77,6 +77,10 @@ const relationships = [{
 	key: "ccg_id",
 	foreignKey: "code"
 },{
+	table: "constituencies",
+	key: "constituency_id",
+	foreignKey: "code"
+},{
 	table: "nuts",
 	key: "nuts_id",
 	foreignKey: "code"
@@ -85,13 +89,16 @@ const relationships = [{
 const toJoinString = () => {
 	return relationships.map(r => {
 		return `
-			LEFT OUTER JOIN ${r.table} 
+			LEFT OUTER JOIN ${r.table}
 				ON postcodes.${r.key}=${r.table}.${r.foreignKey}
 		`;
 	}).join(" ");
 };
 
 const foreignColumns = [{
+	field: "constituencies.name",
+	as: "parliamentary_constituency"
+},{
 	field: "districts.name",
 	as: "admin_district"
 }, {
@@ -129,11 +136,11 @@ util.inherits(Postcode, Base);
 
 const findQuery = `
 	SELECT 
-		postcodes.*, ${toColumnsString()}
+		postcodes.*, ${toColumnsString()} 
 	FROM 
 		postcodes 
-	${toJoinString()}
-	WHERE pc_compact=$1
+	${toJoinString()} 
+	WHERE pc_compact=$1 
 `;
 
 Postcode.prototype.find = function (postcode, callback) {
@@ -146,6 +153,39 @@ Postcode.prototype.find = function (postcode, callback) {
 		callback(null, result.rows[0]);
 	});
 };
+
+Postcode.prototype.getForeignColNames = function () {
+	return foreignColumns.reduce((acc, curr) => {
+		acc.push(curr.as);
+		return acc;
+	}, []);
+};
+
+Postcode.prototype.whitelistedAttributes = [
+	"nhs_ha",
+	"country",
+	"quality",
+	"postcode",
+	"eastings",
+	"latitude",
+	"northings",
+	"longitude",
+	"admin_ward",
+	"admin_county",
+	"admin_district",
+	"region",
+	"parliamentary_constituency",
+	"european_electoral_region",
+	"parish",
+	"lsoa",
+	"msoa",
+	"nuts",
+	"ccg",
+	"primary_care_trust",
+	"incode",
+	"outcode",
+	"codes"
+];
 
 Postcode.prototype.loadPostcodeIds = function (type, callback) {
 	if (typeof type === "function") {
@@ -196,7 +236,7 @@ Postcode.prototype.random = function (options, callback) {
 		options = {};
 	}
 
-	const randomType = typeof options.outcode === "string" && 
+	const randomType = typeof options.outcode === "string" &&
 		options.outcode.length ? options.outcode : "_all";
 	const idCache = this.idCache[randomType];
 
@@ -240,9 +280,9 @@ const parseSearchOptions = options => {
 	return { limit: limit };
 };
 
-/* 
+/*
  *	Search for partial/complete postcode matches
- *  Search Methodology below: 
+ *  Search Methodology below:
  *  1) Check if string is feasible outcode, then search by that outcode
  *  2) Check if string is space separated, then perform space-sensitive search
  *  3) If above fail, perform space-insensitive search
@@ -267,7 +307,7 @@ Postcode.prototype.search = function (options, callback) {
 		if (matches.length === 0) {
 			options.query = postcode;
 			return this.searchPcCompact(options, returnResult);
-		} 
+		}
 		return returnResult(error, result);
 	};
 
@@ -381,7 +421,7 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 		return callback(null, result.rows);
 	};
 
-	// If a wideSearch query is requested, derive a suitable range which 
+	// If a wideSearch query is requested, derive a suitable range which
 	// guarantees postcode results over a much wider area
 	if (params.wideSearch || params.widesearch) {
 		if (limit > DEFAULT_LIMIT) {
@@ -548,7 +588,7 @@ Postcode.prototype.findOutcode = function (o, callback) {
 		if (result.rows.length === 0) return callback(null, null);
 		const outcodeResult = result.rows[0];
 		outcodeAttributes.forEach(attr => {
-			if (outcodeResult[attr].length === 1 && 
+			if (outcodeResult[attr].length === 1 &&
 					outcodeResult[attr][0] === null) {
 				outcodeResult[attr] = [];
 			}
@@ -563,6 +603,7 @@ Postcode.prototype.toJson = function (address) {
 		admin_county: address.admin_county_id,
 		admin_ward: address.admin_ward_id,
 		parish: address.parish_id,
+		parliamentary_constituency: address.constituency_id,
 		ccg: address.ccg_id,
 		nuts: address.nuts_code
 	};
@@ -576,6 +617,7 @@ Postcode.prototype.toJson = function (address) {
 	delete address.ccg_id;
 	delete address.nuts_id;
 	delete address.nuts_code;
+	delete address.constituency_id;
 	return address;
 };
 
@@ -631,7 +673,7 @@ Postcode.prototype.toJson = function (address) {
 (46) ccg - Clinical Commissioning Group 								Y - NEW
 (47) bua11 - Built-up Area
 (48) buasd11 - Built-up Area Sub-division
-(49) ru11ind - Census Rural Urban Classification - - 
+(49) ru11ind - Census Rural Urban Classification - -
 *
 *
 */
@@ -665,7 +707,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		"admin_ward_id",
 		"parish_id",
 		"quality",
-		"parliamentary_constituency" ,
+		"constituency_id",
 		"european_electoral_region",
 		"region",
 		"primary_care_trust",
@@ -682,7 +724,6 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	const nhsHa = require("../../data/nhsHa.json");
 	const regions = require("../../data/regions.json");
 	const countries = require("../../data/countries.json");
-	const constituencies = require("../../data/constituencies.json");
 	const european_registers = require("../../data/european_registers.json");
 
 	const transform = row => {
@@ -710,7 +751,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		} else {
 			location = new OSPoint("" + row[10] , "" + row[9]).toWGS84();
 		}
-		
+
 		finalRow.push(location.longitude);							// longitude
 		finalRow.push(location.latitude);								// latitude
 		finalRow.push(countries[row[14]]);							// Country
@@ -720,7 +761,7 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 		finalRow.push(row[7]);													// Ward
 		finalRow.push(row[44]);													// Parish
 		finalRow.push(row[11]);													// Quality
-		finalRow.push(constituencies[row[17]]);					// Westminster const
+		finalRow.push(row[17]);													// Westminster const id
 		finalRow.push(european_registers[row[18]]);			// EER
 		finalRow.push(regions[row[15]]);								// Region
 		finalRow.push(pcts[row[21]]);										// Primary Care Trusts
@@ -735,8 +776,8 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	};
 
 	self._csvSeed({
-		filepath: filePath, 
-		columns: csvColumns.join(","), 
+		filepath: filePath,
+		columns: csvColumns.join(","),
 		transform: transform
 	}, callback);
 };

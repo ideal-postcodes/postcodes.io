@@ -40,7 +40,7 @@ describe("Postcodes routes with JSONP", function () {
 		helper.lookupRandomPostcode(function (result) {
 			testPostcode = result.postcode;
 			testOutcode = result.outcode;
-			done();	
+			done();
 		});
 	});
 
@@ -141,7 +141,7 @@ describe("Postcodes routes with JSONP", function () {
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
 				response.body.result.forEach(function (postcode) {
-					helper.isPostcodeObject(postcode);
+					helper.isPostcodeWithDistanceObject(postcode);
 				});
 				done();
 			});
@@ -212,7 +212,7 @@ describe("Postcodes routes with JSONP", function () {
 				assert.isArray(response.body.result);
 				assert.isTrue(response.body.result.length > 0);
 				response.body.result.forEach(function (postcode) {
-					helper.isPostcodeObject(postcode);
+					helper.isPostcodeWithDistanceObject(postcode);
 				});
 				assert.isTrue(response.body.result.some(function (elem) {
 					return elem.postcode === loc.postcode;
