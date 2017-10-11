@@ -52,7 +52,7 @@
     "csv": "~1.1.0",
     "csv-parse": "~1.2.0",
     "escape-string-regexp": "~1.0.5",
-    "express": "~4.15.0",
+    "express": "~4.16.0",
     "jade": "~1.11.0",
     "minimist": "~1.2.0",
     "morgan": "~1.9.0",
