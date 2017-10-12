@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge,chrome=1">
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+  <title>Postcodes.io</title>
+  <meta name="keywords" content="Postcode, API, Ordnance, Survey, Free">
+  <meta name="description" content="Free Postcode API for Addresses in Great Britain">
+  <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body>
+  <div id="wrap">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header"><button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+          <a
+            class="navbar-brand" href="/">Postcodes.io</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/docs" title="Documentation">Documentation</a></li>
+            <li><a href="/about" title="About">About</a></li>
+            <li><a href="/explore" title="Explore">Explore</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://github.com/ideal-postcodes/postcodes.io/" title="Github" target="_blank">Github</a></li>
+            <li><a href="http://status.ideal-postcodes.co.uk" title="Status Page" target="_blank">Service Status</a></li>
+            <li> <a href="https://travis-ci.org/ideal-postcodes/postcodes.io" title="Build Status"><img src="https://travis-ci.org/ideal-postcodes/postcodes.io.png?branch=master" alt="build-status"></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="sub-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <h1 class="mast-text">Documentation</h1></div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9 documentation">
+          <h2 class="doc-header" id="Overview">Overview</h2>
+          <h4>Postcodes.io is a free Postcode lookup API and geocoder for the UK</h4>
+          <h3 id="Endpoint">Endpoint</h3>
+          <p>All services can be accessed from the following HTTP[S] endpoint</p><pre><h4>https://api.postcodes.io</h4></pre>
+          <p>The API accepts GET and POST requests. POST methods use content type <code>application/json</code></p>
+          <h3 id="Responses">Responses</h3>
+          <p>JSON(P) only. CORS is enabled.</p>
+          <p>Each response comes with an appropriate HTTP Status code (except for JSONP requests). These include 200 for success, 400 for bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.</p>
+          <h3
+            id="Authentication">Authentication</h3>
+            <p>Postcodes.io does not require any authentication.</p>
+            <h3 id="Error-Handling">Error Handling</h3>
+            <p>To check for errors, examine the HTTP response code. 200 response indicates success while any other code will provide important information about why an error occured.</p>
+            <p>Alternatively, you can examine status code in the 'status' property in the result body.</p>
+            <p>All JSONP requests return 200 responses because of silent errors. When using JSONP, be sure to use the latter method to check for errors.</p>
+            <h3 id="JSONP">JSONP</h3>
+            <p>JSONP requests are supported. Simply appended the URI with a callback name. E.g.</p><pre><h4>https://api.postcodes.io/postcodes/GU50BD?callback=foo</h4></pre>
+            <h3 id="Versioning">Versioning</h3>
+            <p>The API currently does not use any form of versioning. Any changes to the API will be backwards-compatible, this includes: adding new properties to responses, adding new endpoints, adding new optional request parameters and changing the order
+              of properties.</p>
+            <p>If we make backwards-incompatible changes in the future, this will be released under a versioned endpoint.</p>
+            <h3 id="Data">Available Data Fields</h3>
+            <h4>Postcode Data (Ordnance Survey Postcode Directory Dataset)</h4>
+            <p>Data returned by the <code>/postcodes</code> and <code>/outcodes</code> API</p>
+            <p><b>Note:</b> Some fields may be <code>null</code> if not applicable or populated. These fields return type is specified as <code>type|null</code></p>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="postcode">
+                  <td>postcode <br/> <code>string</code></td>
+                  <td><strong>Postcode.</strong>All current (‘live’) postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received monthly from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code.</td>
+                </tr>
+                <tr id="quality">
+                  <td>quality <br/> <code>integer</code></td>
+                  <td><strong>Positional Quality.</strong>Shows the status of the assigned grid reference.
+                    <ul>
+                      <li>1 = within the building of the matched address closest to the postcode mean</li>
+                      <li>2 = as for status value 1, except by visual inspection of Landline maps (Scotland only)</li>
+                      <li>3 = approximate to within 50m</li>
+                      <li>4 = postcode unit mean (mean of matched addresses with the same postcode, but not snapped to a building)</li>
+                      <li>5 = imputed by ONS, by reference to surrounding postcode grid references</li>
+                      <li>6 = postcode sector mean, (mainly | PO Boxes)</li>
+                      <li>8 = postcode terminated prior to Gridlink® initiative, last known ONS postcode grid reference1</li>
+                      <li>9 = no grid reference available</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr id="eastings">
+                  <td>eastings <br/> <code>integer|null</code></td>
+                  <td><strong>Eastings.</strong>The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish
+                    Grid system.</td>
+                </tr>
+                <tr id="northings">
+                  <td>northings <br/> <code>integer|null</code></td>
+                  <td><strong>Northings.</strong>The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish
+                    Grid system.</td>
+                </tr>
+                <tr id="country">
+                  <td>country <br/> <code>string</code></td>
+                  <td><strong>Country.</strong>The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each postcode is assigned.</td>
+                </tr>
+                <tr id="nhs_ha">
+                  <td>nhs_ha <br/> <code>string|null</code></td>
+                  <td><strong>Strategic Health Authority.</strong>The health area code for the postcode.</td>
+                </tr>
+                <tr id="admin_county">
+                  <td>admin_county <br/> <code>string|null</code></td>
+                  <td><strong>County.</strong>The current county to which the postcode has been assigned.</td>
+                </tr>
+                <tr id="admin_district">
+                  <td>admin_district <br/> <code>string|null</code></td>
+                  <td><strong>District.</strong>The current district/unitary authority to which the postcode has been assigned.</td>
+                </tr>
+                <tr id="admin_ward">
+                  <td>admin_ward <br/> <code>string|null</code></td>
+                  <td><strong>Ward.</strong>The current administrative/electoral area to which the postcode has been assigned.</td>
+                </tr>
+                <tr id="longitude">
+                  <td>longitude <br/> <code>double float</code></td>
+                  <td><strong>Longitude.</strong>The WGS84 longitude given the Postcode's national grid reference</td>
+                </tr>
+                <tr id="latitude">
+                  <td>latitude <br/> <code>double float</code></td>
+                  <td><strong>Latitude.</strong>The WGS84 latitude given the Postcode's national grid reference</td>
+                </tr>
+                <tr id="parliamentary_constituency">
+                  <td>parliamentary_constituency <br/> <code>string|null</code></td>
+                  <td><strong>Westminster Parliamentary Constituency.</strong>The Westminster Parliamentary Constituency code for each postcode.</td>
+                </tr>
+                <tr id="european_electoral_region">
+                  <td>european_electoral_region <br/> <code>string|null</code></td>
+                  <td><strong>European Electoral Region (EER).</strong>The European Electoral Region code for each postcode.</td>
+                </tr>
+                <tr id="primary_care_trust">
+                  <td>primary_care_trust <br/> <code>string|null</code></td>
+                  <td><strong>Primary Care Trust (PCT).</strong>The code for the Primary Care areas in England, LHBs in Wales, CHPs in Scotland, LCG in Northern Ireland and PHD in the Isle of Man; there are no equivalent areas in the Channel Islands. Care
+                    Trust/ Care Trust Plus (CT)/ local health board (LHB)/ community health partnership (CHP)/ local commissioning group (LCG)/ primary healthcare directorate (PHD).</td>
+                </tr>
+                <tr id="region">
+                  <td>region <br/> <code>string|null</code></td>
+                  <td><strong>Region (formerly GOR).</strong>The Region code for each postcode. The nine GORs were abolished on 1 April 2011 and are now known as ‘Regions’. They were the primary statistical subdivisions of England and also the areas in which
+                    the Government Offices for the Regions fulfilled their role. Each GOR covered a number of local authorities.</td>
+                </tr>
+                <tr id="parish">
+                  <td>parish <br/> <code>string|null</code></td>
+                  <td><strong>Parish (England)/ community (Wales).</strong>The smallest type of administrative area in England is the parish (also known as 'civil parish'); the equivalent units in Wales are communities.</td>
+                </tr>
+                <tr id="lsoa">
+                  <td>lsoa <br/> <code>string|null</code></td>
+                  <td><strong>2011Census lower layer super output area (LSOA).</strong>The 2011 Census lower layer SOA code for England and Wales, SOA code for Northern Ireland and data zone code for Scotland.</td>
+                </tr>
+                <tr id="msoa">
+                  <td>msoa <br/> <code>string|null</code></td>
+                  <td><strong>2011 Census middle layer super output area (MSOA).</strong>The 2011 Census middle layer SOA (MSOA) code for England and Wales and intermediate zone for Scotland.</td>
+                </tr>
+                <tr id="ccg">
+                  <td>ccg <br/> <code>string|null</code></td>
+                  <td><strong>Clinical Commissioning Group.</strong>Clinical commissioning groups (CCGs) are NHS organisations set up by the Health and Social Care Act 2012 to organise the delivery of NHS services in England.</td>
+                </tr>
+                <tr id="nuts">
+                  <td>nuts <br/> <code>string|null</code></td>
+                  <td><strong>Nomenclature of Units for Territorial Statistics (NUTS) / Local Administrative Units (LAU) areas.</strong>The LAU2 code for each postcode. NUTS is a hierarchical classification of spatial units that provides a breakdown of the
+                    European Union’s territory for producing regional statistics which are comparable across the Union. The NUTS area classification in the United Kingdom comprises current national administrative and electoral areas, except in Scotland
+                    where some NUTS areas comprise whole and/or part Local Enterprise Regions. NUTS levels 1-3 are frozen for a minimum of three years and NUTS levels 4 and 5 are now local Administrative Units (LAU) levels 1 and 2 respectively.</td>
+                </tr>
+                <tr id="codes">
+                  <td>codes <br/> <code>Object</code></td>
+                  <td><strong>Returns an ID or Code associated with the postcode.</strong>Typically these are a 9 character code known as an ONS Code or GSS Code. This is currently only available for districts, parishes, counties, CCGs, NUTS and wards.</td>
+                </tr>
+                <tr>
+                  <td>codes.admin_district <br/> <code>string|null</code></td>
+                  <td>See description of <code>admin_district</code> field.</td>
+                </tr>
+                <tr>
+                  <td>codes.admin_county <br/> <code>string|null</code></td>
+                  <td>See description of <code>admin_county</code> field.</td>
+                </tr>
+                <tr>
+                  <td>codes.admin_ward <br/> <code>string|null</code></td>
+                  <td>See description of <code>admin_ward</code> field.</td>
+                </tr>
+                <tr>
+                  <td>codes.parish <br/> <code>string|null</code></td>
+                  <td>See description of <code>parish</code> field.</td>
+                </tr>
+                <tr>
+                  <td>codes.ccg <br/> <code>string|null</code></td>
+                  <td>See description of <code>ccg</code> field.</td>
+                </tr>
+                <tr>
+                  <td>codes.nuts <br/> <code>string|null</code></td>
+                  <td>See description of <code>nuts</code> field.</td>
+                </tr>
+              </tbody>
+            </table>
+            <h4>Terminated Postcode Data (Ordnance Survey Postcode Directory Dataset)</h4>
+            <p>Data returned by the <code>/terminated_postcodes</code> API</p>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="postcode">
+                  <td>postcode <br/> <code>string</code></td>
+                  <td><strong>Postcode. </strong>All currently terminated postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received every 3 months from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character
+                    inward code.</td>
+                </tr>
+                <tr id="year-terminated">
+                  <td>year_terminated <br/> <code>integer</code></td>
+                  <td><strong>Termination year.</strong>Year of termination of a postcode</td>
+                </tr>
+                <tr id="month-terminated">
+                  <td>month_terminated <br/> <code>integer</code></td>
+                  <td><strong>Termination month.</strong>Month of termination of a postcode. 1-January, 2-February, ..., 12-December</td>
+                </tr>
+              </tbody>
+            </table>
+            <h4>Places Data (Ordnance Survey Open Names Dataset)</h4>
+            <p>Data returned by the <code>/places</code> API</p>
+            <p><b>Note:</b> Some fields may be <code>null</code> if not applicable or populated. These fields return type is specified as <code>type|null</code></p>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="places-code">
+                  <td>code <br/> <code>string</code></td>
+                  <td><strong>code.</strong>A unique identifier that enables records to be identified easily. The identifier will be persistent for all LocalTypes except Section of Named Road and Section of Numbered Road.</td>
+                </tr>
+                <tr id="places-eastings">
+                  <td>eastings <br/> <code>integer</code></td>
+                  <td><strong>Eastings.</strong>The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.</td>
+                </tr>
+                <tr id="places-northings">
+                  <td>northings <br/> <code>integer</code></td>
+                  <td><strong>Northings.</strong>The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.</td>
+                </tr>
+                <tr id="places-maxminnorthingseastings">
+                  <td>[max|min]_northings, [max|min]_eastings <br/> <code>integer</code></td>
+                  <td><strong>Maximum &amp; Minimum, Northings &amp; Eastings.</strong>Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of
+                    the extent of these features and is not snapped to the real world extent.</td>
+                </tr>
+                <tr id="places-country">
+                  <td>country <br/> <code>string</code></td>
+                  <td><strong>Country.</strong>The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each place is assigned.</td>
+                </tr>
+                <tr id="places-longitude">
+                  <td>longitude <br/> <code>double float</code></td>
+                  <td><strong>Longitude.</strong>The WGS84 longitude given the Place's national grid reference</td>
+                </tr>
+                <tr id="places-latitude">
+                  <td>latitude <br/> <code>double float</code></td>
+                  <td><strong>Latitude.</strong>The WGS84 latitude given the Place's national grid reference</td>
+                </tr>
+                <tr id="places-local_type">
+                  <td>local_type <br/> <code>string</code></td>
+                  <td><strong>Local Type.</strong>The Ordnance Survey classification for the named place being represented by the specific feature. E.g. <code>City</code>, <code>Town</code>, <code>Village</code>, <code>Hamlet</code>, <code>Other Settlement</code>,
+                    <code>Suburban Area</code></td>
+                </tr>
+                <tr id="places-outcode">
+                  <td>outcode <br/> <code>string</code></td>
+                  <td><strong>Outcode.</strong>The postcode district, for example, <code>SO15</code></td>
+                </tr>
+                <tr id="places-name-1">
+                  <td>name_1 <br/> <code>string</code></td>
+                  <td><strong>Name.</strong>The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, ‘The Pennines’ not ‘Pennines, The’.</td>
+                </tr>
+                <tr id="places-name-1-lang">
+                  <td>name_1_lang <br/> <code>string|null</code></td>
+                  <td><strong>Language of Name.</strong>The language type is only set where more than one name exists E.g. <code>cym</code> (Welsh), <code>eng</code> (English), <code>gla</code> (Scottish Gaelic)</td>
+                </tr>
+                <tr id="places-name-2">
+                  <td>name_2 <br/> <code>string|null</code></td>
+                  <td><strong>Name (in case of multiple languages).</strong>The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, ‘The Pennines’ not ‘Pennines,
+                    The’.</td>
+                </tr>
+                <tr id="places-name-2-lang">
+                  <td>name_2_lang <br/> <code>string|null</code></td>
+                  <td><strong>Language of Name.</strong>The language type is only set where more than one name exists E.g. cym (Welsh), eng (English), gla (Scottish Gaelic)</td>
+                </tr>
+                <tr id="places-county-unitary">
+                  <td>county_unitary <br/> <code>string|null</code></td>
+                  <td><strong>Administrative Area.</strong>The name of the County (non-metropolitan or Metropolitan), Unitary Authority or Greater London Authority administrative area that the point geometry for feature is within or nearest to.</td>
+                </tr>
+                <tr id="places-county-unitary-type">
+                  <td>county_unitary_type <br/> <code>string|null</code></td>
+                  <td><strong>Administrative Area Type.</strong> Classifies the type of administrative unit.</td>
+                </tr>
+                <tr id="places-district-borough">
+                  <td>district_borough <br/> <code>string|null</code></td>
+                  <td><strong>District or Borough.</strong>The name of the District, Metropolitan District or London Borough administrative unit that the point geometry for the feature is within.</td>
+                </tr>
+                <tr id="places-district-borough-type">
+                  <td>district_borough_type <br/> <code>string|null</code></td>
+                  <td><strong>Borough Type.</strong> Classifies the type of administrative unit.</td>
+                </tr>
+                <tr id="places-region">
+                  <td>region <br/> <code>string</code></td>
+                  <td><strong>Region.</strong>The name of the European Region (was Government O ice Region) that the point geometry for the feature is within or nearest to.</td>
+                </tr>
+              </tbody>
+            </table>
+            <h2 class="doc-header" id="Methods">Methods</h2>
+            <h4>The following is a list of available API methods</h4>
+            <h3 id="Postcode-Lookup">Postcode Lookup</h3>
+            <p>Lookup a postcode. Returns all available data if found. Returns 404 if postcode does not exist.</p><pre><h4>https://api.postcodes.io/postcodes/:postcode</h4></pre>
+            <h3 id="Bulk-Postcode-Lookup">Bulk Postcode Lookup</h3>
+            <p>Accepts a JSON object containing an array of postcodes. Returns a list of matching postcodes and respective available data.</p>
+            <p>Be sure to submit JSON requests setting <code>Content-Type</code> to <code>application/json</code></p>
+            <p>Accepts up to 100 postcodes.</p><pre><h4><div class="http-method">POST</div>https://api.postcodes.io/postcodes</h4></pre>
+            <h4>Post Data</h4>
+            <p>This method requires a JSON object containing an array of postcodes to be posted. E.g.</p><pre>{
+  "postcodes" : ["PR3 0SG", "M45 6GN", "EX165BL"]
+}</pre>
+            <h4>Optional Query Parameters</h4>
+            <p><code>filter=</code> (not required) A comma separated whitelist of attributes to be returned in the result object(s). E.g. <code>filter=postcode,longitude,latitude</code>. <code>null</code> responses will continue to return <code>null</code>.
+              If no attributes match the result object, an empty object is returned</p>
+            <h3 id="Geocode-Postcode">Reverse Geocoding</h3>
+            <p>Returns nearest postcodes for a given longitude and latitude.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/postcodes?lon=:longitude&amp;lat=:latitude</h4></pre>
+            <h4>Optional Query Parameters</h4>
+            <p><code>limit=</code> (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.</p>
+            <p><code>radius=</code> (not required) Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.</p>
+            <p><code>wideSearch=</code> (not required) Search up to 20km radius, but subject to a maximum of 10 results. Since lookups over a wide area can be very expensive, we've created this method to allow you choose to make the trade off between search
+              radius and number of results. Defaults to false. When enabled, radius and limits over 10 are ignored.</p>
+            <h4>Legacy</h4>
+            <p>Note that the old style of reverse geocoding (including optional headers above) will still be supported. Namely,</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude</h4></pre>
+            <h3 id="Bulk-Geocode-Postcode">Bulk Reverse Geocoding</h3>
+            <p>Bulk translates geolocations into Postcodes. Accepts up to 100 geolocations.</p><pre><h4><div class="http-method">POST</div>https://api.postcodes.io/postcodes</h4></pre>
+            <h4>Post Data</h4>
+            <p>This method requires a JSON object containing an array of geolocation objects to be POSTed. Each geolocation object accepts an optional radius (meters) and limit argument. Both default to 100m and 10 respectively. It also accepts a wideSearch
+              argument. E.g.</p><pre>{
+  "geolocations" : [{
+  	"longitude" : -3.15807731271522,
+  	"latitude" : 51.4799900627036
+  },{
+  	"longitude" : -1.12935802905177,
+  	"latitude" : 50.7186356978817,
+  	"limit" : 100,
+  	"radius" : 500
+  }]
+}</pre>
+            <h4>Optional Query Parameters</h4>
+            <p><code>filter=</code> (not required) A comma separated whitelist of attributes to be returned in the result object(s). E.g. <code>filter=postcode,longitude,latitude</code>. <code>null</code> responses will continue to return <code>null</code>.
+              If no attributes match the result object, an empty object is returned</p>
+            <p><code>wideSearch=</code> (not required) Search up to 20km radius, but subject to a maximum of 10 results</p>
+            <h3 id="Postcode-Query">Postcode Query</h3>
+            <p>Submit a postcode query and receive a complete list of postcode matches and all associated postcode data.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/postcodes?q=[query]</h4></pre>
+            <h4>Optional Query Parameters</h4>
+            <p><code>query=</code> (not required) aliases to<code>q=</code></p>
+            <p><code>limit=</code> (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.</p>
+            <h3 id="Postcode-Validation">Postcode Validation</h3>
+            <p>Convenience method to validate a postcode. Returns true or false (meaning valid or invalid respectively)</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/postcodes/:postcode/validate</h4></pre>
+            <h3 id="Nearest-Postcode">Nearest Postcode</h3>
+            <p>Returns nearest postcodes for a given postcode.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/postcodes/:postcode/nearest</h4></pre>
+            <h4>Optional Query Parameters</h4>
+            <p><code>limit=</code> (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.</p>
+            <p><code>radius=</code> (not required) Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.</p>
+            <h3 id="Postcode-Autocomplete">Postcode Autocomplete</h3>
+            <p>Convenience method to return an list of matching postcodes.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/postcodes/:postcode/autocomplete</h4></pre>
+            <h4>Optional Query Parameters</h4>
+            <p><code>limit=</code> (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.</p>
+            <h3 id="Random-Postcode">Random Postcode</h3>
+            <p>Returns a random postcode and all available data for that postcode.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/random/postcodes</h4></pre>
+            <h4>Optional Query Parameters</h4>
+            <p><code>outcode=</code> (not required) Filters random postcodes by outcode. Returns null if invalid outcode.</p>
+            <h3 id="Show-Outcode">Outward Code Lookup</h3>
+            <p>Geolocation data for the centroid of the outward code specified. The outward code represents the first half of any postcode (separated by a space).</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/outcodes/:outcode</h4></pre>
+            <h3
+              id="Geocode-Outcode">Outcode Reverse Geocoding</h3>
+              <p>Returns nearest outcodes for a given longitude and latitude.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/outcodes?lon=:longitude&amp;lat=:latitude</h4></pre>
+              <h4>Optional Query Parameters</h4>
+              <p><code>limit=</code> (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.</p>
+              <p><code>radius=</code> (not required) Limits number of postcodes matches to return. Defaults to 5,000m. Needs to be less than 25,000m.</p>
+              <h3 id="Nearest-Outcode">Nearest Outcode</h3>
+              <p>Returns nearest outcodes for a given outcode.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/outcodes/:outcode/nearest</h4></pre>
+              <h4>Optional Query Parameters</h4>
+              <p><code>limit=</code> (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.</p>
+              <p><code>radius=</code> (not required) Limits number of postcodes matches to return. Defaults to 5,000m. Needs to be less than 25,000m.</p>
+              <h3 id="Terminated">Terminated Postcode Lookup</h3>
+              <p>Lookup a terminated postcode. Returns the postcode, year and month of termination. Returns 404 if postcode does not exist in our database of terminated postcodes or not valid.</p><pre><h4>https://api.postcodes.io/terminated_postcodes/:postcode</h4></pre>
+              <h3
+                id="Place-Lookup">Place Lookup</h3>
+                <p>Find a place by OSGB code (e.g. "osgb4000000074564391"). Returns all available data if found. Returns 404 if place does not exist.</p><pre><h4>https://api.postcodes.io/places/:code</h4></pre>
+                <h3 id="Place-Query">Place Query</h3>
+                <p>Submit a place query and receive a complete list of places matches and associated data.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/places?q=[query]</h4></pre>
+                <h4>Optional Query Parameters</h4>
+                <p><code>query=</code> (not required) aliases to<code>q=</code></p>
+                <p><code>limit=</code> (not required) Limits number of places matches to return. Defaults to 10. Needs to be less than 100.</p>
+                <h3 id="Random-Place">Random Place</h3>
+                <p>Returns a random place and all associated data</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/random/places</h4></pre>
+                <h2 class="doc-header" id="Install-notes">Install Notes</h2>
+                <p>There may be occasions where you want to host postcodes.io yourself. We've laid out instructions below on how to do this.</p>
+                <p>Installing Postcodes.io is matter of cloning the source. For example,</p><pre><h4>$ git clone https://github.com/ideal-postcodes/postcodes.io.git</h4></pre>
+                <p>We currently provide 3 methods to import the necessaru datasets</p>
+                <ol>
+                  <li>The easiest is to use our install script. This will require postgres superuser privileges to create and provision your database. It will then download the database and import the data from a pg_dump (hosted and created by us).</li>
+                  <li>You can download the pg_dump and attempt to import the database yourself with psql or pg_restore.</li>
+                  <li>Lastly, you can retrieve the raw CSV data from the ONS and import it with our import script.</li>
+                </ol>
+                <h3 id="install-requirements">Requirements</h3>
+                <ul>
+                  <li><a href="http://nodejs.org">Node.js</a></li>
+                  <li><a href="http://postgis.net/install/">Postgresql and Postgis</a></li>
+                </ul>
+                <h3 id="data-download">Data Download</h3>
+                <p>Data is sourced and can be downloaded from the<a href="https://geoportal.statistics.gov.uk/geoportal/catalog/main/home.page">Office for National Statistics Data Portal.</a>The dataset is often not easy to find. The simplest way is to search
+                  for "Postcode Directory".</p>
+                <p>Alternatively you can download a<a href="http://www.postgresql.org/docs/9.3/static/app-pgdump.html">pg_dump</a>of the postcode database which is hosted by us. This is the same dump which is used by the install script. The link to the latest
+                  dump can be found in our<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/latest">repository.</a></p>
+                <h3 id="install-script">Install Script</h3>
+                <p>Currently the install process targets *nix systems. We've provisioned and tested on OS X Mavericks &amp; Ubuntu 14.04. Please<a href="/about">let us know</a> if you have issues on other operating systems.</p>
+                <p>Postcodes.io is packaged with a<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/bin/setup.sh">script</a>to provision postgres and download a dump (pg_dump) of the ONS Postcode Directory (hosted by us). The script will
+                  do the following,</p>
+                <ul>
+                  <li>Prompt you for your postgres superuser credentials (most of the setup steps require this level of privilege)</li>
+                  <li>Create a new user "postcodesio"</li>
+                  <li>Create a new database "postcodesiodb" owned by "postcodesio"</li>
+                  <li>Create the necessary extensions on "postcodesiodb"</li>
+                  <li>Download, unzip and stream the Postcode directory into Postgres</li>
+                </ul>
+                <p>To run,</p><pre><h4>$ npm run setup</h4></pre>
+                <h3 id="import-from-pgdump">Manual Installation from our pg_dump</h3>
+                <p>To setup the database from our pg_dump simply download, gunzip and use either psql or pg_restore to import the data into Postgresql.</p>
+                <p>For example,</p><pre><h4>$ cat postcodeiodb.sql | psql postcodesiodb</h4></pre>
+                <h3 id="import-from-ons">Manual Installation</h3>
+                <p>The install scripts can be linked to your shell (or can be found in the <code>bin/</code> directory). To link, navigate to <code>postcodes.io/</code> and run <code>$ npm link</code></p>
+                <h4>ONS Postcode Directory</h4>
+                <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ onsImport</code> passing the path to the CSV data.</p><pre><h4>$ onsImport /path/to/data/ONSPD/Data/data.csv</h4></pre>
+                <h4>OS Open Names</h4>
+                <p>Download the latest Ordnance Survey Open Names dataset. Unzip the data locally. Run the import script <code>$ osPlaceImport</code> passing the path that contains the CSV data files.</p><pre><h4>$ osPlaceImport /path/to/data/opname_csv_gb/Data/</h4></pre>
+                <h3
+                  id="update-script">Data Updates</h3>
+                  <p>If you wish to manually update your data or data schema, we provide a script which will do this for you with minimal downtime (currently ~10-20 seconds to generate smaller relations).</p>
+                  <h4>ONS Postcode Directory</h4>
+                  <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset" and run the import script <code>$ onsUpdate</code> passing the path to the CSV data.</p><pre><h4>$ onsUpdate /path/to/data/ONSPD/Data/data.csv</h4></pre>
+                  <h4>OS Open Names</h4>
+                  <p>Currently not implemented</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer">
+    <div class="container">
+      <div class="col-lg-12">
+        <div class="footer"> 2017 <a href="http://www.iddqd.org">IDDQD </a> Made in London</div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+  <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+  <script src="/js/app.js"></script>
+  <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+  <script type="text/javascript" src="/js/email.js"></script>
+</body>
+
+</html>

@@ -17,7 +17,8 @@
     "test:seed": "./bin/generate_test_data.js",
     "test:create": "./bin/createTestDb.sh",
     "test:clear": "./bin/clearTestDb.sh",
-    "lint": "./node_modules/.bin/jshint ."
+    "lint": "./node_modules/.bin/jshint .",
+    "ejs": "./node_modules/.bin/ejs-cli"
   },
   "bin": {
     "onsImport": "./bin/import.js",
@@ -41,7 +42,11 @@
     "url": "https://github.com/ideal-postcodes/postcodes.io/issues"
   },
   "nyc": {
-    "exclude": ["bin", "tests", "public"]
+    "exclude": [
+      "bin",
+      "tests",
+      "public"
+    ]
   },
   "dependencies": {
     "async": "~1.5.0",
@@ -53,7 +58,6 @@
     "csv-parse": "~1.2.0",
     "escape-string-regexp": "~1.0.5",
     "express": "~4.16.0",
-    "jade": "~1.11.0",
     "minimist": "~1.2.0",
     "morgan": "~1.9.0",
     "node.extend": "~2.0.0",
@@ -71,6 +75,7 @@
   "devDependencies": {
     "chai": "~4.1.0",
     "coveralls": "~2.13.2",
+    "ejs-cli": "~2.0.0",
     "jshint": "~2.9.4",
     "mocha": "~3.5.3",
     "mocha-lcov-reporter": "~1.3.0",

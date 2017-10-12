@@ -14,7 +14,7 @@ module.exports = (app, config) => {
 	app.enable("trust proxy");
 	app.disable("x-powered-by");
 	app.set("views", path.join(config.root, "app/views"));
-  app.set("view engine", "jade");
+  app.set("view engine", "ejs");
 
 	// Should be handled by webserver in production
 	if (config.env !== "production") {
