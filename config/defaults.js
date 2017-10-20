@@ -74,6 +74,12 @@ module.exports = {
 		"msoa",
 		"incode",
 		"outcode",
-		"codes"
+		"codes",
+		"admin_district",
+		"parish",
+		"admin_county",
+		"admin_ward",
+		"ccg",
+		"nuts"
 	]
 };
