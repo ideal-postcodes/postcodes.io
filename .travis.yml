@@ -17,6 +17,8 @@ addons:
 before_script:
 - mkdir logs && touch logs/test.log
 - POSTGRES_USER=postgres npm run setup_test_db
+script:
+- "npm run test-ci"
 after_success: npm run coverage
 notifications:
   slack:
