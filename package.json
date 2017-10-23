@@ -7,8 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "NODE_ENV=test npm run test:create && npm run mocha && NODE_ENV=test npm run test:clear && npm run lint",
-    "mocha": "NODE_ENV=test NO_RELOAD_DB=true node_modules/.bin/mocha tests/ -R spec",
+    "test": "NODE_ENV=test npm run test:create && npm run nyc_mocha && NODE_ENV=test npm run test:clear && npm run lint",
+    "nyc_mocha": "NODE_ENV=test NO_RELOAD_DB=true node_modules/.bin/nyc node_modules/.bin/mocha tests/ -R spec",
     "coverage": "node_modules/.bin/nyc report --reporter=text-lcov | node_modules/.bin/coveralls",
     "start": "node server.js",
     "setup": "./bin/setup.sh",
