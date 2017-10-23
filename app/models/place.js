@@ -33,9 +33,11 @@ const placeSchema = {
 	"name_1": "VARCHAR(128)",
 	"name_1_lang": "VARCHAR(10)",
 	"name_1_search": "VARCHAR(128)",
+	"name_1_search_ts": "tsvector",
 	"name_2": "VARCHAR(128)",
 	"name_2_lang": "VARCHAR(10)",
 	"name_2_search": "VARCHAR(128)",
+	"name_2_search_ts": "tsvector",
 	"county_unitary": "VARCHAR(128)",
 	"county_unitary_type": "VARCHAR(128)",
 	"district_borough": "VARCHAR(128)",
@@ -51,8 +53,16 @@ const indexes = [{
 	column: "name_1_search",
 	opClass: "varchar_pattern_ops"
 }, {
+	column: "name_1_search_ts",
+	type: "GIN",
+	opClass: "tsvector_ops"
+}, {
 	column: "name_2_search",
 	opClass: "varchar_pattern_ops"
+}, {
+	column: "name_2_search_ts",
+	type: "GIN",
+	opClass: "tsvector_ops"
 }, {
 	type: "GIST",
 	column: "location"
@@ -89,6 +99,37 @@ Place.prototype.findByCode = function (code, callback) {
 	});
 };
 
+/**
+ * Executes a name search for a place. For now this delegates straight to
+ * prefixQuery
+ * This method will also:
+ * - Check validity inbound query
+ * - Format inbound query (e.g. lowercase, replace \' and \-)
+ * @param  {object}   options 
+ * @param  {string}   options.name  - Search query
+ * @param  {number}   options.limit - Maximum number of results to return
+ * @param  {Function} callback		  - Callback accepting 2 args, error and
+ * results
+ * @return {undefined}
+ */
+Place.prototype.search = function (options, callback) {
+	const name = options.name;
+	if (!name || name.length === 0) return callback(null, null);
+	const searchTerm = name
+		.toLowerCase()
+		.trim()
+		.replace(/'/g,"")
+		.replace(/-/g, " ");
+
+	let limit = options.limit || searchDefaults.limit.DEFAULT;
+	if (typeof limit !== "number" || limit < 0) limit = searchDefaults.limit.DEFAULT; 
+	if (limit > searchDefaults.limit.MAX) limit = searchDefaults.limit.MAX;
+	this._prefixSearch({
+		name: searchTerm,
+		limit: limit
+	}, callback);
+};
+
 const searchQuery = `
 	SELECT 
 		${returnAttributes} 
@@ -100,20 +141,60 @@ const searchQuery = `
 	LIMIT $2
 `;
 
-// Search for place by name
-Place.prototype.search = function (options, callback) {
-	const name = options.name;
-	if (!name || name.length === 0) return callback(null, null);
-	const searchTerm = name
-		.toLowerCase()
-		.trim()
-		.replace(/'/g,"")
-		.replace(/-/g, " ");
-	const regex = `^${escapeRegex(searchTerm)}.*`;
-	let limit = options.limit || searchDefaults.limit.DEFAULT;
-	if (typeof limit !== "number" || limit < 0) limit = searchDefaults.limit.DEFAULT; 
-	if (limit > searchDefaults.limit.MAX) limit = searchDefaults.limit.MAX;
+/**
+ * Search method which will produce a fast prefix search for places. Inputs are
+ * unchecked and so cannot be exposed directly as an HTTP endpoint
+ * +ve fast on exact prefix matches (good for autocomplete)
+ * +ve fast on exact name matches
+ * -ve does not support terms matching (e.g. out of order or missing terms)
+ * -ve does not support fuzzy matching (e.g. typos)
+ * @param  {object}   options 
+ * @param  {string}   options.name  - Search query
+ * @param  {number}   options.limit - Maximum number of results to return
+ * @param  {Function} callback - Maximum number of results to return
+ * @return {undefined}
+ */
+Place.prototype._prefixSearch = function (options, callback) {
+	const regex = `^${escapeRegex(options.name)}.*`;
+	const limit = options.limit;
 	this._query(searchQuery, [regex, limit], (error, result) => {
+		if (error) return callback(error);
+		if (result.rows.length === 0) return callback(null, null);
+		return callback(null, result.rows);
+	});
+};
+
+const termsSearchQuery = `
+	SELECT 
+		${returnAttributes} 
+	FROM
+		places_ts 
+	WHERE
+		name_1_search_ts @@ phraseto_tsquery('simple', $1)
+		OR name_2_search_ts @@ phraseto_tsquery('simple', $1)
+	ORDER BY GREATEST(
+		ts_rank_cd(name_1_search_ts, phraseto_tsquery('simple', $1), 1), 
+		coalesce(ts_rank_cd(name_2_search_ts, phraseto_tsquery('simple', $1), 1), 0)
+	) DESC
+	LIMIT $2
+`;
+
+/**
+ * Search method which will match terms. Inputs are unchecked and so cannot
+ * be exposed directly as an HTTP endpoint
+ * +ve supports terms matching (e.g. out of order, missing terms, one term misspelt)
+ * -ve does not support fuzzy matching (e.g. typos)
+ * -ve no partial query matching
+ * @param  {object}   options 
+ * @param  {string}   options.name  - Search query
+ * @param  {number}   options.limit - Maximum number of results to return
+ * @param  {Function} callback - Maximum number of results to return
+ * @return {undefined}
+ */
+Place.prototype._termsSearch = function (options, callback) {
+	const name = options.name;
+	const limit = options.limit;
+	this._query(termsSearchQuery, [name, limit], (error, result) => {
 		if (error) return callback(error);
 		if (result.rows.length === 0) return callback(null, null);
 		return callback(null, result.rows);
@@ -314,6 +395,7 @@ Place.prototype._setupTable = function (directory, callback) {
 		},
 		self.populateLocation.bind(self),
 		self.generateSearchFields.bind(self),
+		self.generateTsSearchFields.bind(self),
 		self.createIndexes.bind(self),
 	], callback);
 };
@@ -331,7 +413,9 @@ Place.prototype.seedData = function (directory, callback) {
 		"location",
 		"bounding_polygon",
 		"name_1_search",
-		"name_2_search"
+		"name_1_search_ts",
+		"name_2_search",
+		"name_2_search_ts"
 	];
 	const columns = Object.keys(placeSchema)
 		.filter(col => columnWhitelist.indexOf(col) === -1);
@@ -398,6 +482,19 @@ Place.prototype.generateSearchFields = function (callback) {
 							), 
 						'-', ' ')
 					, '''', '')
+			`, callback);
+		};
+	}), callback);
+};
+
+Place.prototype.generateTsSearchFields = function (callback) {
+	async.series(["name_1", "name_2"].map(field => {
+		return callback => {
+			this._query(`
+				UPDATE 
+					${this.relation} 
+				SET 
+					${field}_search_ts=to_tsvector('simple', ${field})
 			`, callback);
 		};
 	}), callback);

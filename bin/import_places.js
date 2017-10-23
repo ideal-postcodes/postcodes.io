@@ -51,6 +51,11 @@ function generateSearchFields (callback) {
 	Place.generateSearchFields(callback);
 }
 
+function generateTsSearchFields (callback) {
+	console.log("Populating ts_searching data...");
+	Place.generateTsSearchFields(callback);
+}
+
 function createPostgisExtension(callback) {
 	console.log("Enabling POSTGIS extension...");
 	Place._query("CREATE EXTENSION IF NOT EXISTS postgis", callback);
@@ -68,7 +73,8 @@ const executionStack = [
 	createRelation, 
 	importRawCsv,
 	populateLocation, 
-	generateSearchFields, 
+	generateSearchFields,
+	generateTsSearchFields, 
 	recreateIndexes
 ];
 

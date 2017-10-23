@@ -212,9 +212,11 @@ function isRawPlaceObject(o) {
 		"name_1",
 		"name_1_lang",
 		"name_1_search",
+		"name_1_search_ts",
 		"name_2",
 		"name_2_lang",
 		"name_2_search",
+		"name_2_search_ts",
 		"county_unitary",
 		"county_unitary_type",
 		"district_borough",
@@ -254,7 +256,9 @@ function isPlaceObject(o) {
 		"id",
 		"location",
 		"name_1_search",
+		"name_1_search_ts",
 		"name_2_search",
+		"name_2_search_ts",
 		"bounding_polygon",
 		"polygon"
 	].forEach(prop => assert.notProperty(o, prop));
