@@ -1,0 +1,18 @@
+version: 2
+jobs:
+   build:
+     docker:
+       - image: circleci/node:6.10
+         environment:
+           - PGHOST=localhost
+           - PGUSER=postgres
+       - image: postgres:9.6
+     
+     steps:
+       - checkout
+       - run: sudo apt-get update
+       - run: sudo apt install postgresql-client
+       - run: npm run setup_test_db
+       - run: npm test
+       
+       
