@@ -12,6 +12,9 @@ jobs:
        - checkout
        - run: sudo apt-get update
        - run: sudo apt install postgresql-client
+       - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
        - run: POSTGRES_USER=postgres npm run setup_test_db
        - run: npm install
        - run: npm test
