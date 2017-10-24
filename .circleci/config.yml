@@ -6,13 +6,14 @@ jobs:
          environment:
            - PGHOST=localhost
            - PGUSER=postgres
-       - image: postgres:9.6
+       - image: mdillon/postgis
      
      steps:
        - checkout
        - run: sudo apt-get update
        - run: sudo apt install postgresql-client
-       - run: npm run setup_test_db
+       - run: POSTGRES_USER=postgres npm run setup_test_db
+       - run: npm install
        - run: npm test
        
        
