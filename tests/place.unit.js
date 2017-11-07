@@ -99,7 +99,7 @@ describe("Place Model", () => {
 				const sanitizeName = name => {
 					const sanitizedName = name.replace(/-/g, ' ')
 																		.replace("'", '')
-																		.toLowerCase());
+																		.toLowerCase();
 					return helper.removeDiacritics(sanitizedName);
 				};
 
@@ -114,6 +114,7 @@ describe("Place Model", () => {
 							} else {
 								assert.equal(searchName, sanitizeName(name));
 							}
+						}
 					});
 					done();
 				});
