@@ -51,7 +51,7 @@
     ]
   },
   "dependencies": {
-    "async": "~1.5.0",
+    "async": "~2.5.0",
     "body-parser": "~1.18.2",
     "bunyan": "~1.8.5",
     "commonlog-bunyan": "~0.4.3",
