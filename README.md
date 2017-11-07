@@ -1,4 +1,4 @@
-# Postcodes.io [![Build Status](https://travis-ci.org/ideal-postcodes/postcodes.io.png)](https://travis-ci.org/ideal-postcodes/postcodes.io) [![Coverage Status](https://coveralls.io/repos/github/ideal-postcodes/postcodes.io/badge.svg?branch=code_coverage_btn)](https://coveralls.io/github/ideal-postcodes/postcodes.io?branch=code_coverage_btn)
+# Postcodes.io [![Build Status](https://travis-ci.org/ideal-postcodes/postcodes.io.png)](https://travis-ci.org/ideal-postcodes/postcodes.io) [![Coverage Status](https://coveralls.io/repos/github/goingdotin/postcodes.io/badge.svg?branch=master)](https://coveralls.io/github/goingdotin/postcodes.io?branch=master)
 
 Query for UK postcodes and geolocations over HTTP. Postcodes.io uses the Office for National Statistics Postcode Directory.
 
