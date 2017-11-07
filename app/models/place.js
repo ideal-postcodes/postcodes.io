@@ -54,15 +54,13 @@ const indexes = [{
 	opClass: "varchar_pattern_ops"
 }, {
 	column: "name_1_search_ts",
-	type: "GIN",
-	opClass: "tsvector_ops"
+	type: "GIN"
 }, {
 	column: "name_2_search",
 	opClass: "varchar_pattern_ops"
 }, {
 	column: "name_2_search_ts",
-	type: "GIN",
-	opClass: "tsvector_ops"
+	type: "GIN"
 }, {
 	type: "GIST",
 	column: "location"
@@ -124,10 +122,18 @@ Place.prototype.search = function (options, callback) {
 	let limit = options.limit || searchDefaults.limit.DEFAULT;
 	if (typeof limit !== "number" || limit < 0) limit = searchDefaults.limit.DEFAULT; 
 	if (limit > searchDefaults.limit.MAX) limit = searchDefaults.limit.MAX;
-	this._prefixSearch({
+	
+	const searchOptions = {
 		name: searchTerm,
 		limit: limit
-	}, callback);
+	};
+	
+	this._termsSearch(searchOptions, (error, result) => {
+		if (error) return callback(error);	
+		if (result !== null) return callback(null, result);
+		// first do terms search, if that fails or does not find anything
+		return this._prefixSearch(searchOptions, callback);
+	});
 };
 
 const searchQuery = `
@@ -168,7 +174,7 @@ const termsSearchQuery = `
 	SELECT 
 		${returnAttributes} 
 	FROM
-		places_ts 
+		places
 	WHERE
 		name_1_search_ts @@ phraseto_tsquery('simple', $1)
 		OR name_2_search_ts @@ phraseto_tsquery('simple', $1)
