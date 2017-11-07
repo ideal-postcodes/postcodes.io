@@ -34,9 +34,104 @@ const CSV_INDEX = {
 	eastings: 9
 };
 
+/**
+ * Clears the test database
+ * - Skips if NUKE_AFTER
+ * @param  {function} callback
+ * @return {undefined}
+ */
+const clearTestDb = (callback) => {
+	if (process.env.PRESERVE_DB !== undefined) {
+		console.log("Tests concluded. Opted for preserving testing database...")
+		return callback(null)
+	};
+
+	console.log("Tests concluded, wiping DB...");
+	const instructions = [];
+	instructions.push(Postcode._destroyRelation.bind(Postcode));
+	instructions.push(TerminatedPostcode._destroyRelation.bind(TerminatedPostcode));
+	instructions.push(District._destroyRelation.bind(District));
+	instructions.push(Parish._destroyRelation.bind(Parish));
+	instructions.push(Nuts._destroyRelation.bind(Nuts));
+	instructions.push(County._destroyRelation.bind(County));
+	instructions.push(Constituency._destroyRelation.bind(Constituency));
+	instructions.push(Ccg._destroyRelation.bind(Ccg));
+	instructions.push(Ward._destroyRelation.bind(Ward));
+	instructions.push(Outcode._destroyRelation.bind(Outcode));
+	instructions.push(Place._destroyRelation.bind(Place));
+	async.series(instructions, callback);
+};
+
+// Infers columns schema from columnData
+const inferSchemaData = columnData => {
+	const columnName = columnData.column_name;
+	const collationName = columnData.collation_name;
+	
+	let dataType = columnData.data_type;
+	if (columnName === "id") {
+		dataType = "SERIAL PRIMARY KEY"; 
+	}
+	if (dataType === "USER-DEFINED" && columnName === "location") {
+		dataType = "GEOGRAPHY(Point, 4326)";
+	}
+	if (dataType === "USER-DEFINED" && columnName === "bounding_polygon") {
+		dataType = "GEOGRAPHY(Polygon, 4326)";
+	}
+	if (dataType === "integer" || dataType === "double precision") {
+		dataType = dataType.toUpperCase()
+	}
+
+	if (dataType === "character varying"){
+		dataType = `VARCHAR(${columnData.character_maximum_length})`;
+	};
+	
+	if (collationName) {
+		dataType = `${dataType} COLLATE "${collationName}"`;
+	}
+	return [columnName, dataType];
+}
+
+// sort index definition objects by their collumn names 
+// used to assert equality between infered index definitions and real index definitions
+const sortByIndexColumns = (a, b) => {
+	if (a.column === b.column) {
+		return Object.keys(b).length - Object.keys(a).length;
+	} else {
+		return (a.column < b.column) ? -1 : 1
+	}
+}
+
+// infers expected definition of javascript object that defines creation of an index 
+// for #createIndexes method
+const inferIndexInfo = indexDef => {
+  const impliedIndex = {}
+  
+  if (indexDef.search("UNIQUE") !== -1) {
+    impliedIndex.unique = true //not specified unless is unique
+  }
+  
+  const strippedDef = indexDef.replace(/.*USING\s/, "");
+  const indexType = strippedDef.match(/\w*/)[0];
+  
+  if (indexType !== "btree") {
+    impliedIndex.type = indexType.toUpperCase();   //not specified unless NOT a btree;
+  }
+  
+  const indexInfo = strippedDef.match(/\(.*\)/)[0].slice(1,-1);
+
+  const splittedIndexInfo = indexInfo.split(" ");
+
+  impliedIndex.column = splittedIndexInfo[0]; //contains name of an indexed collumn
+  
+  if (splittedIndexInfo.length === 2) {
+    impliedIndex.opClass = splittedIndexInfo[1] // if two words, second word specifies
+                                                // operation class, which is always
+                                                // specified explicitly
+  }
+  return impliedIndex;
+}
+
 // Location with nearby postcodes to be used in lonlat test requests
-
-
 const locationWithNearbyPostcodes = function (callback) {
 	const postcodeWithNearbyPostcodes = "AB14 0LP";
 	Postcode.find(postcodeWithNearbyPostcodes, function (error, result) {
@@ -437,6 +532,11 @@ module.exports = {
 	// Methods
 
 	allowsCORS: allowsCORS,
+	clearTestDb: clearTestDb,
+	removeDiacritics: require("./remove_diacritics"),
+	inferIndexInfo: inferIndexInfo,
+	inferSchemaData: inferSchemaData,
+	sortByIndexColumns: sortByIndexColumns,
 	testOutcode: testOutcode,
 	randomOutcode: randomOutcode,
 	isPlaceObject: isPlaceObject,
