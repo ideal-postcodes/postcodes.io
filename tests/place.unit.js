@@ -1,11 +1,26 @@
 "use strict";
 
+const fs = require("fs");
 const path = require("path");
 const async = require("async");
 const assert = require("chai").assert;
+const parse = require('csv-parse/lib/sync');
 const helper = require(`${__dirname}/helper`);
-		
+const env = process.env.NODE_ENV || "development";
+const configPath = path.join(__dirname, "../config/config.js");
+const seedPathDirectory = `${__dirname}/seed/places/`;
+const seedFilePath = `${__dirname}/seed/places/HY20.csv`;
 const Place = helper.Place;
+
+const TYPE_OFFSET = 6; // Specifies type column on place.csv files
+
+const countPlacesTestSeedData = seedFilePath => {
+	return parse(fs.readFileSync(seedFilePath))
+		.filter(row => row[TYPE_OFFSET] === "populatedPlace")
+		.length;
+};
+
+const placesEntriesCount = countPlacesTestSeedData(seedFilePath);
 
 describe("Place Model", () => {
 	let testPostcode, testOutcode;
@@ -19,7 +34,135 @@ describe("Place Model", () => {
 	});
 
 	after(helper.clearPostcodeDb);
+	
+	describe("#setupTable", () => {
+		before(done => {
+			Place._destroyRelation(error => {
+				if (error) return done(error);
+				Place._setupTable(seedPathDirectory, done);
+			});
+		});
 
+		describe("#_createRelation", () => {
+			it (`creates a relation that matches ${Place.relation} schema`, done => {
+				const query = `
+					SELECT 
+						column_name, data_type, character_maximum_length
+					FROM
+						INFORMATION_SCHEMA.COLUMNS 
+					WHERE
+						table_name = '${Place.relation}'
+				`;
+				Place._query(query, (error, result) => {
+					if (error) return done(error);
+					const schema = result.rows.reduce((impliedSchema, columnInfo) => {
+						const [columnName, dataType] = helper.inferSchemaData(columnInfo);
+						impliedSchema[columnName] = dataType;
+						return impliedSchema;
+					}, {});
+					assert.deepEqual(schema, Place.schema);
+					done();
+				});
+			});
+		});
+		
+		describe("#seedData", () => {
+			it ("loads correct data from data directory", function (done) {
+				const query = `SELECT count(*) FROM ${Place.relation}`;
+				Place._query(query, function (error, result) {
+					if (error) return done(error);
+					assert.equal(result.rows[0].count, placesEntriesCount);
+					done();
+				});
+			});
+		});
+
+		describe("#populateLocation", () => {
+			it ("populates location collumn with geohashes", done => {
+				const query = `SELECT location FROM ${Place.relation}`;
+				Place._query(query, (error, result) => {
+					if (error) return done(error);
+					result.rows.forEach(row => assert.equal(row.location.length, 50));
+					done();
+				});
+			});
+		});
+
+		describe("#generateSearchFields", () => {
+			it (`correctly allocates (name_1/name_2)_search fields`, done => {
+				const query = `
+					SELECT
+						name_1, name_1_search, name_2, name_2_search
+					FROM 
+						${Place.relation}
+				`;
+				const sanitizeName = name => {
+					const sanitizedName = name.replace(/-/g, ' ')
+																		.replace("'", '')
+																		.toLowerCase());
+					return helper.removeDiacritics(sanitizedName);
+				};
+
+				Place._query(query, (error, result) => {										 
+					if (error) return done(error);
+					['name_1', 'name_2'].forEach(nameField => {
+						for (let i = 0; i < placesEntriesCount; i++) {
+							const name = result.rows[i][nameField]
+							const searchName = result.rows[i][`${nameField}_search`];
+							if (name === null) {
+								assert.isNull(searchName);
+							} else {
+								assert.equal(searchName, sanitizeName(name));
+							}
+					});
+					done();
+				});
+			});
+		});
+
+		describe("#generateTsSearchFields", () => {
+			it("generates appropriate tsvector search fields from (name_1/name_2) field", done => {
+				const query = `
+					SELECT
+						name_1, name_1_search_ts, to_tsvector('simple', name_1) as ts_name_1,
+						name_2, name_2_search_ts, to_tsvector('simple', name_2) as ts_name_2
+				  FROM ${Place.relation}
+			  `;
+				Place._query(query, (error, result) => {
+					if (error) return done(error);
+					['name_1', 'name_2'].forEach(name_field => {
+						for (let i = 0; i < placesEntriesCount; i++) {
+							const ts_field_name = result.rows[i][`${name_field}_search_ts`];
+							const correct_ts_name = result.rows[i][`ts_${name_field}`];
+							assert.equal(ts_field_name, correct_ts_name);
+						}
+					});
+					done();
+				});
+			});
+		});
+
+		describe("#createIndexes", () => {
+			it ("generates indexes that matches to what's been specified", done => {
+				const impliedIndexesArr = [];
+				Place._query(`select indexdef from pg_indexes where tablename = '${Place.relation}'`, (err, result) => {
+					result.rows.forEach(row => {
+						const indexDef = row.indexdef;
+						const impliedIndexObj = helper.inferIndexInfo(indexDef);
+						
+						if (impliedIndexObj.column !== "id") { // id is always indexed
+						impliedIndexesArr.push(impliedIndexObj);
+						}
+					});
+					const impliedIndexes = impliedIndexesArr.sort(helper.sortByIndexColumns);
+					const realIndexes = Place.indexes.sort(helper.sortByIndexColumns);
+					assert.deepEqual(impliedIndexes, realIndexes);
+					done();
+				});
+			});
+		});
+	});
+	
 	describe("#findByCode", () => {
 		const testCode = "osgb4000000074559125";
 		it ("returns place by code", done => {
@@ -52,147 +195,6 @@ describe("Place Model", () => {
 		});
 	});
 	
-	describe("#search", () => {
-		it ("returns a list of places for given search term", done => {
-			Place.search({ name: "b" }, (error, results) => {
-				if (error) return done(error);
-				results.forEach(helper.isRawPlaceObject);
-				done();
-			});
-		});
-		it ("returns null if no query", done => {
-			Place.search({}, (error, results) => {
-				if (error) return done(error);
-				assert.isNull(results);
-				done();
-			});
-		});
-		it ("is sensitive to limit", done => {
-			Place.search({ 
-				name: "b",
-				limit: 1
-			}, (error, results) => {
-				if (error) return done(error);
-				assert.equal(results.length, 1);
-				results.forEach(helper.isRawPlaceObject);
-				done();
-			});
-		});
-		it ("returns up to 10 results by default", done => {
-			Place.search({ name: "b" }, (error, results) => {
-				if (error) return done(error);
-				assert.equal(results.length, 10);
-				results.forEach(helper.isRawPlaceObject);
-				done();
-			});
-		});
-		it ("uses default limit if invalid limit supplied", done => {
-			Place.search({ 
-				name: "b",
-				limit: -1 
-			}, (error, results) => {
-				if (error) return done(error);
-				assert.equal(results.length, 10);
-				results.forEach(helper.isRawPlaceObject);
-				done();
-			});
-		});
-		it ("searches with name_2", done => {
-			const name = "East Kilbride";
-			Place.search({ name: name }, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_2, name);
-					done();
-				});
-		});
-		describe("result specs", () => {
-			it ("returns names with apostrophes", done => {
-				const name = "Taobh a' Chaolais";
-				Place.search({ 
-					name: name.replace(/'/g, "")
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("returns names with non-ascii characters", done => {
-				const name = "Mynydd-llêch";
-				Place.search({ 
-					name: name.replace("ê", "e") 
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("returns names with hyphens", done => {
-				const name = "Llwyn-y-groes";
-				Place.search({ 
-					name: name.replace(/-/g, " ") 
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-		});
-		describe("query specs", () => {
-			it ("is case insensitive", done => {
-				const name = "Corston";
-				Place.search({ 
-					name: name.toUpperCase() 
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("handles apostrophes", done => {
-				const name = "Taobh a' Chaolais";
-				Place.search({ 
-					name: name
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("handles non-ascii characters", done => {
-				const name = "Mynydd-llêch";
-				Place.search({ name: name }, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("handles hyphens as spaces", done => {
-				const name = "Llwyn-y-groes";
-				Place.search({ name: name }, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-		});
-	});	
-
 	describe("contains", () => {
 		let validPlace;
 		before(done => {
@@ -202,7 +204,7 @@ describe("Place Model", () => {
 				done();
 			});
 		});
-
+	
 		it ("returns a list of places which contain point", done => {
 			Place.contains({
 				longitude: validPlace.longitude,
@@ -280,7 +282,7 @@ describe("Place Model", () => {
 			});
 		});
 	});
-
+	
 	describe("nearest", () => {
 		let validPlace;
 		before(done => {
@@ -290,7 +292,7 @@ describe("Place Model", () => {
 				done();
 			});
 		});
-
+	
 		it ("returns a list of places which contain point", done => {
 			Place.nearest({
 				longitude: validPlace.longitude,
@@ -389,7 +391,7 @@ describe("Place Model", () => {
 			});
 		});
 	});
-
+	
 	describe("toJson", () => {
 		it ("formats place object for public consumption", done => {
 			const testCode = "osgb4000000074559125";
@@ -402,7 +404,7 @@ describe("Place Model", () => {
 			});
 		});
 	});
-
+	
 	describe("#random", () => {
 		it ("should return a random place", done => {
 			Place.random((error, place) => {
