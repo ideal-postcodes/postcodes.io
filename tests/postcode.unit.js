@@ -1,11 +1,28 @@
 "use strict";
 
+const fs = require("fs");
 const path = require("path");
 const async = require("async");
 const assert = require("chai").assert;
+const parse = require('csv-parse/lib/sync');
 const helper = require(`${__dirname}/helper`);
-
+const seedFilePath = `${__dirname}/seed/postcode.csv`;
 const Postcode = helper.Postcode;
+
+/**
+ * Counts number of postcode records if
+ * - not headers
+ * - not terminated
+ * @param  {string} seedFilePath - path to CSV file
+ * @return {number}
+ */
+const postcodeRecordCount = seedFilePath => {
+	return parse(fs.readFileSync(seedFilePath))
+		.filter(row => row[0] !== "pcd" && row[4].length === 0)
+		.length
+};
+
+const postcodeEntriesCount = postcodeRecordCount(seedFilePath);
 
 describe("Postcode Model", function () {
 	let testPostcode, testOutcode;
@@ -27,6 +44,88 @@ describe("Postcode Model", function () {
 	});
 
 	after(helper.clearPostcodeDb);
+	
+	describe("#setupTable", function () {
+		before(function (done) {
+			this.timeout(0);
+			Postcode._destroyRelation(function (error) {
+				if (error) return done(error);
+				Postcode._setupTable(seedFilePath, done);
+			});
+		});
+
+		after(function (done) {
+			this.timeout(0);
+			Postcode._destroyRelation(function (error) {
+				if (error) return done(error);
+				Postcode._setupTable(seedFilePath, done);
+			});
+		});
+
+		describe("#_createRelation", () => {
+			it (`creates a relation that matches ${Postcode.relation} schema`, done => {
+				const query = `
+					SELECT 
+						column_name, data_type, character_maximum_length, collation_name
+					FROM INFORMATION_SCHEMA.COLUMNS 
+					WHERE table_name = '${Postcode.relation}'
+				`;
+				Postcode._query(query, (error, result) => {
+					if (error) return done(error);
+					const impliedSchema = {};
+					result.rows.forEach(columnInfo => {
+						let columnName, dataType;
+						[columnName, dataType] = helper.inferSchemaData(columnInfo);
+						impliedSchema[columnName] = dataType;
+					});
+					assert.deepEqual(impliedSchema, Postcode.schema);
+					done();
+				});
+			});
+		});
+
+		describe("#seedData", () => {
+			it ("loads correct data from data directory", done => {
+				const query = `SELECT count(*) FROM ${Postcode.relation}`;
+				Postcode._query(query, (error, result) => {
+					if (error) return done(error);
+					assert.equal(result.rows[0].count, postcodeEntriesCount);
+					done();
+				});
+			});
+		});
+		
+		describe("#populateLocation", () => {
+			it ("populates location collumn with geohashes", done => {
+				const query = `SELECT location from ${Postcode.relation}`;
+				Postcode._query(query, (error, result) => {
+					if (error) return done(error);
+					result.rows.forEach(row => assert.equal(row.location.length, 50));
+					done();
+				});
+			});
+		});
+
+		describe("#createIndexes", () => {
+			it ("generates indexes that matches to what's been specified", done => {
+				const query = `
+					SELECT indexdef 
+					FROM pg_indexes 
+					WHERE tablename = '${Postcode.relation}'
+				`;
+				Postcode._query(query, (error,  result) => {
+					if (error) return done(error);
+					const dbIndexes = result.rows
+						.map(row => helper.inferIndexInfo(row.indexdef))
+						.filter(r => r.column !== "id")
+					const byIndexColumns = helper.sortByIndexColumns;
+					assert.deepEqual(dbIndexes.sort(byIndexColumns),
+														Postcode.indexes.sort(byIndexColumns));
+					done();
+				});
+			});
+		});
+	});
 
 	describe("#toJson", () => {
 		it ("formats an address object", () => {
