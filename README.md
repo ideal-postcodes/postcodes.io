@@ -46,10 +46,10 @@ node server.js // Default environment is development
 
 ### Running with Docker
 
-Postcodes.io is packaged as a Docker container identified on the Docker Hub as `james/postcodes.io`.
+Postcodes.io is packaged as a Docker container identified on the Docker Hub as `idealpostcodes/postcodes.io`.
 
 ```
-docker run -d -p 8000 james/postcodes.io
+docker run -d -p 8000 idealpostcodes/postcodes.io
 ```
 
 Configuration available via Environment Variables:
