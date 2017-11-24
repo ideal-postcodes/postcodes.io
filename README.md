@@ -44,6 +44,24 @@ The import process takes around 10 minutes to complete.
 node server.js // Default environment is development
 ```
 
+### Running with Docker
+
+Postcodes.io is packaged as a Docker container identified on the Docker Hub as `james/postcodes.io`.
+
+```
+docker run -d -p 8000 james/postcodes.io
+```
+
+Configuration available via Environment Variables:
+
+- `MAPBOX_PUBLIC_KEY`
+- `POSTGRES_USER`
+- `POSTGRES_PASSWORD`
+- `POSTGRES_DATABASE`
+- `POSTGRES_HOST`
+- `POSTGRES_PORT`
+
+
 ## Testing
 
 ```
