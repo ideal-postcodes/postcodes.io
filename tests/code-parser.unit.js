@@ -72,6 +72,40 @@ describe("ONS Code Extraction", () => {
 					}
 				});
 			});
+
+			it ("addends appendMissing to data file", done => {
+				const transform = row => {
+					const keyIndex = 0;
+					const valueIndex = 3;
+					if (row[keyIndex] === "CTRY12CD") return []; // Escape if header
+					return [row[keyIndex], row[valueIndex]];
+				};
+
+				const appendMissing = {
+					"foo": "bar",
+					"baz": {
+						"qux": "quux"
+					}
+				};
+
+				extract({
+					appendMissing,
+					configs: [{
+						transform,
+						file: "countries.txt",
+						parseOptions: {
+							relax_column_count: true
+						},
+					}], 
+					done: (error, result) => {
+						assert.isNull(error);
+						assert.equal(result.size, 8);
+						assert.equal(result.get("foo"), "bar");
+						assert.deepEqual(result.get("baz"), {"qux": "quux"});
+						done();
+					}
+				});
+			});
 		});
 
 		describe("isPseudoCode", () => {
