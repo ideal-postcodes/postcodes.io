@@ -98,6 +98,10 @@ module.exports = function (environment) {
 
 	cfg.defaults = defaults;
 
+	if (process.env.PORT) {
+		cfg.port = process.env.PORT;
+	}
+
 	if (process.env.MAPBOX_PUBLIC_KEY || !cfg.mapBoxKey) {
 		cfg.mapBoxKey = process.env.MAPBOX_PUBLIC_KEY || "";	
 	}
