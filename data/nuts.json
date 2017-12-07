@@ -19231,26 +19231,6 @@
     "code": "UKG22",
     "name": "Shropshire CC"
   },
-  "E05008322": {
-    "code": "UKK30",
-    "name": "Cornwall and Isles of Scilly"
-  },
-  "E05008323": {
-    "code": "UKK30",
-    "name": "Cornwall and Isles of Scilly"
-  },
-  "E05008324": {
-    "code": "UKK30",
-    "name": "Cornwall and Isles of Scilly"
-  },
-  "E05008325": {
-    "code": "UKK30",
-    "name": "Cornwall and Isles of Scilly"
-  },
-  "E05008326": {
-    "code": "UKK30",
-    "name": "Cornwall and Isles of Scilly"
-  },
   "E05008327": {
     "code": "UKK15",
     "name": "Wiltshire"
@@ -29851,6 +29831,26 @@
     "code": "UKJ25",
     "name": "West Surrey"
   },
+  "E05011090": {
+    "code": "UKK30",
+    "name": "Cornwall and Isles of Scilly"
+  },
+  "E05011091": {
+    "code": "UKK30",
+    "name": "Cornwall and Isles of Scilly"
+  },
+  "E05011092": {
+    "code": "UKK30",
+    "name": "Cornwall and Isles of Scilly"
+  },
+  "E05011093": {
+    "code": "UKK30",
+    "name": "Cornwall and Isles of Scilly"
+  },
+  "E05011094": {
+    "code": "UKK30",
+    "name": "Cornwall and Isles of Scilly"
+  },
   "S31000001": {
     "code": "UKM21",
     "name": "Angus and Dundee City"
@@ -37643,6 +37643,10 @@
     "code": "UKL23",
     "name": "Flintshire and Wrexham"
   },
+  "W05000186": {
+    "code": "UKL23",
+    "name": "Flintshire and Wrexham"
+  },
   "W05000187": {
     "code": "UKL23",
     "name": "Flintshire and Wrexham"
@@ -37724,10 +37728,6 @@
     "name": "Flintshire and Wrexham"
   },
   "W05000207": {
-    "code": "UKL23",
-    "name": "Flintshire and Wrexham"
-  },
-  "W05000208": {
     "code": "UKL23",
     "name": "Flintshire and Wrexham"
   },

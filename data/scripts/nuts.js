@@ -39,7 +39,7 @@ const transform = row => {
 
 const configs = [
 	{
-		file: "LAU217_LAU117_NUTS315_NUTS215_NUTS115_UK_LU.txt",
+		file: "LAU217_LAU117_NUTS315_NUTS215_NUTS115_DEC_UK_LU_NSPD.txt",
 		transform
 	}
 ];
