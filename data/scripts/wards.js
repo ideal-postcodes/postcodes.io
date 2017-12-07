@@ -20,7 +20,7 @@ const transform = row => {
 
 const configs = [
 	{
-		file: "Ward names and codes UK as at 05_17.txt",
+		file: "Ward names and codes UK as at 12_17.txt",
 		transform
 	}
 ];
