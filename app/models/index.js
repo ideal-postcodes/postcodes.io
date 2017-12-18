@@ -133,12 +133,10 @@ Base.prototype._csvSeed = function (options, callback) {
 		pool.connect((error, client, done) => {
 			const pgStream = client.query(copyFrom(query))
 				.on("end", () => {
-					console.log(`Finished reading ${filepath}`);
 					done();
 					return cb();
 				})
 				.on("error", error => {
-					console.log("Error took place", error);
 					done();
 					return cb(error);
 				});

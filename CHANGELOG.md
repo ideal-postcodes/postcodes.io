@@ -2,6 +2,15 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 7.0.0 (8/12/2017)
+
+- *Breaking Change* Place schema has been amended with additional columns to support better text search for place names. When upgrading, `places` will need to be rebuilt
+- Added Dockerfile & Dockerhub Repository (thanks to @jamescun and @billinghamj)
+- Fix: Added missing filterable attributes for `?filter=`
+- Updated dependencies
+- Updated NUTS, Wards, Parishses GSS codes
+- Added optional rate limiting on bulk lookup endpoints
+
 ## 6.1.1 (28/9/2017)
 
 - Updated dependencies
