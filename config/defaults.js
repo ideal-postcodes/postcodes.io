@@ -17,12 +17,14 @@ module.exports = {
 	},
 	bulkGeocode: {
 		geolocations: {
-			MAX: 100
+			MAX: 100,					 // Maximum number of geolocations per request
+			ASYNC_LIMIT: null  // Maximum number of parallel DB queries per request
 		}
 	},
 	bulkLookups: {
 		postcodes: {
-			MAX: 100
+			MAX: 100,					// Maximum number of postcodes per request
+			ASYNC_LIMIT: null	// Maximum number of parallel DB queries per request
 		}
 	},
 	nearestOutcodes: {

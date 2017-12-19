@@ -8,8 +8,7 @@ const {extract} = require("./index");
  * Writes parishes.json to stdout
  *
  * Notes:
- * - An external data file from ONS is required to extract "unparished areas"
- * http://geoportal.statistics.gov.uk/datasets/1ed0ac3004b6430fb0c54e6694a490cb_0
+ * - Manually add 4 missing GSS parish codes
  */
 
 const CODE_OFFSET = 0;
@@ -32,30 +31,26 @@ const unparishedTransform = row => {
 	return [code, value];
 };
 
-const ONS_UNPARISHED_CODE_OFFSET = 0;
-const ONS_UNPARISHED_VALUE_OFFSET = 1;
 
-const onsUnparishedTransform = row => {
-	const code = row[ONS_UNPARISHED_CODE_OFFSET];
-	const value = row[ONS_UNPARISHED_VALUE_OFFSET];
-	if (code === "NCP16CD") return []; // Escape if header
-	return [code, value];
+const appendMissing = {
+	"E43000234": "Three Rivers, unparished area",
+	"E43000097": "Lancaster, unparished area",
+	"E43000135": "Waveney, unparished area",
+	"E43000245": "Swindon, unparished area"
 };
 
 const configs = [
 	{
-		file: "Parish LAD names and codes UK as at 12_15.txt",
+		file: "Parish LAD names and codes UK as at 12_16.txt",
 		transform
 	},
 	{
-		file: "Unparished areas names and codes EN as at 12_16.txt",
+		file: "Unparished areas names and codes EN as at 05_17.txt",
 		transform: unparishedTransform
-	},
-	{
-		file: "NonCivil_Parished_Areas_to_Local_Authority_Districts_December_2016_Lookups_in_England.csv",
-		transform: onsUnparishedTransform,
-		delimiter: ","
 	}
 ];
 
-extract({ configs });
+extract({ 
+	configs,
+	appendMissing
+});

@@ -9,7 +9,7 @@ The `data/` directory for this project documents and controls how GSS codes are 
 - Stores scripts which describe and document how GSS names and codes are retrieved from ONSPD `Documents/` directory
 - Documents special cases for code extraction (inside of extraction script)
 - Documents any files missing from ONSPD's `Documents/` which are necessary to generate the complete code file (inside of extraction script)
-- Stores generic file parsing and transformatino procedures required for extraction scripts
+- Stores generic file parsing and transformation procedures required for extraction scripts
 - Stores utility methods for testing the final output of extraction scripts (e.g. diffing new and old output files, scanning for missing GSS codes)
 
 ## What are GSS Codes

@@ -129,7 +129,7 @@ Base.prototype._csvSeed = function (options, callback) {
 	const transform = options.transform || (row => row);
 	const query = `COPY ${this.relation} (${columns}) FROM STDIN DELIMITER ',' CSV`;
 
-	async.eachSeries(filepath, (filepath, cb) => {
+	async.eachLimit(filepath, 5, (filepath, cb) => {
 		pool.connect((error, client, done) => {
 			const pgStream = client.query(copyFrom(query))
 				.on("end", () => {

@@ -96,6 +96,9 @@ exports.bulk = (request, response, next) => {
 	}
 };
 
+const MAX_GEOLOCATIONS = defaults.bulkGeocode.geolocations.MAX;
+const GEO_ASYNC_LIMIT = defaults.bulkGeocode.geolocations.ASYNC_LIMIT || MAX_GEOLOCATIONS;
+
 function bulkGeocode (request, response, next) {
 	const geolocations = request.body.geolocations;
 
@@ -115,9 +118,19 @@ function bulkGeocode (request, response, next) {
 		};
 		return next();
 	}
+	
+	const lookupGeolocation = (location, callback) => {
+		Postcode.nearestPostcodes(location, (error, postcodes) => {
+			if (error || !postcodes) {
+				return callback(null, { query: location, result: null });
+			}
+			callback(null, {
+				query: sanitizeQuery(location),
+				result: postcodes.map(postcode => Postcode.toJson(postcode))
+			});
+		});
+	};
 
-	const result = [];
-	const execution = [];
 	const whitelist = ["limit", "longitude", "latitude", "radius", "widesearch"];
 	const sanitizeQuery = query => {
 		const result = {};
@@ -128,39 +141,19 @@ function bulkGeocode (request, response, next) {
 		}
 		return result;
 	};
-
-	geolocations.forEach(location => {
-		execution.push(callback => {
-			const params = location;
-
-			Postcode.nearestPostcodes(params, (error, postcodes) => {
-				if (error || !postcodes) {
-					result.push({
-						query: location,
-						result: null
-					});
-				} else {
-					result.push({
-						query: sanitizeQuery(location),
-						result: postcodes.map(postcode => Postcode.toJson(postcode))
-					});
-				}
-				callback();
-			});
-
-		});
-	});
-
-	const onComplete = () => {
+	
+	async.mapLimit(geolocations, GEO_ASYNC_LIMIT, lookupGeolocation, (error, data) => {
+		if (error) return next(error);
 		response.jsonApiResponse = {
 			status: 200,
-			result: result
+			result: data
 		};
 		return next();
-	};
-
-	async.parallel(execution, onComplete);
+	});
 }
+
+const MAX_POSTCODES = defaults.bulkLookups.postcodes.MAX;
+const BULK_ASYNC_LIMIT = defaults.bulkLookups.postcodes.ASYNC_LIMIT || MAX_POSTCODES;
 
 function bulkLookupPostcodes (request, response, next) {
 	const postcodes = request.body.postcodes;
@@ -172,9 +165,7 @@ function bulkLookupPostcodes (request, response, next) {
 		};
 		return next();
 	}
-
-	const MAX_POSTCODES = defaults.bulkLookups.postcodes.MAX;
-
+	
 	if (postcodes.length > MAX_POSTCODES) {
 		response.jsonApiResponse = {
 			status: 400,
@@ -182,33 +173,24 @@ function bulkLookupPostcodes (request, response, next) {
 		};
 		return next();
 	}
-
-	const result = [];
-	const execution = [];
-
-	postcodes.forEach(postcode => {
-		execution.push(callback => {
-			Postcode.find(postcode, (error, postcodeInfo) => {
-				if (error || !postcodeInfo) {
-					result.push({
-						query: postcode,
-						result: null
-					});
-				} else {
-					result.push({
-						query: postcode,
-						result: Postcode.toJson(postcodeInfo)
-					});
-				}
-				callback();
+	
+	const lookupPostcode = (postcode, callback) => {
+		Postcode.find(postcode, (error, postcodeInfo) => {
+			if (error || !postcodeInfo) { 
+				return callback(null, { query: postcode, result: null });
+			}
+			callback(null, { 
+				query: postcode,
+				result: Postcode.toJson(postcodeInfo)
 			});
 		});
-	});
-
-	async.parallel(execution, () => {
+	};
+	
+	async.mapLimit(postcodes, BULK_ASYNC_LIMIT, lookupPostcode, (error, data) => {
+		if (error) return next(error);
 		response.jsonApiResponse = {
 			status: 200,
-			result: result
+			result: data
 		};
 		return next();
 	});

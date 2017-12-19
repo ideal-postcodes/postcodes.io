@@ -99,11 +99,15 @@ const writeToFile = result => {
 /**
  * Extracts data from files
  * @param {ExtractionConfig[]} configs 	- List of extraction configuration objects
+ * @param {obeject} appendMissing 			- Manually append a object of missing key/values to output
  * @param {function} done 							- Executes when error or result completed
  * @return {undefined}
  */
 exports.extract = options => {
-	const {configs, done} = options;
+	const {configs, appendMissing, done} = options;
+
+	let initialCodes;
+	initialCodes = (appendMissing === undefined) ? {} : appendMissing;
 
 	const callback = (typeof done === "function") ? done : defaultHandler;
 
@@ -121,7 +125,7 @@ exports.extract = options => {
 		return callback(new Error(`Following files cannot be resolved: ${missing.join(", ")}`));
 	}
 
-	const output = new Map();
+	const output = new Map(toIterable(initialCodes));
 
 	async.each(configs, (config, next) => {
 		const delimiter = config.delimiter || "	";
@@ -146,6 +150,16 @@ exports.extract = options => {
 		if (error) return callback(error);
 		return callback(null, output);
 	});
+};
+
+/**
+ * Maps an object of key/values into a iterable which can be consumed by
+ * `new Map()``
+ * @param  {object} sourceObject
+ * @return {array}
+ */
+const toIterable = source => {
+	return Object.keys(source).map(key => [key, source[key]]);
 };
 
 const pseudocodeRegex = /^\w99999999$/;
