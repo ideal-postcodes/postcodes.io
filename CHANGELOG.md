@@ -10,6 +10,8 @@ Any changes, including backwards incompatible changes will be listed here
 - Updated dependencies
 - Updated NUTS, Wards, Parishses GSS codes
 - Added optional rate limiting on bulk lookup endpoints
+- Updated ONSPD dataset to Nov 2017
+- Updated OS Names dataset to Oct 2017
 
 ## 6.1.1 (28/9/2017)
 
