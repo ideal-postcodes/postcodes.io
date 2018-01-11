@@ -253,6 +253,17 @@ describe("Place Model", () => {
 					done();
 				});
 			});
+			it ("handles non-ascii character prefix searches", done => {
+				const prefix = "Mynydd-llêc";
+				const name = "Mynydd-llêch";
+				Place.search({ name: prefix }, (error, results) => {
+					if (error) return done(error);
+					assert.equal(results.length, 1);
+					results.forEach(helper.isRawPlaceObject);
+					assert.equal(results[0].name_1, name);
+					done();
+				});
+			});
 			it ("handles hyphens as spaces", done => {
 				const name = "Llwyn-y-groes";
 				Place.search({ name: name }, (error, results) => {

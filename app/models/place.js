@@ -14,6 +14,7 @@ const defaults = require(configPath)(env).defaults;
 const searchDefaults = defaults.placesSearch;
 const nearestDefaults = defaults.placesNearest;
 const containsDefaults = defaults.placesContained;
+const unaccent = require("../lib/unaccent.js");
 
 const placeSchema = {
 	"id": "SERIAL PRIMARY KEY",
@@ -136,14 +137,16 @@ Place.prototype.search = function (options, callback) {
 	});
 };
 
+// Replacing postgres unaccent due to indexing issues
+// https://stackoverflow.com/questions/28899042/unaccent-preventing-index-usage-in-postgres/28899610#28899610
 const searchQuery = `
 	SELECT 
 		${returnAttributes} 
 	FROM
 		places 
 	WHERE
-		name_1_search ~ unaccent($1) 
-		OR name_2_search ~ unaccent($1) 
+		name_1_search ~ $1
+		OR name_2_search ~ $1
 	LIMIT $2
 `;
 
@@ -161,7 +164,7 @@ const searchQuery = `
  * @return {undefined}
  */
 Place.prototype._prefixSearch = function (options, callback) {
-	const regex = `^${escapeRegex(options.name)}.*`;
+	const regex = `^${unaccent(escapeRegex(options.name))}.*`;
 	const limit = options.limit;
 	this._query(searchQuery, [regex, limit], (error, result) => {
 		if (error) return callback(error);

@@ -565,6 +565,9 @@ module.exports = {
 	listDatabaseIndexes: listDatabaseIndexes,
 	locationWithNearbyPostcodes: locationWithNearbyPostcodes,
 
+	// Libs
+	unaccent: require("../../app/lib/unaccent.js"),
+
 	// Models
 	Base: Base,
 	AttributeBase: AttributeBase,
