@@ -2,6 +2,10 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 7.0.1 (26/1/2018)
+
+- Fixed performance regression on `/places` endpoint where postgresql's unaccent() causing index miss
+
 ## 7.0.0 (8/12/2017)
 
 - *Breaking Change* Place schema has been amended with additional columns to support better text search for place names. When upgrading, `places` will need to be rebuilt
