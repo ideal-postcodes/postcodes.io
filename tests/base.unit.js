@@ -2,7 +2,9 @@
 
 const helper = require("./helper");
 const assert = require("chai").assert;
-
+const path = require("path");
+const rootPath = path.join(__dirname, "../");
+const getLocation = require(path.join(rootPath, "app/models")).getLocation;
 const Base = helper.Base;
 
 describe("Base model", function () {
@@ -167,5 +169,20 @@ describe("Base model", function () {
 				});
 			});
 		});
+	});
+});
+
+describe("#getLocation", () => {
+	it ("returns empty locations if eastings/northings is empty string", () => {
+		const expectedLocation = {longitude: "", latitude: ""};
+		let location = getLocation({eastings: "", northings: "43"});
+		assert.deepEqual(location, expectedLocation);
+		location = getLocation({eastings: "43", northings: ""});
+		assert.deepEqual(location, expectedLocation);
+	});
+	it ("returns different coordinates, if specified as Ireland", () => {
+		let locationNotIreland = getLocation({eastings: "334316", northings: "374675"});
+		let locationIreland = getLocation({eastings: "334316", northings: "374675", country: "N92000002"});
+		assert.notDeepEqual(locationIreland, locationNotIreland);
 	});
 });
