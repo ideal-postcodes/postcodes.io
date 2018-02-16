@@ -35,7 +35,7 @@ describe("Terminated postcode route", () => {
   });
 
   describe("/GET /terminated_postcodes/:postcode", () => {
-    it ("should return 200 and the correct result if terminated postcode found", done => {
+    it ("should return 200 and only whitelisted attributes if terminated postcode found", done => {
       path = `/terminated_postcodes/${encodeURI(testTerminatedPostcode)}`;
       request(app)
       .get(path)
@@ -46,6 +46,24 @@ describe("Terminated postcode route", () => {
         assert.equal(response.body.status, 200);
         assert.equal(Object.keys(response.body).length, 2);
         helper.isTerminatedPostcodeObject(response.body.result);
+        done();
+      });
+    });
+    it ("only returns postcode, month and year of termination, longitude and latitude", done => {
+      path = `/terminated_postcodes/${encodeURI(testTerminatedPostcode)}`;
+      request(app)
+      .get(path)
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .end( (error, response) => {
+        if (error) return done(error);
+        const result = response.body.result;
+        assert.equal(Object.keys(result).length, 5);
+        assert.isDefined(result.postcode);
+        assert.isDefined(result.year_terminated);
+        assert.isDefined(result.month_terminated);
+        assert.isDefined(result.longitude);
+        assert.isDefined(result.latitude);
         done();
       });
     });
