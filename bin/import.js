@@ -28,9 +28,12 @@ if (!sourceFile) {
 	throw new Error("Aborting Import. No source file specified");
 }
 
-function dropRelation (callback) {
-	console.log("Nuking old postcode database...");
-	Postcode._destroyRelation(callback);
+function dropRelations (callback) {
+	console.log("Dropping Postcode and Terminated Postcode table...");
+	async.series([
+		Postcode._destroyRelation.bind(Postcode),
+		TerminatedPostcode._destroyRelation.bind(TerminatedPostcode),
+	], callback);
 }
 
 function createRelation (callback) {
@@ -83,7 +86,7 @@ function setupTerminatedPostcodes (callback) {
 }
 
 var executionStack = [createPostgisExtension,
-											dropRelation, 
+											dropRelations, 
 											setupSupportTables,
 											createRelation, 
 											importRawCsv,
@@ -97,7 +100,7 @@ function startImport () {
 		if (error) {
 			console.log("Unable to complete import process due to error", error);
 			console.log("Dropping newly created relation")
-			dropRelation(function (error, result) {
+			dropRelations(function (error, result) {
 				if (error) {
 					console.log("Unabled to drop relation");
 					process.exit(1);		
@@ -111,16 +114,22 @@ function startImport () {
 
 prompt.start();
 
+const message = `
+Importing data will wipe your current postcode database before continuing
+If you already have existing data please consider using updateons
+
+Type 'YES' to continue
+`;
+
 prompt.get([{
-	description: "Importing data will wipe your current postcode database before continuing. If you already have existing data please consider using updateons. Type YES to continue",
-  name: 'userIsSure', 
-  warning: 'Username must be only letters, spaces, or dashes'
+	message: message,
+  name: 'confirmation', 
 }], function (error, result) {
 	if (error) {
 		console.log(error);
 		process.exit(1);
 	}
-	if (result.userIsSure === "YES") {
+	if (result.confirmation === "YES") {
 		startImport();
 	} else {
 		console.log("You have opted to cancel the import process");

@@ -1,7 +1,7 @@
 "use strict";
 
 const util = require("util");
-const Base = require("./index").Base;
+const { Base, populateLocation, getLocation } = require("./index");
 const async = require("async");
 const Pc = require("postcode");
 
@@ -10,7 +10,12 @@ const TerminatedPostcodeSchema = {
   "postcode": `VARCHAR(10) NOT NULL COLLATE "C"`,
   "pc_compact" : `VARCHAR(9) COLLATE "C"`,
   "year_terminated" : "INTEGER",
-  "month_terminated": "INTEGER"
+  "month_terminated": "INTEGER",
+  "eastings" : "INTEGER",
+  "northings" : "INTEGER",
+  "longitude" : "DOUBLE PRECISION",
+  "latitude" : "DOUBLE PRECISION",
+  "location" : "GEOGRAPHY(Point, 4326)"
 };
 
 const indexes = [{
@@ -44,7 +49,7 @@ TerminatedPostcode.prototype.find = function (postcode, callback) {
 };
 
 TerminatedPostcode.prototype.whitelistedAttributes = [
-  "postcode", "year_terminated", "month_terminated"
+  "postcode", "year_terminated", "month_terminated", "longitude", "latitude"
 ];
 
 /**
@@ -64,7 +69,11 @@ TerminatedPostcode.prototype.seedPostcodes = function (filePath,callback) {
     "postcode",
     "pc_compact",
     "year_terminated",
-    "month_terminated"
+    "month_terminated",
+    "eastings",
+    "northings",
+    "longitude",
+    "latitude"
   ];
 
   const transform = row => {
@@ -77,6 +86,22 @@ TerminatedPostcode.prototype.seedPostcodes = function (filePath,callback) {
     finalRow.push(row[2].replace(/\s/g, ""));		// pc_compact
     finalRow.push(parseInt(row[4].slice(0,4), 10)); //year_terminated
     finalRow.push(parseInt(row[4].slice(-2), 10)); //month_terminated
+    
+    const eastings = row[9];
+    finalRow.push(eastings);                            // Eastings
+    const northings = row[10];													
+    finalRow.push(northings);			                      // Northings
+    										  
+    const country = row[14];
+    const location = getLocation({
+      eastings: eastings, 
+      northings: northings, 
+      country: country
+    });
+
+    finalRow.push(location.longitude);							// longitude
+    finalRow.push(location.latitude);								// latitude
+    
     return finalRow;
   };
   
@@ -95,8 +120,11 @@ TerminatedPostcode.prototype._setupTable = function (filePath, callback) {
 		function seedData (cb) {
 			self.seedPostcodes(filePath, cb);
 		},
+    self.populateLocation.bind(self),
 		self.createIndexes.bind(self),
 	], callback);
 };
+
+TerminatedPostcode.prototype.populateLocation = populateLocation;
 
 module.exports = new TerminatedPostcode();
