@@ -4,8 +4,7 @@ const util = require("util");
 const path = require("path");
 const Pc = require("postcode");
 const async = require("async");
-const OSPoint = require("ospoint");
-const Base = require("./index").Base;
+const { Base, populateLocation, getLocation } = require("./index");
 const QueryStream = require("pg-query-stream");
 const env = process.env.NODE_ENV || "development";
 const configPath = path.join(__dirname, "../../config/config.js");
@@ -679,15 +678,12 @@ Postcode.prototype.toJson = function (address) {
 */
 
 Postcode.prototype._setupTable = function (filePath, callback) {
-	const self = this;
 	async.series([
-		self._createRelation.bind(self),
-		self.clear.bind(self),
-		function seedData (cb) {
-			self.seedPostcodes(filePath, cb);
-		},
-		self.populateLocation.bind(self),
-		self.createIndexes.bind(self),
+		this._createRelation.bind(this),
+		this.clear.bind(this),
+		cb => this.seedPostcodes.call(this, filePath, cb),
+		this.populateLocation.bind(this),
+		this.createIndexes.bind(this),
 	], callback);
 };
 
@@ -737,20 +733,18 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 
 		finalRow.push(row[2]);  												// postcode
 		finalRow.push(row[2].replace(/\s/g, ""));				// pc_compact
-		finalRow.push(row[9]);													// Eastings
-		finalRow.push(row[10]);													// Northings
-
-		let location;
-		if (row[9].length === 0 || row[10].length === 0) {
-			location = {
-				longitude: "",
-				latitude: ""
-			};
-		} else if (row[14] === "N92000002") {
-			location = new OSPoint("" + row[10] , "" + row[9]).toWGS84("irish_national_grid");
-		} else {
-			location = new OSPoint("" + row[10] , "" + row[9]).toWGS84();
-		}
+		
+		const eastings = row[9];
+		finalRow.push(eastings);                        // Eastings
+		const northings = row[10];													
+		finalRow.push(northings);			                  // Northings
+													
+		const country = row[14];
+		const location = getLocation({
+			eastings: eastings, 
+			northings: northings, 
+			country: country
+		});
 
 		finalRow.push(location.longitude);							// longitude
 		finalRow.push(location.latitude);								// latitude
@@ -782,19 +776,6 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	}, callback);
 };
 
-Postcode.prototype.populateLocation = function (callback) {
-	const query = `
-		UPDATE 
-			${this.relation} 
-		SET 
-			location=ST_GeogFromText(
-				'SRID=4326;POINT(' || longitude || ' ' || latitude || ')'
-			) 
-		WHERE 
-			northings!=0 
-			AND EASTINGS!=0
-	`;
-	this._query(query, callback);
-};
+Postcode.prototype.populateLocation = populateLocation;
 
 module.exports = new Postcode();

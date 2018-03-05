@@ -9,6 +9,7 @@ const csv = require("csv");
 const env = process.env.NODE_ENV || "development";
 const defaults = require(path.join(__dirname, "../../config/config.js"))(env);
 const config = defaults.postgres;
+const OSPoint = require("ospoint");
 
 // Instantiate postgres client pool
 const pool = pg.Pool(config);
@@ -168,6 +169,85 @@ Base.prototype._getClient = function (callback) {
 
 const dollarise = values => values.map((_, i) => `$${i + 1}`).join(", ");
 
+function populateLocation(callback) {
+	/* jshint validthis: true */
+	const query = `
+		UPDATE 
+			${this.relation} 
+		SET 
+			location=ST_GeogFromText(
+				'SRID=4326;POINT(' || longitude || ' ' || latitude || ')'
+			) 
+		WHERE 
+			northings!=0 
+			AND EASTINGS!=0
+	`;
+	this._query(query, callback);
+}
+
+function getLocation(options) {
+	const { northings, eastings, country } = options;
+	let location;
+	if (eastings.length === 0 || northings.length === 0) {
+		location = {
+			longitude: "",
+			latitude: ""
+		};
+	} else if (country === "N92000002") { // Is Irish grid reference
+		location = new OSPoint("" + northings , "" + eastings).toWGS84("irish_national_grid");
+	} else {
+		location = new OSPoint("" + northings , "" + eastings).toWGS84();
+	}
+	return location;
+}
+
+/**
+ * Wraps a model and returns a function that when invoked:
+ * - Creates a temporary name for the Model relation
+ * - Builds model table with `_setupTable`
+ * - Drop any existing archived table associated with model
+ * - Rename existing table (if exists) to archived table
+ * - Rename new table to active current
+ * @param  {Object} Model
+ * @return {Function}
+ */
+const setupWithTableSwap = (Model, sourceFile) => {
+	return callback => {
+		const originalName = Model.relation;
+		const tempName = toTempName(originalName);
+		const archivedName = toArchiveName(originalName);
+
+		// Create and populate new relation under temporary name
+		Model.relation = tempName;
+
+		const args = [(error) => {
+			if (error) return callback(error);
+			// Restore model name
+			Model.relation = originalName;
+			async.forEachSeries([
+				// Drop existing archived table
+				`DROP TABLE IF EXISTS ${archivedName}`,
+				// Designate current table as archived table
+				`ALTER TABLE IF EXISTS ${originalName} RENAME TO ${archivedName}`,
+				// Swap in new table
+				`ALTER TABLE ${tempName} RENAME TO ${originalName}`,
+			], Model._query.bind(Model), callback);
+		}];
+
+		if (sourceFile) args.unshift(sourceFile);
+
+		Model._setupTable.apply(Model, args);
+	};
+};
+
+const toTempName = name => `${name}_temp`;
+const toArchiveName = name => `${name}_archived`;
+
 module.exports = {
-	Base: Base
+	Base: Base,
+	populateLocation: populateLocation,
+	getLocation: getLocation,
+	setupWithTableSwap: setupWithTableSwap,
+	toTempName: toTempName,
+	toArchiveName: toArchiveName,
 };

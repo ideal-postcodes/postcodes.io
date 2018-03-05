@@ -21,17 +21,6 @@ const transform = row => {
 	return [code, value];
 };
 
-const UNPARISHED_CODE_OFFSET = 0;
-const UNPARISHED_VALUE_OFFSET = 1;
-
-const unparishedTransform = row => {
-	const code = row[UNPARISHED_CODE_OFFSET];
-	const value = row[UNPARISHED_VALUE_OFFSET];
-	if (code === "NCP16CD") return []; // Escape if header
-	return [code, value];
-};
-
-
 const appendMissing = {
 	"E43000234": "Three Rivers, unparished area",
 	"E43000097": "Lancaster, unparished area",
@@ -41,13 +30,9 @@ const appendMissing = {
 
 const configs = [
 	{
-		file: "Parish LAD names and codes UK as at 12_16.txt",
+		file: "Parish_NCP names and codes EW as at 12_17.txt",
 		transform
 	},
-	{
-		file: "Unparished areas names and codes EN as at 05_17.txt",
-		transform: unparishedTransform
-	}
 ];
 
 extract({ 

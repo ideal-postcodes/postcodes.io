@@ -2,14 +2,15 @@
 
 const helper = require("./helper");
 const assert = require("chai").assert;
-
-const Base = helper.Base;
+const {
+	toTempName, toArchiveName, setupWithTableSwap, getLocation, Base
+} = require("../app/models/index.js");
 
 describe("Base model", function () {
 	describe("Base model instance methods", function () {
 		describe("#_query", function () {
 			it ("should execute a query", function (done) {
-				var base = new Base.Base();
+				const base = new Base();
 				base._query("SELECT * FROM pg_tables", function (error, result) {
 					if (error) return done(error);
 					assert.isArray(result.rows);
@@ -167,5 +168,37 @@ describe("Base model", function () {
 				});
 			});
 		});
+	});
+});
+
+describe("#getLocation", () => {
+	it ("returns empty locations if eastings/northings is empty string", () => {
+		const expectedLocation = {longitude: "", latitude: ""};
+		let location = getLocation({eastings: "", northings: "43"});
+		assert.deepEqual(location, expectedLocation);
+		location = getLocation({eastings: "43", northings: ""});
+		assert.deepEqual(location, expectedLocation);
+	});
+	it ("returns different coordinates, if specified as Ireland", () => {
+		let locationNotIreland = getLocation({eastings: "334316", northings: "374675"});
+		let locationIreland = getLocation({eastings: "334316", northings: "374675", country: "N92000002"});
+		assert.notDeepEqual(locationIreland, locationNotIreland);
+	});
+
+	describe("#toTempName", () => {
+		it ("generates a temporary table name", () => {
+			assert.equal(toTempName("foo"), "foo_temp");
+		});
+	});
+
+	describe("#toArchiveName", () => {
+		it ("generates a archived table name", () => {
+			assert.equal(toArchiveName("foo"), "foo_archived");
+		});
+	});
+
+	describe("setupWithTableSwap", () => {
+		it ("creates a repopulated table and archives old");
+		it ("accepts sourcefile argument");
 	});
 });

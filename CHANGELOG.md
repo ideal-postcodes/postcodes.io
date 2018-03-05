@@ -2,6 +2,8 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 8.0.0 (19/2/2018)
+
 ## 7.0.1 (26/1/2018)
 
 - Fixed performance regression on `/places` endpoint where postgresql's unaccent() causing index miss
