@@ -171,7 +171,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr id="postcode">
+            <tr id="postcode-terminated">
               <td>postcode <br/> <code>string</code></td>
               <td><strong>Postcode. </strong>All currently terminated postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received every 3 months from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character
                 inward code.</td>
@@ -183,6 +183,14 @@
             <tr id="month-terminated">
               <td>month_terminated <br/> <code>integer</code></td>
               <td><strong>Termination month.</strong>Month of termination of a postcode. 1-January, 2-February, ..., 12-December</td>
+            </tr>
+            <tr id="longitude-terminated">
+              <td>longitude <br/> <code>double float</code></td>
+              <td><strong>Longitude.</strong>The WGS84 longitude given the Postcode's national grid reference</td>
+            </tr>
+            <tr id="latitude-terminated">
+              <td>latitude <br/> <code>double float</code></td>
+              <td><strong>Latitude.</strong>The WGS84 latitude given the Postcode's national grid reference</td>
             </tr>
           </tbody>
         </table>
@@ -399,16 +407,9 @@
             <h3 id="import-from-ons">Manual Installation</h3>
             <p>The install scripts can be linked to your shell (or can be found in the <code>bin/</code> directory). To link, navigate to <code>postcodes.io/</code> and run <code>$ npm link</code></p>
             <h4>ONS Postcode Directory</h4>
-            <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ onsImport</code> passing the path to the CSV data.</p><pre><h4>$ onsImport /path/to/data/ONSPD/Data/data.csv</h4></pre>
+            <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ postcodesio:import_onspd</code> passing the path to the CSV data.</p><pre><h4>$ postcodesio:import_onspd /path/to/data/ONSPD/Data/data.csv</h4></pre>
             <h4>OS Open Names</h4>
-            <p>Download the latest Ordnance Survey Open Names dataset. Unzip the data locally. Run the import script <code>$ osPlaceImport</code> passing the path that contains the CSV data files.</p><pre><h4>$ osPlaceImport /path/to/data/opname_csv_gb/Data/</h4></pre>
-            <h3
-              id="update-script">Data Updates</h3>
-              <p>If you wish to manually update your data or data schema, we provide a script which will do this for you with minimal downtime (currently ~10-20 seconds to generate smaller relations).</p>
-              <h4>ONS Postcode Directory</h4>
-              <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset" and run the import script <code>$ onsUpdate</code> passing the path to the CSV data.</p><pre><h4>$ onsUpdate /path/to/data/ONSPD/Data/data.csv</h4></pre>
-              <h4>OS Open Names</h4>
-              <p>Currently not implemented</p>
+            <p>Download the latest Ordnance Survey Open Names dataset. Unzip the data locally. Run the import script <code>$ postcodesio:import_oson</code> passing the path that contains the CSV data files.</p><pre><h4>$ postcodesio:import_oson /path/to/data/opname_csv_gb/Data/</h4></pre>
     </div>
   </div>
 </div>

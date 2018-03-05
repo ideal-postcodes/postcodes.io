@@ -23,9 +23,8 @@
     "ejs": "./node_modules/.bin/ejs-cli"
   },
   "bin": {
-    "onsImport": "./bin/import.js",
-    "osPlaceImport": "./bin/import_places.js",
-    "onsUpdate": "./bin/update_ons.js"
+    "postcodesio-onspd": "./bin/import.js",
+    "postcodesio-oson": "./bin/import_oson.js"
   },
   "repository": {
     "type": "git",

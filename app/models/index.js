@@ -201,8 +201,53 @@ function getLocation(options) {
 	return location;
 }
 
+/**
+ * Wraps a model and returns a function that when invoked:
+ * - Creates a temporary name for the Model relation
+ * - Builds model table with `_setupTable`
+ * - Drop any existing archived table associated with model
+ * - Rename existing table (if exists) to archived table
+ * - Rename new table to active current
+ * @param  {Object} Model
+ * @return {Function}
+ */
+const setupWithTableSwap = (Model, sourceFile) => {
+	return callback => {
+		const originalName = Model.relation;
+		const tempName = toTempName(originalName);
+		const archivedName = toArchiveName(originalName);
+
+		// Create and populate new relation under temporary name
+		Model.relation = tempName;
+
+		const args = [(error) => {
+			if (error) return callback(error);
+			// Restore model name
+			Model.relation = originalName;
+			async.forEachSeries([
+				// Drop existing archived table
+				`DROP TABLE IF EXISTS ${archivedName}`,
+				// Designate current table as archived table
+				`ALTER TABLE IF EXISTS ${originalName} RENAME TO ${archivedName}`,
+				// Swap in new table
+				`ALTER TABLE ${tempName} RENAME TO ${originalName}`,
+			], Model._query.bind(Model), callback);
+		}];
+
+		if (sourceFile) args.unshift(sourceFile);
+
+		Model._setupTable.apply(Model, args);
+	};
+};
+
+const toTempName = name => `${name}_temp`;
+const toArchiveName = name => `${name}_archived`;
+
 module.exports = {
 	Base: Base,
 	populateLocation: populateLocation,
-	getLocation: getLocation
+	getLocation: getLocation,
+	setupWithTableSwap: setupWithTableSwap,
+	toTempName: toTempName,
+	toArchiveName: toArchiveName,
 };
