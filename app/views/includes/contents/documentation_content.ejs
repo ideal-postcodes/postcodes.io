@@ -171,7 +171,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr id="postcode">
+            <tr id="postcode-terminated">
               <td>postcode <br/> <code>string</code></td>
               <td><strong>Postcode. </strong>All currently terminated postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received every 3 months from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character
                 inward code.</td>
@@ -183,6 +183,14 @@
             <tr id="month-terminated">
               <td>month_terminated <br/> <code>integer</code></td>
               <td><strong>Termination month.</strong>Month of termination of a postcode. 1-January, 2-February, ..., 12-December</td>
+            </tr>
+            <tr id="longitude-terminated">
+              <td>longitude <br/> <code>double float</code></td>
+              <td><strong>Longitude.</strong>The WGS84 longitude given the Postcode's national grid reference</td>
+            </tr>
+            <tr id="latitude-terminated">
+              <td>latitude <br/> <code>double float</code></td>
+              <td><strong>Latitude.</strong>The WGS84 latitude given the Postcode's national grid reference</td>
             </tr>
           </tbody>
         </table>
