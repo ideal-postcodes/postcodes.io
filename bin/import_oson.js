@@ -2,120 +2,76 @@
 
 "use strict";
 
-console.log("Postcodes.io OS Places Import Script");
+const sourceDirectory = process.argv[2];
+
+const message = `
+Postcodes.io OS Open Names Import Script
+
+Importing data will wipe your current places dataset and rebuild it using the
+datafiles listed at ${sourceDirectory}
+
+Type 'YES' to continue
+`;
 
 const fs = require("fs");
-const path = require("path");
 const async = require("async");
-const start = process.hrtime();
 const prompt = require("prompt");
-const sourceDirectory = process.argv[2];
-const env = process.env.NODE_ENV || "development";
-const Base = require(path.join(__dirname, "../app/models"));
-const config = require(path.join(__dirname, "../config/config"))(env);
-const Place = require(path.join(__dirname, "../app/models/place.js"));
-
-// Performing checks
+const Place = require("../app/models/place.js");
+const { toTempName, setupWithTableSwap } = require("../app/models/index.js");
 
 if (!sourceDirectory) {
-	throw new Error("Aborting Import. No source file specified");
+	console.log("Aborting Import. No source directory specified");
+	return process.exit(1);
 }
 
-function dropRelation (callback) {
-	console.log("Deleting old places relation...");
-	Place._destroyRelation(callback);
-}
-
-function createRelation (callback) {
-	console.log("Creaing new places relation...");
-	Place._createRelation(callback);
-}
-
-function recreateIndexes(callback) {
-	console.log("Rebuilding indexes...");
-	Place.createIndexes(callback);
-}
-
-function importRawCsv (callback) {
-	console.log("Importing CSV data from", sourceDirectory);
-	Place.seedData(sourceDirectory, callback);
-}
-
-function populateLocation (callback) {
-	console.log("Populating location data...");
-	Place.populateLocation(callback);
-}
-
-function generateSearchFields (callback) {
-	console.log("Populating search data...");
-	Place.generateSearchFields(callback);
-}
-
-function generateTsSearchFields (callback) {
-	console.log("Populating ts_searching data...");
-	Place.generateTsSearchFields(callback);
-}
-
-function createPostgisExtension(callback) {
+const createPostgisExtension = callback => {
 	console.log("Enabling POSTGIS extension...");
 	Place._query("CREATE EXTENSION IF NOT EXISTS postgis", callback);
-}
+};
 
-function createUnaccentExtension(callback) {
+const createUnaccentExtension = callback => {
 	console.log("Enabling UNACCENT extension...");
 	Place._query("CREATE EXTENSION IF NOT EXISTS unaccent", callback);
-}
+};
 
-const executionStack = [
-	createPostgisExtension,
-	createUnaccentExtension,
-	dropRelation, 
-	createRelation, 
-	importRawCsv,
-	populateLocation, 
-	generateSearchFields,
-	generateTsSearchFields, 
-	recreateIndexes
-];
+const dropTempTables = callback => {
+	console.log("Dropping any temporary tables...");
+	Place._query(`DROP TABLE IF EXISTS ${toTempName(Place.relation)}`, callback);
+};
 
-function startImport () {
-	async.series(executionStack, (error, result) => {
-		if (error) {
-			console.log("Unable to complete import process due to error", error);
-			console.log("Dropping newly created relation")
-			dropRelation((error, result) => {
-				if (error) {
-					console.log("Unabled to drop relation");
-					process.exit(1);		
-				}		
-			});
-		}
-		console.log("Finished import process in", process.hrtime(start)[0], "seconds");
-		process.exit(0);
-	});
-}
+const setupPlaceTable = callback => {
+	console.log("Building places table...");
+	setupWithTableSwap(Place, sourceDirectory)(callback);
+};
 
 prompt.start();
 
-const promptMessage = `
-	Importing data will wipe your current places dataset before continuing
-	If you already have existing data please consider using updateons
-	Type YES to continue
-`;
-
 prompt.get([{
-	description: promptMessage,
-  name: 'userIsSure', 
-  warning: 'Username must be only letters, spaces, or dashes'
+	message: message,
+  name: 'confirmation',
 }], (error, result) => {
 	if (error) {
 		console.log(error);
 		process.exit(1);
 	}
-	if (result.userIsSure === "YES") {
-		startImport();
-	} else {
+
+	if (result.confirmation !== "YES") {
 		console.log("You have opted to cancel the import process");
-		process.exit(0);
+		return process.exit(0);
 	}
+
+	const start = process.hrtime();
+	async.series([
+		createPostgisExtension,
+		createUnaccentExtension,
+		dropTempTables,
+		setupPlaceTable,
+	], error => {
+		if (error) {
+			console.log("Unable to complete import process due to error:", JSON.stringify(error, 2, 2));
+			return process.exit(1);
+		}
+		console.log(`Finished import process in ${process.hrtime(start)[0]} seconds`);
+		process.exit(0);
+	});
 });
