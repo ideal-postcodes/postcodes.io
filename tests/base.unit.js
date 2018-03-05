@@ -2,16 +2,15 @@
 
 const helper = require("./helper");
 const assert = require("chai").assert;
-const path = require("path");
-const rootPath = path.join(__dirname, "../");
-const getLocation = require(path.join(rootPath, "app/models")).getLocation;
-const Base = helper.Base;
+const {
+	toTempName, toArchiveName, setupWithTableSwap, getLocation, Base
+} = require("../app/models/index.js");
 
 describe("Base model", function () {
 	describe("Base model instance methods", function () {
 		describe("#_query", function () {
 			it ("should execute a query", function (done) {
-				var base = new Base.Base();
+				const base = new Base();
 				base._query("SELECT * FROM pg_tables", function (error, result) {
 					if (error) return done(error);
 					assert.isArray(result.rows);
@@ -184,5 +183,22 @@ describe("#getLocation", () => {
 		let locationNotIreland = getLocation({eastings: "334316", northings: "374675"});
 		let locationIreland = getLocation({eastings: "334316", northings: "374675", country: "N92000002"});
 		assert.notDeepEqual(locationIreland, locationNotIreland);
+	});
+
+	describe("#toTempName", () => {
+		it ("generates a temporary table name", () => {
+			assert.equal(toTempName("foo"), "foo_temp");
+		});
+	});
+
+	describe("#toArchiveName", () => {
+		it ("generates a archived table name", () => {
+			assert.equal(toArchiveName("foo"), "foo_archived");
+		});
+	});
+
+	describe("setupWithTableSwap", () => {
+		it ("creates a repopulated table and archives old");
+		it ("accepts sourcefile argument");
 	});
 });

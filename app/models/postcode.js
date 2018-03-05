@@ -678,15 +678,12 @@ Postcode.prototype.toJson = function (address) {
 */
 
 Postcode.prototype._setupTable = function (filePath, callback) {
-	const self = this;
 	async.series([
-		self._createRelation.bind(self),
-		self.clear.bind(self),
-		function seedData (cb) {
-			self.seedPostcodes(filePath, cb);
-		},
-		self.populateLocation.bind(self),
-		self.createIndexes.bind(self),
+		this._createRelation.bind(this),
+		this.clear.bind(this),
+		cb => this.seedPostcodes.call(this, filePath, cb),
+		this.populateLocation.bind(this),
+		this.createIndexes.bind(this),
 	], callback);
 };
 
