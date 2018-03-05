@@ -40,14 +40,18 @@ const appendMissing = {
 };
 
 const configs = [
+	// {
+	// 	file: "Parish LAD names and codes UK as at 12_16.txt",
+	// 	transform
+	// },
+	// {
+	// 	file: "Unparished areas names and codes EN as at 05_17.txt",
+	// 	transform: unparishedTransform
+	// },
 	{
-		file: "Parish LAD names and codes UK as at 12_16.txt",
+		file: "Parish_NCP names and codes EW as at 12_17.txt",
 		transform
 	},
-	{
-		file: "Unparished areas names and codes EN as at 05_17.txt",
-		transform: unparishedTransform
-	}
 ];
 
 extract({ 
