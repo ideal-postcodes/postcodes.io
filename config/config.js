@@ -14,9 +14,8 @@ const config = {
 	*
 	* The only action you need to take here is to add your Postgres credentials.
 	* You also need to create the database yourself and pass in the database name.
-	* Note that the specified user needs to be a superuser for the import process
-	* (`$ onsImport`). You may reduce user privileges after you've imported 
-	* postcode data
+	* Note that the specified user needs to be a superuser for the import process.
+	* You may reduce user privileges after you've imported postcode data
 	*
 	*/ 
 
