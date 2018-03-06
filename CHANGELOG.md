@@ -2,7 +2,13 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
-## 8.0.0 (19/2/2018)
+## 8.0.0 (6/3/2018)
+- *Breaking Change* Terminated Postcode schema has been updated to include geolocation attributes: `longitude`, `latitude`, `northings`, `eastings` and `location`
+- Extended `/terminated_postcodes` endpoint to include `longitude` and `latitude`
+- Updated parishes GSS Codes
+- Tidy up of ONSPD and Open Names import scripts. Now named `postcodesio-onspd` and `postcodesio-oson` respectively. Dropped unmaintained update script
+- Updated ONSPD dataset to Feb 2018
+- Updated OS Names dataset to Jan 2018
 
 ## 7.0.1 (26/1/2018)
 
@@ -14,7 +20,7 @@ Any changes, including backwards incompatible changes will be listed here
 - Added Dockerfile & Dockerhub Repository (thanks to @jamescun and @billinghamj)
 - Fix: Added missing filterable attributes for `?filter=`
 - Updated dependencies
-- Updated NUTS, Wards, Parishses GSS codes
+- Updated NUTS, wards, parishes GSS codes
 - Added optional rate limiting on bulk lookup endpoints
 - Updated ONSPD dataset to Nov 2017
 - Updated OS Names dataset to Oct 2017
