@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
@@ -207,8 +211,6 @@ h1.api-header {
   }
 }
 
-
-
 ul.doc-menu {
   margin-top: 1em;
 }
@@ -279,9 +281,8 @@ h4.method-title {
 
 #scroll_container {
   box-sizing: border-box;
+  margin-top: 3rem;
   position: fixed;
-  right: 15vw;
-  top: 30vh;
 }
 
 #scroll_menu {
@@ -309,10 +310,4 @@ h4.method-title {
 
 .active a {
   color: #000;
-}
-
-@media (max-width: 1024px) {
-  #scroll_container {
-    display: none;
-  }
 }

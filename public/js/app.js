@@ -226,4 +226,6 @@ $(function () {
 			displayJsonResult($result, error.responseJSON);
 		});
 	});
+
+	$()
 });
