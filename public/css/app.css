@@ -276,3 +276,43 @@ h4.method-title {
   max-height: 480px;
   overflow: auto;
 }
+
+#scroll_container {
+  box-sizing: border-box;
+  position: fixed;
+  right: 15vw;
+  top: 30vh;
+}
+
+#scroll_menu {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+}
+
+#scroll_menu li {
+  line-height: 3em;
+  list-style: none;
+}
+
+#scroll_menu a {
+  color: #B8AEB9;
+  font-size: 1.4rem;
+}
+
+.active {
+  padding-right: 5px;
+  border-left: 3px solid #e8e4e8;
+}
+
+.active a {
+  color: #000;
+}
+
+@media (max-width: 1024px) {
+  #scroll_container {
+    display: none;
+  }
+}
