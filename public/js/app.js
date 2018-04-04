@@ -1,4 +1,4 @@
-$(function () {
+$( document ).ready(function() {
 	$(".rest-resource").focus(function () {
 		$(this).val("");
 	});
@@ -226,6 +226,11 @@ $(function () {
 			displayJsonResult($result, error.responseJSON);
 		});
 	});
-
-	$()
+	
+  $('body').scrollspy({ target: '#scroll_container'});
+  $('ul.nav li a').click(function(element) {
+    element.preventDefault();		
+  });
+  $('html, body').animate({scrollTop:$(this.hash).offset().top});
+  $("body").scrollspy('refresh');
 });

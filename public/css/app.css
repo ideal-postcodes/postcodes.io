@@ -7,6 +7,10 @@ body {
   height: 100%;
 }
 
+body {
+  position: relative;
+}
+
 #wrap {
   min-height: 100%;
   height: auto;
@@ -294,20 +298,21 @@ h4.method-title {
 }
 
 #scroll_menu li {
-  line-height: 3em;
+  line-height: 1em;
   list-style: none;
+  margin-bottom: 1em;
 }
 
-#scroll_menu a {
+#scroll_menu li:last-child {
+  margin-bottom: 0;
+}
+
+#scroll_menu li a {
   color: #B8AEB9;
   font-size: 1.4rem;
+  padding-left: 5px;
 }
 
 .active {
-  padding-right: 5px;
   border-left: 3px solid #e8e4e8;
-}
-
-.active a {
-  color: #000;
 }
