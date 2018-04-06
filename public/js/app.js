@@ -1,4 +1,4 @@
-$(function () {
+$( document ).ready(function() {
 	$(".rest-resource").focus(function () {
 		$(this).val("");
 	});

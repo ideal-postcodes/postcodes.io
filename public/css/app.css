@@ -3,6 +3,10 @@ body {
   height: 100%;
 }
 
+body {
+  position: relative;
+}
+
 #wrap {
   min-height: 100%;
   height: auto;
@@ -66,7 +70,6 @@ body {
   float: right;
 }
 
-
 .container .text-muted {
   margin: 20px 0;
 }
@@ -89,7 +92,7 @@ body {
 
 .gitlink {
   overflow: hidden;
-  border: none;  
+  border: none;
 }
 
 .mast {
@@ -99,14 +102,19 @@ body {
   background: -o-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -ms-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -moz-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
-  background: linear-gradient(20deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+  background: linear-gradient(20deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%); 
   background-attachment: fixed;
   color: #fff;
   text-align: center;
 }
 
-h1.mast-text {
+h1.mast-text, 
+h1.tagline {
   font-size: 58px;
+}
+
+h1.mast-text {
+  font-weight: 500;
 }
 
 .gitlinks {
@@ -114,11 +122,11 @@ h1.mast-text {
 }
 
 .header {
-  background-color: #dee7f5;
+  background-color: lightblue;
 }
 
 .sub-header {
-  background-color: #dee7f5; 
+  background-color: lightblue;
   padding: 5em 0 3em;
 }
 
@@ -201,13 +209,11 @@ h1.api-header {
   margin: 0 auto;
 }
 
-@media (min-width: 1200px) { 
+@media (min-width: 1200px) {
   .api-method {
     max-width: 68%;
   }
 }
-
-
 
 ul.doc-menu {
   margin-top: 1em;
@@ -241,7 +247,7 @@ h2.doc-header {
 }
 
 .pull-right {
-  float: right; 
+  float: right;
 }
 
 h4.method-title {
@@ -260,7 +266,7 @@ h4.method-title {
 }
 
 #bulk-postcodes-input {
-  height: 6em;  
+  height: 6em;
 }
 
 #bulk-reverse-input {
@@ -275,4 +281,86 @@ h4.method-title {
 .code-box {
   max-height: 480px;
   overflow: auto;
+}
+
+#scroll_container {
+  align-items: center;
+  display: flex;
+  height: 25vh;
+  margin-top: 3rem;
+  overflow: scroll;
+  position: fixed;
+}
+
+ul#scroll_menu li {
+  line-height: 0.5em;
+  list-style: none;
+  margin-bottom: 1em;
+  padding-left: 1em;
+}
+
+ul#scroll_menu li:last-child {
+  margin-bottom: 0;
+}
+
+ul#scroll_menu li a {
+  color: #B8AEB9;
+  font-size: 1.4rem;
+  padding-left: 5px;
+  text-decoration: none;
+}
+
+ul#scroll_menu li a:hover {
+  background-color: transparent;
+}
+
+li.active,
+li.active:hover,
+li.active:focus {
+  background-image: linear-gradient(90deg, #e8e4e8 2%, transparent 2%); /* To remove spacing between border-left property and anchor tag */
+}
+
+li.active a {
+  color: #000 !important;
+}
+
+.anchor::before {
+  content: "";
+  display: block;
+  height: 60px;
+  margin-top: -60px;
+}
+
+.text-with-logo {
+  display: flex;
+  align-items: center;
+}
+
+.ideal-logo {
+  background-size: cover;
+  height: 20px;
+  margin-left: 0.5em;
+  width: 120px;
+}
+
+@media only screen and (max-width: 420px) {
+  h1.mast-text {
+    font-size: 39px;
+    text-align: center;
+  }
+  .text-with-logo {
+    justify-content: center;
+  }
+  tbody tr#quality > td {
+    vertical-align: middle;
+  }
+}
+
+@media only screen 
+  and (min-device-width: 1024px) 
+  and (max-device-width: 1366px) 
+  and (-webkit-min-device-pixel-ratio: 1.5) {
+    #scroll_container {
+      display: none;
+    }
 }
