@@ -293,9 +293,9 @@
         <p>Be sure to submit JSON requests setting <code>Content-Type</code> to <code>application/json</code></p>
         <p>Accepts up to 100 postcodes.</p><pre><h4><div class="http-method">POST</div>https://api.postcodes.io/postcodes</h4></pre>
         <h4>Post Data</h4>
-        <p>This method requires a JSON object containing an array of postcodes to be posted, e.g.</p><pre>{
-          "postcodes" : ["PR3 0SG", "M45 6GN", "EX165BL"]
-        }</pre>
+        <p>This method requires a JSON object containing an array of postcodes to be posted, e.g.</p><pre>{  
+  "postcodes" : ["PR3 0SG", "M45 6GN", "EX165BL"]
+}</pre>
         <h4>Optional Query Parameters</h4>
         <p><code>filter=</code> (not required) A comma separated whitelist of attributes to be returned in the result object(s), e.g. <code>filter=postcode,longitude,latitude</code>. <code>null</code> responses will continue to return <code>null</code>.
         If no attributes match the result object, an empty object is returned</p>
@@ -313,16 +313,16 @@
         <h4>Post Data</h4>
         <p>This method requires a JSON object containing an array of geolocation objects to be POSTed. Each geolocation object accepts an optional radius (meters) and limit argument. Both default to 100m and 10 respectively. It also accepts a wideSearch
         argument, e.g.</p><pre>{
-          "geolocations" : [{
-          "longitude" : -3.15807731271522,
-          "latitude" : 51.4799900627036
-        },{
-        "longitude" : -1.12935802905177,
-        "latitude" : 50.7186356978817,
-        "limit" : 100,
-        "radius" : 500
-      }]
-    }</pre>
+  "geolocations" : [{
+  "longitude" : -3.15807731271522,
+  "latitude" : 51.4799900627036
+  },{
+  "longitude" : -1.12935802905177,
+  "latitude" : 50.7186356978817,
+  "limit" : 100,
+  "radius" : 500
+  }]
+}</pre>
     <h4>Optional Query Parameters</h4>
     <p><code>filter=</code> (not required) A comma separated whitelist of attributes to be returned in the result object(s). e.g. <code>filter=postcode,longitude,latitude</code>. <code>null</code> responses will continue to return <code>null</code>.
     If no attributes match the result object, an empty object is returned</p>
