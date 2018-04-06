@@ -296,7 +296,7 @@ ul#scroll_menu li {
   line-height: 0.5em;
   list-style: none;
   margin-bottom: 1em;
-  padding-left: 1rem;
+  padding-left: 1em;
 }
 
 ul#scroll_menu li:last-child {
@@ -337,8 +337,21 @@ li.active a {
 }
 
 .ideal-logo {
-  height: 25px;
-  width: 150px;
   background-size: cover;
+  height: 25px;
   margin-left: 0.5em;
+  width: 150px;
+}
+
+@media only screen and (max-width: 420px) {
+  h1.mast-text {
+    font-size: 39px;
+    text-align: center;
+  }
+  .text-with-logo {
+    justify-content: center;
+  }
+  tbody tr#quality > td {
+    vertical-align: middle;
+  }
 }
