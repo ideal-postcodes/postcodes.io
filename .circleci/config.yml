@@ -54,11 +54,38 @@ jobs:
              - node_modules/
        - run: npm run test-ci
        - run: npm run coverage
+   node10:
+     docker:
+       - image: circleci/node:10
+         environment:
+           - PGHOST=localhost
+           - PGUSER=postgres
+       - image: circleci/postgres:9.6-alpine-postgis
+     
+     steps:
+       - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 2m
+       - checkout
+       - run: sudo apt-get update
+       - run: sudo apt install postgresql-client
+       - run: POSTGRES_USER=postgres npm run setup_test_db
+       - restore_cache:
+           keys:
+             - npm-deps-{{ checksum "package.json" }}
+       - run: npm install
+       - save_cache:
+           key: npm-deps-{{ checksum "package.json" }}
+           paths:
+             - node_modules/
+       - run: npm run test-ci
+       - run: npm run coverage
        
 workflows:
   version: 2
-  node6_and_node8:
+  node6_node8_node10:
     jobs:
       - node6
       - node8
+      - node10
        
