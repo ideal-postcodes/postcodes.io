@@ -1,14 +1,12 @@
 "use strict";
 
 const util = require("util");
-const path = require("path");
 const Pc = require("postcode");
 const async = require("async");
-const { Base, populateLocation, getLocation } = require("./index");
+const { Base, populateLocation, extractOnspdVal } = require("./index");
 const QueryStream = require("pg-query-stream");
 const env = process.env.NODE_ENV || "development";
-const configPath = path.join(__dirname, "../../config/config.js");
-const defaults = require(configPath)(env).defaults;
+const { defaults } = require("../../config/config.js")(env);
 
 const postcodeSchema = {
 	"id": "SERIAL PRIMARY KEY",
@@ -620,100 +618,17 @@ Postcode.prototype.toJson = function (address) {
 	return address;
 };
 
-/*
-*  	ONS CSV Data Reference
-*
-(0) pcd - Unit Postcode (7 Char)
-(1) pcd2 - Unit Postcode (8 Char)
-(2) pcds - Unit Postcode (Variable) 											Y
-(3) dointr - Date of Introduction
-(4) doterm - Date of Termnation
-(5) oscty - County 																				Y
-(6) oslaua - Local Authority District (LAD)								Y
-(7) osward - (Electoral) Ward / Sub-division							Y
-(8) usertype - Postcode User Type
-(9) oseast1m - Eastings																		Y
-(10) osnrth1m - Northings																	Y
-(11) osgrdind - Positional Quality Indicator   						Y
-(12) oshlthau - Strategic Health Authority 								Y
-(13) hro - Pan SHA
-(14) ctry - Country 																			Y
-(15) gor - Region 																				Y
-(16) streg - Standard Region (SSR)
-(17) pcon - Westminster Parliamentary Constituency  		 	Y
-(18) eer - European Electoral Region											Y
-(19) teclec - Local Learning and Skills Council
-(20) ttwa - Travel to Work Area
-(21) pct - Primary Care Trust															Y
-(22) nuts - LAU2 Areas																		Y
-(23) psed - 1991 Census Enumeration District (code range)
-(24) cened - 1991 Census Enumeration District (code)
-(25) edind - ED Positional Quality Indicator
-(26) oshaprev - Previous SHA
-(27) lea - Local Education Authority
-(28) oldha - Health Authority (old style)
-(29) wardc91 - 1991 Ward (code)
-(30) wardo91 - 1991 Ward (code range)
-(31) ward98 - 1998 Ward
-(32) statsward - 2005 Statistical Ward
-(33) oa01 - 2001 Census Output Area
-(34) casward - Census Area Statistics (CAS)
-(35) park - National Park
-(36) lsoa01 - 2001 LSOA
-(37) msoa01 - 2001 MSOA
-(38) ur01ind - 2001 Census (Urban / Rural Indicator)
-(39) oac01 - 2001 Census Output Area Classification
-(40) oldpct - Old Primary Care Trust
-(41) oa11 - 2011 Census Output Areas 										Y
-(42) lsoa11 - 2011 LSOA 																Y
-(43) msoa11 - 2011 MSOA 																Y
-(44) parish - Parish 																		Y
-(45) wz11 - Census Workplace Zone
-(46) ccg - Clinical Commissioning Group 								Y - NEW
-(47) bua11 - Built-up Area
-(48) buasd11 - Built-up Area Sub-division
-(49) ru11ind - Census Rural Urban Classification - -
-*
-*
-*/
-
-Postcode.prototype._setupTable = function (filePath, callback) {
+Postcode.prototype._setupTable = function (filepath, callback) {
 	async.series([
 		this._createRelation.bind(this),
 		this.clear.bind(this),
-		cb => this.seedPostcodes.call(this, filePath, cb),
+		cb => this.seedPostcodes.call(this, filepath, cb),
 		this.populateLocation.bind(this),
 		this.createIndexes.bind(this),
 	], callback);
 };
 
-Postcode.prototype.seedPostcodes = function (filePath, callback) {
-	const self = this;
-	const csvColumns = [
-		"postcode",
-		"pc_compact",
-		"eastings",
-		"northings",
-		"longitude",
-		"latitude",
-		"country",
-		"nhs_ha",
-		"admin_county_id",
-		"admin_district_id",
-		"admin_ward_id",
-		"parish_id",
-		"quality",
-		"constituency_id",
-		"european_electoral_region",
-		"region",
-		"primary_care_trust",
-		"lsoa",
-		"msoa",
-		"nuts_id",
-		"incode",
-		"outcode",
-		"ccg_id"
-	];
+Postcode.prototype.seedPostcodes = function (filepath, callback) {
 	const pcts = require("../../data/pcts.json");
 	const lsoa = require("../../data/lsoa.json");
 	const msoa = require("../../data/msoa.json");
@@ -722,57 +637,41 @@ Postcode.prototype.seedPostcodes = function (filePath, callback) {
 	const countries = require("../../data/countries.json");
 	const european_registers = require("../../data/european_registers.json");
 
-	const transform = row => {
-		// Skip if header
-		if (row[0] === "pcd") return null;
+	const ONSPD_COL_MAPPINGS = Object.freeze([
+		{ column: "postcode", method: row => row.extract("pcds") },
+		{ column: "pc_compact", method: row => row.extract("pcds").replace(/\s/g, "") },
+		{ column: "eastings", method: row => row.extract("oseast1m") },
+		{ column: "northings", method: row => row.extract("osnrth1m") },
+		{ column: "longitude", method: row => row.extract("long") },
+		{ column: "latitude", method: row => row.extract("lat") },
+		{ column: "country", method: row => countries[row.extract("ctry")] },
+		{ column: "nhs_ha", method: row => nhsHa[row.extract("oshlthau")] },
+		{ column: "admin_county_id", method: row => row.extract("oscty") },
+		{ column: "admin_district_id", method: row => row.extract("oslaua") },
+		{ column: "admin_ward_id", method: row => row.extract("osward") },
+		{ column: "parish_id", method: row => row.extract("parish") },
+		{ column: "quality", method: row => row.extract("osgrdind") },
+		{ column: "constituency_id", method: row => row.extract("pcon") },
+		{ column: "european_electoral_region", method: row => european_registers[row.extract("eer")] },
+		{ column: "region", method: row => regions[row.extract("rgn")] },
+		{ column: "primary_care_trust", method: row => pcts[row.extract("pct")] },
+		{ column: "lsoa", method: row => lsoa[row.extract("lsoa11")] },
+		{ column: "msoa", method: row => msoa[row.extract("msoa11")] },
+		{ column: "nuts_id", method: row => row.extract("nuts") },
+		{ column: "incode", method: row => row.extract("pcds").split(" ")[1] },
+		{ column: "outcode", method: row => row.extract("pcds").split(" ")[0] },
+		{ column: "ccg_id", method: row => row.extract("ccg") },
+	]);
 
-		// Skip row if terminated
-		if (row[4].length !== 0) return null;
-
-		const finalRow = [];
-
-		finalRow.push(row[2]);  												// postcode
-		finalRow.push(row[2].replace(/\s/g, ""));				// pc_compact
-		
-		const eastings = row[9];
-		finalRow.push(eastings);                        // Eastings
-		const northings = row[10];													
-		finalRow.push(northings);			                  // Northings
-													
-		const country = row[14];
-		const location = getLocation({
-			eastings: eastings, 
-			northings: northings, 
-			country: country
-		});
-
-		finalRow.push(location.longitude);							// longitude
-		finalRow.push(location.latitude);								// latitude
-		finalRow.push(countries[row[14]]);							// Country
-		finalRow.push(nhsHa[row[12]]);									// NHS Health Authority
-		finalRow.push(row[5]);													// County
-		finalRow.push(row[6]);													// District
-		finalRow.push(row[7]);													// Ward
-		finalRow.push(row[44]);													// Parish
-		finalRow.push(row[11]);													// Quality
-		finalRow.push(row[17]);													// Westminster const id
-		finalRow.push(european_registers[row[18]]);			// EER
-		finalRow.push(regions[row[15]]);								// Region
-		finalRow.push(pcts[row[21]]);										// Primary Care Trusts
-		finalRow.push(lsoa[row[42]]);										// 2011 LSOA
-		finalRow.push(msoa[row[43]]);										// 2011 MSOA
-		finalRow.push(row[22]);													// NUTS
-		finalRow.push(row[2].split(" ")[1]);						// Incode
-		finalRow.push(row[2].split(" ")[0]);						// Outcode
-		finalRow.push(row[46]);													// CCG
-
-		return finalRow;
-	};
-
-	self._csvSeed({
-		filepath: filePath,
-		columns: csvColumns.join(","),
-		transform: transform
+	this._csvSeed({ 
+		filepath, 
+		transform: row => {
+			row.extract = code => extractOnspdVal(row, code); // Append csv extraction logic
+			if (row.extract("pcd") === "pcd") return null; // Skip if header
+			if (row.extract("doterm").length !== 0) return null; // Skip row if terminated
+			return ONSPD_COL_MAPPINGS.map(elem => elem.method(row));
+		},
+		columns: ONSPD_COL_MAPPINGS.map(elem => elem.column).join(","),
 	}, callback);
 };
 
