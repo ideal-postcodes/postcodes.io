@@ -3,7 +3,6 @@
 const util = require("util");
 const path = require("path");
 const async = require("async");
-const OSPoint = require("ospoint");
 const assert = require("chai").assert;
 const randomString = require("random-string");
 const rootPath = path.join(__dirname, "../../");
