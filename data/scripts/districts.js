@@ -18,7 +18,7 @@ const LA_UA_VALUE_OFFSET = 1;
 const LA_UA_NAMES_transform = row => {
 	const code = row[LA_UA_CODE_OFFSET];
 	const value = row[LA_UA_VALUE_OFFSET];
-	if (code === "LAD16CD") return []; // Escape if header
+	if (code === "LAD18CD") return []; // Escape if header
 	return [code, value];
 };
 
@@ -29,6 +29,7 @@ const configs = [
 		parseOptions: {
 			delimiter: ",",
 		},
+		encoding: "utf8",
 	},
 ];
 

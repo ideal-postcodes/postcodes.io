@@ -134,8 +134,9 @@ exports.extract = options => {
 		const parseOptions = Object.assign({
 			delimiter: delimiter
 		}, config.parseOptions || {});
+		const encoding = config.encoding || "binary";
 
-		fs.createReadStream(file, { encoding: "binary" })
+		fs.createReadStream(file, { encoding: encoding })
 		.pipe(csv.parse(parseOptions))
 		.on("end", next)
 		.on("error", next)
