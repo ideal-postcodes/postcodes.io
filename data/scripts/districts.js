@@ -1,6 +1,6 @@
 "use strict";
 
-const {extract, isPseudoCode} = require("./index");
+const { extract } = require("./index");
 
 /**
  * @module DataParser/districts
