@@ -7,7 +7,6 @@ jobs:
            - PGHOST=localhost
            - PGUSER=postgres
        - image: circleci/postgres:9.6-alpine-postgis
-     
      steps:
        - run:
           name: Wait for db
@@ -24,7 +23,7 @@ jobs:
            key: npm-deps-{{ checksum "package.json" }}
            paths:
              - node_modules/
-       - run: npm run test-ci
+       - run: npm run test
        - run: npm run coverage
        
 
@@ -35,7 +34,6 @@ jobs:
            - PGHOST=localhost
            - PGUSER=postgres
        - image: circleci/postgres:9.6-alpine-postgis
-     
      steps:
        - run:
           name: Wait for db
@@ -52,7 +50,7 @@ jobs:
            key: npm-deps-{{ checksum "package.json" }}
            paths:
              - node_modules/
-       - run: npm run test-ci
+       - run: npm run test
        - run: npm run coverage
    node10:
      docker:
@@ -61,7 +59,6 @@ jobs:
            - PGHOST=localhost
            - PGUSER=postgres
        - image: circleci/postgres:9.6-alpine-postgis
-     
      steps:
        - run:
           name: Wait for db
@@ -78,7 +75,7 @@ jobs:
            key: npm-deps-{{ checksum "package.json" }}
            paths:
              - node_modules/
-       - run: npm run test-ci
+       - run: npm run test
        - run: npm run coverage
        
 workflows:

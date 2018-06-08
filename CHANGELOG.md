@@ -2,6 +2,13 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 9.0.0 (8/6/2018)
+- *Breaking Change* Updated `postcode` and `terminated_postcode` models for the new schema in ONSPD CSV file. This means `>9.0.0` will not be able to import ONSPD CSV files produced before May 2018. `pg_dump` imports will not be affected
+- Added package.lock file 
+- Updated wards, districts, nuts, ccgs GSS Codes
+- Updated ONSPD dataset to May 2018
+- Updated OS Names dataset to April 2018
+
 ## 8.0.0 (6/3/2018)
 - *Breaking Change* Terminated Postcode schema has been updated to include geolocation attributes: `longitude`, `latitude`, `northings`, `eastings` and `location`
 - Extended `/terminated_postcodes` endpoint to include `longitude` and `latitude`
