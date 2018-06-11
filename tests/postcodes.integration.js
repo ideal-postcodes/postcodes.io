@@ -322,6 +322,7 @@ describe("Postcodes routes", function () {
 
 	describe("GET /postcodes/:postcode/autocomplete", function () {
 		var uri, limit;
+		let testPostcode = "AB101AL";
 
 		it ("should return a list of matching postcodes only", function (done) {
 			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2) + "/autocomplete");
