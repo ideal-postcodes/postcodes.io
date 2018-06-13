@@ -5,7 +5,7 @@
  * This script checks for missing ONS Codes in the ONS Postcode Directory
  *
  * To run: find_missing.js /path/to/postcode/directory.csv
- *
+ * To specificy a single type for matches, use `--type=nhsHa`
  * This parses every line of the directory returns result to stdout
  *
  */
@@ -13,50 +13,44 @@
 "use strict";
 
 const fs = require("fs");
-const path = require("path");
-const csv = require("csv");
-const parse = csv.parse;
-const transform = csv.transform;
+const { parse, transform } = require("csv");
 const argv = require('minimist')(process.argv.slice(2));
 
-const codeTypes = [
-	"nhsHa",
-	"counties",
-	"districts",
-	"wards",
-	"parishes",
-	"constituencies",
-	"european_registers",
-	"regions",
-	"pcts",
-	"lsoa",
-	"msoa",
-	"nuts",
-	"ccgs"
-];
+// Maps postcodes.io code types to ONSPD labels
+const onspdSchema = require("../data/onspd_schema.json");
+const codeTypeToOnspd = Object.freeze({
+	"nhsHa": "oshlthau",
+	"counties": "oscty",
+	"districts": "oslaua",
+	"wards": "osward",
+	"parishes": "parish",
+	"constituencies": "pcon",
+	"european_registers": "eer",
+	"regions": "rgn",
+	"pcts": "pct",
+	"lsoa": "lsoa11",
+	"msoa": "msoa11",
+	"nuts": "nuts",
+	"ccgs": "ccg",
+});
 
-const typeOffset = {
-	nhsHa: 12,
-	counties: 5,
-	districts: 6,
-	wards: 7,
-	parishes: 44,
-	constituencies: 17,
-	european_registers: 18,
-	regions: 15,
-	pcts: 21,
-	lsoa: 42,
-	msoa: 43,
-	nuts: 22,
-	ccgs: 46
-};
+// List of types to be searched
+let codeTypes = Object.keys(codeTypeToOnspd);
 
+// Generate a dictionary of ONSPD types and their offsets in the CSV dataset
+const typeOffset = codeTypes.reduce((typeOffset, type) => {
+	typeOffset[type] = onspdSchema.map(e => e.code).indexOf(codeTypeToOnspd[type]);
+	return typeOffset;
+}, {});
+
+// Retrieve ONSPD file
 const source = argv._[0];
 if (!source || !fs.existsSync(source)) {
 	console.log("Please specificy ONSPD Directory source file");
 	process.exit(0);
 }
 
+// Retrieve optional type argument
 const type = argv.type;
 if (type) {
 	if (!codeTypes.some(codeType => codeType === type )) {
@@ -67,7 +61,7 @@ if (type) {
 	}
 }
 
-// Load data sources
+// Load data sources and initialise missing type stores
 const data = {};
 const missingData = {};
 codeTypes.forEach(codeType => {
@@ -77,23 +71,14 @@ codeTypes.forEach(codeType => {
 
 const check = (row, type) => {
 	const elem = row[typeOffset[type]];
-	if (elem === "") {
-		return;
-	} else {
-		if (typeof data[type][elem] === 'undefined') {
-			if (typeof missingData[type][elem] !== 'number') {
-				missingData[type][elem] = 0;
-			} else {
-				missingData[type][elem] += 1;
-			}
-		}
-	}
+	if (elem === "") return;
+	if (typeof data[type][elem] !== 'undefined') return
+	if (typeof missingData[type][elem] !== 'number') missingData[type][elem] = 0;
+	missingData[type][elem] += 1;
 };
 
-const parser = parse({delimiter: ","});
-
 fs.createReadStream(source)
-	.pipe(parser)
+	.pipe(parse({delimiter: ","}))
 	.on("data", row => {
 		if (row[4].length !== 0) return null; // Skip row if terminated postcode
 		codeTypes.forEach(codeType => check(row, codeType));

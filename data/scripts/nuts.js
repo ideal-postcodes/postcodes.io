@@ -30,7 +30,7 @@ const transform = row => {
 	const code = row[CODE_OFFSET];
 	const nutsCode = row[NUTS_CODE_OFFSET];
 	const value = row[VALUE_OFFSET];
-	if (code === "LAU217CD") return []; // Escape if header
+	if (code === "LAU218CD") return []; // Escape if header
 	return [code, {
 		code: nutsCode,
 		name: value
@@ -39,8 +39,12 @@ const transform = row => {
 
 const configs = [
 	{
-		file: "LAU217_LAU117_NUTS315_NUTS215_NUTS115_DEC_UK_LU_NSPD.txt",
-		transform
+		file: "LAU218_LAU118_NUTS318_NUTS218_NUTS118_UK_LU_NSPD.csv",
+		transform,
+		parseOptions: {
+			delimiter: ",",
+		},
+		encoding: "utf8",
 	}
 ];
 

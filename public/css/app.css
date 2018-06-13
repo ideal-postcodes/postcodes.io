@@ -98,11 +98,11 @@ body {
 .mast {
   padding: 8em 0 3em;
   background-color: #1c2533;
-  background: -webkit-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+ background: -webkit-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -o-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -ms-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -moz-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
-  background: linear-gradient(20deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%); 
+  background: linear-gradient(20deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background-attachment: fixed;
   color: #fff;
   text-align: center;
@@ -122,11 +122,11 @@ h1.mast-text {
 }
 
 .header {
-  background-color: lightblue;
+  background-color: #dee7f5;
 }
 
 .sub-header {
-  background-color: lightblue;
+  background-color: #dee7f5;
   padding: 5em 0 3em;
 }
 
@@ -283,37 +283,6 @@ h4.method-title {
   overflow: auto;
 }
 
-#scroll_container {
-  align-items: center;
-  display: flex;
-  height: 25vh;
-  margin-top: 3rem;
-  overflow: scroll;
-  position: fixed;
-}
-
-ul#scroll_menu li {
-  line-height: 0.5em;
-  list-style: none;
-  margin-bottom: 1em;
-  padding-left: 1em;
-}
-
-ul#scroll_menu li:last-child {
-  margin-bottom: 0;
-}
-
-ul#scroll_menu li a {
-  color: #B8AEB9;
-  font-size: 1.4rem;
-  padding-left: 5px;
-  text-decoration: none;
-}
-
-ul#scroll_menu li a:hover {
-  background-color: transparent;
-}
-
 li.active,
 li.active:hover,
 li.active:focus {
@@ -322,13 +291,6 @@ li.active:focus {
 
 li.active a {
   color: #000 !important;
-}
-
-.anchor::before {
-  content: "";
-  display: block;
-  height: 60px;
-  margin-top: -60px;
 }
 
 .text-with-logo {
@@ -354,13 +316,4 @@ li.active a {
   tbody tr#quality > td {
     vertical-align: middle;
   }
-}
-
-@media only screen 
-  and (min-device-width: 1024px) 
-  and (max-device-width: 1366px) 
-  and (-webkit-min-device-pixel-ratio: 1.5) {
-    #scroll_container {
-      display: none;
-    }
 }

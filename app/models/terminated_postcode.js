@@ -1,7 +1,7 @@
 "use strict";
 
 const util = require("util");
-const { Base, populateLocation, getLocation } = require("./index");
+const { Base, populateLocation, extractOnspdVal } = require("./index");
 const async = require("async");
 const Pc = require("postcode");
 
@@ -64,64 +64,37 @@ TerminatedPostcode.prototype.whitelistedAttributes = [
    }, {});
   };
   
-TerminatedPostcode.prototype.seedPostcodes = function (filePath,callback) {
-  const csvColumns = [
-    "postcode",
-    "pc_compact",
-    "year_terminated",
-    "month_terminated",
-    "eastings",
-    "northings",
-    "longitude",
-    "latitude"
-  ];
+TerminatedPostcode.prototype.seedPostcodes = function (filepath, callback) {
+  const ONSPD_COL_MAPPINGS = Object.freeze([
+    { column: "postcode", method: row => row.extract("pcds") },
+    { column: "pc_compact", method: row => row.extract("pcds").replace(/\s/g, "") },
+    { column: "year_terminated", method: row => row.extract("doterm").slice(0,4) },
+    { column: "month_terminated", method: row => row.extract("doterm").slice(-2) },
+    { column: "eastings", method: row => row.extract("oseast1m") },
+    { column: "northings", method: row => row.extract("osnrth1m") },
+    { column: "longitude", method: row => row.extract("long") },
+    { column: "latitude", method: row => row.extract("lat") },
+  ]);
 
-  const transform = row => {
-    if (row[0] === "pcd") return null; //ignore header
-    
-    if (row[4].length === 0) return null;
-    
-    const finalRow = [];
-    finalRow.push(row[2]); // postcode
-    finalRow.push(row[2].replace(/\s/g, ""));		// pc_compact
-    finalRow.push(parseInt(row[4].slice(0,4), 10)); //year_terminated
-    finalRow.push(parseInt(row[4].slice(-2), 10)); //month_terminated
-    
-    const eastings = row[9];
-    finalRow.push(eastings);                            // Eastings
-    const northings = row[10];													
-    finalRow.push(northings);			                      // Northings
-    										  
-    const country = row[14];
-    const location = getLocation({
-      eastings: eastings, 
-      northings: northings, 
-      country: country
-    });
-
-    finalRow.push(location.longitude);							// longitude
-    finalRow.push(location.latitude);								// latitude
-    
-    return finalRow;
-  };
-  
   this._csvSeed({
-    filepath: filePath, 
-    columns: csvColumns.join(","), 
-    transform: transform
+    filepath, 
+    transform: row => {
+      if (row[0] === "pcd") return null; //ignore header
+      if (row[4].length === 0) return null; // Skip if not terminated
+      row.extract = code => extractOnspdVal(row, code); // Append extraction
+      return ONSPD_COL_MAPPINGS.map(elem => elem.method(row));
+    },
+    columns: ONSPD_COL_MAPPINGS.map(elem => elem.column).join(","), 
   }, callback);
 };
   
 TerminatedPostcode.prototype._setupTable = function (filePath, callback) {
-	const self = this;
 	async.series([
-		self._createRelation.bind(self),
-		self.clear.bind(self),
-		function seedData (cb) {
-			self.seedPostcodes(filePath, cb);
-		},
-    self.populateLocation.bind(self),
-		self.createIndexes.bind(self),
+		this._createRelation.bind(this),
+		this.clear.bind(this),
+		cb => this.seedPostcodes(filePath, cb),
+    this.populateLocation.bind(this),
+		this.createIndexes.bind(this),
 	], callback);
 };
 

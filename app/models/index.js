@@ -4,12 +4,10 @@ const fs = require("fs");
 const pg = require("pg");
 const copyFrom = require("pg-copy-streams").from;
 const async = require("async");
-const path = require("path");
 const csv = require("csv");
 const env = process.env.NODE_ENV || "development";
-const defaults = require(path.join(__dirname, "../../config/config.js"))(env);
+const defaults = require("../../config/config.js")(env);
 const config = defaults.postgres;
-const OSPoint = require("ospoint");
 
 // Instantiate postgres client pool
 const pool = pg.Pool(config);
@@ -185,22 +183,6 @@ function populateLocation(callback) {
 	this._query(query, callback);
 }
 
-function getLocation(options) {
-	const { northings, eastings, country } = options;
-	let location;
-	if (eastings.length === 0 || northings.length === 0) {
-		location = {
-			longitude: "",
-			latitude: ""
-		};
-	} else if (country === "N92000002") { // Is Irish grid reference
-		location = new OSPoint("" + northings , "" + eastings).toWGS84("irish_national_grid");
-	} else {
-		location = new OSPoint("" + northings , "" + eastings).toWGS84();
-	}
-	return location;
-}
-
 /**
  * Wraps a model and returns a function that when invoked:
  * - Creates a temporary name for the Model relation
@@ -243,11 +225,37 @@ const setupWithTableSwap = (Model, sourceFile) => {
 const toTempName = name => `${name}_temp`;
 const toArchiveName = name => `${name}_archived`;
 
+const indexCache = {};
+let ONSPD_CSV_SCHEMA;
+
+/**
+ * Returns the index location of an ONSPD param, -1 if not found
+ * @param  {string} code ONSPD column code e.g. `pcd`
+ * @return {number}
+ */
+const indexFor = code => {
+	if (indexCache[code] !== undefined) return indexCache[code];
+	if (ONSPD_CSV_SCHEMA === undefined) ONSPD_CSV_SCHEMA = require("../../data/onspd_schema.json");
+	indexCache[code] = ONSPD_CSV_SCHEMA.reduce((result, elem, i) => {
+		if (elem.code === code) return i;
+		return result;
+	}, -1);
+	return indexCache[code];
+};
+
+/**
+ * Extracts the value for `code` from an ONSPD CSV record
+ * @param  {string[]} row
+ * @param  {string} code
+ * @return {string}
+ */
+const extractOnspdVal = exports.extractOnspdVal = (row, code) => row[indexFor(code)];
+
 module.exports = {
-	Base: Base,
-	populateLocation: populateLocation,
-	getLocation: getLocation,
-	setupWithTableSwap: setupWithTableSwap,
-	toTempName: toTempName,
-	toArchiveName: toArchiveName,
+	Base,
+	populateLocation,
+	setupWithTableSwap,
+	toTempName,
+	toArchiveName,
+	extractOnspdVal,
 };

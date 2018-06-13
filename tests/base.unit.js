@@ -3,7 +3,8 @@
 const helper = require("./helper");
 const assert = require("chai").assert;
 const {
-	toTempName, toArchiveName, setupWithTableSwap, getLocation, Base
+	toTempName, toArchiveName, setupWithTableSwap, getLocation, Base,
+	extractOnspdVal
 } = require("../app/models/index.js");
 
 describe("Base model", function () {
@@ -169,36 +170,13 @@ describe("Base model", function () {
 			});
 		});
 	});
-});
 
-describe("#getLocation", () => {
-	it ("returns empty locations if eastings/northings is empty string", () => {
-		const expectedLocation = {longitude: "", latitude: ""};
-		let location = getLocation({eastings: "", northings: "43"});
-		assert.deepEqual(location, expectedLocation);
-		location = getLocation({eastings: "43", northings: ""});
-		assert.deepEqual(location, expectedLocation);
-	});
-	it ("returns different coordinates, if specified as Ireland", () => {
-		let locationNotIreland = getLocation({eastings: "334316", northings: "374675"});
-		let locationIreland = getLocation({eastings: "334316", northings: "374675", country: "N92000002"});
-		assert.notDeepEqual(locationIreland, locationNotIreland);
-	});
-
-	describe("#toTempName", () => {
-		it ("generates a temporary table name", () => {
-			assert.equal(toTempName("foo"), "foo_temp");
+	describe("extractOnspdVal", () => {
+		it ("extracts correct ONSPD val from row", () => {
+			const row = ["foo", "bar", "baz"];
+			assert.equal(extractOnspdVal(row, "pcd"), "foo");
+			assert.equal(extractOnspdVal(row, "pcd2"), "bar");
+			assert.equal(extractOnspdVal(row, "pcds"), "baz");
 		});
-	});
-
-	describe("#toArchiveName", () => {
-		it ("generates a archived table name", () => {
-			assert.equal(toArchiveName("foo"), "foo_archived");
-		});
-	});
-
-	describe("setupWithTableSwap", () => {
-		it ("creates a repopulated table and archives old");
-		it ("accepts sourcefile argument");
 	});
 });
