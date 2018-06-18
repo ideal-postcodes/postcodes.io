@@ -642,8 +642,20 @@ Postcode.prototype.seedPostcodes = function (filepath, callback) {
 		{ column: "pc_compact", method: row => row.extract("pcds").replace(/\s/g, "") },
 		{ column: "eastings", method: row => row.extract("oseast1m") },
 		{ column: "northings", method: row => row.extract("osnrth1m") },
-		{ column: "longitude", method: row => row.extract("long") },
-		{ column: "latitude", method: row => row.extract("lat") },
+		{ 
+			column: "longitude",
+			method: row => {
+				const longitude = row.extract("long");
+				return (parseInt(longitude, 10) === 0) ? null : longitude;
+			},
+		},
+		{
+			column: "latitude",
+			method: row => {
+				const latitude = row.extract("lat");
+				return (parseInt(latitude, 10) > 98) ? null : latitude;
+			},
+		},
 		{ column: "country", method: row => countries[row.extract("ctry")] },
 		{ column: "nhs_ha", method: row => nhsHa[row.extract("oshlthau")] },
 		{ column: "admin_county_id", method: row => row.extract("oscty") },
