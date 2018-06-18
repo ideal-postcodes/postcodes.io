@@ -97,7 +97,7 @@ describe("Postcode Model", function () {
 		
 		describe("#populateLocation", () => {
 			it ("populates location collumn with geohashes", done => {
-				const query = `SELECT location from ${Postcode.relation}`;
+				const query = `SELECT location from ${Postcode.relation} WHERE location IS NOT NULL`;
 				Postcode._query(query, (error, result) => {
 					if (error) return done(error);
 					result.rows.forEach(row => assert.equal(row.location.length, 50));
