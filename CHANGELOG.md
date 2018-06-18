@@ -2,7 +2,14 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 9.0.1 (18/6/2018)
+
+- Fixed regression. WGS84 geolocations for points with no assigned geolocation (in `postcodes` and `terminated_postcodes` relations) returned `0` and `99.9999` (ONSPD default identifiers for no geolocation) instead of `null` and `null`.
+- Updated `pg_dump` released in 9.0.0 to incorporate above fix
+- Updated noticeboard
+
 ## 9.0.0 (8/6/2018)
+
 - *Breaking Change* Updated `postcode` and `terminated_postcode` models for the new schema in ONSPD CSV file. This means `>9.0.0` will not be able to import ONSPD CSV files produced before May 2018. `pg_dump` imports will not be affected
 - Added package.lock file 
 - Updated wards, districts, nuts, ccgs GSS Codes
@@ -10,6 +17,7 @@ Any changes, including backwards incompatible changes will be listed here
 - Updated OS Names dataset to April 2018
 
 ## 8.0.0 (6/3/2018)
+
 - *Breaking Change* Terminated Postcode schema has been updated to include geolocation attributes: `longitude`, `latitude`, `northings`, `eastings` and `location`
 - Extended `/terminated_postcodes` endpoint to include `longitude` and `latitude`
 - Updated parishes GSS Codes

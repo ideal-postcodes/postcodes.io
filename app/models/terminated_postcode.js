@@ -72,8 +72,20 @@ TerminatedPostcode.prototype.seedPostcodes = function (filepath, callback) {
     { column: "month_terminated", method: row => row.extract("doterm").slice(-2) },
     { column: "eastings", method: row => row.extract("oseast1m") },
     { column: "northings", method: row => row.extract("osnrth1m") },
-    { column: "longitude", method: row => row.extract("long") },
-    { column: "latitude", method: row => row.extract("lat") },
+    { 
+      column: "longitude",
+      method: row => {
+        const longitude = row.extract("long");
+        return (parseInt(longitude, 10) === 0) ? null : longitude;
+      },
+    },
+    {
+      column: "latitude",
+      method: row => {
+        const latitude = row.extract("lat");
+        return (parseInt(latitude, 10) > 98) ? null : latitude;
+      },
+    }
   ]);
 
   this._csvSeed({
