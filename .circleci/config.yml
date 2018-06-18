@@ -17,10 +17,11 @@ jobs:
        - run: POSTGRES_USER=postgres npm run setup_test_db
        - restore_cache:
            keys:
-             - npm-deps-{{ checksum "package-lock.json" }}
+             - nodemodules-deps-{{ checksum "package-lock.json" }}
+             - nodemodules-deps-
        - run: npm install
        - save_cache:
-           key: npm-deps-{{ checksum "package-lock.json" }}
+           key: nodemodules-deps-{{ checksum "package-lock.json" }}
            paths:
              - node_modules/
        - run: npm run test
@@ -44,10 +45,11 @@ jobs:
        - run: POSTGRES_USER=postgres npm run setup_test_db
        - restore_cache:
            keys:
-             - npm-deps-{{ checksum "package-lock.json" }}
+             - nodemodules-deps-{{ checksum "package-lock.json" }}
+             - nodemodules-deps-
        - run: npm install
        - save_cache:
-           key: npm-deps-{{ checksum "package-lock.json" }}
+           key: nodemodules-deps-{{ checksum "package-lock.json" }}
            paths:
              - node_modules/
        - run: npm run test
@@ -69,10 +71,11 @@ jobs:
        - run: POSTGRES_USER=postgres npm run setup_test_db
        - restore_cache:
            keys:
-             - npm-deps-{{ checksum "package-lock.json" }}
+             - nodemodules-deps-{{ checksum "package-lock.json" }}
+             - nodemodules-deps-
        - run: npm install
        - save_cache:
-           key: npm-deps-{{ checksum "package-lock.json" }}
+           key: nodemodules-deps-{{ checksum "package-lock.json" }}
            paths:
              - node_modules/
        - run: npm run test
