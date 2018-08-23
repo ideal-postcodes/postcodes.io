@@ -1,6 +1,6 @@
 {
   "name": "postcodes.io",
-  "version": "9.0.1",
+  "version": "9.0.2",
   "description": "A postcode lookup API",
   "main": "app.js",
   "directories": {

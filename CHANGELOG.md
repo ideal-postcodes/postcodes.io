@@ -2,6 +2,11 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 9.0.2 (23/8/2018)
+
+- Updated ONSPD dataset to August 2018
+- Updated OS Names dataset to July 2018
+
 ## 9.0.1 (18/6/2018)
 
 - Fixed regression. WGS84 geolocations for points with no assigned geolocation (in `postcodes` and `terminated_postcodes` relations) returned `0` and `99.9999` (ONSPD default identifiers for no geolocation) instead of `null` and `null`.
