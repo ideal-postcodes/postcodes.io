@@ -11,3 +11,4 @@ process.json
 .nyc_output/
 log/
 npm-debug.log
+*.swp
