@@ -645,15 +645,15 @@ Postcode.prototype.seedPostcodes = function (filepath, callback) {
 		{ 
 			column: "longitude",
 			method: row => {
-				const longitude = row.extract("long");
-				return (parseInt(longitude, 10) === 0) ? null : longitude;
+        const eastings = row.extract("oseast1m");
+				return eastings === "" ? null : row.extract("long");
 			},
 		},
 		{
 			column: "latitude",
 			method: row => {
-				const latitude = row.extract("lat");
-				return (parseInt(latitude, 10) > 98) ? null : latitude;
+        const northings = row.extract("osnrth1m");
+				return northings === "" ? null : row.extract("lat");
 			},
 		},
 		{ column: "country", method: row => countries[row.extract("ctry")] },
