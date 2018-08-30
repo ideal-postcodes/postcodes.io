@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-9">
-      <h3>Why</h3>
-      <p>This is a free API. Postcodes.io is aimed at developers who want a resource to lookup and (reverse) geocode UK Postcodes.</p>
+      <br />
+      <h4>This is a free API. Postcodes.io is aimed at developers who want a resource to lookup and (reverse) geocode UK Postcodes.</h4>
       <hr />
       <h3>Community API Libraries</h3>
       <p><strong>Java </strong></p>
@@ -40,6 +40,8 @@
       <p>Any updates or disruptions will be listed below.</p>
       <ul>
         <li><strong>14-18 June</strong> Following the switch to the new ONSPD CSV schema, <code>longitude</code> and <code>latitude</code> for entities with no geolocation were returned as <code>0</code> and <code>99.9999...</code> instead of <code>null</code> and <code>null</code>. Old behaviour has been restored as at 19th June (version 9.0.1)</li>
+        <li><strong>29 August</strong> A data centre network failure caused 6 minutes of outage (between 17:25 UTC and 17:31 UTC). After the API was restored, there was elevated response latency for ~30 minutes as more resources were brought online to compensate for lost capacity</li>
+        <li><strong>30 August</strong> Between Aug 29 17:31 UTC and Aug 30 14:39 UTC, the API returned incorrect longitude values on the <code>terminated_postcodes/</code> endpoint. Longitude was incorrectly reported as <code>null</code> for a subset (321,831 of 851,354) of terminated postcodes</li>
       </ul>
       <hr />
       <h3>Email</h3>
@@ -62,7 +64,7 @@
       </div>
       <hr />
       <h3>Support</h3>
-      <p>Chat: <a href="http://chat.ideal-postcodes.co.uk" target="_blank">chat.ideal-postcodes.co.uk</a></p>
+      <p>Chat: <a href="https://chat.ideal-postcodes.co.uk" target="_blank">chat.ideal-postcodes.co.uk</a></p>
       <p>Email: support@ideal-postcodes.co.uk</p>
       <p>Twitter: <a href="https://twitter.com/idealpostcodes">@IdealPostcodes</a></p>
       <hr />
