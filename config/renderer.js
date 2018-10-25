@@ -44,6 +44,8 @@ const errorRenderer = (error, request, response, next) => {/*jshint unused: fals
 			error.status === 400 &&
 			request.method === "POST") return applyError(response, invalidJsonError); 
 
+  if (error instanceof PostcodesioHttpError) return applyError(response, error);
+
 	// Return 500 for all other errors
   return applyError(response, genericError);
 };
