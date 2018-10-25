@@ -129,7 +129,11 @@ class InvalidRadiusError extends PostcodesioHttpError {
   }
 }
 
-
+class TPostcodeNotFoundError extends PostcodesioHttpError {
+  constructor() {
+    super(404, "Terminated postcode not found");
+  }
+}
 
 module.exports = {
   PostcodesioHttpError,
@@ -145,5 +149,6 @@ module.exports = {
   InvalidGeolocationError,
   InvalidLimitError,
   InvalidRadiusError,
+  TPostcodeNotFoundError,
 };
 
