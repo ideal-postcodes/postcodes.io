@@ -1,7 +1,7 @@
 "use strict";
 
 const async = require("async");
-const S = require("string");
+const { isEmpty } = require("../lib/string.js");
 const Postcode = require("../models/postcode");
 const Pc = require("postcode");
 const path = require("path");
@@ -214,7 +214,7 @@ exports.query = (request, response, next) => {
 	const postcode = request.query.q || request.query.query;
 	const limit = request.query.limit;
 
-	if (S(postcode).isEmpty()) {
+	if (isEmpty(postcode)) {
 		response.jsonApiResponse = {
 			status: 400,
 			error: "No postcode query submitted. Remember to include query parameter"
