@@ -9,6 +9,7 @@ const { defaults } = require("../../config/config.js")(env);
 const {
   InvalidPostcodeError,
   PostcodeNotFoundError,
+  InvalidJsonQueryError,
 } = require("../lib/errors.js");
 
 exports.show = (request, response, next) => {
@@ -50,24 +51,10 @@ exports.random = (request, response, next) => {
 	});
 };
 
-const invalidJSONQueryMessage = [
-	"Invalid JSON query submitted.", 
-	"You need to submit a JSON object with an array of postcodes or geolocation objects.",
-	"Also ensure that Content-Type is set to application/json"
-].join(" ");
-
 exports.bulk = (request, response, next) => {
-	if (request.body.postcodes) {
-		return bulkLookupPostcodes(request, response, next);
-	} else if (request.body.geolocations) {
-		return bulkGeocode(request, response, next);
-	} else {
-		response.jsonApiResponse = {
-			status: 400,
-			error: invalidJSONQueryMessage
-		};
-		return next();
-	}
+	if (request.body.postcodes) return bulkLookupPostcodes(request, response, next);
+	if (request.body.geolocations) return bulkGeocode(request, response, next);
+  return next(new InvalidJsonQueryError());
 };
 
 const MAX_GEOLOCATIONS = defaults.bulkGeocode.geolocations.MAX;

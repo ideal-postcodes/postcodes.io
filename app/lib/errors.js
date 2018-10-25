@@ -67,6 +67,16 @@ class PostcodeNotFoundError extends PostcodesioHttpError {
     super(404, "Postcode not found");
   }
 }
+const INVALID_JSON_QUERY_MESSAGE = `Invalid JSON query submitted. 
+You need to submit a JSON object with an array of postcodes or geolocation objects.
+Also ensure that Content-Type is set to application/json
+`;
+
+class InvalidJsonQueryError extends PostcodesioHttpError {
+  constructor() {
+    super(400, INVALID_JSON_QUERY_MESSAGE);
+  }
+}
 
 module.exports = {
   PostcodesioHttpError,
@@ -74,5 +84,6 @@ module.exports = {
   NotFoundError,
   InvalidPostcodeError,
   PostcodeNotFoundError,
+  InvalidJsonQueryError,
 };
 
