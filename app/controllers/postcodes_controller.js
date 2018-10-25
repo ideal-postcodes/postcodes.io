@@ -4,73 +4,47 @@ const async = require("async");
 const { isEmpty } = require("../lib/string.js");
 const Postcode = require("../models/postcode");
 const Pc = require("postcode");
-const path = require("path");
 const env = process.env.NODE_ENV || "development";
-const defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
+const { defaults } = require("../../config/config.js")(env);
+const {
+  InvalidPostcodeError,
+  PostcodeNotFoundError,
+} = require("../lib/errors.js");
 
 exports.show = (request, response, next) => {
-	const postcode = request.params.postcode;
-	if (!new Pc(postcode.trim()).valid()) {
-		response.jsonApiResponse = {
-			status: 404,
-			error: "Invalid postcode"
-		};
-		return next();
-	}
-
-	Postcode.find(postcode, (error, address) => {
-		if (error) {
-			return next(error);
-		}
-		if (address) {
-			response.jsonApiResponse = {
-				status: 200,
-				result: Postcode.toJson(address)
-			};
-			return next();		
-		} else {
-			response.jsonApiResponse = {
-				status: 404,
-				error: "Postcode not found"
-			};
-			return next();
-		}
+	const { postcode } = request.params;
+	if (!new Pc(postcode.trim()).valid()) return next(new InvalidPostcodeError());
+		
+	Postcode.find(postcode, (error, result) => {
+		if (error) return next(error);
+    if (!result) return next(new PostcodeNotFoundError());
+    response.jsonApiResponse = {
+      status: 200,
+      result: Postcode.toJson(result)
+    };
+    return next();
 	});
 };
 
 exports.valid = (request, response, next) => {
-	const postcode = request.params.postcode;
+	const { postcode } = request.params;
 	
-	Postcode.find(postcode, (error, address) => {
-		if (error) {
-			return next(error);
-		}
-
-		if (address) {
-			response.jsonApiResponse = {
-				status: 200,
-				result: true
-			};		
-			return next();
-		} else {
-			response.jsonApiResponse = {
-				status: 200,
-				result: false
-			};
-			return next();		
-		}
+	Postcode.find(postcode, (error, result) => {
+		if (error) return next(error);
+    response.jsonApiResponse = {
+      status: 200,
+      result: !!result,
+    };
+    return next();		
 	});	
 };
 
 exports.random = (request, response, next) => {
-	Postcode.random(request.query, (error, address) => {
-		if (error) {
-			return next(error);
-		}
-
+	Postcode.random(request.query, (error, result) => {
+		if (error) return next(error);
 		response.jsonApiResponse = {
 			status: 200,
-			result: address ? Postcode.toJson(address) : null
+			result: result ? Postcode.toJson(result) : null
 		};
 		return next();
 	});
@@ -222,30 +196,19 @@ exports.query = (request, response, next) => {
 		return next();
 	}
 
-	Postcode.search({
-		postcode: postcode, 
-		limit: limit
-	}, (error, results) => {
+	Postcode.search({ postcode, limit }, (error, results) => {
 		if (error) return next(error);
-		if (!results) {
-			response.jsonApiResponse = {
-				status: 200,
-				result: null
-			};
-			return next();
-		} else {
-			response.jsonApiResponse = {
-				status: 200,
-				result: results.map(elem => Postcode.toJson(elem))
-			};
-			return next();
-		}
+    response.jsonApiResponse = {
+      status: 200,
+      result: results ? results.map(elem => Postcode.toJson(elem)) : null,
+    };
+    return next();
 	});
 };
 
 exports.autocomplete = (request, response, next) => {
-	const postcode = request.params.postcode;
-	const limit = request.query.limit;
+	const { postcode } = request.params;
+	const { limit } = request.query;
 
 	Postcode.search({
 		postcode: postcode, 
@@ -337,9 +300,7 @@ exports.nearest = (request, response, next) => {
 	const postcode = request.params.postcode;
 
 	Postcode.find(postcode, (error, address) => {
-		if (error) {
-			return next(error);
-		}
+		if (error) return next(error);
 
 		if (address) {
 			request.params.longitude = address.longitude;
@@ -354,3 +315,4 @@ exports.nearest = (request, response, next) => {
 		}
 	});
 };
+

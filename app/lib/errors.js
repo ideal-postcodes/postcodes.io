@@ -50,11 +50,21 @@ class InvalidJsonError extends PostcodesioHttpError {
   }
 }
 
-const NOT_FOUND_MESSAGE = "Resource not found";
-
 class NotFoundError extends PostcodesioHttpError {
   constructor() {
-    super(404, NOT_FOUND_MESSAGE);
+    super(404, "Resource not found");
+  }
+}
+
+class InvalidPostcodeError extends PostcodesioHttpError {
+  constructor() {
+    super(404, "Invalid postcode");
+  }
+}
+
+class PostcodeNotFoundError extends PostcodesioHttpError {
+  constructor() {
+    super(404, "Postcode not found");
   }
 }
 
@@ -62,5 +72,7 @@ module.exports = {
   PostcodesioHttpError,
   InvalidJsonError,
   NotFoundError,
+  InvalidPostcodeError,
+  PostcodeNotFoundError,
 };
 
