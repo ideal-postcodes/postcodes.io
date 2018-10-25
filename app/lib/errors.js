@@ -135,6 +135,18 @@ class TPostcodeNotFoundError extends PostcodesioHttpError {
   }
 }
 
+class PlaceNotFoundError extends PostcodesioHttpError {
+  constructor() {
+    super(404, "Place not found");
+  }
+}
+
+class InvalidQueryError extends PostcodesioHttpError {
+  constructor() {
+    super(400, "No valid query submitted. Remember to include every parameter");
+  }
+}
+
 module.exports = {
   PostcodesioHttpError,
   InvalidJsonError,
@@ -150,5 +162,7 @@ module.exports = {
   InvalidLimitError,
   InvalidRadiusError,
   TPostcodeNotFoundError,
+  PlaceNotFoundError,
+  InvalidQueryError,
 };
 
