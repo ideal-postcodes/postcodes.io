@@ -4,6 +4,8 @@ Any changes, including backwards incompatible changes will be listed here
 
 ## 9.0.3 (26/10/2018)
 
+- Fix: /outcodes endpoint returned a `result` attribute rather than an `error` attribute for a not found response
+
 ## 9.0.2 (23/8/2018)
 
 - Updated ONSPD dataset to August 2018

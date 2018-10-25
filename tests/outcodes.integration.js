@@ -80,7 +80,8 @@ describe("Outcodes routes", () => {
 			.end(function (error, response) {
 				if (error) return done(error);
 				assert.equal(response.body.status, 404);
-				assert.isNull(response.body.result);
+				assert.isUndefined(response.body.result);
+        assert.equal(response.body.error, "Outcode not found");
 				done();
 			});
 		});

@@ -147,6 +147,12 @@ class InvalidQueryError extends PostcodesioHttpError {
   }
 }
 
+class OutcodeNotFoundError extends PostcodesioHttpError {
+  constructor() {
+    super(404, "Outcode not found");
+  }
+}
+
 module.exports = {
   PostcodesioHttpError,
   InvalidJsonError,
@@ -164,5 +170,6 @@ module.exports = {
   TPostcodeNotFoundError,
   PlaceNotFoundError,
   InvalidQueryError,
+  OutcodeNotFoundError,
 };
 
