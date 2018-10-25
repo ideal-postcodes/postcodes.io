@@ -4,6 +4,8 @@ const { assert } = require("chai");
 const helper = require("./helper/index.js");
 const {
   PostcodesioHttpError,
+  InvalidJsonError,
+  NotFoundError,
 } = helper.errors;
 
 describe("Errors", () => {
@@ -12,8 +14,8 @@ describe("Errors", () => {
       const e = new PostcodesioHttpError();
       assert.equal(e.name, "PostcodesioHttpError");
       assert.equal(e.status, 500);
-      assert.match(e.humanMessage, /500\sServer\sError/);
-      assert.match(e.message, /500\sServer\sError/);
+      assert.include(e.humanMessage, "500 Server Error");
+      assert.include(e.message, "500 Server Error");
     });
     it ("instantiates with correct attributes", () => {
       const code = 401;
@@ -27,6 +29,22 @@ describe("Errors", () => {
       const result = e.toJSON();
       assert.equal(result.status, e.status);
       assert.equal(result.error, e.humanMessage);
+    });
+  });
+
+  describe("InvalidJsonError", () => {
+    it ("instantiates with correct attributes", () => {
+      const e = new InvalidJsonError();
+      assert.equal(e.status, 400);
+      assert.include(e.humanMessage, "Invalid JSON submitted");
+    });
+  });
+
+  describe("NotFoundError", () => {
+    it ("instantiates with correct attributes", () => {
+      const e = new NotFoundError();
+      assert.equal(e.status, 404);
+      assert.include(e.humanMessage, "Resource not found");
     });
   });
 });

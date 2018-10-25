@@ -39,7 +39,28 @@ class PostcodesioHttpError extends Error {
   }
 }
 
+const INVALID_JSON_MESSAGE = `Invalid JSON submitted.
+You need to submit a JSON object with an array of postcodes or geolocation objects.
+Also ensure that Content-Type is set to application/json
+`;
+
+class InvalidJsonError extends PostcodesioHttpError {
+  constructor() {
+    super(400, INVALID_JSON_MESSAGE);
+  }
+}
+
+const NOT_FOUND_MESSAGE = "Resource not found";
+
+class NotFoundError extends PostcodesioHttpError {
+  constructor() {
+    super(404, NOT_FOUND_MESSAGE);
+  }
+}
+
 module.exports = {
   PostcodesioHttpError,
+  InvalidJsonError,
+  NotFoundError,
 };
 

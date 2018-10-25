@@ -4,9 +4,13 @@ const { logger } = require("commonlog-bunyan");
 const filter = require("./filter");
 const {
   PostcodesioHttpError,
+  InvalidJsonError,
+  NotFoundError,
 } = require("../app/lib/errors.js");
 
 const genericError = new PostcodesioHttpError();
+const invalidJsonError = new InvalidJsonError();
+const notFoundError = new NotFoundError();
 
 /**
  * Returns JSON response on behalf of routes that return `response.jsonApiResponse`
@@ -21,12 +25,6 @@ const renderer = (request, response, next) => {
   return response.status(jsonResponse.status).json(jsonResponse);
 };
 
-const invalidJsonErrorMessage = [
-	"Invalid JSON submitted.",
-	"You need to submit a JSON object with an array of postcodes or geolocation objects.",
-	"Also ensure that Content-Type is set to application/json"
-].join(" ");
-
 /**
  * Applies an instance of PostcodesioHttpError to a response
  * @param {Express.Response} res - Express response object
@@ -39,18 +37,12 @@ const applyError = (res, err) => res.status(err.status).json(err.toJSON());
  * Handles Requests that have resulted in an error. Invoked by next(someError)
  */
 const errorRenderer = (error, request, response, next) => {/*jshint unused: false */
-	logger.error({error: error.message});
-	if (process.env.NODE_ENV !== "test") console.log(error.stack);
+	logger.error({ error: error.message });
 	
 	//check if bodyParser.json() fails to parse JSON request
 	if (error instanceof SyntaxError &&
 			error.status === 400 &&
-			request.method === "POST") {
-		return response.status(400).json({
-			status: 400,
-			error: invalidJsonErrorMessage
-		});
-	} 
+			request.method === "POST") return applyError(response, invalidJsonError); 
 
 	// Return 500 for all other errors
   return applyError(response, genericError);
@@ -59,12 +51,7 @@ const errorRenderer = (error, request, response, next) => {/*jshint unused: fals
 /**
 *	Handles requests that have fallen through middleware stack by returning a 404
 */
-const notFoundRenderer = (request, response) => {
-	response.status(404).json({
-		status: 404, 
-		error: "Resource not found"
-	});
-};
+const notFoundRenderer = (_, res) => applyError(res, notFoundError);
 
 module.exports = app => {
 	app.use(filter);
@@ -72,3 +59,4 @@ module.exports = app => {
 	app.use(errorRenderer);
 	app.use(notFoundRenderer);
 };
+
