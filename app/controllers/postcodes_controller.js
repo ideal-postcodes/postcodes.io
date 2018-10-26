@@ -6,6 +6,7 @@ const Postcode = require("../models/postcode");
 const Pc = require("postcode");
 const env = process.env.NODE_ENV || "development";
 const { defaults } = require("../../config/config.js")(env);
+const { startTimer } = require("../lib/timeout.js");
 const {
   InvalidPostcodeError,
   PostcodeNotFoundError,
@@ -67,7 +68,7 @@ exports.bulk = (request, response, next) => {
 const MAX_GEOLOCATIONS = defaults.bulkGeocode.geolocations.MAX;
 const GEO_ASYNC_LIMIT = defaults.bulkGeocode.geolocations.ASYNC_LIMIT || MAX_GEOLOCATIONS;
 
-function bulkGeocode (request, response, next) {
+const bulkGeocode = (request, response, next) => {
 	const { geolocations } = request.body;
 
 	if (!Array.isArray(geolocations)) return next(new JsonArrayRequiredError());
@@ -75,7 +76,7 @@ function bulkGeocode (request, response, next) {
 	
 	const lookupGeolocation = (location, callback) => {
 		Postcode.nearestPostcodes(location, (error, postcodes) => {
-			if (error) return callback(null, { query: location, result: null });
+			if (error) return callback(error);
 			if (!postcodes) return callback(null, { query: location, result: null });
 			callback(null, {
 				query: sanitizeQuery(location),
@@ -103,12 +104,12 @@ function bulkGeocode (request, response, next) {
 		};
 		return next();
 	});
-}
+};
 
 const MAX_POSTCODES = defaults.bulkLookups.postcodes.MAX;
 const BULK_ASYNC_LIMIT = defaults.bulkLookups.postcodes.ASYNC_LIMIT || MAX_POSTCODES;
 
-function bulkLookupPostcodes (request, response, next) {
+const bulkLookupPostcodes = (request, response, next) => {
 	const postcodes = request.body.postcodes;
 
 	if (!Array.isArray(postcodes)) return next(new JsonArrayRequiredError());
@@ -116,7 +117,7 @@ function bulkLookupPostcodes (request, response, next) {
 	
 	const lookupPostcode = (postcode, callback) => {
 		Postcode.find(postcode, (error, postcodeInfo) => {
-			if (error) return callback(null, { query: postcode, result: null });
+			if (error) return callback(error);
 			if (!postcodeInfo) return callback(null, { query: postcode, result: null });
 			callback(null, { 
 				query: postcode,
@@ -133,7 +134,7 @@ function bulkLookupPostcodes (request, response, next) {
 		};
 		return next();
 	});
-}
+};
 
 exports.query = (request, response, next) => {
 	if (request.query.latitude && request.query.longitude) {
