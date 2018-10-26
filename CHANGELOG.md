@@ -4,7 +4,11 @@ Any changes, including backwards incompatible changes will be listed here
 
 ## 9.0.3 (26/10/2018)
 
+General fixes. Some changes to better facilitate dockerising application
+
 - Fix: /outcodes endpoint returned a `result` attribute rather than an `error` attribute for a not found response
+- Docker: Application gracefully exits from SIGTERM
+- Docker: Application writes logs to stdout when `NODE_ENV=production`
 
 ## 9.0.2 (23/8/2018)
 
