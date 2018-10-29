@@ -7,7 +7,7 @@ const options = {
   port: process.env.PORT,
   method: "GET",
   timeout: 2000,
-  path: '/ping',
+  path: "/ping",
 };
 
 http.request(options, response => {

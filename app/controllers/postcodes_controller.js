@@ -6,7 +6,6 @@ const Postcode = require("../models/postcode");
 const Pc = require("postcode");
 const env = process.env.NODE_ENV || "development";
 const { defaults } = require("../../config/config.js")(env);
-const { startTimer } = require("../lib/timeout.js");
 const {
   InvalidPostcodeError,
   PostcodeNotFoundError,
