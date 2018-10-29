@@ -2,6 +2,20 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 9.0.3 (26/10/2018)
+
+Minor updates and fixes. Many related to docker improvements
+
+- Fix: /outcodes endpoint returned a `result` attribute rather than an `error` attribute for a not found response
+- Docker Related: Application gracefully exits from SIGTERM
+- Docker Related: Application writes logs to stdout when `NODE_ENV=production`
+- DockerFile:
+  - Added healthcheck
+  - Run application as non-root user (`node`)
+  - Reduced image size: delete npm cache, added .dockerignore
+- DockerFile.pg:
+  - New docker file that builds a postgresql container that preloads postcodesio.io dataset
+
 ## 9.0.2 (23/8/2018)
 
 - Updated ONSPD dataset to August 2018

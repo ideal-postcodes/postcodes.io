@@ -566,6 +566,9 @@ module.exports = {
 
 	// Libs
 	unaccent: require("../../app/lib/unaccent.js"),
+	errors: require("../../app/lib/errors.js"),
+	string: require("../../app/lib/string.js"),
+	timeout: require("../../app/lib/timeout.js"),
 
 	// Models
 	Base: Base,

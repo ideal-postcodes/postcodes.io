@@ -1,27 +1,23 @@
 "use strict";
 
 const Place = require("../models/place");
-const path = require("path");
 const env = process.env.NODE_ENV || "development";
-const configPath = path.join(__dirname, "../../config/config.js");
-const defaults = require(configPath)(env).defaults;
+const defaults = require("../../config/config.js")(env).defaults;
 const searchDefaults = defaults.placesSearch;
+const {
+  PlaceNotFoundError,
+  InvalidQueryError,
+} = require("../lib/errors.js");
 
 exports.show = (request, response, next) => {
-	const id = request.params.id;
+	const { id } = request.params;
 	Place.findByCode(id.toLowerCase(), (error, place) => {
 		if (error) return next(error);
-		if (place) {
-			response.jsonApiResponse = {
-				status: 200,
-				result: Place.toJson(place)
-			};
-		} else {
-			response.jsonApiResponse = {
-				status: 404,
-				error: "Place not found"
-			};
-		}
+    if (!place) return next(new PlaceNotFoundError());
+    response.jsonApiResponse = {
+      status: 200,
+      result: Place.toJson(place)
+    };
 		next();
 	});
 };
@@ -39,32 +35,21 @@ exports.random = (request, response, next) => {
 
 exports.query = (request, response, next) => {
 	const query = request.query.query || request.query.q;
-	if (query) {
-		searchPlace(request, response, next);
-		return;
-	}
-
-	response.jsonApiResponse = {
-		status: 400,
-		error: "No valid query submitted. Remember to include query parameter"
-	};
-
-	return next();
+	if (query) return searchPlace(request, response, next);
+  return next(new InvalidQueryError());
 };
 
-const setEmptyResponse = response => {
+const returnEmptyResponse = (response, next) => {
 	response.jsonApiResponse = {
 		status: 200,
 		result: []
 	};
+  next();
 };
 
 const searchPlace = (request, response, next) => {
 	const name = request.query.query || request.query.q;
-	if (name.trim().length === 0) {
-		setEmptyResponse(response);
-		return next();
-	}
+	if (name.trim().length === 0) return returnEmptyResponse(response, next);
 
 	let limit = parseInt(request.query.limit, 10) || 
 		parseInt(request.query.l, 10) || 
@@ -72,15 +57,9 @@ const searchPlace = (request, response, next) => {
 
 	if (isNaN(limit) || limit < 1) limit = searchDefaults.limit.DEFAULT;
 
-	Place.search({
-		name: name,
-		limit: limit
-	}, (error, places) => {
+	Place.search({ name, limit }, (error, places) => {
 		if (error) return next(error);
-		if (!places) {
-			setEmptyResponse(response);
-			return next();
-		}
+		if (!places) return returnEmptyResponse(response, next);
 		response.jsonApiResponse = {
 			status: 200,
 			result: places.map(p => Place.toJson(p))

@@ -86,7 +86,7 @@ const config = {
 		log : {
 			name : "postcodes.io",
 			streams: [{
-				path : path.join(rootPath, "/logs/production.log")	
+				path : process.stdout
 			}]
 		}
 	}

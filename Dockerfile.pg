@@ -1,0 +1,10 @@
+FROM mdillon/postgis:9.6
+
+# Copy the pointer to the latest pg_dump
+COPY latest /tmp/latest
+
+# Download and decompress latest pg_dump into image to be loaded on container startup
+RUN apt-get update && \
+    apt-get install wget -y && \
+    wget -nv -O - $(cat /tmp/latest) > /docker-entrypoint-initdb.d/_postcodesiodata.sql.gz
+

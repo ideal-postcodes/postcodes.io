@@ -1,6 +1,12 @@
 "use strict";
 
 const Outcode = require("../models/outcode");
+const {
+  OutcodeNotFoundError,
+  InvalidLimitError,
+  InvalidRadiusError,
+  InvalidGeolocationError,
+} = require("../lib/errors.js");
 
 exports.query = (request, response, next) => {
 	if (request.query.latitude && request.query.longitude) {
@@ -17,52 +23,32 @@ exports.query = (request, response, next) => {
 		return;
 	}
 
-	response.jsonApiResponse = {
-		status: 400,
-		error: "Invalid longitude/latitude submitted"
-	};
-	return next();
+  return next(new InvalidGeolocationError());
 };
 
 exports.showOutcode = (request, response, next) => {
-	const outcode = request.params.outcode;
+	const { outcode } = request.params;
 
 	Outcode.find(outcode, (error, result) => {
 		if (error) return next(error);
-		if (!result) {
-			response.jsonApiResponse = {
-				status: 404,
-				result: null
-			};
-		} else {
-			response.jsonApiResponse = {
-				status: 200,
-				result: Outcode.toJson(result)
-			};
-		}
+		if (!result) return next(new OutcodeNotFoundError());
+    response.jsonApiResponse = {
+      status: 200,
+      result: Outcode.toJson(result)
+    };
 		return next();
 	});
 };
 
 exports.nearest = (request, response, next) => {
-	const outcode = request.params.outcode;
+	const { outcode } = request.params;
 
 	Outcode.find(outcode, (error, outcode) => {
-		if (error) {
-			return next(error);
-		}
-
-		if (outcode) {
-			request.params.longitude = outcode.longitude;
-			request.params.latitude = outcode.latitude;
-			return nearestOutcodes(request, response, next);
-		} else {
-			response.jsonApiResponse = {
-				status: 404,
-				error: "Outcode not found"
-			};
-			return next();
-		}
+		if (error) return next(error);
+    if (!outcode) return next(new OutcodeNotFoundError());
+    request.params.longitude = outcode.longitude;
+    request.params.latitude = outcode.latitude;
+    return nearestOutcodes(request, response, next);
 	});
 };
 
@@ -72,57 +58,29 @@ function nearestOutcodes (request, response, next) {
 	let limit, radius; 
 	const params = {};
 
-	if (isNaN(longitude) || isNaN(latitude)) {
-		response.jsonApiResponse = {
-			status: 400,
-			error: "Invalid longitude/latitude submitted"
-		};
-		return next();
-	} else {
-		params.longitude = longitude;
-		params.latitude = latitude;
-	}
+	if (isNaN(longitude) || isNaN(latitude)) return next(new InvalidGeolocationError());
+  params.longitude = longitude;
+  params.latitude = latitude;
 
 	if (request.query.limit) {
 		limit = parseInt(request.query.limit, 10);
-		if (isNaN(limit)) {
-			response.jsonApiResponse = {
-				status: 400,
-				error: "Invalid result limit submitted"
-			};
-			return next();
-		} else {
-			params.limit = limit;
-		}
+		if (isNaN(limit)) return next(new InvalidLimitError());
+    params.limit = limit;
 	}
 
 	if (request.query.radius) {
 		radius = parseFloat(request.query.radius);
-		if (isNaN(radius)) {
-			response.jsonApiResponse = {
-				status: 400,
-				error: "Invalid lookup radius submitted"
-			};
-			return next();
-		} else {
-			params.radius = radius;
-		}
+		if (isNaN(radius)) return next(new InvalidRadiusError());
+    params.radius = radius;
 	}
 
 	Outcode.nearest(params, (error, results) => {
 		if (error) return next(error);
-		if (!results) {
-			response.jsonApiResponse = {
-				status: 200,
-				result: null
-			};
-			return next();
-		} else {
-			response.jsonApiResponse = {
-				status: 200,
-				result: results.map(outcode => Outcode.toJson(outcode))
-			};
-			return next();
-		}
+    response.jsonApiResponse = {
+      status: 200,
+      result: !!results ? results.map(outcode => Outcode.toJson(outcode)) : null,
+    };
+    return next();
 	});
 }
+

@@ -1,129 +1,82 @@
 "use strict";
 
 const async = require("async");
-const S = require("string");
+const { isEmpty } = require("../lib/string.js");
 const Postcode = require("../models/postcode");
 const Pc = require("postcode");
-const path = require("path");
 const env = process.env.NODE_ENV || "development";
-const defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
+const { defaults } = require("../../config/config.js")(env);
+const {
+  InvalidPostcodeError,
+  PostcodeNotFoundError,
+  InvalidJsonQueryError,
+  JsonArrayRequiredError,
+  ExceedMaxGeolocationsError,
+  ExceedMaxPostcodesError,
+  PostcodeQueryRequiredError,
+  InvalidGeolocationError,
+  InvalidLimitError,
+  InvalidRadiusError,
+} = require("../lib/errors.js");
 
 exports.show = (request, response, next) => {
-	const postcode = request.params.postcode;
-	if (!new Pc(postcode.trim()).valid()) {
-		response.jsonApiResponse = {
-			status: 404,
-			error: "Invalid postcode"
-		};
-		return next();
-	}
-
-	Postcode.find(postcode, (error, address) => {
-		if (error) {
-			return next(error);
-		}
-		if (address) {
-			response.jsonApiResponse = {
-				status: 200,
-				result: Postcode.toJson(address)
-			};
-			return next();		
-		} else {
-			response.jsonApiResponse = {
-				status: 404,
-				error: "Postcode not found"
-			};
-			return next();
-		}
+	const { postcode } = request.params;
+	if (!new Pc(postcode.trim()).valid()) return next(new InvalidPostcodeError());
+		
+	Postcode.find(postcode, (error, result) => {
+		if (error) return next(error);
+    if (!result) return next(new PostcodeNotFoundError());
+    response.jsonApiResponse = {
+      status: 200,
+      result: Postcode.toJson(result)
+    };
+    return next();
 	});
 };
 
 exports.valid = (request, response, next) => {
-	const postcode = request.params.postcode;
+	const { postcode } = request.params;
 	
-	Postcode.find(postcode, (error, address) => {
-		if (error) {
-			return next(error);
-		}
-
-		if (address) {
-			response.jsonApiResponse = {
-				status: 200,
-				result: true
-			};		
-			return next();
-		} else {
-			response.jsonApiResponse = {
-				status: 200,
-				result: false
-			};
-			return next();		
-		}
+	Postcode.find(postcode, (error, result) => {
+		if (error) return next(error);
+    response.jsonApiResponse = {
+      status: 200,
+      result: !!result,
+    };
+    return next();		
 	});	
 };
 
 exports.random = (request, response, next) => {
-	Postcode.random(request.query, (error, address) => {
-		if (error) {
-			return next(error);
-		}
-
+	Postcode.random(request.query, (error, result) => {
+		if (error) return next(error);
 		response.jsonApiResponse = {
 			status: 200,
-			result: address ? Postcode.toJson(address) : null
+			result: result ? Postcode.toJson(result) : null
 		};
 		return next();
 	});
 };
 
-const invalidJSONQueryMessage = [
-	"Invalid JSON query submitted.", 
-	"You need to submit a JSON object with an array of postcodes or geolocation objects.",
-	"Also ensure that Content-Type is set to application/json"
-].join(" ");
-
 exports.bulk = (request, response, next) => {
-	if (request.body.postcodes) {
-		return bulkLookupPostcodes(request, response, next);
-	} else if (request.body.geolocations) {
-		return bulkGeocode(request, response, next);
-	} else {
-		response.jsonApiResponse = {
-			status: 400,
-			error: invalidJSONQueryMessage
-		};
-		return next();
-	}
+	if (request.body.postcodes) return bulkLookupPostcodes(request, response, next);
+	if (request.body.geolocations) return bulkGeocode(request, response, next);
+  return next(new InvalidJsonQueryError());
 };
 
 const MAX_GEOLOCATIONS = defaults.bulkGeocode.geolocations.MAX;
 const GEO_ASYNC_LIMIT = defaults.bulkGeocode.geolocations.ASYNC_LIMIT || MAX_GEOLOCATIONS;
 
-function bulkGeocode (request, response, next) {
-	const geolocations = request.body.geolocations;
+const bulkGeocode = (request, response, next) => {
+	const { geolocations } = request.body;
 
-	if (!Array.isArray(geolocations)) {
-		response.jsonApiResponse = {
-			status: 400,
-			error: "Invalid data submitted. You need to provide a JSON array"
-		};
-		return next();
-	}
-
-	const MAX_GEOLOCATIONS = defaults.bulkGeocode.geolocations.MAX;
-	if (geolocations.length > MAX_GEOLOCATIONS) {
-		response.jsonApiResponse = {
-			status: 400,
-			error: `Too many locations submitted. Up to ${MAX_GEOLOCATIONS} locations can be bulk requested at a time`
-		};
-		return next();
-	}
+	if (!Array.isArray(geolocations)) return next(new JsonArrayRequiredError());
+	if (geolocations.length > MAX_GEOLOCATIONS) return next(new ExceedMaxGeolocationsError());
 	
 	const lookupGeolocation = (location, callback) => {
 		Postcode.nearestPostcodes(location, (error, postcodes) => {
-			if (error || !postcodes) {
-				return callback(null, { query: location, result: null });
-			}
+			if (error) return callback(error);
+			if (!postcodes) return callback(null, { query: location, result: null });
 			callback(null, {
 				query: sanitizeQuery(location),
 				result: postcodes.map(postcode => Postcode.toJson(postcode))
@@ -150,35 +103,21 @@ function bulkGeocode (request, response, next) {
 		};
 		return next();
 	});
-}
+};
 
 const MAX_POSTCODES = defaults.bulkLookups.postcodes.MAX;
 const BULK_ASYNC_LIMIT = defaults.bulkLookups.postcodes.ASYNC_LIMIT || MAX_POSTCODES;
 
-function bulkLookupPostcodes (request, response, next) {
+const bulkLookupPostcodes = (request, response, next) => {
 	const postcodes = request.body.postcodes;
 
-	if (!Array.isArray(postcodes)) {
-		response.jsonApiResponse = {
-			status: 400,
-			error: "Invalid data submitted. You need to provide a JSON array"
-		};
-		return next();
-	}
-	
-	if (postcodes.length > MAX_POSTCODES) {
-		response.jsonApiResponse = {
-			status: 400,
-			error: `Too many postcodes submitted. Up to ${MAX_POSTCODES} postcodes can be bulk requested at a time`
-		};
-		return next();
-	}
+	if (!Array.isArray(postcodes)) return next(new JsonArrayRequiredError());
+	if (postcodes.length > MAX_POSTCODES) return (new ExceedMaxPostcodesError()); 
 	
 	const lookupPostcode = (postcode, callback) => {
 		Postcode.find(postcode, (error, postcodeInfo) => {
-			if (error || !postcodeInfo) { 
-				return callback(null, { query: postcode, result: null });
-			}
+			if (error) return callback(error);
+			if (!postcodeInfo) return callback(null, { query: postcode, result: null });
 			callback(null, { 
 				query: postcode,
 				result: Postcode.toJson(postcodeInfo)
@@ -194,7 +133,7 @@ function bulkLookupPostcodes (request, response, next) {
 		};
 		return next();
 	});
-}
+};
 
 exports.query = (request, response, next) => {
 	if (request.query.latitude && request.query.longitude) {
@@ -212,59 +151,31 @@ exports.query = (request, response, next) => {
 	}
 
 	const postcode = request.query.q || request.query.query;
-	const limit = request.query.limit;
+	const { limit } = request.query;
 
-	if (S(postcode).isEmpty()) {
-		response.jsonApiResponse = {
-			status: 400,
-			error: "No postcode query submitted. Remember to include query parameter"
-		};
-		return next();
-	}
+	if (isEmpty(postcode)) return next(new PostcodeQueryRequiredError());
 
-	Postcode.search({
-		postcode: postcode, 
-		limit: limit
-	}, (error, results) => {
+	Postcode.search({ postcode, limit }, (error, results) => {
 		if (error) return next(error);
-		if (!results) {
-			response.jsonApiResponse = {
-				status: 200,
-				result: null
-			};
-			return next();
-		} else {
-			response.jsonApiResponse = {
-				status: 200,
-				result: results.map(elem => Postcode.toJson(elem))
-			};
-			return next();
-		}
+    response.jsonApiResponse = {
+      status: 200,
+      result: results ? results.map(elem => Postcode.toJson(elem)) : null,
+    };
+    return next();
 	});
 };
 
 exports.autocomplete = (request, response, next) => {
-	const postcode = request.params.postcode;
-	const limit = request.query.limit;
+	const { postcode } = request.params;
+	const { limit } = request.query;
 
-	Postcode.search({
-		postcode: postcode, 
-		limit: limit
-	}, (error, results) => {
+	Postcode.search({ postcode, limit }, (error, results) => {
 		if (error) return next(error);
-		if (!results) {
-			response.jsonApiResponse = {
-				status: 200,
-				result: null
-			};
-			return next();
-		} else {
-			response.jsonApiResponse = {
-				status: 200,
-				result: results.map(elem => elem.postcode)
-			};
-			return next();
-		}
+    response.jsonApiResponse = {
+      status: 200,
+      result: !!results ? results.map(elem => elem.postcode) : null,
+    };
+    return next();
 	});
 };
 
@@ -274,83 +185,45 @@ const nearestPostcodes = (request, response, next) => {
 	let limit, radius;
 	const params = {};
 
-	if (isNaN(longitude) || isNaN(latitude)) {
-		response.jsonApiResponse = {
-			status: 400,
-			error: "Invalid longitude/latitude submitted"
-		};
-		return next();
-	} else {
-		params.longitude = longitude;
-		params.latitude = latitude;
-	}
+	if (isNaN(longitude) || isNaN(latitude)) return next(new InvalidGeolocationError());
+  params.longitude = longitude;
+  params.latitude = latitude;
 
 	if (request.query.limit) {
 		limit = parseInt(request.query.limit, 10);
-		if (isNaN(limit)) {
-			response.jsonApiResponse = {
-				status: 400,
-				error: "Invalid result limit submitted"
-			};
-			return next();
-		} else {
-			params.limit = limit;
-		}
+		if (isNaN(limit)) return next(new InvalidLimitError());
+    params.limit = limit;
 	}
 
 	if (request.query.radius) {
 		radius = parseFloat(request.query.radius);
-		if (isNaN(radius)) {
-			response.jsonApiResponse = {
-				status: 400,
-				error: "Invalid lookup radius submitted"
-			};
-			return next();
-		} else {
-			params.radius = radius;
-		}
+		if (isNaN(radius)) return next(new InvalidRadiusError());
+    params.radius = radius;
 	}
 
 	params.wideSearch = !!request.query.wideSearch || !!request.query.widesearch;
 
 	Postcode.nearestPostcodes(params, (error, results) => {
 		if (error) return next(error);
-		if (!results) {
-			response.jsonApiResponse = {
-				status: 200,
-				result: null
-			};
-			return next();
-		} else {
-			response.jsonApiResponse = {
-				status: 200,
-				result: results.map(postcode => Postcode.toJson(postcode))
-			};
-			return next();
-		}
+    response.jsonApiResponse = {
+      status: 200,
+      result: !!results ? results.map(postcode => Postcode.toJson(postcode)) : null,
+    };
+    return next();
 	});
 };
 
 exports.lonlat = nearestPostcodes;
 
 exports.nearest = (request, response, next) => {
-	const postcode = request.params.postcode;
+	const { postcode } = request.params;
 
-	Postcode.find(postcode, (error, address) => {
-		if (error) {
-			return next(error);
-		}
-
-		if (address) {
-			request.params.longitude = address.longitude;
-			request.params.latitude = address.latitude;
-			return nearestPostcodes(request, response, next);
-		} else {
-			response.jsonApiResponse = {
-				status: 404,
-				error: "Postcode not found"
-			};
-			return next();
-		}
+	Postcode.find(postcode, (error, result) => {
+		if (error) return next(error);
+    if (!result) return next(new PostcodeNotFoundError());
+    request.params.longitude = result.longitude;
+    request.params.latitude = result.latitude;
+    return nearestPostcodes(request, response, next);
 	});
 };
+
