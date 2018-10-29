@@ -46,9 +46,15 @@ The import process takes around 10 minutes to complete.
 node server.js // Default environment is development
 ```
 
-### Running with Docker
+## Docker
 
-Postcodes.io is packaged as a Docker container identified on the Docker Hub as `idealpostcodes/postcodes.io`.
+This repository builds 2 both application and database services as docker containers
+
+### Application
+
+The Postcodes.io application is packaged as a Docker container identified on the Docker Hub as `idealpostcodes/postcodes.io`.
+
+Example usage:
 
 ```
 docker run -d -p 8000 idealpostcodes/postcodes.io
@@ -56,14 +62,25 @@ docker run -d -p 8000 idealpostcodes/postcodes.io
 
 Configuration available via Environment Variables:
 
-- `MAPBOX_PUBLIC_KEY`
 - `POSTGRES_USER`
 - `POSTGRES_PASSWORD`
 - `POSTGRES_DATABASE`
 - `POSTGRES_HOST`
 - `POSTGRES_PORT`
-- `PORT`
+- `PORT` (HTTP Port to run on)
+- `MAPBOX_PUBLIC_KEY`
 
+### Database
+
+`idealpostcodes/postcodes.io.db` points to a [PostgreSQL & PostGIS](https://hub.docker.com/r/mdillon/postgis/) base image and preloads the latest `pg_dump` in the build process. Upon starting a container for the first time, PostGIS will be enabled and the `pg_dump` will take around a minute to restore.
+
+Example usage:
+
+```
+docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e POSTGRES_PASSWORD=password idealpostcodes/postcodes.io.db
+```
+
+As this contains the official postgres base image, the available configuration environment variables are documented here: [https://hub.docker.com/_/postgres/](https://hub.docker.com/_/postgres/)
 
 ## Testing
 
