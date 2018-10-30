@@ -54,7 +54,7 @@
     "commonlog-bunyan": "~0.4.3",
     "cors": "~2.8.4",
     "csv": "~1.1.0",
-    "csv-parse": "~3.0.0",
+    "csv-parse": "~3.1.0",
     "ejs": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
     "escape-string-regexp": "~1.0.5",
     "express": "~4.16.3",
