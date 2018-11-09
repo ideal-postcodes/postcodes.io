@@ -48,7 +48,7 @@ node server.js // Default environment is development
 
 ## Docker
 
-This repository builds 2 both application and database services as docker containers
+This repository builds both the application and database services as docker containers
 
 ### Application
 
