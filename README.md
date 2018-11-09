@@ -28,7 +28,7 @@ $ cd postcodes.io/ && npm install
 
 **Configure Postgres and Seed Database**
 
-Postcodes.io is packaged with a script to setup and download the ONS Postcode Directory. To run this, navigate into the repository directory and run,
+Postcodes.io is packaged with a script to setup and download the ONS Postcode Directory. To run this, navigate into the repository directory and run:
 
 ```
 $ npm run setup
@@ -48,7 +48,7 @@ node server.js // Default environment is development
 
 ## Docker
 
-This repository builds both the application and database services as docker containers
+This repository builds both the application and database services as docker containers.
 
 ### Application
 
