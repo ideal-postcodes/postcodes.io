@@ -59,7 +59,7 @@
     "escape-string-regexp": "~1.0.5",
     "express": "~4.16.3",
     "minimist": "~1.2.0",
-    "morgan": "~1.9.0",
+    "morgan": "~1.9.1",
     "node.extend": "~2.0.0",
     "ospoint": "~0.2.0",
     "pg": "~7.4.3",
