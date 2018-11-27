@@ -12,6 +12,7 @@ const Base = require(path.join(rootPath, "app/models"));
 const config = require(path.join(rootPath + "/config/config"))(env);
 const seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
 const seedPlacesPath = path.join(rootPath, "tests/seed/places/")
+const AttributeBaseSuite = require("./attribute_base.suite.js");
 
 // Load models
 const AttributeBase = require(path.join(rootPath, "app/models/attribute_base"));
@@ -529,7 +530,6 @@ module.exports = {
 	seedPostcodePath: seedPostcodePath,
 
 	// Methods
-
 	allowsCORS: allowsCORS,
 	clearTestDb: clearTestDb,
 	removeDiacritics: require("./remove_diacritics"),
@@ -563,6 +563,9 @@ module.exports = {
 	listDatabaseRelations: listDatabaseRelations,
 	listDatabaseIndexes: listDatabaseIndexes,
 	locationWithNearbyPostcodes: locationWithNearbyPostcodes,
+
+  // Test suites
+  AttributeBaseSuite,
 
 	// Libs
 	unaccent: require("../../app/lib/unaccent.js"),
