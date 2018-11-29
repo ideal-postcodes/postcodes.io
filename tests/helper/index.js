@@ -1,17 +1,16 @@
 "use strict";
 
-const util = require("util");
-const path = require("path");
+const { inherits } = require("util");
+const { resolve, join } = require("path");
 const async = require("async");
-const assert = require("chai").assert;
+const { assert } = require("chai");
 const randomString = require("random-string");
-const rootPath = path.join(__dirname, "../../");
 const env = process.env.NODE_ENV || "development";
 const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
 const Base = require("../../app/models");
 const config = require("../..//config/config")(env);
-const seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
-const seedPlacesPath = path.join(rootPath, "tests/seed/places/")
+const seedPostcodePath = resolve(__dirname, "../seed/postcode.csv");
+const seedPlacesPath = join(__dirname, "../seed/places/")
 const AttributeBaseSuite = require("./attribute_base.suite.js");
 
 // Load models
@@ -29,25 +28,20 @@ const Place = require("../../app/models/place");
 const TerminatedPostcode = require("../../app/models/terminated_postcode");
 const Ced = require("../../app/models/ced");
 
-const CSV_INDEX = {
+const CSV_INDEX = Object.freeze({
 	postcode: 2,
 	northings: 10,
 	eastings: 9
-};
+});
 
 /**
  * Clears the test database
- * - Skips if NUKE_AFTER
+ * - Skips if PRESERVE_DB
  * @param  {function} callback
  * @return {undefined}
  */
 const clearTestDb = (callback) => {
-	if (process.env.PRESERVE_DB !== undefined) {
-		console.log("Tests concluded. Opted for preserving testing database...")
-		return callback(null)
-	};
-
-	console.log("Tests concluded, wiping DB...");
+	if (process.env.PRESERVE_DB !== undefined) return callback(null)
 	const instructions = [];
 	instructions.push(Postcode._destroyRelation.bind(Postcode));
 	instructions.push(TerminatedPostcode._destroyRelation.bind(TerminatedPostcode));
@@ -157,7 +151,7 @@ function getCustomRelation () {
 		Base.Base.call(this, relationName, schema);
 	}
 
-	util.inherits(CustomRelation, Base.Base);
+	inherits(CustomRelation, Base.Base);
 
 	return new CustomRelation();
 }
@@ -527,7 +521,6 @@ function listDatabaseIndexes(cb) {
 module.exports = {
 	// Data
 	config,
-	rootPath,
 	seedPostcodePath,
 
 	// Methods
@@ -590,7 +583,7 @@ module.exports = {
 	Place,
 	TerminatedPostcode,
 	seedPaths: {
-		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
-		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv")
+    postcodes: seedPostcodePath,
+    customRelation: resolve(__dirname, "../seed/customRelation.csv")
 	}
 };
