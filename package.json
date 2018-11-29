@@ -85,5 +85,8 @@
     "ignore": [
       "csv"
     ]
+  },
+  "engines": {
+    "node": ">=8.9.0"
   }
 }

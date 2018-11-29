@@ -2,6 +2,10 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 10.0.0 (29/11/2018)
+
+- *Breaking Changes* Only node.js 8 LTS and above supported
+
 ## 9.0.3 (26/10/2018)
 
 Minor updates and fixes. Many related to docker improvements

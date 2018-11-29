@@ -1,91 +1,54 @@
+--- 
+default_steps: &default_steps
+  steps: 
+    - run: 
+        command: "dockerize -wait tcp://localhost:5432 -timeout 2m"
+        name: "Wait for db"
+    - checkout
+    - run: "sudo apt-get update"
+    - run: "sudo apt install postgresql-client"
+    - run: "POSTGRES_USER=postgres npm run setup_test_db"
+    - restore_cache: 
+        keys: 
+          - "nodemodules-deps-{{ checksum \"package-lock.json\" }}"
+    - run: "npm install"
+    - save_cache: 
+        key: "nodemodules-deps-{{ checksum \"package-lock.json\" }}"
+        paths: 
+          - node_modules/
+    - run: "npm run test"
+    - run: "npm run coverage"
+jobs: 
+  node10: 
+    <<: *default_steps
+    docker: 
+      - environment: 
+          - PGHOST=localhost
+          - PGUSER=postgres
+        image: "circleci/node:10"
+      - image: "circleci/postgres:9.6-alpine-postgis"
+  node11: 
+    <<: *default_steps
+    docker: 
+      - environment: 
+          - PGHOST=localhost
+          - PGUSER=postgres
+        image: "circleci/node:11"
+      - image: "circleci/postgres:9.6-alpine-postgis"
+  node8: 
+    <<: *default_steps
+    docker: 
+      - environment: 
+          - PGHOST=localhost
+          - PGUSER=postgres
+        image: "circleci/node:8"
+      - image: "circleci/postgres:9.6-alpine-postgis"
 version: 2
-jobs:
-   node6:
-     docker:
-       - image: circleci/node:6.10
-         environment:
-           - PGHOST=localhost
-           - PGUSER=postgres
-       - image: circleci/postgres:9.6-alpine-postgis
-     steps:
-       - run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:5432 -timeout 2m
-       - checkout
-       - run: sudo apt-get update
-       - run: sudo apt install postgresql-client
-       - run: POSTGRES_USER=postgres npm run setup_test_db
-       - restore_cache:
-           keys:
-             - nodemodules-deps-{{ checksum "package-lock.json" }}
-             - nodemodules-deps-
-       - run: npm install
-       - save_cache:
-           key: nodemodules-deps-{{ checksum "package-lock.json" }}
-           paths:
-             - node_modules/
-       - run: npm run test
-       - run: npm run coverage
-       
-
-   node8:
-     docker:
-       - image: circleci/node:8.8
-         environment:
-           - PGHOST=localhost
-           - PGUSER=postgres
-       - image: circleci/postgres:9.6-alpine-postgis
-     steps:
-       - run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:5432 -timeout 2m
-       - checkout
-       - run: sudo apt-get update
-       - run: sudo apt install postgresql-client
-       - run: POSTGRES_USER=postgres npm run setup_test_db
-       - restore_cache:
-           keys:
-             - nodemodules-deps-{{ checksum "package-lock.json" }}
-             - nodemodules-deps-
-       - run: npm install
-       - save_cache:
-           key: nodemodules-deps-{{ checksum "package-lock.json" }}
-           paths:
-             - node_modules/
-       - run: npm run test
-       - run: npm run coverage
-   node10:
-     docker:
-       - image: circleci/node:10
-         environment:
-           - PGHOST=localhost
-           - PGUSER=postgres
-       - image: circleci/postgres:9.6-alpine-postgis
-     steps:
-       - run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:5432 -timeout 2m
-       - checkout
-       - run: sudo apt-get update
-       - run: sudo apt install postgresql-client
-       - run: POSTGRES_USER=postgres npm run setup_test_db
-       - restore_cache:
-           keys:
-             - nodemodules-deps-{{ checksum "package-lock.json" }}
-             - nodemodules-deps-
-       - run: npm install
-       - save_cache:
-           key: nodemodules-deps-{{ checksum "package-lock.json" }}
-           paths:
-             - node_modules/
-       - run: npm run test
-       - run: npm run coverage
-       
-workflows:
-  version: 2
-  node6_node8_node10:
-    jobs:
-      - node6
+workflows: 
+  supported_nodes: 
+    jobs: 
       - node8
       - node10
-       
+      - node11
+  version: 2
+
