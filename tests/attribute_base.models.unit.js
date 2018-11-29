@@ -2,6 +2,7 @@ const helper = require("./helper/index.js");
 
 [
   "Ccg",
+  "Ced",
   "County",
   "Constituency",
   "District",

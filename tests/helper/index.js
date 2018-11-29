@@ -8,25 +8,26 @@ const randomString = require("random-string");
 const rootPath = path.join(__dirname, "../../");
 const env = process.env.NODE_ENV || "development";
 const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
-const Base = require(path.join(rootPath, "app/models"));
-const config = require(path.join(rootPath + "/config/config"))(env);
+const Base = require("../../app/models");
+const config = require("../..//config/config")(env);
 const seedPostcodePath = path.join(rootPath, "tests/seed/postcode.csv");
 const seedPlacesPath = path.join(rootPath, "tests/seed/places/")
 const AttributeBaseSuite = require("./attribute_base.suite.js");
 
 // Load models
-const AttributeBase = require(path.join(rootPath, "app/models/attribute_base"));
-const Postcode = require(path.join(rootPath, "app/models/postcode"));
-const District = require(path.join(rootPath, "app/models/district"));
-const Parish = require(path.join(rootPath, "app/models/parish"));
-const County = require(path.join(rootPath, "app/models/county"));
-const Ccg = require(path.join(rootPath, "app/models/ccg"));
-const Constituency = require(path.join(rootPath, "app/models/constituency"));
-const Nuts = require(path.join(rootPath, "app/models/nuts"));
-const Ward = require(path.join(rootPath, "app/models/ward"));
-const Outcode = require(path.join(rootPath, "app/models/outcode"));
-const Place = require(path.join(rootPath, "app/models/place"));
-const TerminatedPostcode = require(path.join(rootPath, "app/models/terminated_postcode"));
+const AttributeBase = require("../../app/models/attribute_base");
+const Postcode = require("../../app/models/postcode");
+const District = require("../../app/models/district");
+const Parish = require("../../app/models/parish");
+const County = require("../../app/models/county");
+const Ccg = require("../../app/models/ccg");
+const Constituency = require("../../app/models/constituency");
+const Nuts = require("../../app/models/nuts");
+const Ward = require("../../app/models/ward");
+const Outcode = require("../../app/models/outcode");
+const Place = require("../../app/models/place");
+const TerminatedPostcode = require("../../app/models/terminated_postcode");
+const Ced = require("../../app/models/ced");
 
 const CSV_INDEX = {
 	postcode: 2,
@@ -525,44 +526,44 @@ function listDatabaseIndexes(cb) {
 
 module.exports = {
 	// Data
-	config: config,
-	rootPath: rootPath,
-	seedPostcodePath: seedPostcodePath,
+	config,
+	rootPath,
+	seedPostcodePath,
 
 	// Methods
-	allowsCORS: allowsCORS,
-	clearTestDb: clearTestDb,
+	allowsCORS,
+	clearTestDb,
 	removeDiacritics: require("./remove_diacritics"),
-	inferIndexInfo: inferIndexInfo,
-	inferSchemaData: inferSchemaData,
-	sortByIndexColumns: sortByIndexColumns,
-	testOutcode: testOutcode,
-	randomOutcode: randomOutcode,
-	isPlaceObject: isPlaceObject,
-	randomPostcode: randomPostcode,
-	randomTerminatedPostcode: randomTerminatedPostcode,
-	randomLocation: randomLocation,
-	seedPostcodeDb: seedPostcodeDb,
-	seedTerminatedPostcodeDb: seedTerminatedPostcodeDb,
-	clearPostcodeDb: clearPostcodeDb,
-	clearTerminatedPostcodesDb: clearTerminatedPostcodesDb,
-	isOutcodeObject: isOutcodeObject,
-	validCorsOptions: validCorsOptions,
-	isPostcodeObject: isPostcodeObject,
-	isTerminatedPostcodeObject: isTerminatedPostcodeObject,
-	isRawTerminatedPostcodeObject: isRawTerminatedPostcodeObject,
-	isRawPlaceObject: isRawPlaceObject,
-	isPostcodeWithDistanceObject: isPostcodeWithDistanceObject,
-	jsonpResponseBody: jsonpResponseBody,
-	getCustomRelation: getCustomRelation,
-	isRawOutcodeObject: isRawOutcodeObject,
-	isRawPostcodeObject: isRawPostcodeObject,
-	isRawPostcodeObjectWithFC: isRawPostcodeObjectWithFC,
-	isRawPostcodeObjectWithFCandDistance: isRawPostcodeObjectWithFCandDistance,
-	lookupRandomPostcode: lookupRandomPostcode,
-	listDatabaseRelations: listDatabaseRelations,
-	listDatabaseIndexes: listDatabaseIndexes,
-	locationWithNearbyPostcodes: locationWithNearbyPostcodes,
+	inferIndexInfo,
+	inferSchemaData,
+	sortByIndexColumns,
+	testOutcode,
+	randomOutcode,
+	isPlaceObject,
+	randomPostcode,
+	randomTerminatedPostcode,
+	randomLocation,
+	seedPostcodeDb,
+	seedTerminatedPostcodeDb,
+	clearPostcodeDb,
+	clearTerminatedPostcodesDb,
+	isOutcodeObject,
+	validCorsOptions,
+	isPostcodeObject,
+	isTerminatedPostcodeObject,
+	isRawTerminatedPostcodeObject,
+	isRawPlaceObject,
+	isPostcodeWithDistanceObject,
+	jsonpResponseBody,
+	getCustomRelation,
+	isRawOutcodeObject,
+	isRawPostcodeObject,
+	isRawPostcodeObjectWithFC,
+	isRawPostcodeObjectWithFCandDistance,
+	lookupRandomPostcode,
+	listDatabaseRelations,
+	listDatabaseIndexes,
+	locationWithNearbyPostcodes,
 
   // Test suites
   AttributeBaseSuite,
@@ -574,19 +575,20 @@ module.exports = {
 	timeout: require("../../app/lib/timeout.js"),
 
 	// Models
-	Base: Base,
-	AttributeBase: AttributeBase,
-	Postcode: Postcode,
-	District: District,
-	Parish: Parish,
-	County: County,
-	Ccg: Ccg,
-	Constituency: Constituency,
-	Nuts: Nuts,
-	Ward: Ward,
-	Outcode: Outcode,
-	Place: Place,
-	TerminatedPostcode: TerminatedPostcode,
+	Base,
+	AttributeBase,
+	Postcode,
+	District,
+	Parish,
+	County,
+	Ccg,
+  Ced,
+	Constituency,
+	Nuts,
+	Ward,
+	Outcode,
+	Place,
+	TerminatedPostcode,
 	seedPaths: {
 		postcodes: path.join(rootPath, "/tests/seed/postcodes.csv"),
 		customRelation: path.join(rootPath, "/tests/seed/customRelation.csv")
