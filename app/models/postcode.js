@@ -3,7 +3,7 @@
 const util = require("util");
 const Pc = require("postcode");
 const async = require("async");
-const { Base, populateLocation, extractOnspdVal } = require("./index");
+const { Base, populateLocation, extractOnspdVal } = require("./base");
 const QueryStream = require("pg-query-stream");
 const env = process.env.NODE_ENV || "development";
 const { defaults } = require("../../config/config.js")(env);

@@ -7,55 +7,34 @@ const { assert } = require("chai");
 const randomString = require("random-string");
 const env = process.env.NODE_ENV || "development";
 const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
-const Base = require("../../app/models");
-const config = require("../..//config/config")(env);
+const config = require("../../config/config")(env);
 const seedPostcodePath = resolve(__dirname, "../seed/postcode.csv");
 const seedPlacesPath = join(__dirname, "../seed/places/")
 const AttributeBaseSuite = require("./attribute_base.suite.js");
 
 // Load models
-const AttributeBase = require("../../app/models/attribute_base");
-const Postcode = require("../../app/models/postcode");
-const District = require("../../app/models/district");
-const Parish = require("../../app/models/parish");
-const County = require("../../app/models/county");
-const Ccg = require("../../app/models/ccg");
-const Constituency = require("../../app/models/constituency");
-const Nuts = require("../../app/models/nuts");
-const Ward = require("../../app/models/ward");
-const Outcode = require("../../app/models/outcode");
-const Place = require("../../app/models/place");
-const TerminatedPostcode = require("../../app/models/terminated_postcode");
-const Ced = require("../../app/models/ced");
+const {
+  Base,
+  AttributeBase,
+  Postcode,
+  District,
+  Parish,
+  County,
+  Ccg,
+  Constituency,
+  Nuts,
+  Ward,
+  Outcode,
+  Place,
+  TerminatedPostcode,
+  Ced,
+} = require("../../app/models/index.js");
 
 const CSV_INDEX = Object.freeze({
 	postcode: 2,
 	northings: 10,
 	eastings: 9
 });
-
-/**
- * Clears the test database
- * - Skips if PRESERVE_DB
- * @param  {function} callback
- * @return {undefined}
- */
-const clearTestDb = (callback) => {
-	if (process.env.PRESERVE_DB !== undefined) return callback(null)
-	const instructions = [];
-	instructions.push(Postcode._destroyRelation.bind(Postcode));
-	instructions.push(TerminatedPostcode._destroyRelation.bind(TerminatedPostcode));
-	instructions.push(District._destroyRelation.bind(District));
-	instructions.push(Parish._destroyRelation.bind(Parish));
-	instructions.push(Nuts._destroyRelation.bind(Nuts));
-	instructions.push(County._destroyRelation.bind(County));
-	instructions.push(Constituency._destroyRelation.bind(Constituency));
-	instructions.push(Ccg._destroyRelation.bind(Ccg));
-	instructions.push(Ward._destroyRelation.bind(Ward));
-	instructions.push(Outcode._destroyRelation.bind(Outcode));
-	instructions.push(Place._destroyRelation.bind(Place));
-	async.series(instructions, callback);
-};
 
 // Infers columns schema from columnData
 const inferSchemaData = columnData => {
@@ -148,10 +127,10 @@ function getCustomRelation () {
 			};
 
 	function CustomRelation() {
-		Base.Base.call(this, relationName, schema);
+		Base.call(this, relationName, schema);
 	}
 
-	inherits(CustomRelation, Base.Base);
+	inherits(CustomRelation, Base);
 
 	return new CustomRelation();
 }
@@ -486,7 +465,7 @@ const databaseRelationsQuery = `
 
 // List relations in database
 function listDatabaseRelations(cb) {
-	Base.Base.prototype._query(databaseRelationsQuery, cb);
+	Base.prototype._query(databaseRelationsQuery, cb);
 }
 
 // Credit: https://stackoverflow.com/questions/6777456/list-all-index-names-column-names-and-its-table-name-of-a-postgresql-database
@@ -515,7 +494,7 @@ const databaseIndexesQuery = `
 
 // Lists indexes in database
 function listDatabaseIndexes(cb) {
-	Base.Base.prototype._query(databaseIndexesQuery, cb);
+	Base.prototype._query(databaseIndexesQuery, cb);
 }
 
 module.exports = {
@@ -525,7 +504,7 @@ module.exports = {
 
 	// Methods
 	allowsCORS,
-	clearTestDb,
+  ...require("./setup.js"),
 	removeDiacritics: require("./remove_diacritics"),
 	inferIndexInfo,
 	inferSchemaData,
@@ -584,6 +563,6 @@ module.exports = {
 	TerminatedPostcode,
 	seedPaths: {
     postcodes: seedPostcodePath,
-    customRelation: resolve(__dirname, "../seed/customRelation.csv")
+    customRelation: join(__dirname, "../seed/customRelation.csv")
 	}
 };

@@ -1,7 +1,7 @@
 "use strict";
 
 const util = require("util");
-const { Base, populateLocation, extractOnspdVal } = require("./index");
+const { Base, populateLocation, extractOnspdVal } = require("./base");
 const async = require("async");
 const Pc = require("postcode");
 

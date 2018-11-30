@@ -1,11 +1,15 @@
 "use strict";
 
 const helper = require("./helper");
-const assert = require("chai").assert;
+const { assert } = require("chai");
 const {
-	toTempName, toArchiveName, setupWithTableSwap, getLocation, Base,
+  toTempName,
+  toArchiveName,
+  setupWithTableSwap,
+  getLocation,
+  Base,
 	extractOnspdVal
-} = require("../app/models/index.js");
+} = require("../app/models/base.js");
 
 describe("Base model", function () {
 	describe("Base model instance methods", function () {

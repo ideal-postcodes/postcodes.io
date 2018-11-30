@@ -30,7 +30,7 @@ const Parish = require("../app/models/parish.js");
 const Ccg = require("../app/models/ccg.js");
 const Outcode = require("../app/models/outcode.js");
 const Constituency = require("../app/models/constituency.js");
-const { toTempName, setupWithTableSwap } = require("../app/models/index.js");
+const { toTempName, setupWithTableSwap } = require("../app/models/base.js");
 
 if (!sourceFile) {
 	console.log("Aborting Import. No source file specified");
