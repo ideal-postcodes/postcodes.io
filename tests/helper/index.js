@@ -1,15 +1,12 @@
 "use strict";
 
 const { inherits } = require("util");
-const { resolve, join } = require("path");
+const { join } = require("path");
 const async = require("async");
 const { assert } = require("chai");
 const randomString = require("random-string");
 const env = process.env.NODE_ENV || "development";
-const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
 const config = require("../../config/config")(env);
-const seedPostcodePath = resolve(__dirname, "../seed/postcode.csv");
-const seedPlacesPath = join(__dirname, "../seed/places/")
 const AttributeBaseSuite = require("./attribute_base.suite.js");
 
 // Load models
@@ -135,59 +132,6 @@ function getCustomRelation () {
 	return new CustomRelation();
 }
 
-function seedTerminatedPostcodeDb (callback) {
-	if (NO_RELOAD_DB) {
-		return callback(null);
-	}
-	const instructions = [];
-	instructions.push(function (callback) {
-		TerminatedPostcode._setupTable(seedPostcodePath, callback);
-	});
-	async.series(instructions, callback);
-}
-
-
-function seedPostcodeDb (callback) {
-	if (NO_RELOAD_DB) {
-		return callback(null);
-	}
-
-	const instructions = [];
-	instructions.push(function (callback) {
-		Postcode._setupTable(seedPostcodePath, callback);
-	});
-	instructions.push(function (callback) {
-		TerminatedPostcode._setupTable(seedPostcodePath, callback);
-	});
-	instructions.push(District._setupTable.bind(District));
-	instructions.push(Parish._setupTable.bind(Parish));
-	instructions.push(Nuts._setupTable.bind(Nuts));
-	instructions.push(County._setupTable.bind(County));
-	instructions.push(Constituency._setupTable.bind(Constituency));
-	instructions.push(Ccg._setupTable.bind(Ccg));
-	instructions.push(Ward._setupTable.bind(Ward));
-	instructions.push(Outcode._setupTable.bind(Outcode));
-	instructions.push(function (callback) {
-		Place._setupTable(seedPlacesPath, callback);
-	});
-
-	async.series(instructions, callback);
-}
-
-function clearTerminatedPostcodesDb(callback, force) {
-	if (NO_RELOAD_DB) {
-		return callback(null);
-	}
-	TerminatedPostcode._destroyRelation(callback);
-}
-
-// Runs before each test to clear test database
-function clearPostcodeDb(callback, force) {
-	if (NO_RELOAD_DB) {
-		return callback(null);
-	}
-	Postcode._destroyRelation(callback);
-}
 
 //Generates a random integer from 1 to max inclusive
 const getRandom = function (max) {
@@ -500,7 +444,6 @@ function listDatabaseIndexes(cb) {
 module.exports = {
 	// Data
 	config,
-	seedPostcodePath,
 
 	// Methods
 	allowsCORS,
@@ -515,10 +458,6 @@ module.exports = {
 	randomPostcode,
 	randomTerminatedPostcode,
 	randomLocation,
-	seedPostcodeDb,
-	seedTerminatedPostcodeDb,
-	clearPostcodeDb,
-	clearTerminatedPostcodesDb,
 	isOutcodeObject,
 	validCorsOptions,
 	isPostcodeObject,
@@ -562,7 +501,6 @@ module.exports = {
 	Place,
 	TerminatedPostcode,
 	seedPaths: {
-    postcodes: seedPostcodePath,
     customRelation: join(__dirname, "../seed/customRelation.csv")
 	}
 };
