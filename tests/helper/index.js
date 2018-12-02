@@ -14,17 +14,7 @@ const {
   Base,
   AttributeBase,
   Postcode,
-  District,
-  Parish,
-  County,
-  Ccg,
-  Constituency,
-  Nuts,
-  Ward,
-  Outcode,
-  Place,
   TerminatedPostcode,
-  Ced,
 } = require("../../app/models/index.js");
 
 const CSV_INDEX = Object.freeze({
@@ -485,21 +475,9 @@ module.exports = {
 	string: require("../../app/lib/string.js"),
 	timeout: require("../../app/lib/timeout.js"),
 
-	// Models
-	Base,
-	AttributeBase,
-	Postcode,
-	District,
-	Parish,
-	County,
-	Ccg,
-  Ced,
-	Constituency,
-	Nuts,
-	Ward,
-	Outcode,
-	Place,
-	TerminatedPostcode,
+	// Load in models
+  ...require("../../app/models/index.js"),
+
 	seedPaths: {
     customRelation: join(__dirname, "../seed/customRelation.csv")
 	}
