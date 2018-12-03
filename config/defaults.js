@@ -84,6 +84,7 @@ module.exports = {
 		"admin_county",
 		"admin_ward",
 		"ccg",
-		"nuts"
+    "nuts",
+    "ced"
 	]
 };
