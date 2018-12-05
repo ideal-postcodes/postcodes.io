@@ -6,6 +6,7 @@ Any changes, including backwards incompatible changes will be listed here
 
 - *Breaking Changes* Only node.js 8 LTS and above supported
 - Postcode responses now include County Electoral Districts (ceds)
+- Updated documentation (outcodes, installation)
 - Updated dependencies
 
 ## 9.0.3 (26/10/2018)
