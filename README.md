@@ -14,73 +14,13 @@ Please make sure you have the following available:
 - Postgres (9.5 or greater)
 - PostGIS extension [(Instructions)](http://postgis.net/install)
 
-We also have an end-to-end guide to install Postcodes.io on a fresh virtual machine [in the wiki](https://github.com/ideal-postcodes/postcodes.io/wiki/Installing-Postcodes.io).
+## Self Hosting
 
-## Install & Download Data & Run
+Instructions for installing and hosting postcodes.io yourself can be found at [postcodes.io/about](https://postcodes.io/about#Install-notes). Methods include:
 
-**Download and install**
-
-```bash
-$ git clone https://github.com/ideal-postcodes/postcodes.io.git
-
-$ cd postcodes.io/ && npm install
-```
-
-**Configure Postgres and Seed Database**
-
-Postcodes.io is packaged with a script to setup and download the ONS Postcode Directory. To run this, navigate into the repository directory and run:
-
-```
-$ npm run setup
-```
-
-This script will prompt you for Postgres superuser credentials. This privilege is required to create a new user, database, extensions and then to load the data. For the security conscious, you can find out how this works by [reading our installation notes](http://postcodes.io/docs#Install-notes) and [the script itself](/bin/setup.sh). Other install methods are available but require a bit of extra work.
-
-You can change the Postgres username/password yourself but you will need to update 'config/config.js' with the relevant credentials.
-
-The import process takes around 10 minutes to complete.
-
-**Run it**
-
-```
-node server.js // Default environment is development
-```
-
-## Docker
-
-This repository builds both the application and database services as docker containers.
-
-### Application
-
-The Postcodes.io application is packaged as a Docker container identified on the Docker Hub as `idealpostcodes/postcodes.io`.
-
-Example usage:
-
-```
-docker run -d -p 8000 idealpostcodes/postcodes.io
-```
-
-Configuration available via Environment Variables:
-
-- `POSTGRES_USER`
-- `POSTGRES_PASSWORD`
-- `POSTGRES_DATABASE`
-- `POSTGRES_HOST`
-- `POSTGRES_PORT`
-- `PORT` (HTTP Port to run on)
-- `MAPBOX_PUBLIC_KEY`
-
-### Database
-
-`idealpostcodes/postcodes.io.db` points to a [PostgreSQL & PostGIS](https://hub.docker.com/r/mdillon/postgis/) base image and preloads the latest `pg_dump` in the build process. Upon starting a container for the first time, PostGIS will be enabled and the `pg_dump` will take around a minute to restore.
-
-Example usage:
-
-```
-docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e POSTGRES_PASSWORD=password idealpostcodes/postcodes.io.db
-```
-
-As this contains the official postgres base image, the available configuration environment variables are documented here: [https://hub.docker.com/_/postgres/](https://hub.docker.com/_/postgres/)
+- [Install as Docker containers](https://postcodes.io/about#docker-install)
+- [Install on host with Node.js and Postgresql](https://postcodes.io/about#install-requirements)
+- [Download and import the raw dataset to Postgresql](https://postcodes.io/about#import-from-pgdump)
 
 ## Testing
 

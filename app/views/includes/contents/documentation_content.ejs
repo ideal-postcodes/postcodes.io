@@ -434,28 +434,66 @@
     <p><code>limit=</code> (not required) Limits number of places matches to return. Defaults to 10. Needs to be less than 100.</p>
     <h3 id="Random-Place">Random Place</h3>
     <p>Returns a random place and all associated data</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/random/places</h4></pre>
+
     <h2 class="doc-header anchor" id="Install-notes">Install Notes</h2>
+
     <p>There may be occasions where you want to host postcodes.io yourself. We've laid out instructions below on how to do this.</p>
-    <p>Installing Postcodes.io is matter of cloning the source. Simply run</p><pre><h4>$ git clone https://github.com/ideal-postcodes/postcodes.io.git</h4></pre>
-    <p>We currently provide 3 methods to import the necessary datasets</p>
+    <p>We currently provide 4 methods to import the necessary datasets and run the postcodes.io API application:</p>
     <ol>
-      <li>The easiest is to use our install script. This will require postgres superuser privileges to create and provision your database. It will then download the database and import the data from a pg_dump (hosted and created by us).</li>
-      <li>You can download the pg_dump and attempt to import the database yourself with psql or pg_restore.</li>
+      <li>Use our docker application and database images</li>
+      <li>Use our install script. This will require postgres superuser privileges to create and provision your database. It will then download the database and import the data from a <code>pg_dump</code> (hosted and created by us).</li>
+      <li>You can download the <code>pg_dump</code> and attempt to import the database yourself with <code>psql</code> or pg_restore.</li>
       <li>Lastly, you can retrieve the raw CSV data from the ONS and import it with our import script.</li>
     </ol>
-    <h3 id="install-requirements">Requirements</h3>
+
+    <h2 class="doc-header anchor" id="docker-install">1. Docker Installation</h2>
+    
+    <p>Postcodes.io can be installed using two docker containers. The postcodes.io application container and the postcodes.io database container (a Postgresql image loaded with the dataset at runtime)</p>
+
+    <h3 id="docker-install-requirements">Requirements</h3>
+    <ul><li><a href="https://docker.com">Docker</a></li></ul>
+    
+    <h3>Postcodes.io Docker Application Container</h3>
+
+    <p>The Postcodes.io application is packaged as a Docker container identified on the Docker Hub as <code>idealpostcodes/postcodes.io</code>.</p>
+    
+    <p>Example usage:</p>
+    <pre>docker run -d -p 8000 idealpostcodes/postcodes.io</pre>
+
+    <p>Configuration available via Environment Variables:</p>
     <ul>
-      <li><a href="http://nodejs.org">Node.js</a></li>
-      <li><a href="http://postgis.net/install/">Postgresql and Postgis</a></li>
+      <li><code>POSTGRES_USER</code></li>
+      <li><code>POSTGRES_PASSWORD</code></li>
+      <li><code>POSTGRES_DATABASE</code></li>
+      <li><code>POSTGRES_HOST</code></li>
+      <li><code>POSTGRES_PORT</code></li>
+      <li><code>PORT</code> (HTTP Port to run on)</li>
+      <li><code>MAPBOX_PUBLIC_KEY</code></li>
     </ul>
-    <h3 id="data-download">Data Download</h3>
-    <p>Data is sourced and can be downloaded from the<a href="https://geoportal.statistics.gov.uk/geoportal/catalog/main/home.page"> Office for National Statistics Data Portal.</a>The dataset is often not easy to find. The simplest way is to search
-    for "Postcode Directory".</p>
-    <p>Alternatively you can download a <a href="http://www.postgresql.org/docs/9.3/static/app-pgdump.html">pg_dump</a>of the postcode database which is hosted by us. This is the same dump which is used by the install script. The link to the latest
-      dump can be found in our<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/latest"> repository.</a></p>
-      <h3 id="install-script">Install Script</h3>
+
+    <h3>Postcodes.io Database Application</h3>
+    <p><code>idealpostcodes/postcodes.io.db</code> points to a <a href="https://hub.docker.com/r/mdillon/postgis/">PostgreSQL &amp; PostGIS</a> base image and preloads the latest <code>pg_dump</code> in the initialisation process. Upon starting a container for the first time, PostGIS will be enabled and the <code>pg_dump</code> will take around a minute to restore.</p>
+
+    <p>Example usage:</p>
+
+    <pre>docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e POSTGRES_PASSWORD=password idealpostcodes/postcodes.io.db</pre>
+
+    <p>As this contains the official postgres base image, the available configuration environment variables are documented here: <a href="https://hub.docker.com/_/postgres/">hub.docker.com/_/postgres/</a></p>
+
+    <br />
+    <h2 id="doc-header anchor">Classic Installation Methods (without Docker)</h3>
+
+    <h3 id="install-requirements">Requirements</h3>
+
+    <p>For non-docker installations, running Postcodes.io begins with cloning the repository: </p><pre>$ git clone https://github.com/ideal-postcodes/postcodes.io.git</pre>
+
+    <ul>
+      <li><a href="https://nodejs.org">Node.js</a></li>
+      <li><a href="https://postgis.net/install/">Postgresql and Postgis</a></li>
+    </ul>
+    <h3 id="install-script">2. Install Script</h3>
       <p>Currently the install process targets *nix systems. We've provisioned and tested on OS X Mavericks &amp; Ubuntu 14.04. Please<a href="/about"> let us know</a> if you have issues on other operating systems.</p>
-      <p>Postcodes.io is packaged with a<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/bin/setup.sh"> script</a> to provision postgres and download a dump (pg_dump) of the ONS Postcode Directory (hosted by us). The script will
+      <p>Postcodes.io is packaged with a<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/bin/setup.sh"> script</a> to provision postgres and download a dump of the ONS Postcode Directory (hosted by us). The script will
       do the following,</p>
       <ul>
         <li>Prompt you for your postgres superuser credentials (most of the setup steps require this level of privilege)</li>
@@ -464,16 +502,19 @@
         <li>Create the necessary extensions on "postcodesiodb"</li>
         <li>Download, unzip and stream the Postcode directory into Postgres</li>
       </ul>
-      <p>To run,</p><pre><h4>$ npm run setup</h4></pre>
-      <h3 id="import-from-pgdump">Manual Installation from our pg_dump</h3>
-      <p>To setup the database from our pg_dump simply download, gunzip and use either psql or pg_restore to import the data into Postgresql.</p>
-      <p>For example,</p><pre><h4>$ cat postcodeiodb.sql | psql postcodesiodb</h4></pre>
-      <h3 id="import-from-ons">Manual Installation</h3>
+      <p>To run,</p>
+      <pre>$ npm run setup</pre>
+      <h3 id="import-from-pgdump">3. Manual Installation from our <code>pg_dump</code></h3>
+      <p>You can download a <code>pg_dump</code> of the postcode database which is hosted by us. This is the same dump which is used by the install script. The link to the latest dump can be found in our<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/latest"> repository.</a></p>
+      <p>To setup the database from our <code>pg_dump</code> simply download, <code>gunzip</code> and use either <code>psql</code> or <code>pg_restore</code> to import the data into Postgresql.</p>
+      <p>For example,</p><pre>$ cat postcodeiodb.sql | psql postcodesiodb</pre>
+
+      <h3 id="import-from-ons">4. Manual Installation</h3>
       <p>The install scripts can be linked to your shell (or can be found in the <code>bin/</code> directory). To link, navigate to <code>postcodes.io/</code> and run <code>$ npm link</code></p>
       <h4>ONS Postcode Directory</h4>
-      <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ postcodesio:import_onspd</code> passing the path to the CSV data.</p><pre><h4>$ postcodesio:import_onspd /path/to/data/ONSPD/Data/data.csv</h4></pre>
+      <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ postcodesio:import_onspd</code> passing the path to the CSV data.</p><pre>$ postcodesio:import_onspd /path/to/data/ONSPD/Data/data.csv</pre>
       <h4>OS Open Names</h4>
-      <p>Download the latest Ordnance Survey Open Names dataset. Unzip the data locally. Run the import script <code>$ postcodesio:import_oson</code> passing the path that contains the CSV data files.</p><pre><h4>$ postcodesio:import_oson /path/to/data/opname_csv_gb/Data/</h4></pre>
+      <p>Download the latest Ordnance Survey Open Names dataset. Unzip the data locally. Run the import script <code>$ postcodesio:import_oson</code> passing the path that contains the CSV data files.</p><pre>$ postcodesio:import_oson /path/to/data/opname_csv_gb/Data/</pre>
     </div>
   </div>
 </div>
