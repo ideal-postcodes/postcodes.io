@@ -169,7 +169,7 @@ function randomLocation(callback) {
 }
 
 function lookupRandomPostcode(callback) {
-	Postcode.random(function (error, result) {
+  Postcode.random((error, result) => {
 		if (error) {
 			throw error;
 		}
@@ -196,187 +196,6 @@ function validCorsOptions(response) {
 		"X-Requested-With, Content-Type, Accept, Origin");
 }
 
-function isRawPlaceObject(o) {
-	[
-		"id",
-		"code",
-		"longitude",
-		"latitude",
-		"location",
-		"eastings",
-		"northings",
-		"min_eastings",
-		"min_northings",
-		"max_eastings",
-		"max_northings",
-		"bounding_polygon",
-		"local_type",
-		"outcode",
-		"name_1",
-		"name_1_lang",
-		"name_1_search",
-		"name_1_search_ts",
-		"name_2",
-		"name_2_lang",
-		"name_2_search",
-		"name_2_search_ts",
-		"county_unitary",
-		"county_unitary_type",
-		"district_borough",
-		"district_borough_type",
-		"region",
-		"country",
-		"polygon"
-	].forEach(prop => assert.property(o, prop));
-}
-
-function isPlaceObject(o) {
-	[
-		"code",
-		"longitude",
-		"latitude",
-		"eastings",
-		"northings",
-		"min_eastings",
-		"min_northings",
-		"max_eastings",
-		"max_northings",
-		"local_type",
-		"outcode",
-		"name_1",
-		"name_1_lang",
-		"name_2",
-		"name_2_lang",
-		"county_unitary",
-		"county_unitary_type",
-		"district_borough",
-		"district_borough_type",
-		"region",
-		"country"
-	].forEach(prop => assert.property(o, prop));
-
-	[
-		"id",
-		"location",
-		"name_1_search",
-		"name_1_search_ts",
-		"name_2_search",
-		"name_2_search_ts",
-		"bounding_polygon",
-		"polygon"
-	].forEach(prop => assert.notProperty(o, prop));
-}
-
-const rawPostcodeAttributes = Object.keys(Postcode.schema);
-const postcodeAttributes = Postcode.whitelistedAttributes;
-
-
-//baseObject is the main template of an object
-//additionalArr is an array of extra attributes on the postcode object
-//blackListedAttr is an array of attributes that Postcode object not supposed to have
-function isSomeObject(o, baseObjectAttr, additionalAttr, blackListedAttr) {
-	if (!additionalAttr) additionalAttr = [];
-	if (!blackListedAttr) blackListedAttr = [];
-
-	const whiteBaseObjAttr = baseObjectAttr.reduce((acc,curr) => {
-		if (!blackListedAttr.includes(curr)) {acc.push(curr)}
-		return acc;
-	}, []);
-	whiteBaseObjAttr.forEach(attr => assert.property(o, attr));
-	if (additionalAttr) {
-		additionalAttr.forEach(attr => assert.property(o, attr));
-	}
-	const expectedObjLen = whiteBaseObjAttr.length + additionalAttr.length;
-	assert.equal(Object.keys(o).length, expectedObjLen);
-}
-
-function isPostcodeObject(o, additionalAttr, blackListedAttr) {
-	if (!additionalAttr) additionalAttr = [];
-	if (!blackListedAttr) blackListedAttr = [];
-	isSomeObject(o, postcodeAttributes, additionalAttr, blackListedAttr);
-}
-
-function isPostcodeWithDistanceObject(o) {
-	isPostcodeObject(o, ["distance"]);
-}
-//raw Object is the one that only has properties specified in the schema
-function isRawPostcodeObject(o, additionalAttr, blackListedAttr) {
-	if (!additionalAttr) additionalAttr = [];
-	if (!blackListedAttr) blackListedAttr = [];
-	isSomeObject(o, rawPostcodeAttributes, additionalAttr, blackListedAttr);
-}
-
-function isRawPostcodeObjectWithFC(o, additionalAttr, blackListedAttr) {
-	if (!additionalAttr) additionalAttr = [];
-	if (!blackListedAttr) blackListedAttr = [];
-	isRawPostcodeObject(o, Postcode.getForeignColNames().concat(additionalAttr), blackListedAttr);
-}
-
-function isRawPostcodeObjectWithFCandDistance(o) {
-	isRawPostcodeObjectWithFC(o, ["distance"])
-}
-
-const terminatedPostcodeAttributes = TerminatedPostcode.whitelistedAttributes;
-const rawTerminatedPostcodeAttributes = Object.keys(TerminatedPostcode.schema);
-
-function isTerminatedPostcodeObject(o) {
-	terminatedPostcodeAttributes.forEach(attr => assert.property(o, attr));
-	assert.equal(Object.keys(o).length, terminatedPostcodeAttributes.length);
-}
-
-function isRawTerminatedPostcodeObject(o) {
-	rawTerminatedPostcodeAttributes.forEach(attr => assert.property(o, attr));
-	assert.equal(Object.keys(o).length, rawTerminatedPostcodeAttributes.length);
-}
-
-function isOutcodeObject(o) {
-	["id", "location"].forEach(prop => assert.notProperty(o, prop));
-
-	[
-		"eastings",
-		"latitude",
-		"northings",
-		"longitude",
-		"admin_ward",
-		"admin_county",
-		"admin_district",
-		"parish",
-		"outcode",
-		"country"
-	].forEach(prop => assert.property(o, prop));
-}
-
-function isRawOutcodeObject(o) {
-	[
-		"id",
-		"eastings",
-		"latitude",
-		"location",
-		"northings",
-		"longitude",
-		"admin_ward",
-		"admin_county",
-		"admin_district",
-		"parish",
-		"outcode",
-		"country"
-	].forEach(prop => assert.property(o, prop))
-}
-
-function testOutcode(o) {
-	[
-		"longitude",
-		"latitude",
-		"northings",
-		"eastings",
-		"admin_ward",
-		"admin_district",
-		"admin_county",
-		"parish",
-		"country"
-	].forEach(prop => assert.property(o, prop));
-}
-
 module.exports = {
 	// Data
 	config,
@@ -388,27 +207,18 @@ module.exports = {
 	inferIndexInfo,
 	inferSchemaData,
 	sortByIndexColumns,
-	testOutcode,
 	randomOutcode,
-	isPlaceObject,
 	randomPostcode,
 	randomTerminatedPostcode,
 	randomLocation,
-	isOutcodeObject,
 	validCorsOptions,
-	isPostcodeObject,
-	isTerminatedPostcodeObject,
-	isRawTerminatedPostcodeObject,
-	isRawPlaceObject,
-	isPostcodeWithDistanceObject,
 	jsonpResponseBody,
 	getCustomRelation,
-	isRawOutcodeObject,
-	isRawPostcodeObject,
-	isRawPostcodeObjectWithFC,
-	isRawPostcodeObjectWithFCandDistance,
 	lookupRandomPostcode,
 	locationWithNearbyPostcodes,
+
+  // Type checking methods
+  ...require("./type_checking.js"),
 
   // PG helper methods
   ...require("./pg.js"),
