@@ -124,9 +124,7 @@ function getCustomRelation () {
 
 
 //Generates a random integer from 1 to max inclusive
-const getRandom = function (max) {
-	return Math.ceil(Math.random() * max);
-}
+const getRandom = max => Math.ceil(Math.random() * max);
 
 const QueryTerminatedPostcode = `
 	SELECT
@@ -135,7 +133,6 @@ const QueryTerminatedPostcode = `
 		terminated_postcodes LIMIT 1
 	OFFSET $1
 `;
-
 
 function randomTerminatedPostcode (callback) {
 	const randomId = getRandom(8); // 9 terminated postcodes in the
@@ -147,28 +144,25 @@ function randomTerminatedPostcode (callback) {
 	});
 }
 
-function randomPostcode(callback) {
-	Postcode.random(function (error, result) {
-		callback(error, result.postcode);
+const randomPostcode = callback => {
+  Postcode.random((error, { postcode }) => {
+		callback(error, postcode);
 	});
-}
+};
 
-function randomOutcode(callback) {
-	return Postcode.random(function (error, result) {
-		callback(error, result.outcode)
+const randomOutcode = callback => {
+  return Postcode.random((error, { outcode }) => {
+		callback(error, outcode)
 	});
-}
+};
 
-function randomLocation(callback) {
-	return Postcode.random(function (error, result) {
-		callback(error, {
-			longitude: result.longitude,
-			latitude: result.latitude
-		})
+const randomLocation = callback => {
+  return Postcode.random((error, { longitude, latitude }) => {
+		callback(error, { longitude, latitude });
 	});
-}
+};
 
-function lookupRandomPostcode(callback) {
+const lookupRandomPostcode = callback => {
   Postcode.random((error, result) => {
 		if (error) {
 			throw error;
@@ -177,32 +171,16 @@ function lookupRandomPostcode(callback) {
 	});
 }
 
-function jsonpResponseBody (response) {
-	// Rough regex to extract json object
-	const result = response.text.match(/\(.*\)/);
-	return JSON.parse(result[0].slice(1, result[0].length - 1));
-}
-
-function allowsCORS (response) {
-	assert.equal(response.headers["access-control-allow-origin"], "*");
-}
-
-function validCorsOptions(response) {
-	assert.equal(response.headers["access-control-allow-origin"],
-		"*");
-	assert.equal(response.headers["access-control-allow-methods"],
-		"GET,POST,OPTIONS");
-	assert.equal(response.headers["access-control-allow-headers"],
-		"X-Requested-With, Content-Type, Accept, Origin");
-}
-
 module.exports = {
 	// Data
 	config,
 
 	// Methods
-	allowsCORS,
   ...require("./setup.js"),
+
+  // HTTP Helpers
+  ...require("./http.js"),
+
 	removeDiacritics: require("./remove_diacritics"),
 	inferIndexInfo,
 	inferSchemaData,
@@ -211,8 +189,6 @@ module.exports = {
 	randomPostcode,
 	randomTerminatedPostcode,
 	randomLocation,
-	validCorsOptions,
-	jsonpResponseBody,
 	getCustomRelation,
 	lookupRandomPostcode,
 	locationWithNearbyPostcodes,
