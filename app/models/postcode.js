@@ -1,8 +1,8 @@
 "use strict";
 
-const util = require("util");
+const { inherits } = require("util");
 const Pc = require("postcode");
-const async = require("async");
+const { series } = require("async");
 const { Base, populateLocation, extractOnspdVal } = require("./base");
 const QueryStream = require("pg-query-stream");
 const env = process.env.NODE_ENV || "development";
@@ -33,6 +33,7 @@ const postcodeSchema = {
 	"incode" : "VARCHAR(5)",
 	"outcode" : "VARCHAR(5)",
 	"ccg_id" : "VARCHAR(32)",
+  "ced_id": "VARCHAR(32)",
 	"constituency_id" : "VARCHAR(32)"
 };
 
@@ -57,17 +58,21 @@ const relationships = [{
 	table: "districts",
 	key: "admin_district_id",
 	foreignKey: "code"
-}, {
+},{
 	table: "parishes",
 	key: "parish_id",
 	foreignKey: "code"
-}, {
+},{
 	table: "counties",
 	key: "admin_county_id",
 	foreignKey: "code"
-}, {
+},{
 	table: "wards",
 	key: "admin_ward_id",
+	foreignKey: "code"
+},{
+	table: "ceds",
+	key: "ced_id",
 	foreignKey: "code"
 },{
 	table: "ccgs",
@@ -98,15 +103,18 @@ const foreignColumns = [{
 },{
 	field: "districts.name",
 	as: "admin_district"
-}, {
+},{
 	field: "parishes.name",
 	as: "parish"
-}, {
+},{
 	field: "counties.name",
 	as: "admin_county"
 }, {
 	field: "wards.name",
 	as: "admin_ward"
+},{
+	field: "ceds.name",
+	as: "ced"
 },{
 	field: "ccgs.name",
 	as: "ccg"
@@ -129,7 +137,7 @@ function Postcode () {
 	Base.call(this, "postcodes", postcodeSchema, indexes);
 }
 
-util.inherits(Postcode, Base);
+inherits(Postcode, Base);
 
 const findQuery = `
 	SELECT 
@@ -181,7 +189,8 @@ Postcode.prototype.whitelistedAttributes = [
 	"primary_care_trust",
 	"incode",
 	"outcode",
-	"codes"
+  "codes",
+  "ced",
 ];
 
 Postcode.prototype.loadPostcodeIds = function (type, callback) {
@@ -602,6 +611,7 @@ Postcode.prototype.toJson = function (address) {
 		parish: address.parish_id,
 		parliamentary_constituency: address.constituency_id,
 		ccg: address.ccg_id,
+    ced: address.ced_id,
 		nuts: address.nuts_code
 	};
 	delete address.id;
@@ -612,6 +622,7 @@ Postcode.prototype.toJson = function (address) {
 	delete address.admin_ward_id;
 	delete address.parish_id;
 	delete address.ccg_id;
+  delete address.ced_id;
 	delete address.nuts_id;
 	delete address.nuts_code;
 	delete address.constituency_id;
@@ -619,7 +630,7 @@ Postcode.prototype.toJson = function (address) {
 };
 
 Postcode.prototype._setupTable = function (filepath, callback) {
-	async.series([
+	series([
 		this._createRelation.bind(this),
 		this.clear.bind(this),
 		cb => this.seedPostcodes.call(this, filepath, cb),
@@ -672,6 +683,7 @@ Postcode.prototype.seedPostcodes = function (filepath, callback) {
 		{ column: "nuts_id", method: row => row.extract("nuts") },
 		{ column: "incode", method: row => row.extract("pcds").split(" ")[1] },
 		{ column: "outcode", method: row => row.extract("pcds").split(" ")[0] },
+		{ column: "ced_id", method: row => row.extract("ced") },
 		{ column: "ccg_id", method: row => row.extract("ccg") },
 	]);
 
