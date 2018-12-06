@@ -94,8 +94,8 @@ prompt.get([{
 		dropTempTables,
 		setupPostcodesTable,
 	  setupTerminatedPostcodesTable,
-    setupOutcodeTable,
 	  setupDataTables,
+    setupOutcodeTable,
 	], error => {
 		if (error) {
 			console.log("Unable to complete import process due to error:", JSON.stringify(error, 2, 2));
