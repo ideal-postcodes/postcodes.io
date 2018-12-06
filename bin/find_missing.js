@@ -32,6 +32,7 @@ const codeTypeToOnspd = Object.freeze({
 	"msoa": "msoa11",
 	"nuts": "nuts",
 	"ccgs": "ccg",
+  "ceds": "ced",
 });
 
 // List of types to be searched
