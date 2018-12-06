@@ -11,7 +11,7 @@ Documentation can be found at [postcodes.io](http://postcodes.io)
 Please make sure you have the following available:
 
 - Node.js v8.9 [(Instructions)](http://nodejs.org/)
-- Postgres (9.5 or greater)
+- PostgreSQL (10 or greater)
 - PostGIS extension [(Instructions)](http://postgis.net/install)
 
 ## Self Hosting

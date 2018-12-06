@@ -26,7 +26,7 @@ jobs:
           - PGHOST=localhost
           - PGUSER=postgres
         image: "circleci/node:10"
-      - image: "circleci/postgres:9.6-alpine-postgis"
+      - image: "circleci/postgres:10-alpine-postgis"
   node11: 
     <<: *default_steps
     docker: 
@@ -34,7 +34,7 @@ jobs:
           - PGHOST=localhost
           - PGUSER=postgres
         image: "circleci/node:11"
-      - image: "circleci/postgres:9.6-alpine-postgis"
+      - image: "circleci/postgres:10-alpine-postgis"
   node8: 
     <<: *default_steps
     docker: 
@@ -42,7 +42,7 @@ jobs:
           - PGHOST=localhost
           - PGUSER=postgres
         image: "circleci/node:8"
-      - image: "circleci/postgres:9.6-alpine-postgis"
+      - image: "circleci/postgres:10-alpine-postgis"
 version: 2
 workflows: 
   supported_nodes: 

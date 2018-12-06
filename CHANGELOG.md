@@ -4,7 +4,9 @@ Any changes, including backwards incompatible changes will be listed here
 
 ## 10.0.0 (29/11/2018)
 
-- *Breaking Changes* Only node.js 8 LTS and above supported
+- *Breaking Change* Install dependencies upgraded. Going forward, only the following minimum versions will be tested:
+  - Node.js 8
+  - PostgreSQL 10
 - Postcode responses now include County Electoral Districts (ceds)
 - Updated documentation (outcodes, installation)
 - Updated dependencies
