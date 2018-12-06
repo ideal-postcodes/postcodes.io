@@ -14,6 +14,12 @@ Please make sure you have the following available:
 - PostgreSQL (10 or greater)
 - PostGIS extension [(Instructions)](http://postgis.net/install)
 
+## Run with Docker
+
+```
+docker-compose up
+```
+
 ## Self Hosting
 
 Instructions for installing and hosting postcodes.io yourself can be found at [postcodes.io/about](https://postcodes.io/about#Install-notes). Methods include:
