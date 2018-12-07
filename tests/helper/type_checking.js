@@ -161,6 +161,5 @@ module.exports = {
   isRawPlaceObject,
   isPostcodeWithDistanceObject,
   isOutcodeObject,
-  isRawOutcodeObject,
 };
 

@@ -1,9 +1,9 @@
 ---
 version: '3'
 services:
-  api: 
+  api:
     image: idealpostcodes/postcodes.io:latest
-    depends_on: 
+    depends_on:
       - db
     environment:
       - POSTGRES_DB

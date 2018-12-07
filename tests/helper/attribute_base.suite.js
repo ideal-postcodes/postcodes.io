@@ -38,7 +38,7 @@ const rigCoreSpecs = model => {
       });
     });
 
-    describe("_setupTable", done => {
+    describe("_setupTable", () => {
       it ("creates a table, associated indexes and populates with data", function (done) {
         this.timeout(0);
         model._setupTable(error => {

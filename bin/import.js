@@ -24,7 +24,6 @@ const {
   Postcode,
   TerminatedPostcode,
   Outcode,
-  Base,
 } = require("../app/models/index.js");
 const { toTempName, setupWithTableSwap } = require("../app/models/base.js");
 const { SUPPORT_TABLES, setupSupportTables } = require("../app/lib/setup.js");

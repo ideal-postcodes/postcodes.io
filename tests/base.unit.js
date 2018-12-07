@@ -3,10 +3,6 @@
 const helper = require("./helper");
 const { assert } = require("chai");
 const {
-  toTempName,
-  toArchiveName,
-  setupWithTableSwap,
-  getLocation,
   Base,
 	extractOnspdVal
 } = require("../app/models/base.js");
