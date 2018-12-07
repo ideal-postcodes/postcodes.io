@@ -18,48 +18,27 @@ your previous dataset
 Type 'YES' to continue
 `;
 
-const async = require("async");
 const prompt = require("prompt");
-const Postcode = require("../app/models/postcode.js");
-const TerminatedPostcode = require("../app/models/terminated_postcode.js")
-const District = require("../app/models/district.js");
-const Ward = require("../app/models/ward.js");
-const Nuts = require("../app/models/nuts.js");
-const County = require("../app/models/county.js");
-const Parish = require("../app/models/parish.js");
-const Ccg = require("../app/models/ccg.js");
-const Outcode = require("../app/models/outcode.js");
-const Constituency = require("../app/models/constituency.js");
-const { toTempName, setupWithTableSwap } = require("../app/models/index.js");
+const { forEach, series } = require("async");
+const {
+  Postcode,
+  TerminatedPostcode,
+  Outcode,
+} = require("../app/models/index.js");
+const { toTempName, setupWithTableSwap } = require("../app/models/base.js");
+const { SUPPORT_TABLES, setupSupportTables } = require("../app/lib/setup.js");
 
 if (!sourceFile) {
 	console.log("Aborting Import. No source file specified");
 	return process.exit(1);
 }
 
-const supportTables = [
-	District,
-	Constituency,
-	County,
-	Ccg,
-	Ward,
-	Nuts,
-	Parish,
-];
-
-const streamedTables = [
-	Postcode,
-	TerminatedPostcode,
-	Outcode,
-];
-
 const dropTempTables = callback => {
-	console.log("Dropping any temporary tables");
-	const queries = []
-		.concat(streamedTables)
-		.concat(supportTables)
-		.map(Model => `DROP TABLE IF EXISTS ${toTempName(Model.relation)}`);
-	async.forEach(queries, Postcode._query.bind(Postcode), callback);
+  console.log("Dropping any temporary tables");
+  const deletes = [Postcode, TerminatedPostcode, Outcode]
+    .concat(SUPPORT_TABLES)
+    .map(Model => `DROP TABLE IF EXISTS ${toTempName(Model.relation)}`);
+  forEach(deletes, Postcode._query.bind(Postcode), callback);
 };
 
 const createPostgisExtension = callback => {
@@ -82,12 +61,11 @@ const setupPostcodesTable = callback => {
 	setupWithTableSwap(Postcode, sourceFile)(callback);
 };
 
-const setupSupportTables = callback => {
+const setupDataTables = (callback) => {
 	console.log("Setting up support tables...");
-	async.series(supportTables.map(Model => {
-		console.log(`Building support table: ${Model.relation}...`);
-		return cb => Model._setupTable.call(Model, cb);
-	}), callback);
+  setupSupportTables()
+    .then(result => callback(null, result))
+    .catch(error => callback(error));
 };
 
 prompt.start();
@@ -107,13 +85,13 @@ prompt.get([{
 	}
 
 	const start = process.hrtime();
-	async.series([
+	series([
 		createPostgisExtension,
 		dropTempTables,
 		setupPostcodesTable,
 	  setupTerminatedPostcodesTable,
-	  setupSupportTables,
-		setupOutcodeTable,
+	  setupDataTables,
+    setupOutcodeTable,
 	], error => {
 		if (error) {
 			console.log("Unable to complete import process due to error:", JSON.stringify(error, 2, 2));

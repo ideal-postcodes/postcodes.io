@@ -12,3 +12,4 @@ process.json
 log/
 npm-debug.log
 *.swp
+*.vim

@@ -11,7 +11,7 @@ const fs = require("fs");
 const util = require("util");
 const path = require("path");
 const async = require("async");
-const Base = require("./index").Base;
+const Base = require("./base").Base;
 
 const requiredAttributes = {
 	"code": "VARCHAR(32) NOT NULL UNIQUE",

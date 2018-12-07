@@ -1,0 +1,22 @@
+---
+version: '3'
+services:
+  api:
+    image: idealpostcodes/postcodes.io:latest
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_HOST
+    ports:
+      - 8000:8000
+  db:
+    image: idealpostcodes/postcodes.io.db:latest
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+      - POSTGRES_USER
+

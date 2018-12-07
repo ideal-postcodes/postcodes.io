@@ -17,7 +17,7 @@ const fs = require("fs");
 const async = require("async");
 const prompt = require("prompt");
 const Place = require("../app/models/place.js");
-const { toTempName, setupWithTableSwap } = require("../app/models/index.js");
+const { toTempName, setupWithTableSwap } = require("../app/models/base.js");
 
 if (!sourceDirectory) {
 	console.log("Aborting Import. No source directory specified");

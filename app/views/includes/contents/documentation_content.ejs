@@ -24,7 +24,7 @@
       <p>If we make backwards-incompatible changes in the future, this will be released under a versioned endpoint.</p>
       <h3 class="anchor" id="Data">Available Data Fields</h3>
       <h4>Postcode Data (Ordnance Survey Postcode Directory Dataset)</h4>
-      <p>Data returned by the <code>/postcodes</code> and <code>/outcodes</code> API</p>
+      <p>Data points returned by the <code>/postcodes</code> and <code>/outcodes</code> API</p>
       <p><b>Note:</b> Some fields may be <code>null</code> if not applicable or populated. These fields return type is specified as <code>type|null</code></p>
       <table class="table table-hover">
         <thead>
@@ -121,6 +121,10 @@
             <td>msoa <br/> <code>string|null</code></td>
             <td><strong>2011 Census middle layer super output area (MSOA).</strong> The 2011 Census middle layer SOA (MSOA) code for England and Wales and intermediate zone for Scotland.</td>
           </tr>
+          <tr id="ced">
+            <td>ced <br/> <code>string|null</code></td>
+            <td><strong>County Electoral District.</strong> The county electoral division code for each English postcode. Pseudo codes are included for the remainder of the UK. The field will be blank for English postcodes with no grid reference. English county councils use county electoral divisions (CED) to elect councillors. These CEDs must be confined within district boundaries, but need not be based on whole electoral wards. The only exceptions are the Isles of Scilly and the Greater London Authority (GLA). CEDs do not exist within UAs.</td>
+          </tr>
           <tr id="ccg">
             <td>ccg <br/> <code>string|null</code></td>
             <td><strong>Clinical Commissioning Group.</strong> Clinical commissioning groups (CCGs) are NHS organisations set up by the Health and Social Care Act 2012 to organise the delivery of NHS services in England.</td>
@@ -161,6 +165,60 @@
           </tr>
         </tbody>
       </table>
+
+      <h4>Outcode Data (Ordnance Survey Postcode Directory Dataset)</h4>
+      <p>Data returned by the <code>/outcodes</code> API</p>
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="outcode">
+            <td>outcode <br/> <code>string</code></td>
+            <td><strong>Outcode.</strong> The outcode or outward code is the part of the postcode before the single space in the middle. It is between two and four characters long. Examples of outward codes include "L1", "W1A", "RH1", "RH10" or "SE1P". A few outward codes are non-geographic, not divulging where mail is to be sent.</td>
+          </tr>
+          <tr id="outcode-eastings">
+            <td>eastings <br/> <code>integer|null</code></td>
+            <td><strong>Eastings.</strong> The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates.</td>
+          </tr>
+          <tr id="outcode-northings">
+            <td>northings <br/> <code>integer|null</code></td>
+            <td><strong>Northings.</strong> The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates.</td>
+          </tr>
+          <tr id="outcode-admin_county">
+            <td>admin_county <br/> <code>string[]</code></td>
+            <td><strong>County.</strong> The current counties under the outcode.</td>
+          </tr>
+          <tr id="outcode-admin_district">
+            <td>admin_district <br/> <code>string[]</code></td>
+            <td><strong>District.</strong> The current district/unitary authorites under the outcode.</td>
+          </tr>
+          <tr id="outcode-admin_ward">
+            <td>admin_ward <br/> <code>string[]</code></td>
+            <td><strong>Ward.</strong> The current administrative/electoral areas under the outcode.</td>
+          </tr>
+          <tr id="outcode-longitude">
+            <td>longitude <br/> <code>double float</code></td>
+            <td><strong>Longitude.</strong> The WGS84 longitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates.</td>
+          </tr>
+          <tr id="outcode-latitude">
+            <td>latitude <br/> <code>double float</code></td>
+            <td><strong>Latitude.</strong> The WGS84 latitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates.</td>
+          </tr>
+          <tr id="outcode-country">
+            <td>country <br/> <code>string[]</code></td>
+            <td><strong>Country.</strong> The countries included in the outcode.</td>
+          </tr>
+          <tr id="outcode-parish">
+            <td>parish <br/> <code>string[]</code></td>
+            <td><strong>Parish (England)/ community (Wales).</strong> The parishes included in the outcode.</td>
+          </tr>
+        </tbody>
+      </table>  
       <h4>Terminated Postcode Data (Ordnance Survey Postcode Directory Dataset)</h4>
       <p>Data returned by the <code>/terminated_postcodes</code> API</p>
       <table class="table table-hover">
@@ -376,28 +434,66 @@
     <p><code>limit=</code> (not required) Limits number of places matches to return. Defaults to 10. Needs to be less than 100.</p>
     <h3 id="Random-Place">Random Place</h3>
     <p>Returns a random place and all associated data</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/random/places</h4></pre>
+
     <h2 class="doc-header anchor" id="Install-notes">Install Notes</h2>
+
     <p>There may be occasions where you want to host postcodes.io yourself. We've laid out instructions below on how to do this.</p>
-    <p>Installing Postcodes.io is matter of cloning the source. Simply run</p><pre><h4>$ git clone https://github.com/ideal-postcodes/postcodes.io.git</h4></pre>
-    <p>We currently provide 3 methods to import the necessary datasets</p>
+    <p>We currently provide 4 methods to import the necessary datasets and run the postcodes.io API application:</p>
     <ol>
-      <li>The easiest is to use our install script. This will require postgres superuser privileges to create and provision your database. It will then download the database and import the data from a pg_dump (hosted and created by us).</li>
-      <li>You can download the pg_dump and attempt to import the database yourself with psql or pg_restore.</li>
+      <li>Use our docker application and database images</li>
+      <li>Use our install script. This will require postgres superuser privileges to create and provision your database. It will then download the database and import the data from a <code>pg_dump</code> (hosted and created by us).</li>
+      <li>You can download the <code>pg_dump</code> and attempt to import the database yourself with <code>psql</code> or pg_restore.</li>
       <li>Lastly, you can retrieve the raw CSV data from the ONS and import it with our import script.</li>
     </ol>
-    <h3 id="install-requirements">Requirements</h3>
+
+    <h2 class="doc-header anchor" id="docker-install">1. Docker Installation</h2>
+    
+    <p>Postcodes.io can be installed using two docker containers. The postcodes.io application container and the postcodes.io database container (a Postgresql image loaded with the dataset at runtime)</p>
+
+    <h3 id="docker-install-requirements">Requirements</h3>
+    <ul><li><a href="https://docker.com">Docker</a></li></ul>
+    
+    <h3>Postcodes.io Docker Application Container</h3>
+
+    <p>The Postcodes.io application is packaged as a Docker container identified on the Docker Hub as <code>idealpostcodes/postcodes.io</code>.</p>
+    
+    <p>Example usage:</p>
+    <pre>docker run -d -p 8000 idealpostcodes/postcodes.io</pre>
+
+    <p>Configuration available via Environment Variables:</p>
     <ul>
-      <li><a href="http://nodejs.org">Node.js</a></li>
-      <li><a href="http://postgis.net/install/">Postgresql and Postgis</a></li>
+      <li><code>POSTGRES_USER</code></li>
+      <li><code>POSTGRES_PASSWORD</code></li>
+      <li><code>POSTGRES_DATABASE</code></li>
+      <li><code>POSTGRES_HOST</code></li>
+      <li><code>POSTGRES_PORT</code></li>
+      <li><code>PORT</code> (HTTP Port to run on)</li>
+      <li><code>MAPBOX_PUBLIC_KEY</code></li>
     </ul>
-    <h3 id="data-download">Data Download</h3>
-    <p>Data is sourced and can be downloaded from the<a href="https://geoportal.statistics.gov.uk/geoportal/catalog/main/home.page"> Office for National Statistics Data Portal.</a>The dataset is often not easy to find. The simplest way is to search
-    for "Postcode Directory".</p>
-    <p>Alternatively you can download a <a href="http://www.postgresql.org/docs/9.3/static/app-pgdump.html">pg_dump</a>of the postcode database which is hosted by us. This is the same dump which is used by the install script. The link to the latest
-      dump can be found in our<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/latest"> repository.</a></p>
-      <h3 id="install-script">Install Script</h3>
+
+    <h3>Postcodes.io Database Application</h3>
+    <p><code>idealpostcodes/postcodes.io.db</code> points to a <a href="https://hub.docker.com/r/mdillon/postgis/">PostgreSQL &amp; PostGIS</a> base image and preloads the latest <code>pg_dump</code> in the initialisation process. Upon starting a container for the first time, PostGIS will be enabled and the <code>pg_dump</code> will take around a minute to restore.</p>
+
+    <p>Example usage:</p>
+
+    <pre>docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e POSTGRES_PASSWORD=password idealpostcodes/postcodes.io.db</pre>
+
+    <p>As this contains the official postgres base image, the available configuration environment variables are documented here: <a href="https://hub.docker.com/_/postgres/">hub.docker.com/_/postgres/</a></p>
+
+    <br />
+    <h2 id="doc-header anchor">Classic Installation Methods (without Docker)</h3>
+
+    <h3 id="install-requirements">Requirements</h3>
+
+    <p>For non-docker installations, running Postcodes.io begins with cloning the repository: </p><pre>$ git clone https://github.com/ideal-postcodes/postcodes.io.git</pre>
+
+    <ul>
+      <li><a href="https://nodejs.org">Node.js</a></li>
+      <li><a href="https://postgis.net/install/">Postgresql and Postgis</a></li>
+    </ul>
+    <h3 id="install-script">2. Install Script</h3>
       <p>Currently the install process targets *nix systems. We've provisioned and tested on OS X Mavericks &amp; Ubuntu 14.04. Please<a href="/about"> let us know</a> if you have issues on other operating systems.</p>
-      <p>Postcodes.io is packaged with a<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/bin/setup.sh"> script</a> to provision postgres and download a dump (pg_dump) of the ONS Postcode Directory (hosted by us). The script will
+      <p>Postcodes.io is packaged with a<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/bin/setup.sh"> script</a> to provision postgres and download a dump of the ONS Postcode Directory (hosted by us). The script will
       do the following,</p>
       <ul>
         <li>Prompt you for your postgres superuser credentials (most of the setup steps require this level of privilege)</li>
@@ -406,16 +502,19 @@
         <li>Create the necessary extensions on "postcodesiodb"</li>
         <li>Download, unzip and stream the Postcode directory into Postgres</li>
       </ul>
-      <p>To run,</p><pre><h4>$ npm run setup</h4></pre>
-      <h3 id="import-from-pgdump">Manual Installation from our pg_dump</h3>
-      <p>To setup the database from our pg_dump simply download, gunzip and use either psql or pg_restore to import the data into Postgresql.</p>
-      <p>For example,</p><pre><h4>$ cat postcodeiodb.sql | psql postcodesiodb</h4></pre>
-      <h3 id="import-from-ons">Manual Installation</h3>
+      <p>To run,</p>
+      <pre>$ npm run setup</pre>
+      <h3 id="import-from-pgdump">3. Manual Installation from our <code>pg_dump</code></h3>
+      <p>You can download a <code>pg_dump</code> of the postcode database which is hosted by us. This is the same dump which is used by the install script. The link to the latest dump can be found in our<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/latest"> repository.</a></p>
+      <p>To setup the database from our <code>pg_dump</code> simply download, <code>gunzip</code> and use either <code>psql</code> or <code>pg_restore</code> to import the data into Postgresql.</p>
+      <p>For example,</p><pre>$ cat postcodeiodb.sql | psql postcodesiodb</pre>
+
+      <h3 id="import-from-ons">4. Manual Installation</h3>
       <p>The install scripts can be linked to your shell (or can be found in the <code>bin/</code> directory). To link, navigate to <code>postcodes.io/</code> and run <code>$ npm link</code></p>
       <h4>ONS Postcode Directory</h4>
-      <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ postcodesio:import_onspd</code> passing the path to the CSV data.</p><pre><h4>$ postcodesio:import_onspd /path/to/data/ONSPD/Data/data.csv</h4></pre>
+      <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ postcodesio:import_onspd</code> passing the path to the CSV data.</p><pre>$ postcodesio:import_onspd /path/to/data/ONSPD/Data/data.csv</pre>
       <h4>OS Open Names</h4>
-      <p>Download the latest Ordnance Survey Open Names dataset. Unzip the data locally. Run the import script <code>$ postcodesio:import_oson</code> passing the path that contains the CSV data files.</p><pre><h4>$ postcodesio:import_oson /path/to/data/opname_csv_gb/Data/</h4></pre>
+      <p>Download the latest Ordnance Survey Open Names dataset. Unzip the data locally. Run the import script <code>$ postcodesio:import_oson</code> passing the path that contains the CSV data files.</p><pre>$ postcodesio:import_oson /path/to/data/opname_csv_gb/Data/</pre>
     </div>
   </div>
 </div>

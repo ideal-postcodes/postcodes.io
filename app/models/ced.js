@@ -1,6 +1,6 @@
 "use strict";
 
-const TABLE_NAME = "districts";
+const TABLE_NAME = "ceds";
 
 const { inherits } = require("util");
 const AttributeBase = require("./attribute_base.js");

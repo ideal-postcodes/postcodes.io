@@ -1,4 +1,4 @@
-FROM node:9
+FROM node:10-alpine
 
 WORKDIR /usr/src/app
 
@@ -10,8 +10,10 @@ HEALTHCHECK --interval=5s CMD node healthcheck.js
 
 COPY package.json .
 
-RUN npm install --only=production --no-package-lock && \
-    npm cache clean --force
+RUN apk --no-cache add --virtual build-dependencies build-base gcc python && \
+    npm install --only=production --no-package-lock && \
+    npm cache clean --force && \
+    apk del build-dependencies
 
 COPY . .
 
