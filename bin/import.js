@@ -62,14 +62,11 @@ const setupPostcodesTable = callback => {
 	setupWithTableSwap(Postcode, sourceFile)(callback);
 };
 
-const setupDataTables = callback => {
+const setupDataTables = (callback) => {
 	console.log("Setting up support tables...");
-  try {
-    const result = setupSupportTables();
-    callback(null, result);
-  } catch (e) {
-    callback(e);
-  }
+  setupSupportTables()
+    .then(result => callback(null, result))
+    .catch(error => callback(error));
 };
 
 prompt.start();
