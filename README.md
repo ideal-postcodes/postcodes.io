@@ -16,24 +16,24 @@ Please make sure you have the following available:
 
 ## Run with Docker
 
-```
+```bash
 docker-compose up
 ```
 
 ## Self Hosting
 
-Instructions for installing and hosting postcodes.io yourself can be found at [postcodes.io/about](https://postcodes.io/about#Install-notes). Methods include:
+Instructions for installing and hosting postcodes.io yourself can be found at [postcodes.io/docs](https://postcodes.io/docs#Install-notes). Methods include:
 
-- [Install as Docker containers](https://postcodes.io/about#docker-install)
-- [Install on host with Node.js and Postgresql](https://postcodes.io/about#install-requirements)
-- [Download and import the raw dataset to Postgresql](https://postcodes.io/about#import-from-pgdump)
+- [Install as Docker containers](https://postcodes.io/docs#docker-install)
+- [Install on host with Node.js and Postgresql](https://postcodes.io/docs#install-requirements)
+- [Download and import the raw dataset to Postgresql](https://postcodes.io/docs#import-from-pgdump)
 
 ## Testing
 
-```
-$ npm run setup_test_db # create test database
+```bash
+npm run setup_test_db # create test database
 
-$ npm test
+npm test
 ```
 
 ## External Libraries
