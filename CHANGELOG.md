@@ -10,6 +10,9 @@ Any changes, including backwards incompatible changes will be listed here
 - Postcode responses now include County Electoral Districts (ceds)
 - Updated documentation (outcodes, installation)
 - Updated dependencies
+- Updated GSS codes for missing wards
+- Updated ONSPD dataset to November 2018
+- Updated OS Names dataset to October 2018
 
 ## 9.0.3 (26/10/2018)
 
