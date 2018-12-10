@@ -3,7 +3,7 @@
 const util = require("util");
 const path = require("path");
 const async = require("async");
-const Base = require("./index").Base;
+const Base = require("./base").Base;
 const env = process.env.NODE_ENV || "development";
 const Postcode = require("./postcode");
 const defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;

@@ -36,7 +36,7 @@ describe("Outcodes routes", () => {
 				assert.equal(response.body.result.outcode, testOutcode);
 				assert.isUndefined(response.body.result.id);
 				assert.isUndefined(response.body.result.location);
-				helper.testOutcode(response.body.result);
+				helper.isOutcodeObject(response.body.result);
 				done();
 			});
 		});
@@ -51,7 +51,7 @@ describe("Outcodes routes", () => {
 				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
-				helper.testOutcode(response.body.result);
+				helper.isOutcodeObject(response.body.result);
 				done();
 			});
 		});
@@ -66,7 +66,7 @@ describe("Outcodes routes", () => {
 				if (error) return done(error);
 				assert.equal(response.body.status, 200);
 				assert.equal(response.body.result.outcode, testOutcode);
-				helper.testOutcode(response.body.result);
+				helper.isOutcodeObject(response.body.result);
 				done();
 			});
 		});

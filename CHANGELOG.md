@@ -2,6 +2,18 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 10.0.0 (29/11/2018)
+
+- *Breaking Change* Install dependencies upgraded. Going forward, only the following minimum versions will be tested:
+  - Node.js 8
+  - PostgreSQL 10
+- Postcode responses now include County Electoral Districts (ceds)
+- Updated documentation (outcodes, installation)
+- Updated dependencies
+- Updated GSS codes for missing wards
+- Updated ONSPD dataset to November 2018
+- Updated OS Names dataset to October 2018
+
 ## 9.0.3 (26/10/2018)
 
 Minor updates and fixes. Many related to docker improvements
