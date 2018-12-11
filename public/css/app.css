@@ -77,7 +77,7 @@ body {
 .footer {
   text-align: center;
   font-size: 12px;
-  padding-top: 20px;
+  padding-top: 22px;
   color: #aaa;
 }
 
@@ -108,7 +108,7 @@ body {
   text-align: center;
 }
 
-h1.mast-text, 
+h1.mast-text,
 h1.tagline {
   font-size: 58px;
 }
@@ -303,6 +303,11 @@ li.active a {
   height: 20px;
   margin-left: 0.5em;
   width: 120px;
+}
+
+.company-logo {
+  max-height: 20px;
+  margin-right: 1em;
 }
 
 @media only screen and (max-width: 420px) {
