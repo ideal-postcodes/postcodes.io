@@ -1,3 +1,5 @@
+![Open Source Logo](https://img.ideal-postcodes.co.uk/postcodes-open-source.svg)
+
 [![CircleCI](https://circleci.com/gh/ideal-postcodes/postcodes.io/tree/master.svg?style=svg)](https://circleci.com/gh/ideal-postcodes/postcodes.io/tree/master) [![Coverage Status](https://coveralls.io/repos/github/ideal-postcodes/postcodes.io/badge.svg?branch=master)](https://coveralls.io/github/ideal-postcodes/postcodes.io?branch=master) [![Greenkeeper badge](https://badges.greenkeeper.io/ideal-postcodes/postcodes.io.svg)](https://greenkeeper.io/)
 
 # Postcodes.io
@@ -40,6 +42,6 @@ npm test
 
 A list of external libraries can be found on the [about page](https://postcodes.io/about)
 
-## License 
+## License
 
 MIT
