@@ -96,9 +96,9 @@ body {
 }
 
 .mast {
-  padding: 8em 0 3em;
+  padding: 6em 0 3em;
   background-color: #1c2533;
- background: -webkit-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+  background: -webkit-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -o-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -ms-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -moz-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
@@ -106,10 +106,20 @@ body {
   background-attachment: fixed;
   color: #fff;
   text-align: center;
+  width: 100%;
 }
+
+
+ .open-source-logo {
+  max-height: 40px;
+  float: left;
+  margin: 0 0 1em 1.5em;
+}
+
 
 h1.mast-text,
 h1.tagline {
+  clear: both;
   font-size: 58px;
 }
 
