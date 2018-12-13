@@ -369,15 +369,18 @@
         <h4>Post Data</h4>
         <p>This method requires a JSON object containing an array of geolocation objects to be POSTed. Each geolocation object accepts an optional radius (meters) and limit argument. Both default to 100m and 10 respectively. It also accepts a wideSearch
         argument, e.g.</p><pre>{
-  "geolocations" : [{
-  "longitude" : -3.15807731271522,
-  "latitude" : 51.4799900627036
-  },{
-  "longitude" : -1.12935802905177,
-  "latitude" : 50.7186356978817,
-  "limit" : 100,
-  "radius" : 500
-  }]
+  "geolocations": [
+    {
+      "longitude": -3.15807731271522,
+      "latitude": 51.4799900627036
+    },
+    {
+      "longitude": -1.12935802905177,
+      "latitude": 50.7186356978817,
+      "limit": 100,
+      "radius": 500
+    }
+  ]
 }</pre>
     <h4>Optional Query Parameters</h4>
     <p><code>filter=</code> (not required) A comma separated whitelist of attributes to be returned in the result object(s). e.g. <code>filter=postcode,longitude,latitude</code>. <code>null</code> responses will continue to return <code>null</code>.
