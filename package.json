@@ -64,7 +64,7 @@
     "ospoint": "~0.2.0",
     "pg": "~7.7.0",
     "pg-copy-streams": "~1.2.0",
-    "pg-query-stream": "~1.1.2",
+    "pg-query-stream": "~2.0.0",
     "pmx": "~1.6.7",
     "postcode": "~0.2.5",
     "prompt": "~1.0.0",
