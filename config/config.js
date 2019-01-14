@@ -86,7 +86,7 @@ const config = {
 		log : {
 			name : "postcodes.io",
 			streams: [{
-				path : process.stdout
+				stream: process.stdout
 			}]
 		}
 	}
