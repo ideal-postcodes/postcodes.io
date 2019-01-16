@@ -2,6 +2,13 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 10.0.1 (16/01/2018)
+
+- Fix: default `config.js` file would fail to load under `NODE_ENV=production` (thanks to @g-wilson)
+- Update dependencies
+- Added link to new Python lib (thanks to @raigad)
+- Clean up documentation
+
 ## 10.0.0 (29/11/2018)
 
 - *Breaking Change* Install dependencies upgraded. Going forward, only the following minimum versions will be tested:
