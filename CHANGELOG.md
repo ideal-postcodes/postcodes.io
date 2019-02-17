@@ -2,7 +2,11 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
-## 10.0.1 (16/01/2018)
+## 10.1.0 (17/02/2019)
+
+-
+
+## 10.0.1 (16/01/2019)
 
 - Fix: default `config.js` file would fail to load under `NODE_ENV=production` (thanks to @g-wilson)
 - Update dependencies
