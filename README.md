@@ -33,7 +33,8 @@ Instructions for installing and hosting postcodes.io yourself can be found at [p
 ## Testing
 
 ```bash
-npm run setup_test_db # create test database
+# Run a postgres container listening on port 5432
+docker-compose -f docker-compose-test.yml up 
 
 npm test
 ```
