@@ -4,7 +4,8 @@ Any changes, including backwards incompatible changes will be listed here
 
 ## 10.1.0 (17/02/2019)
 
--
+- Dropped bunyan as dependency. Replaced with pino, a faster and actively maintained logging library
+- Updated dependencies
 
 ## 10.0.1 (16/01/2019)
 
