@@ -10,10 +10,8 @@ HEALTHCHECK --interval=5s CMD node healthcheck.js
 
 COPY package.json .
 
-RUN apk --no-cache add --virtual build-dependencies build-base gcc python && \
-    npm install --only=production --no-package-lock && \
-    npm cache clean --force && \
-    apk del build-dependencies
+RUN npm install --only=production --no-package-lock && \
+    npm cache clean --force
 
 COPY . .
 
