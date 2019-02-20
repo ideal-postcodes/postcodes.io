@@ -1,6 +1,6 @@
 "use strict";
 
-const { logger } = require("commonlog-bunyan");
+const { logger } = require("../app/lib/logger");
 const filter = require("./filter");
 const {
   PostcodesioHttpError,

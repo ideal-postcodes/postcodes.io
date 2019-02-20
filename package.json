@@ -50,8 +50,6 @@
   "dependencies": {
     "async": "~2.6.2",
     "body-parser": "~1.18.3",
-    "bunyan": "~1.8.12",
-    "commonlog-bunyan": "~0.4.3",
     "cors": "~2.8.5",
     "csv": "~1.1.0",
     "csv-parse": "~3.2.0",
@@ -65,6 +63,7 @@
     "pg": "~7.8.0",
     "pg-copy-streams": "~1.2.0",
     "pg-query-stream": "~2.0.0",
+    "pino": "~5.11.1",
     "pmx": "~1.6.7",
     "postcode": "~1.0.1",
     "prompt": "~1.0.0",
