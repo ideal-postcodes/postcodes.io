@@ -1,23 +1,13 @@
 "use strict";
 
 const morgan = require("morgan");
-const Logger = require("commonlog-bunyan");
-
-/**
- * Sets up node-bunyan logger and logging in middleware
- */
 
 module.exports = (app, config) => {
-	Logger.init({
-		name: config.log.name,
-		streams: config.log.streams
-	});
+  const logger = require("../app/lib/logger").configure(config);
 
-	const logStream = {
-		write: message => {
-			Logger.logger.info(message.slice(0, -1));
-		}
+	const stream = {
+		write: message => logger.info(message.slice(0, -1))
 	};
 
-	app.use(morgan("combined", { stream: logStream }));
+	app.use(morgan("combined", { stream }));
 };

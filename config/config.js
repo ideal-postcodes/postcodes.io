@@ -32,9 +32,7 @@ const config = {
 		},
 		log : {
 			name : "postcodes.io",
-			streams: [{
-				stream: process.stdout
-			}]
+      file: undefined // Write to stdout
 		}
 	},
 
@@ -59,9 +57,7 @@ const config = {
 		},
 		log: {
 			name : "postcodes.io",
-			streams: [{
-				path : path.join(rootPath, "/test.log")	
-			}]
+      file: path.join(rootPath, "/test.log")
 		}
 	},
 
@@ -85,9 +81,7 @@ const config = {
 		},
 		log : {
 			name : "postcodes.io",
-			streams: [{
-				stream: process.stdout
-			}]
+      file: undefined // Write to stdout
 		}
 	}
 };
