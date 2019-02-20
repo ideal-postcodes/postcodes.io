@@ -1,7 +1,6 @@
 "use strict";
 
 const { join } = require("path");
-const rootPath = join(__dirname, "../");
 const defaults = require("./defaults");
 const defaultEnv = process.env.NODE_ENV || "development";
 
@@ -21,8 +20,6 @@ const config = {
 	*/ 
 
 	development : {
-		env : "development",
-		root: rootPath,
 		googleAnalyticsKey: "",
 		postgres: {
 			user: "postcodesio",
@@ -46,8 +43,6 @@ const config = {
 	*/ 
 
 	test: {
-		env : "test",
-		root: rootPath,
 		googleAnalyticsKey: "",
 		postgres: {
 			user: "postcodesio",
@@ -58,7 +53,7 @@ const config = {
 		},
 		log: {
 			name : "postcodes.io",
-      file: join(rootPath, "/test.log"),
+      file: join(__dirname, "../test.log"),
 		}
 	},
 
@@ -70,8 +65,6 @@ const config = {
 	*/ 
 
 	production : {
-		env : "production",
-		root: rootPath,
 		googleAnalyticsKey: "",
 		postgres: {
 			user: "postcodesio",
