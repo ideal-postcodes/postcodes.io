@@ -41,6 +41,11 @@
     "url": "https://github.com/ideal-postcodes/postcodes.io/issues"
   },
   "nyc": {
+    "reporter": [
+      "text-summary",
+      "html"
+    ],
+    "all": true,
     "exclude": [
       "bin",
       "tests",
