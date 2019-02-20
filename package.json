@@ -46,10 +46,9 @@
       "html"
     ],
     "all": true,
-    "exclude": [
-      "bin",
-      "tests",
-      "public"
+    "include": [
+      "app",
+      "config"
     ]
   },
   "dependencies": {
