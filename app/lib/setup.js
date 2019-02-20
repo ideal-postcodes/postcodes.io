@@ -1,7 +1,7 @@
 "use strict";
 
 const { series } = require("async");
-const models = require("../models/index.js");
+const models = require("../models/index");
 const { Outcode } = models;
 
 // List of support tables generated from data/ directory

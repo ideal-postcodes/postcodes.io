@@ -1,16 +1,13 @@
 "use strict";
 
 const fs = require("fs");
-const path = require("path");
 const async = require("async");
-const assert = require("chai").assert;
+const { assert } = require("chai");
 const parse = require('csv-parse/lib/sync');
-const helper = require(`${__dirname}/helper`);
-const env = process.env.NODE_ENV || "development";
-const configPath = path.join(__dirname, "../config/config.js");
+const helper = require(`./helper/index`);
 const seedPathDirectory = `${__dirname}/seed/places/`;
 const seedFilePath = `${__dirname}/seed/places/HY20.csv`;
-const Place = helper.Place;
+const { Place } = helper;
 
 const TYPE_OFFSET = 6; // Specifies type column on place.csv files
 

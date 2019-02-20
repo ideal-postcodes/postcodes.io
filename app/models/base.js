@@ -5,8 +5,7 @@ const pg = require("pg");
 const copyFrom = require("pg-copy-streams").from;
 const async = require("async");
 const csv = require("csv");
-const env = process.env.NODE_ENV || "development";
-const defaults = require("../../config/config.js")(env);
+const defaults = require("../../config/config")();
 const config = defaults.postgres;
 
 // Instantiate postgres client pool

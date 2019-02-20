@@ -1,7 +1,6 @@
 "use strict";
 
-const env = process.env.NODE_ENV || "development";
-const config = require("../config/config")(env);
+const config = require("../config/config")();
 const whitelistedAttributes = new Set(config.defaults.filterableAttributes);
 
 const isObject = o => Object.prototype.toString.call(o) === "[object Object]";

@@ -1,11 +1,10 @@
 "use strict";
 
 const async = require("async");
-const { isEmpty } = require("../lib/string.js");
+const { isEmpty } = require("../lib/string");
 const Postcode = require("../models/postcode");
 const Pc = require("postcode");
-const env = process.env.NODE_ENV || "development";
-const { defaults } = require("../../config/config.js")(env);
+const { defaults } = require("../../config/config")();
 const {
   InvalidPostcodeError,
   PostcodeNotFoundError,

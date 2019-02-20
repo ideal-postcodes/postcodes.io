@@ -1,12 +1,10 @@
 "use strict";
 
 const util = require("util");
-const path = require("path");
 const async = require("async");
-const Base = require("./base").Base;
-const env = process.env.NODE_ENV || "development";
+const { Base } = require("./base");
 const Postcode = require("./postcode");
-const defaults = require(path.join(__dirname, "../../config/config.js"))(env).defaults;
+const { defaults } = require("../../config/config.js")();
 
 const outcodeSchema = {
 	"id": "SERIAL PRIMARY KEY",

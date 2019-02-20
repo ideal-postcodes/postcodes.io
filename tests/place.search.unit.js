@@ -1,16 +1,13 @@
 "use strict";
 
 const fs = require("fs");
-const path = require("path");
 const async = require("async");
-const assert = require("chai").assert;
+const { assert } = require("chai");
 const parse = require('csv-parse/lib/sync');
-const helper = require(`${__dirname}/helper`);
-const env = process.env.NODE_ENV || "development";
-const configPath = path.join(__dirname, "../config/config.js");
-const defaults = require(configPath)(env).defaults;
+const helper = require("./helper/index");
+const { defaults } = require("../config/config")();
 const searchDefaults = defaults.placesSearch;
-const Place = helper.Place;
+const { Place } = helper;
 
 describe("Place Model", () => {
 	let testPostcode, testOutcode;

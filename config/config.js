@@ -1,8 +1,9 @@
 "use strict";
 
-const path = require("path");
-const rootPath = path.join(__dirname, "../");
+const { join } = require("path");
+const rootPath = join(__dirname, "../");
 const defaults = require("./defaults");
+const defaultEnv = process.env.NODE_ENV || "development";
 
 const config = {
 
@@ -31,8 +32,8 @@ const config = {
 			port: 5432
 		},
 		log : {
-			name : "postcodes.io",
-      file: undefined // Write to stdout
+      name : "postcodes.io",
+      file: "stdout",
 		}
 	},
 
@@ -57,7 +58,7 @@ const config = {
 		},
 		log: {
 			name : "postcodes.io",
-      file: path.join(rootPath, "/test.log")
+      file: join(rootPath, "/test.log"),
 		}
 	},
 
@@ -81,13 +82,15 @@ const config = {
 		},
 		log : {
 			name : "postcodes.io",
-      file: undefined // Write to stdout
+      file: "extreme", // Use pino.extreme
 		}
 	}
 };
 
-module.exports = function (environment) {
-	const cfg = config[environment] || config.development;
+module.exports = env => {
+  const environment = env || defaultEnv;
+
+	const cfg = config[environment];
 
 	cfg.defaults = defaults;
 

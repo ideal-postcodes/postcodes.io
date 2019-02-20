@@ -5,8 +5,7 @@ const Pc = require("postcode");
 const { series } = require("async");
 const { Base, populateLocation, extractOnspdVal } = require("./base");
 const QueryStream = require("pg-query-stream");
-const env = process.env.NODE_ENV || "development";
-const { defaults } = require("../../config/config.js")(env);
+const { defaults } = require("../../config/config.js")();
 
 const postcodeSchema = {
 	"id": "SERIAL PRIMARY KEY",
