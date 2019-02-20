@@ -5,8 +5,7 @@ const { join } = require("path");
 const async = require("async");
 const { assert } = require("chai");
 const randomString = require("random-string");
-const env = process.env.NODE_ENV || "development";
-const config = require("../../config/config")(env);
+const config = require("../../config/config")();
 const AttributeBaseSuite = require("./attribute_base.suite.js");
 
 // Load models

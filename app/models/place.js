@@ -1,20 +1,17 @@
 "use strict";
 
 const fs = require("fs");
-const path = require("path");
 const util = require("util");
 const async = require("async");
 const OSPoint = require("ospoint");
-const Base = require("./base").Base;
+const { Base } = require("./base");
 const QueryStream = require("pg-query-stream");
-const env = process.env.NODE_ENV || "development";
 const escapeRegex = require("escape-string-regexp");
-const configPath = path.join(__dirname, "../../config/config.js");
-const defaults = require(configPath)(env).defaults;
+const { defaults } = require("../../config/config")();
 const searchDefaults = defaults.placesSearch;
 const nearestDefaults = defaults.placesNearest;
 const containsDefaults = defaults.placesContained;
-const unaccent = require("../lib/unaccent.js");
+const unaccent = require("../lib/unaccent");
 
 const placeSchema = {
 	"id": "SERIAL PRIMARY KEY",

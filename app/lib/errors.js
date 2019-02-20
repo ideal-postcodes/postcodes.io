@@ -1,7 +1,6 @@
 "use strict";
 
-const env = process.env.NODE_ENV || "development";
-const { defaults } = require("../../config/config.js")(env);
+const { defaults } = require("../../config/config")();
 
 const DEFAULT_STATUS_CODE = 500;
 const DEFAULT_MESSAGE = `500 Server Error.

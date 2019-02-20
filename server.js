@@ -1,8 +1,8 @@
 "use strict";
 
 const env = process.env.NODE_ENV || "development";
-const config = require("./config/config")(env);
-const app = require("./app.js")(config);
+const config = require("./config/config")();
+const app = require("./app")(config);
 const { logger } = require("./app/lib/logger");
 const port = config.port || 8000;
 

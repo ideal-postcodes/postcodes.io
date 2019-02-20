@@ -1,8 +1,7 @@
 "use strict";
 
 const Place = require("../models/place");
-const env = process.env.NODE_ENV || "development";
-const defaults = require("../../config/config.js")(env).defaults;
+const defaults = require("../../config/config")().defaults;
 const searchDefaults = defaults.placesSearch;
 const {
   PlaceNotFoundError,
