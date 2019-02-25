@@ -6,6 +6,9 @@
   "directories": {
     "test": "tests"
   },
+  "prettier": {
+    "trailingComma": "es5"
+  },
   "scripts": {
     "test": "NODE_ENV=test npm run test:create && npm run nyc_mocha && NODE_ENV=test npm run test:clear && npm run lint",
     "nyc_mocha": "NODE_ENV=test NO_RELOAD_DB=true node_modules/.bin/nyc node_modules/.bin/mocha tests/ -R spec --exit",

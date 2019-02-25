@@ -8,14 +8,13 @@ For an urgent fix email support@ideal-postcodes.co.uk.
 Alternatively submit an issue at https://github.com/ideal-postcodes/postcodes.io/issues
 `;
 
-
 /**
  * Returns an API error which can be parsed by renderer
  * @extends Error
  */
 class PostcodesioHttpError extends Error {
   /**
-   * @param {number} status - HTTP status code 
+   * @param {number} status - HTTP status code
    * @param {string} humanMessage - Error message to be returned to client
    */
   constructor(status, humanMessage) {
@@ -36,7 +35,7 @@ class PostcodesioHttpError extends Error {
   toJSON() {
     return {
       status: this.status,
-      error: this.humanMessage,
+      error: this.humanMessage
     };
   }
 }
@@ -91,13 +90,13 @@ const MAX_GEOLOCATIONS_MESSAGE = `Too many locations submitted. Up to ${MAX_GEOL
 
 class ExceedMaxGeolocationsError extends PostcodesioHttpError {
   constructor() {
-    super(400,  MAX_GEOLOCATIONS_MESSAGE);
+    super(400, MAX_GEOLOCATIONS_MESSAGE);
   }
 }
 
 const MAX_POSTCODES = defaults.bulkLookups.postcodes.MAX;
 const MAX_POSTCODES_MESSAGE = `Too many postcodes submitted. Up to ${MAX_POSTCODES} postcodes can be bulk requested at a time`;
- 
+
 class ExceedMaxPostcodesError extends PostcodesioHttpError {
   constructor() {
     super(400, MAX_POSTCODES_MESSAGE);
@@ -106,7 +105,10 @@ class ExceedMaxPostcodesError extends PostcodesioHttpError {
 
 class PostcodeQueryRequiredError extends PostcodesioHttpError {
   constructor() {
-    super(400, "No postcode query submitted. Remember to include query parameter");
+    super(
+      400,
+      "No postcode query submitted. Remember to include query parameter"
+    );
   }
 }
 
@@ -169,6 +171,5 @@ module.exports = {
   TPostcodeNotFoundError,
   PlaceNotFoundError,
   InvalidQueryError,
-  OutcodeNotFoundError,
+  OutcodeNotFoundError
 };
-

@@ -297,6 +297,36 @@ describe("Postcodes routes", () => {
             done();
           });
       });
+
+      it("returns 400 if too many postcodes submitted", done => {
+        const postcodes = new Array(101).fill().map(() => "foo");
+        request(app)
+          .post("/postcodes")
+          .set({ "Content-Type": "application/json" })
+          .send({ postcodes })
+          .expect(400)
+          .end((error, response) => {
+            if (error) return done(error);
+            assert.match(response.body.error, /Too many postcodes submitted/gi);
+            done();
+          });
+      });
+      it("returns 400 if non-array submitted", done => {
+        request(app)
+          .post("/postcodes")
+          .set({ "Content-Type": "application/json" })
+          .send({ postcodes: "foo" })
+          .expect(400)
+          .end((error, response) => {
+            if (error) return done(error);
+            assert.match(
+              response.body.error,
+              /You need to provide a JSON array/gi
+            );
+            done();
+          });
+      });
+
       it("should refuse requests if lookups number over 100", done => {
         testPostcodes = [];
         for (let i = 0; i < 101; i++) {
