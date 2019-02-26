@@ -3,6 +3,7 @@
 const request = require("supertest");
 const { assert } = require("chai");
 const {
+  config,
   clearPostcodeDb,
   postcodesioApplication,
   seedPostcodeDb,
@@ -10,7 +11,10 @@ const {
   isPlaceObject,
   validCorsOptions,
 } = require("./helper/index");
+const { defaults } = config;
 const app = postcodesioApplication();
+
+const DEFAULT_LIMIT = defaults.placesSearch.limit.DEFAULT;
 
 describe("Places Routes", () => {
   before(function(done) {
@@ -180,7 +184,7 @@ describe("Places Routes", () => {
           if (error) return done(error);
           assert.equal(response.status, 200);
           const places = response.body.result;
-          assert.equal(places.length, 10);
+          assert.equal(places.length, DEFAULT_LIMIT);
           places.forEach(p => isPlaceObject(p));
           done();
         });
@@ -209,6 +213,22 @@ describe("Places Routes", () => {
         .end((error, response) => {
           if (error) return done(error);
           assert.equal(response.body.status, 400);
+          done();
+        });
+    });
+    it("sets limit to default if requested limit < 1", done => {
+      const query = "b";
+      request(app)
+        .get("/places")
+        .query({ query, l: 0 })
+        .expect(200)
+        .expect(allowsCORS)
+        .end((error, response) => {
+          if (error) return done(error);
+          assert.equal(response.status, 200);
+          const places = response.body.result;
+          assert.equal(places.length, DEFAULT_LIMIT);
+          places.forEach(p => isPlaceObject(p));
           done();
         });
     });
