@@ -1,90 +1,58 @@
 "use strict";
 
-/*
- *	Base model for Postcode attributes 
- *
- * 	This includes attributes like district, parishes, etc
- *  The base requirement
- */ 
-
-const fs = require("fs");
-const util = require("util");
-const path = require("path");
 const async = require("async");
-const Base = require("./base").Base;
+const { inherits } = require("util");
+const { Base } = require("./base");
 
-const requiredAttributes = {
-	"code": "VARCHAR(32) NOT NULL UNIQUE",
-	"name": "VARCHAR(255)"
-};
+const requiredAttributes = Object.freeze({
+  code: "VARCHAR(32) NOT NULL UNIQUE",
+  name: "VARCHAR(255)",
+});
 
-// Note - relation name must match source (.json) file name in data/ directory. E.g. /data/<relation>.json
-
-function AttributeBase(relation, schema, indexes) {
-	if (!schema) {
-		schema = {};
-	}
-
-	// Check if necessary attributes already exists, insert otherwise
-	for (let attr in requiredAttributes) {
-		if (requiredAttributes.hasOwnProperty(attr)) {
-			if (!schema[attr]) {
-				schema[attr] = requiredAttributes[attr];
-			}
-		}
-	}
-
-	if (!indexes) {
-		indexes = [];
-	}
-
-	// Check if necessary index already exists, insert index otherwise
-	const hasIndex = indexes.some(elem => {
-		return elem.unique && elem.column === "code";
-	});
-
-	if (!hasIndex) {
-		indexes.push({
-			unique: true,
-			column: "code"
-		});
-	}
-
-	Base.call(this, relation, schema, indexes);
+/**
+ * AttributeBase
+ *
+ * Dynamically defines data models for postcode attributes defined in `/data`
+ *
+ * Relation name must match source (.json) file name in data/ directory. E.g. /data/<relation>.json
+ *
+ * @extends {Base}
+ */
+function AttributeBase(relation, schema = {}, indexes = []) {
+  // Define code and name columns unless specified in by `schema`
+  schema = Object.assign({}, requiredAttributes, schema);
+  // Create a unique index on code by default
+  indexes.push({ unique: true, column: "code" });
+  Base.call(this, relation, schema, indexes);
 }
 
-util.inherits(AttributeBase, Base);
+inherits(AttributeBase, Base);
 
-AttributeBase.prototype.seedData = function (callback) {
-	const self = this;
-	const dataPath = path.join(__dirname, "../../data/");
-	const dataObject = JSON.parse(fs.readFileSync(path.join(dataPath, self.relation + ".json")));
-	const insertQueue = [];
+AttributeBase.prototype.seedData = function(callback) {
+  const data = require(`../../data/${this.relation}.json`);
+  const inserts = Object.keys(data)
+    .map(code => [code, data[code]])
+    .map(values => [
+      `INSERT INTO ${this.relation} (code, name) VALUES ($1, $2)`,
+      values,
+    ])
+    .map(([query, values]) => {
+      return cb => this._query(query, values, cb);
+    });
 
-	for (let code in dataObject) {
-		insertQueue.push([code, dataObject[code]]);
-	}
-
-	async.parallel(insertQueue.map(elem => {
-		return callback => {
-			const query = `INSERT INTO ${self.relation} (code, name) VALUES ($1, $2)`;
-			self._query(query, elem, callback);
-		};
-	}), callback);
+  async.parallel(inserts, callback);
 };
 
-AttributeBase.prototype._setupTable = function (callback) {
-	const self = this;
-	self._destroyRelation(error => {
-		if (error) return callback(error);
-		self._createRelation(error => {
-			if (error) return callback(error);
-			self.seedData(error => {
-				if (error) return callback(error);
-				self.createIndexes(callback);
-			});
-		});
-	});
+AttributeBase.prototype._setupTable = function(callback) {
+  this._destroyRelation(error => {
+    if (error) return callback(error);
+    this._createRelation(error => {
+      if (error) return callback(error);
+      this.seedData(error => {
+        if (error) return callback(error);
+        this.createIndexes(callback);
+      });
+    });
+  });
 };
-
 module.exports = AttributeBase;
