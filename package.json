@@ -38,7 +38,11 @@
     "ordnance",
     "survey"
   ],
-  "author": "Chris Blanchard",
+  "author": {
+    "name": "Ideal Postcodes",
+    "email": "support@ideal-postcodes.co.uk",
+    "url": "https://ideal-postcodes.co.uk"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ideal-postcodes/postcodes.io/issues"
