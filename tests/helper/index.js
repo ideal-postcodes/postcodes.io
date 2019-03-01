@@ -8,7 +8,7 @@ const randomString = require("random-string");
 const config = require("../../config/config")();
 const AttributeBaseSuite = require("./attribute_base.suite.js");
 
-const postcodesioApplication = () => require("../../app")(config);
+const postcodesioApplication = cfg => require("../../app")(cfg || config);
 
 // Load models
 const {
