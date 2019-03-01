@@ -68,6 +68,8 @@
     "ejs": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
     "escape-string-regexp": "~1.0.5",
     "express": "~4.16.4",
+    "express-basic-auth": "~1.1.6",
+    "express-prom-bundle": "~5.0.2",
     "minimist": "~1.2.0",
     "morgan": "~1.9.1",
     "node.extend": "~2.0.2",
@@ -78,6 +80,7 @@
     "pino": "~5.11.1",
     "pmx": "~1.6.7",
     "postcode": "~1.0.1",
+    "prom-client": "~11.2.1",
     "prompt": "~1.0.0",
     "serve-favicon": "~2.5.0"
   },
