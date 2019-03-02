@@ -5,7 +5,8 @@ const { join } = require("path");
 const async = require("async");
 const { assert } = require("chai");
 const randomString = require("random-string");
-const config = require("../../config/config")();
+const configFactory = require("../../config/config");
+const config = configFactory();
 const AttributeBaseSuite = require("./attribute_base.suite.js");
 
 const postcodesioApplication = cfg => require("../../app")(cfg || config);
@@ -177,6 +178,7 @@ const lookupRandomPostcode = callback => {
 
 module.exports = {
   // Data
+  configFactory,
   config,
 
   // Methods

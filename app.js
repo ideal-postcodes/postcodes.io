@@ -1,7 +1,6 @@
 "use strict";
 
 const express = require("express");
-const prometheus = require("express-prom-bundle");
 
 exports = module.exports = config => {
   const app = express();
