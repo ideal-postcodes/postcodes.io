@@ -24,6 +24,10 @@ describe("parseEnv", () => {
     assert.equal(parseEnv("FOO"), "FOO");
   });
 
+  it("returns null if variable is 'null'", () => {
+    assert.equal(parseEnv("null"), null);
+  });
+
   it("returns empty string if variable is ''", () => {
     assert.equal(parseEnv(""), "");
   });
