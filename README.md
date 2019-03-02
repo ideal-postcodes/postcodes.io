@@ -30,6 +30,8 @@ Instructions for installing and hosting postcodes.io yourself can be found at [p
 - [Install on host with Node.js and Postgresql](https://postcodes.io/docs#install-requirements)
 - [Download and import the raw dataset to Postgresql](https://postcodes.io/docs#import-from-pgdump)
 
+Application configuration options are outlined in [`config/README.md`](/config/README.md).
+
 ## Testing
 
 ```bash
