@@ -1,23 +1,24 @@
 "use strict";
 
+/**
+ * config.js
+ *
+ * This file exports default configurations across test, development and
+ * production environments. If you wish to modify configuration, please use
+ * environment variables or the .env file
+ *
+ * Nota Bene
+ *
+ * Whereas previously (<10.1), config.js served as an editable configuration
+ * file, post 10.1, configuration should be set via environment variables
+ * or the `.env` file - with environment variables taking precedence
+ */
+
 const { join } = require("path");
 const defaults = require("./defaults");
 const defaultEnv = process.env.NODE_ENV || "development";
 
 const config = {
-  /*
-   * Development Environment (Default) Configuration Object ($ node server.js)
-   *
-   * This is the default environment. i.e. it's the environment config when the
-   * server is booted up with `$ node server.js`
-   *
-   * The only action you need to take here is to add your Postgres credentials.
-   * You also need to create the database yourself and pass in the database name.
-   * Note that the specified user needs to be a superuser for the import process.
-   * You may reduce user privileges after you've imported postcode data
-   *
-   */
-
   development: {
     googleAnalyticsKey: "",
     postgres: {
@@ -31,15 +32,8 @@ const config = {
       name: "postcodes.io",
       file: "stdout",
     },
+    port: 8000,
   },
-
-  /*
-   * Test Environment (Optional, if you want to npm test)
-   *
-   * Do not use the same Postgres credentials for the test database as your production
-   * or development environments as this environment needs to reset the postcode table
-   *
-   */
 
   test: {
     googleAnalyticsKey: "",
@@ -54,14 +48,8 @@ const config = {
       name: "postcodes.io",
       file: join(__dirname, "../test.log"),
     },
+    port: 8000,
   },
-
-  /*
-   * Production Environment Configuration Object
-   *
-   * This is the production environment. `$ NODE_ENV=production node server.js`
-   *
-   */
 
   production: {
     googleAnalyticsKey: "",
@@ -74,8 +62,9 @@ const config = {
     },
     log: {
       name: "postcodes.io",
-      file: "extreme", // Use pino.extreme
+      file: "perf", // Use pino.extreme
     },
+    port: 8000,
   },
 };
 
