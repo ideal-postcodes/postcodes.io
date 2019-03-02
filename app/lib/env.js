@@ -5,8 +5,8 @@
  *
  * Parses environemnt variable value (`process.env["KEY"]`) returning appropriate type
  *
- * @param VAR {string|undefined}
- * @param defaultValue {string|number|boolean|undefined|null}
+ * @param {string|undefined} VAR
+ * @param {string|number|boolean|undefined|null} defaultValue
  * @returns {string|number|boolean|undefined|null}
  */
 const parseEnv = (VAR, defaultValue) => {
