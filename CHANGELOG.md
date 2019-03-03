@@ -2,15 +2,19 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
-## 10.1.0 (17/02/2019)
+## 10.1.0 (3/3/2019)
 
+- Updated ONSPD dataset to February 2019
+- Updated OS Names dataset to January 2019
+- Rebuild GSS codes for NHSHA and NUTS datasets
+- Dropped bunyan as dependency. Replaced with pino, a faster and actively maintained logging library
 - Log destination can now be assigned via env variable `LOG_DESTINATION`
   - `"/absolute/path/to/file"` logs to file
   - `"stdout"` logs to stdout
   - `"perf"` logs to stdout in [extreme mode](https://github.com/pinojs/pino/blob/master/docs/extreme.md)
 - Added ability to export prometheus metrics by basic auth protected `/metrics` endpoint. To enable include `PROMETHEUS_USERNAME` and `PROMETHEUS_PASSWORD` as environment variables. Those environment variables are required to authenticate using [HTTP basic authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication)
-- Dropped bunyan as dependency. Replaced with pino, a faster and actively maintained logging library
 - Updated dependencies
+- Added ability to configure application limits using environment variables. [See readme](/config/README.md)
 
 ## 10.0.1 (16/01/2019)
 
