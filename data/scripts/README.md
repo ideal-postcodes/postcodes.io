@@ -4,7 +4,7 @@ The ONS Postcode Directory (ONSPD) dataset associates postcodes with administrat
 
 Since the names corresponding with each GSS code are not included in the ONSPD data file, these codes are primarily extracted from the `Documents/` directory which accompanies each ONSPD release.
 
-The `data/` directory for this project documents and controls how GSS codes are extracted and stored for this project. `data/` has the following functions:
+The `data/` directory documents and controls how GSS codes are extracted and stored for this project. Scripts in `data/` have the following functions:
 
 - Stores scripts which describe and document how GSS names and codes are retrieved from ONSPD `Documents/` directory
 - Documents special cases for code extraction (inside of extraction script)
