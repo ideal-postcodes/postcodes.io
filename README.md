@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img width="250" src="https://img.ideal-postcodes.co.uk/postcodes-open-source.svg" alt="Postcodes.io">
+  <img src="https://img.ideal-postcodes.co.uk/Postcodes.io%20Logo@3x.png" alt="Postcodes.io">
 </h1>
 
 > UK postcode & geolocation API, serving up open data
