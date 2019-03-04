@@ -1,22 +1,43 @@
-![Open Source Logo](https://img.ideal-postcodes.co.uk/postcodes-open-source.svg)
+<h1 align="center">
+	<img width="250" src="https://img.ideal-postcodes.co.uk/postcodes-open-source.svg" alt="Postcodes.io">
+</h1>
 
-[![CircleCI](https://circleci.com/gh/ideal-postcodes/postcodes.io/tree/master.svg?style=svg)](https://circleci.com/gh/ideal-postcodes/postcodes.io/tree/master) [![Coverage Status](https://coveralls.io/repos/github/ideal-postcodes/postcodes.io/badge.svg?branch=master)](https://coveralls.io/github/ideal-postcodes/postcodes.io?branch=master) ![Dependency Status](https://david-dm.org/ideal-postcodes/postcodes.io.svg) 
+> UK postcode & geolocation API, serving up open data
 
-# Postcodes.io
+[![CircleCI](https://circleci.com/gh/ideal-postcodes/postcodes.io/tree/master.svg?style=svg)](https://circleci.com/gh/ideal-postcodes/postcodes.io/tree/master)
+[![Coverage Status](https://coveralls.io/repos/github/ideal-postcodes/postcodes.io/badge.svg?branch=master)](https://coveralls.io/github/ideal-postcodes/postcodes.io?branch=master)
+![Dependency Status](https://david-dm.org/ideal-postcodes/postcodes.io.svg) 
 
-Query for UK postcodes and geolocations over HTTP. Postcodes.io uses the Office for National Statistics Postcode Directory.
+Query for UK postcodes and geolocations over HTTP.
 
-Documentation can be found at [postcodes.io](http://postcodes.io)
+Postcodes.io regularly ingests and serves the [ONS Postcode Directory](https://geoportal.statistics.gov.uk/datasets?q=ONSPD&sort=name&t=ons%20postcode%20directory) and [Ordnance Survey Open Names](https://www.ordnancesurvey.co.uk/business-and-government/products/os-open-names.html) datasets.
 
-## Requirements
+## Features
 
-Please make sure you have the following available:
+- Postcode lookup, resolve administrative and location data for postcodes and outward codes
+- Postcode search & autocomplete
+- Reverse geocode postcodes
+- Nearest postcode search
+- Terminated postcode search
+- Outward code lookup
+- Bulk postcode lookup and reverse geocoding
 
-- Node.js v8.9 [(Instructions)](http://nodejs.org/)
-- PostgreSQL (10 or greater)
-- PostGIS extension [(Instructions)](http://postgis.net/install)
+## Usage
 
-## Run with Docker
+- [Public API](https://postcodes.io)
+- [API Documentation](https://postcodes.io/docs)
+- [3rd Party API Clients](https://postcodes.io/about)
+- [Public API Service Status](https://status.ideal-postcodes.co.uk)
+- [Self Hosting](https://postcodes.io/docs#Install-notes)
+- [Self Hosting: Docker containers](https://postcodes.io/docs#docker-install)
+- [Self Hosting: Node.js and Postgresql](https://postcodes.io/docs#install-requirements)
+- [Self Hosting: Database only - Download and import the raw dataset to Postgresql](https://postcodes.io/docs#import-from-pgdump)
+- [Explore](https://postcodes.io/explore)
+- [Chat](https://chat.ideal-postcodes.co.uk)
+
+## Quick Start
+
+Start querying UK postcode data immediately on your local machine with Docker
 
 ```bash
 docker-compose up
@@ -26,16 +47,6 @@ docker-compose up
   <img src="https://img.ideal-postcodes.co.uk/postcodesio-docker-compose-demo.gif" alt="Docker Compose Demo">
 </p>
 
-## Self Hosting
-
-Instructions for installing and hosting postcodes.io yourself can be found at [postcodes.io/docs](https://postcodes.io/docs#Install-notes). Methods include:
-
-- [Install as Docker containers](https://postcodes.io/docs#docker-install)
-- [Install on host with Node.js and Postgresql](https://postcodes.io/docs#install-requirements)
-- [Download and import the raw dataset to Postgresql](https://postcodes.io/docs#import-from-pgdump)
-
-Application configuration options are outlined in [`config/README.md`](/config/README.md).
-
 ## Testing
 
 ```bash
@@ -44,10 +55,6 @@ docker-compose -f docker-compose-test.yml up
 
 npm test
 ```
-
-## External Libraries
-
-A list of external libraries can be found on the [about page](https://postcodes.io/about)
 
 ## License
 
