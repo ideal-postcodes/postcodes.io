@@ -22,6 +22,10 @@ Please make sure you have the following available:
 docker-compose up
 ```
 
+<p align="center">
+  <img src="https://img.ideal-postcodes.co.uk/postcodesio-docker-compose-demo.gif" alt="Docker Compose Demo">
+</p>
+
 ## Self Hosting
 
 Instructions for installing and hosting postcodes.io yourself can be found at [postcodes.io/docs](https://postcodes.io/docs#Install-notes). Methods include:
@@ -48,3 +52,4 @@ A list of external libraries can be found on the [about page](https://postcodes.
 ## License
 
 MIT
+
