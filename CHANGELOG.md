@@ -2,6 +2,10 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 10.1.1 (6/3/2019)
+
+- Fix: renamed and moved docker-compose-test.yml as it [breaks Docker Hub build](https://docs.docker.com/docker-hub/builds/automated-testing/)
+
 ## 10.1.0 (3/3/2019)
 
 - Updated ONSPD dataset to February 2019
