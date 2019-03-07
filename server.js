@@ -5,7 +5,9 @@ const app = require("./app")(config);
 const { logger } = require("./app/lib/logger");
 const { port } = config;
 
-if (process.env.PMX) require("pmx").init({ http: true });
+if (process.env.PMX) {
+  require("@pm2/io").init({ transactions: true, http: true });
+}
 
 const server = app.listen(port);
 
