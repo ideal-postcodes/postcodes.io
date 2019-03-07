@@ -5,8 +5,9 @@ Any changes, including backwards incompatible changes will be listed here
 
 ## 10.1.2 (7/3/2019)
 
-- Fix: `npm run setup` on linux
+- Fix: `npm run setup` on ubuntu
 - Dependency Update: switch from `pmx` to `@pm2/io`
+- Add abiltiy to define google analytics key with environment variable
 
 ## 10.1.1 (6/3/2019)
 
