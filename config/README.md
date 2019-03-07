@@ -11,18 +11,34 @@ Default configuration values can be found at `config/config.js` and `config/defa
 ## Configuration Options
 
 ```bash
+# HTTP
 PORT # Port to listen on
 
-MAPBOX_PUBLIC_KEY # Mapbox key if you wish to use `/explore` functionality
-
+# Postgresl Configuration
 POSTGRES_USER # Postgres user
 POSTGRES_PASSWORD # Postgres password
 POSTGRES_DATABASE # Postgres database name
 POSTGRES_HOST # Postgres host
 POSTGRES_PORT # Postgres port
 
+# Logging
 LOG_NAME # Name attached to JSON log output
 LOG_DESTINATION # Log destination, can be set to file `LOG_DESTINATION=/var/logs/pcio.log` or `stdout` or `perf` (high performance stdout)
+
+# Google analytics key
+GA_KEY
+
+# Mapbox key if you wish to use `/explore` functionality
+MAPBOX_PUBLIC_KEY
+
+# Enable pm2/io application monitoring
+PMX
+
+#Inserts optional prometheus monitoring middleware
+# Express-prom-bundle exposes a '/metrics' endpoint which can be queried by prometheus
+# This endpoint requires basic auth defined by:
+PROMETHEUS_USERNAME
+PROMETHEUS_PASSWORD
 
 # Application defaults configuration
 NEAREST_RADIUS_DEFAULT,
