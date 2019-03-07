@@ -2,6 +2,12 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+
+## 10.1.2 (7/3/2019)
+
+- Fix: `npm run setup` on linux
+- Dependency Update: switch from `pmx` to `@pm2/io`
+
 ## 10.1.1 (6/3/2019)
 
 - Fix: renamed and moved docker-compose-test.yml as it [breaks Docker Hub build](https://docs.docker.com/docker-hub/builds/automated-testing/)
