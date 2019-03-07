@@ -84,6 +84,7 @@ module.exports = env => {
     POSTGRES_HOST,
     POSTGRES_PORT,
     LOG_NAME,
+    GA_KEY,
     LOG_DESTINATION,
   } = process.env;
 
@@ -103,6 +104,8 @@ module.exports = env => {
 
   if (LOG_NAME !== undefined) cfg.log.name = LOG_NAME;
   if (LOG_DESTINATION !== undefined) cfg.log.file = LOG_DESTINATION;
+
+  if (GA_KEY !== undefined) cfg.googleAnalyticsKey = GA_KEY;
 
   return cfg;
 };
