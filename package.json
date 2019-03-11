@@ -94,7 +94,7 @@
     "nyc": "~13.3.0",
     "prettier": "~1.16.4",
     "random-string": "~0.2.0",
-    "supertest": "~3.4.2"
+    "supertest": "~4.0.0"
   },
   "greenkeeper": {
     "ignore": [
