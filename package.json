@@ -64,7 +64,7 @@
     "cors": "~2.8.5",
     "csv": "~1.1.0",
     "csv-parse": "~3.2.0",
-    "dotenv": "~6.2.0",
+    "dotenv": "~7.0.0",
     "ejs": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
     "escape-string-regexp": "~1.0.5",
     "express": "~4.16.4",
