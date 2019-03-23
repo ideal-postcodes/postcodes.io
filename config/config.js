@@ -14,6 +14,9 @@
  * or the `.env` file - with environment variables taking precedence
  */
 
+// Load .env into environment variables
+require("dotenv").config();
+
 const { join } = require("path");
 const defaults = require("./defaults");
 const defaultEnv = process.env.NODE_ENV || "development";
