@@ -86,6 +86,8 @@ module.exports = env => {
     LOG_NAME,
     GA_KEY,
     LOG_DESTINATION,
+    PROMETHEUS_USERNAME,
+    PROMETHEUS_PASSWORD,
   } = process.env;
 
   if (PORT !== undefined) cfg.port = PORT;
@@ -106,6 +108,9 @@ module.exports = env => {
   if (LOG_DESTINATION !== undefined) cfg.log.file = LOG_DESTINATION;
 
   if (GA_KEY !== undefined) cfg.googleAnalyticsKey = GA_KEY;
+
+  if (PROMETHEUS_USERNAME !== undefined) cfg.prometheusUsername = PROMETHEUS_USERNAME;
+  if (PROMETHEUS_PASSWORD !== undefined) cfg.prometheusPassword = PROMETHEUS_PASSWORD;
 
   return cfg;
 };

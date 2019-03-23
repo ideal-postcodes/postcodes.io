@@ -2,6 +2,9 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 10.1.3 (23/3/2019)
+
+- Enable prometheus endpoint
 
 ## 10.1.2 (7/3/2019)
 
