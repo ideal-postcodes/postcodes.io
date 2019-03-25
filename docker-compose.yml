@@ -6,17 +6,16 @@ services:
     depends_on:
       - db
     environment:
-      - POSTGRES_DB
-      - POSTGRES_PASSWORD
-      - POSTGRES_USER
-      - POSTGRES_HOST
+      - POSTGRES_DB=postcodesiodb
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=postcodesio
+      - POSTGRES_HOST=db
     ports:
       - 8000:8000
   db:
     image: idealpostcodes/postcodes.io.db:latest
     environment:
-      - POSTGRES_DB
-      - POSTGRES_PASSWORD
-      - POSTGRES_HOST
-      - POSTGRES_USER
+      - POSTGRES_DB=postcodesiodb
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=postcodesio
 
