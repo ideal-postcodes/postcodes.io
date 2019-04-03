@@ -80,7 +80,7 @@
     "pino": "~5.12.0",
     "@pm2/io": "~4.1.3",
     "postcode": "~1.0.1",
-    "prom-client": "~11.2.1",
+    "prom-client": "~11.3.0",
     "prompt": "~1.0.0",
     "serve-favicon": "~2.5.0"
   },
