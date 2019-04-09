@@ -69,7 +69,7 @@
     "escape-string-regexp": "~1.0.5",
     "express": "~4.16.4",
     "express-basic-auth": "~1.1.6",
-    "express-prom-bundle": "~5.1.1",
+    "express-prom-bundle": "~5.1.2",
     "minimist": "~1.2.0",
     "morgan": "~1.9.1",
     "node.extend": "~2.0.2",
