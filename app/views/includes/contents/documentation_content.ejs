@@ -54,13 +54,11 @@
           </tr>
           <tr id="eastings">
             <td>eastings <br/> <code>integer|null</code></td>
-            <td><strong>Eastings.</strong> The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish
-            Grid system.</td>
+            <td><strong>Eastings.</strong> The Ordnance Survey postcode grid reference Easting to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be <code>null</code> if geolocation not available.</td>
           </tr>
           <tr id="northings">
             <td>northings <br/> <code>integer|null</code></td>
-            <td><strong>Northings.</strong> The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish
-            Grid system.</td>
+            <td><strong>Northings.</strong> The Ordnance Survey postcode grid reference Northing to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be <code>null</code> if geolocation not available.</td>
           </tr>
           <tr id="country">
             <td>country <br/> <code>string</code></td>
@@ -83,12 +81,12 @@
             <td><strong>Ward.</strong> The current administrative/electoral area to which the postcode has been assigned.</td>
           </tr>
           <tr id="longitude">
-            <td>longitude <br/> <code>double float</code></td>
-            <td><strong>Longitude.</strong> The WGS84 longitude given the Postcode's national grid reference.</td>
+            <td>longitude <br/> <code>double float|null</code></td>
+            <td><strong>Longitude.</strong> The WGS84 longitude given the Postcode's national grid reference. May be <code>null</code> if geolocation not available.</td>
           </tr>
           <tr id="latitude">
-            <td>latitude <br/> <code>double float</code></td>
-            <td><strong>Latitude.</strong> The WGS84 latitude given the Postcode's national grid reference.</td>
+            <td>latitude <br/> <code>double float|null</code></td>
+            <td><strong>Latitude.</strong> The WGS84 latitude given the Postcode's national grid reference. May be <code>null</code> if geolocation not available.</td>
           </tr>
           <tr id="parliamentary_constituency">
             <td>parliamentary_constituency <br/> <code>string|null</code></td>
@@ -122,7 +120,7 @@
           </tr>
           <tr id="ced">
             <td>ced <br/> <code>string|null</code></td>
-            <td><strong>County Electoral District.</strong> The county electoral division code for each English postcode. Pseudo codes are included for the remainder of the UK. The field will be blank for English postcodes with no grid reference. English county councils use county electoral divisions (CED) to elect councillors. These CEDs must be confined within district boundaries, but need not be based on whole electoral wards. The only exceptions are the Isles of Scilly and the Greater London Authority (GLA). CEDs do not exist within UAs.</td>
+            <td><strong>County Electoral District.</strong> The county electoral division code for each English postcode. Pseudo codes are included for the remainder of the UK. The field will be <code>null</code> for English postcodes with no grid reference. English county councils use county electoral divisions (CED) to elect councillors. These CEDs must be confined within district boundaries, but need not be based on whole electoral wards. The only exceptions are the Isles of Scilly and the Greater London Authority (GLA). CEDs do not exist within UAs.</td>
           </tr>
           <tr id="ccg">
             <td>ccg <br/> <code>string|null</code></td>
