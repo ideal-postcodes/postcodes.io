@@ -180,11 +180,11 @@
           </tr>
           <tr id="outcode-eastings">
             <td>eastings <br/> <code>integer|null</code></td>
-            <td><strong>Eastings.</strong> The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates.</td>
+            <td><strong>Eastings.</strong> The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates. Returns 0 if geolocation is not available.</td>
           </tr>
           <tr id="outcode-northings">
             <td>northings <br/> <code>integer|null</code></td>
-            <td><strong>Northings.</strong> The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates.</td>
+            <td><strong>Northings.</strong> The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates. Returns 0 if geolocation is not available.</td>
           </tr>
           <tr id="outcode-admin_county">
             <td>admin_county <br/> <code>string[]</code></td>
@@ -199,12 +199,12 @@
             <td><strong>Ward.</strong> The current administrative/electoral areas under the outcode.</td>
           </tr>
           <tr id="outcode-longitude">
-            <td>longitude <br/> <code>double float</code></td>
-            <td><strong>Longitude.</strong> The WGS84 longitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates.</td>
+            <td>longitude <br/> <code>double float | null</code></td>
+            <td><strong>Longitude.</strong> The WGS84 longitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates. May be <code>null</code> if geolocation not available.</td>
           </tr>
           <tr id="outcode-latitude">
-            <td>latitude <br/> <code>double float</code></td>
-            <td><strong>Latitude.</strong> The WGS84 latitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates.</td>
+            <td>latitude <br/> <code>double float | null</code></td>
+            <td><strong>Latitude.</strong> The WGS84 latitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates. May be <code>null</code> if geolocation not available.</td>
           </tr>
           <tr id="outcode-country">
             <td>country <br/> <code>string[]</code></td>
