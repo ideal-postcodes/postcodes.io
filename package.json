@@ -66,7 +66,7 @@
     "csv-parse": "~3.2.0",
     "dotenv": "~7.0.0",
     "ejs": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-    "escape-string-regexp": "~1.0.5",
+    "escape-string-regexp": "~2.0.0",
     "express": "~4.16.4",
     "express-basic-auth": "~1.1.6",
     "express-prom-bundle": "~5.1.4",
