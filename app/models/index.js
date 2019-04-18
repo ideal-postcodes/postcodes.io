@@ -9,6 +9,7 @@ module.exports = {
   County: require("./county"),
   Ccg: require("./ccg"),
   Constituency: require("./constituency"),
+  ScottishConstituency: require("./scottish_constituency"),
   Nuts: require("./nuts"),
   Ward: require("./ward"),
   Outcode: require("./outcode"),

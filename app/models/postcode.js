@@ -3,7 +3,7 @@
 const { inherits } = require("util");
 const Pc = require("postcode");
 const { series } = require("async");
-const { Base, populateLocation, extractOnspdVal } = require("./base");
+const { Base, populateLocation, extractCsvVal } = require("./base");
 const QueryStream = require("pg-query-stream");
 const { defaults } = require("../../config/config.js")();
 
@@ -33,7 +33,8 @@ const postcodeSchema = {
 	"outcode" : "VARCHAR(5)",
 	"ccg_id" : "VARCHAR(32)",
   "ced_id": "VARCHAR(32)",
-	"constituency_id" : "VARCHAR(32)"
+	"constituency_id" : "VARCHAR(32)",
+	"scottish_constituency_id" : "VARCHAR(32)"
 };
 
 const indexes = [{
@@ -82,6 +83,10 @@ const relationships = [{
 	key: "constituency_id",
 	foreignKey: "code"
 },{
+	table: "scottish_constituencies",
+	key: "scottish_constituency_id",
+	foreignKey: "code"
+},{
 	table: "nuts",
 	key: "nuts_id",
 	foreignKey: "code"
@@ -99,6 +104,9 @@ const toJoinString = () => {
 const foreignColumns = [{
 	field: "constituencies.name",
 	as: "parliamentary_constituency"
+},{
+	field: "scottish_constituencies.name",
+	as: "scottish_parliamentary_constituency"
 },{
 	field: "districts.name",
 	as: "admin_district"
@@ -178,6 +186,7 @@ Postcode.prototype.whitelistedAttributes = [
 	"admin_county",
 	"admin_district",
 	"region",
+	"scottish_parliamentary_constituency",
 	"parliamentary_constituency",
 	"european_electoral_region",
 	"parish",
@@ -608,6 +617,7 @@ Postcode.prototype.toJson = function (address) {
 		admin_county: address.admin_county_id,
 		admin_ward: address.admin_ward_id,
 		parish: address.parish_id,
+		scottish_parliamentary_constituency: address.scottish_constituency_id,
 		parliamentary_constituency: address.constituency_id,
 		ccg: address.ccg_id,
     ced: address.ced_id,
@@ -625,6 +635,7 @@ Postcode.prototype.toJson = function (address) {
 	delete address.nuts_id;
 	delete address.nuts_code;
 	delete address.constituency_id;
+	delete address.scottish_constituency_id;
 	return address;
 };
 
@@ -638,7 +649,7 @@ Postcode.prototype._setupTable = function (filepath, callback) {
 	], callback);
 };
 
-Postcode.prototype.seedPostcodes = function (filepath, callback) {
+Postcode.prototype.seedPostcodes = function (filepath, callback, scottish = false, large = false) {
 	const pcts = require("../../data/pcts.json");
 	const lsoa = require("../../data/lsoa.json");
 	const msoa = require("../../data/msoa.json");
@@ -686,15 +697,34 @@ Postcode.prototype.seedPostcodes = function (filepath, callback) {
 		{ column: "ccg_id", method: row => row.extract("ccg") },
 	]);
 
+	const SPD_COL_MAPPINGS = Object.freeze([
+		{ column: "postcode", method: row => row.extract("Postcode", "spd") },
+		{ column: "scottish_constituency_id", method: row => row.extract("ScottishParliamentaryConstituency2014Code", "spd", large) },
+	]);
+
+	function selectColMappings(scottish){
+		if(scottish) {
+			return SPD_COL_MAPPINGS;
+		} else {
+			return ONSPD_COL_MAPPINGS;
+		}
+	}
+
 	this._csvSeed({ 
 		filepath, 
 		transform: row => {
-			row.extract = code => extractOnspdVal(row, code); // Append csv extraction logic
-			if (row.extract("pcd") === "pcd") return null; // Skip if header
-			if (row.extract("doterm").length !== 0) return null; // Skip row if terminated
-			return ONSPD_COL_MAPPINGS.map(elem => elem.method(row));
+			row.extract = (code, lookupType, large) => extractCsvVal(row, code, lookupType, large); // Append csv extraction logic
+			if (scottish) {
+				if (row.extract("Postcode", "spd") === "Postcode") return null; // Skip if header
+				if (row.extract("DateOfDeletion", "spd").length !== 0) return null; // Skip row if terminated
+			} else {
+				if (row.extract("pcd") === "pcd") return null; // Skip if header
+				if (row.extract("doterm").length !== 0) return null; // Skip row if terminated
+			}
+			return selectColMappings(scottish).map(elem => elem.method(row));
 		},
-		columns: ONSPD_COL_MAPPINGS.map(elem => elem.column).join(","),
+		columns: selectColMappings(scottish).map(elem => elem.column).join(","),
+		scottish: scottish
 	}, callback);
 };
 

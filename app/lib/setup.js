@@ -9,6 +9,7 @@ const SUPPORT_TABLES = [
   "Ccg",
   "Ced",
   "Constituency",
+  "ScottishConstituency",
   "County",
   "District",
   "Nuts",

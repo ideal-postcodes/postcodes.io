@@ -4,7 +4,7 @@ const helper = require("./helper");
 const { assert } = require("chai");
 const {
   Base,
-	extractOnspdVal
+	extractCsvVal
 } = require("../app/models/base.js");
 
 describe("Base model", function () {
@@ -171,12 +171,24 @@ describe("Base model", function () {
 		});
 	});
 
-	describe("extractOnspdVal", () => {
+	describe("extractCsvVal", () => {
 		it ("extracts correct ONSPD val from row", () => {
 			const row = ["foo", "bar", "baz"];
-			assert.equal(extractOnspdVal(row, "pcd"), "foo");
-			assert.equal(extractOnspdVal(row, "pcd2"), "bar");
-			assert.equal(extractOnspdVal(row, "pcds"), "baz");
+			assert.equal(extractCsvVal(row, "pcd"), "foo");
+			assert.equal(extractCsvVal(row, "pcd2"), "bar");
+			assert.equal(extractCsvVal(row, "pcds"), "baz");
+		});
+
+		it ("extracts correct SPD val from row", () => {
+			const row = ["foo", "bar", "baz", "date"];
+			assert.equal(extractCsvVal(row, "Postcode", "spd"), "foo");
+			assert.equal(extractCsvVal(row, "DateOfIntroduction", "spd"), "date");
+		});
+
+		it ("extracts correct SPD val from row when large specified", () => {
+			let row = new Array(15);
+			row[14] = "yes";
+			assert.equal(extractCsvVal(row, "ScottishParliamentaryConstituency2014Code", "spd", true), "yes");
 		});
 	});
 });

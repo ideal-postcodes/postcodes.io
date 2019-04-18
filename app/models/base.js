@@ -124,27 +124,46 @@ Base.prototype._csvSeed = function (options, callback) {
 		filepath = [options.filepath];
 	}
 	const columns = options.columns;
+	const scottish = options.scottish || false;
 	const transform = options.transform || (row => row);
-	const query = `COPY ${this.relation} (${columns}) FROM STDIN DELIMITER ',' CSV`;
+	const callQuery = this._query;
+	const relation = this.relation;
+  callQuery(`DROP TABLE IF EXISTS ${relation}_working_import`, function(error){
+    if (error) return callback(error, null);
+    callQuery(`CREATE TABLE ${relation}_working_import AS TABLE ${relation} WITH NO DATA`, function(error){
+      if (error) return callback(error, null);
+      const query = `COPY ${relation}_working_import (${columns}) FROM STDIN DELIMITER ',' CSV`;
 
-	async.eachLimit(filepath, 5, (filepath, cb) => {
-		pool.connect((error, client, done) => {
-			const pgStream = client.query(copyFrom(query))
-				.on("end", () => {
-					done();
-					return cb();
-				})
-				.on("error", error => {
-					done();
-					return cb(error);
-				});
-			fs.createReadStream(filepath, {encoding: "utf8"})
-				.pipe(csv.parse())
-				.pipe(csv.transform(transform))
-				.pipe(csv.stringify())
-				.pipe(pgStream);
-		});
-	}, callback);
+      async.eachLimit(filepath, 5, (filepath, cb) => {
+        pool.connect((error, client, done) => {
+          const pgStream = client.query(copyFrom(query))
+            .on("end", () => {
+            	let insertQuery = `INSERT INTO ${relation} (${columns}) SELECT ${columns} FROM ` +
+								`${relation}_working_import`;
+            	if (scottish) insertQuery += ` ON CONFLICT (postcode) DO UPDATE SET scottish_constituency_id ` +
+                `= EXCLUDED.scottish_constituency_id`;
+              callQuery(insertQuery, function(error){
+                  if (error) return cb(error, null);
+                  callQuery(`DROP TABLE ${relation}_working_import`, function(error){
+                    if (error) return cb(error, null);
+                    done();
+                    return cb();
+                });
+              });
+            })
+            .on("error", error => {
+              done();
+              return cb(error);
+            });
+          fs.createReadStream(filepath, {encoding: "utf8"})
+            .pipe(csv.parse())
+            .pipe(csv.transform(transform))
+            .pipe(csv.stringify())
+            .pipe(pgStream);
+        });
+      }, callback);
+    });
+  });
 };
 
 Base.prototype._destroyAll = function (callback) {
@@ -190,6 +209,7 @@ function populateLocation(callback) {
  * - Rename existing table (if exists) to archived table
  * - Rename new table to active current
  * @param  {Object} Model
+ * @param  {String} sourceFile
  * @return {Function}
  */
 const setupWithTableSwap = (Model, sourceFile) => {
@@ -224,31 +244,51 @@ const setupWithTableSwap = (Model, sourceFile) => {
 const toTempName = name => `${name}_temp`;
 const toArchiveName = name => `${name}_archived`;
 
-const indexCache = {};
-let ONSPD_CSV_SCHEMA;
+const indexCache = {type: "", data: {}};
+let CSV_SCHEMA;
 
 /**
- * Returns the index location of an ONSPD param, -1 if not found
- * @param  {string} code ONSPD column code e.g. `pcd`
+ * Returns the index location of an ONSPD or SPD param, -1 if not found
+ * @param  {string} code column code e.g. `pcd`
+ * @param  {string} lookup which lookup schema to refer to - ONSPD or SPD
+ * @param  {boolean} large whether or not the SPD lookup given is LargeUser
  * @return {number}
  */
-const indexFor = code => {
-	if (indexCache[code] !== undefined) return indexCache[code];
-	if (ONSPD_CSV_SCHEMA === undefined) ONSPD_CSV_SCHEMA = require("../../data/onspd_schema.json");
-	indexCache[code] = ONSPD_CSV_SCHEMA.reduce((result, elem, i) => {
-		if (elem.code === code) return i;
+const indexFor = (code, lookup, large) => {
+	if (indexCache.type === lookup && indexCache.data[code] !== undefined) return indexCache.data[code];
+	if (CSV_SCHEMA === undefined || CSV_SCHEMA.type !== lookup) {
+		CSV_SCHEMA = {type: lookup, data: require("../../data/" + lookup + "_schema.json")};
+	}
+	if (indexCache.type !== lookup) {
+		indexCache.data = {};
+		indexCache.type = lookup;
+	}
+	indexCache.data[code] = CSV_SCHEMA.data.reduce((result, elem, i) => {
+		if (elem.code === code) {
+			if ("index" in elem) {
+        if (large && "large" in elem) {
+          return elem.large;
+        } else {
+          return elem.index;
+        }
+			} else {
+				return i;
+			}
+		}
 		return result;
 	}, -1);
-	return indexCache[code];
+	return indexCache.data[code];
 };
 
 /**
- * Extracts the value for `code` from an ONSPD CSV record
+ * Extracts the value for `code` from a CSV record
  * @param  {string[]} row
  * @param  {string} code
+ * @param  {string} lookup
+ * @param  {boolean} large
  * @return {string}
  */
-const extractOnspdVal = exports.extractOnspdVal = (row, code) => row[indexFor(code)];
+const extractCsvVal = exports.extractCsvVal = (row, code, lookup = "onspd", large = false) => row[indexFor(code, lookup, large)];
 
 module.exports = {
 	Base,
@@ -256,5 +296,5 @@ module.exports = {
 	setupWithTableSwap,
 	toTempName,
 	toArchiveName,
-	extractOnspdVal,
+	extractCsvVal: extractCsvVal,
 };

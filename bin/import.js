@@ -42,7 +42,7 @@ const dropTempTables = callback => {
 };
 
 const createPostgisExtension = callback => {
-	console.log("Enabling POSTGIS extension...")
+	console.log("Enabling POSTGIS extension...");
 	Postcode._query("CREATE EXTENSION IF NOT EXISTS postgis", callback);
 };
 

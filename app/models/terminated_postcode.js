@@ -1,7 +1,7 @@
 "use strict";
 
 const util = require("util");
-const { Base, populateLocation, extractOnspdVal } = require("./base");
+const { Base, populateLocation, extractCsvVal } = require("./base");
 const async = require("async");
 const Pc = require("postcode");
 
@@ -93,10 +93,10 @@ TerminatedPostcode.prototype.seedPostcodes = function (filepath, callback) {
     transform: row => {
       if (row[0] === "pcd") return null; //ignore header
       if (row[4].length === 0) return null; // Skip if not terminated
-      row.extract = code => extractOnspdVal(row, code); // Append extraction
+      row.extract = code => extractCsvVal(row, code); // Append extraction
       return ONSPD_COL_MAPPINGS.map(elem => elem.method(row));
     },
-    columns: ONSPD_COL_MAPPINGS.map(elem => elem.column).join(","), 
+    columns: ONSPD_COL_MAPPINGS.map(elem => elem.column).join(","),
   }, callback);
 };
   

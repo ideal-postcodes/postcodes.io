@@ -4,7 +4,9 @@ const async = require("async");
 const { join, resolve } = require("path");
 const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
 const seedPostcodePath = resolve(__dirname, "../seed/postcode.csv");
-const seedPlacesPath = join(__dirname, "../seed/places/")
+const seedScottishSmallPostcodePath = resolve(__dirname, "../seed/scot-small.csv");
+const seedScottishLargePostcodePath = resolve(__dirname, "../seed/scot-large.csv");
+const seedPlacesPath = join(__dirname, "../seed/places/");
 
 const {
   Postcode,
@@ -13,6 +15,7 @@ const {
   County,
   Ccg,
   Constituency,
+  ScottishConstituency,
   Nuts,
   Ward,
   Outcode,
@@ -37,6 +40,7 @@ const clearTestDb = callback => {
     Nuts,
     County,
     Constituency,
+    ScottishConstituency,
     Ccg,
     Ward,
     Outcode,
@@ -57,12 +61,15 @@ const seedPostcodeDb = callback => {
     cb => Postcode._setupTable(seedPostcodePath, cb),
     cb => TerminatedPostcode._setupTable(seedPostcodePath, cb),
     cb => Place._setupTable(seedPlacesPath, cb),
+    cb => Postcode.seedPostcodes(seedScottishSmallPostcodePath, cb, true),
+    cb => Postcode.seedPostcodes(seedScottishLargePostcodePath, cb, true, true)
   ].concat([
     District,
     Parish,
     Nuts,
     County,
     Constituency,
+    ScottishConstituency,
     Ccg,
     Ward,
     Outcode,

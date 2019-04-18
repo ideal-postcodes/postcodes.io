@@ -477,7 +477,7 @@
     <p>As this contains the official postgres base image, the available configuration environment variables are documented here: <a href="https://hub.docker.com/_/postgres/">hub.docker.com/_/postgres/</a></p>
 
     <br />
-    <h2 id="doc-header anchor">Classic Installation Methods (without Docker)</h3>
+    <h2 id="doc-header anchor">Classic Installation Methods (without Docker)</h2>
 
     <h3 id="install-requirements">Requirements</h3>
 
@@ -510,7 +510,14 @@
     <br />
 
     <h4>ONS Postcode Directory</h4>
-    <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ postcodesio-onspd</code> passing the path to the CSV data.</p><pre>$ postcodesio-onspd /path/to/data/ONSPD/Data/data.csv</pre>
+    <p>Download the latest Office for National Statistics "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ postcodesio-onspd</code> passing the path to the CSV data.</p><pre>$ postcodesio-onspd /path/to/data/ONSPD/Data/data.csv</pre>
+    <br />
+
+    <h4>Scottish Postcode Directory</h4>
+    <p>Download the latest National Records Scotland "Scottish Postcode Directory". Unzip the data locally. Run the import script <code>$ postcodesio-scotpd</code> passing the path to the CSV data.</p>
+    <p>Note that at the time of writing NRS provides this data in two files, LargeUser.csv and SmallUser.csv. Both must be imported. When importing the LargeUser.csv file, append the flag <code>--large</code>.</p>
+    <pre>$ postcodesio-scotpd /path/to/data/SmallUser.csv</pre>
+    <pre>$ postcodesio-scotpd /path/to/data/LargeUser.csv --large</pre>
     <br />
 
     <h4>OS Open Names</h4>
