@@ -68,7 +68,7 @@
     "ejs": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
     "escape-string-regexp": "~2.0.0",
     "express": "~4.16.4",
-    "express-basic-auth": "~1.1.6",
+    "express-basic-auth": "~1.2.0",
     "express-prom-bundle": "~5.1.4",
     "minimist": "~1.2.0",
     "morgan": "~1.9.1",
