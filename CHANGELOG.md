@@ -2,6 +2,10 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## HEAD
+
+- Deprecated PMX configuration option. Use prom-client for monitoring
+
 ## 10.1.3 (23/3/2019)
 
 - Enable prometheus endpoint
