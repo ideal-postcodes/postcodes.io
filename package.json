@@ -78,7 +78,6 @@
     "pg-copy-streams": "~2.2.0",
     "pg-query-stream": "~2.0.0",
     "pino": "~5.12.3",
-    "@pm2/io": "~4.1.4",
     "postcode": "~2.0.0",
     "prom-client": "~11.3.0",
     "prompt": "~1.0.0",
