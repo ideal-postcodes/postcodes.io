@@ -4,6 +4,7 @@ Any changes, including backwards incompatible changes will be listed here
 
 ## HEAD
 
+- CI testing on node 12 (instead of 11)
 - Deprecated PMX configuration option. Use prom-client for monitoring
 - Fix: Prom client uses stricter path matching to reduce cardinaility in `path=` label
 
