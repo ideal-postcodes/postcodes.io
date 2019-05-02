@@ -12,12 +12,7 @@ const promClient = {
   },
 };
 
-/**
- * Squash metrics with dynamic paths into one
- *
- * e.g. /postcodes/sw1a2aa -> /postcodes/:postcode
- */
-const normalizePath = [
+const paths = [
   [
     `^/postcodes/(lat|lon)/\\d+(\\.\\d+)?/(lat|lon)/\\d+(\\.\\d+)?$`,
     "/postcodes/lon/:lon/lat/:lat",
@@ -30,7 +25,20 @@ const normalizePath = [
   ["^/outcodes/.+/nearest$", "/outcodes/:outcode/nearest"],
   ["^/terminated_postcodes/[^/]+$", "/terminated_postcodes/:postcode"],
   ["^/places/[^/]+$", "/places/:code"],
-];
+].map(([regex, path]) => [new RegExp(regex), path]);
+
+/**
+ * Squash metrics with dynamic paths into one
+ *
+ * e.g. /postcodes/sw1a2aa -> /postcodes/:postcode
+ */
+const normalizePath = request => {
+  const url = request.url;
+  for (const [regex, path] of paths) {
+    if (regex.test(url)) return path;
+  }
+  return "other";
+};
 
 /**
  * Inserts optional prometheus monitoring middleware
