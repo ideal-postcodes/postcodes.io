@@ -10,10 +10,10 @@ default_steps: &default_steps
     - run: "POSTGRES_USER=postgres npm run setup_test_db"
     - restore_cache:
         keys:
-          - "nodemodules-deps-{{ checksum \"package-lock.json\" }}"
+          - 'nodemodules-deps-{{ checksum "package-lock.json" }}'
     - run: "npm install"
     - save_cache:
-        key: "nodemodules-deps-{{ checksum \"package-lock.json\" }}"
+        key: 'nodemodules-deps-{{ checksum "package-lock.json" }}'
         paths:
           - node_modules/
     - run: "npm run test"
@@ -27,13 +27,13 @@ jobs:
           - PGUSER=postgres
         image: "circleci/node:10"
       - image: "circleci/postgres:10-alpine-postgis"
-  node11:
+  node12:
     <<: *default_steps
     docker:
       - environment:
           - PGHOST=localhost
           - PGUSER=postgres
-        image: "circleci/node:11"
+        image: "circleci/node:12"
       - image: "circleci/postgres:10-alpine-postgis"
   node8:
     <<: *default_steps
@@ -49,6 +49,5 @@ workflows:
     jobs:
       - node8
       - node10
-      - node11
+      - node12
   version: 2
-
