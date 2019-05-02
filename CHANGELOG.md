@@ -5,6 +5,7 @@ Any changes, including backwards incompatible changes will be listed here
 ## HEAD
 
 - Deprecated PMX configuration option. Use prom-client for monitoring
+- Fix: Prom client uses stricter path matching to reduce cardinaility in `path=` label
 
 ## 10.1.3 (23/3/2019)
 
