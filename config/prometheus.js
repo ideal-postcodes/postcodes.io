@@ -19,13 +19,13 @@ const paths = [
   ],
   ["^/postcodes/[^/]+$", "/postcodes/:postcode"],
   ["^/postcodes/.+/validate$", "/postcodes/:postcode/validate"],
-  ["^/postcodes/.+/nearest", "/postcodes/:postcode/nearest"],
-  ["^/postcodes/.+/autocomplete", "/postcodes/:postcode/autocomplete"],
+  ["^/postcodes/.+/nearest$", "/postcodes/:postcode/nearest"],
+  ["^/postcodes/.+/autocomplete$", "/postcodes/:postcode/autocomplete"],
   ["^/outcodes/[^/]+$", "/outcodes/:outcode"],
   ["^/outcodes/.+/nearest$", "/outcodes/:outcode/nearest"],
   ["^/terminated_postcodes/[^/]+$", "/terminated_postcodes/:postcode"],
   ["^/places/[^/]+$", "/places/:code"],
-].map(([regex, path]) => [new RegExp(regex), path]);
+].map(([regex, path]) => [new RegExp(regex, "i"), path]);
 
 /**
  * Squash metrics with dynamic paths into one
@@ -33,9 +33,8 @@ const paths = [
  * e.g. /postcodes/sw1a2aa -> /postcodes/:postcode
  */
 const normalizePath = request => {
-  const url = request.url;
   for (const [regex, path] of paths) {
-    if (regex.test(url)) return path;
+    if (regex.test(request.path)) return path;
   }
   return "other";
 };
