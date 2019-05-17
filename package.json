@@ -67,7 +67,7 @@
     "dotenv": "~8.0.0",
     "ejs": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
     "escape-string-regexp": "~2.0.0",
-    "express": "~4.16.4",
+    "express": "~4.17.0",
     "express-basic-auth": "~1.2.0",
     "express-prom-bundle": "~5.1.5",
     "minimist": "~1.2.0",
