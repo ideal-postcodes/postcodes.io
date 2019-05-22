@@ -1,9 +1,9 @@
 "use strict";
 
-const app = require("../server");
 const request = require("supertest");
 const assert = require("chai").assert;
 const helper = require("./helper/index.js");
+const app = helper.postcodesioApplication();
 const Pc = require("postcode");
 
 const error404Message = "Terminated postcode not found";

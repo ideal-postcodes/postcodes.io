@@ -1,224 +1,203 @@
-var path = require("path");
-var app = require(path.join(__dirname, "../server"));
-var request = require("supertest");
-var assert = require("chai").assert;
-var helper = require(path.join(__dirname, "/helper"));
-var jsonResponseTypeRegex = /text\/javascript/;
+"use strict";
 
-describe("Utils with JSONP", function () {
-	describe("Ping", function () {
-		it ("should pong", function (done) {
-			request(app)
-				.get("/ping?callback=foo")
-				.expect(200)
-				.expect("Content-Type", /text\/javascript/)
-				.end(function (error, response) {
-					response.body = helper.jsonpResponseBody(response);
-					if (error) return done(error);
-					assert.equal(response.body.result, "pong");
-					done();
-				});
-		});
-	});
+const path = require("path");
+const request = require("supertest");
+const { assert } = require("chai");
+const helper = require("./helper");
+const jsonResponseTypeRegex = /text\/javascript/;
+const app = helper.postcodesioApplication();
+
+describe("Utils with JSONP", () => {
+  describe("Ping", () => {
+    it("should pong", async () => {
+      const { text } = await request(app)
+        .get("/ping?callback=foo")
+        .expect("Content-Type", /text\/javascript/)
+        .expect(200);
+      const jsonBody = helper.jsonpResponseBody(text);
+      assert.equal(jsonBody.result, "pong");
+    });
+  });
 });
 
-describe("Postcodes routes with JSONP", function () {
-	var testPostcode;
+describe("Postcodes routes with JSONP", () => {
+  let testPostcode, testOutcode;
 
-	before(function (done) {
-		this.timeout(0);
-		helper.clearPostcodeDb(function (error, result) {
-			if (error) return done(error);
-			helper.seedPostcodeDb(function (error, result) {
-				if (error) return done(error);
-				done();
-			});
-		})
-	});
+  before(function(done) {
+    this.timeout(0);
+    helper.clearPostcodeDb(error => {
+      if (error) return done(error);
+      helper.seedPostcodeDb(error => {
+        if (error) return done(error);
+        done();
+      });
+    });
+  });
 
-	beforeEach(function (done) {
-		helper.lookupRandomPostcode(function (result) {
-			testPostcode = result.postcode;
-			testOutcode = result.outcode;
-			done();
-		});
-	});
+  beforeEach(done => {
+    helper.lookupRandomPostcode(result => {
+      testPostcode = result.postcode;
+      testOutcode = result.outcode;
+      done();
+    });
+  });
 
-	after(function (done) {
-		helper.clearPostcodeDb(done);
-	});
+  after(done => helper.clearPostcodeDb(done));
 
-	describe("GET /postcodes", function () {
-		var uri, limit;
-		it ("should return a list of matching postcode objects", function (done) {
-			uri = encodeURI("/postcodes?q=" + testPostcode.replace(" ", "").slice(0, 2) + "&callback=foo");
-			request(app)
-			.get(uri)
-			.expect("Content-Type", jsonResponseTypeRegex)
-			.expect(200)
-			.end(function (error, response) {
-				response.body = helper.jsonpResponseBody(response);
-				if (error) return done(error);
-				assert.isArray(response.body.result);
-				assert.equal(response.body.result.length, 10);
-				response.body.result.forEach(function (postcode) {
-					helper.isPostcodeObject(postcode);
-				});
-				done();
-			});
-		});
-	});
+  describe("GET /postcodes", () => {
+    let uri, limit;
+    it("should return a list of matching postcode objects", async () => {
+      uri = encodeURI(
+        "/postcodes?q=" +
+          testPostcode.replace(" ", "").slice(0, 2) +
+          "&callback=foo"
+      );
+      const { text } = await request(app)
+        .get(uri)
+        .expect("Content-Type", jsonResponseTypeRegex)
+        .expect(200);
+      const jsonBody = helper.jsonpResponseBody(text);
+      assert.isArray(jsonBody.result);
+      assert.equal(jsonBody.result.length, 10);
+      jsonBody.result.forEach(pc => helper.isPostcodeObject(pc));
+    });
+  });
 
-	describe("GET /postcodes/:postcode", function () {
-		it ("should return 200 if postcode found", function (done) {
-			var path = ["/postcodes/", encodeURI(testPostcode), "?callback=foo"].join("");
-			request(app)
-			.get(path)
-			.expect('Content-Type', jsonResponseTypeRegex)
-			.expect(200)
-			.end(function (error, response) {
-				response.body = helper.jsonpResponseBody(response);
-				if (error) return done(error);
-				assert.equal(response.body.status, 200);
-				assert.equal(response.body.result.postcode, testPostcode);
-				helper.isPostcodeObject(response.body.result);
-				done();
-			});
-		});
-	});
+  describe("GET /postcodes/:postcode", () => {
+    it("should return 200 if postcode found", async () => {
+      const path = [
+        "/postcodes/",
+        encodeURI(testPostcode),
+        "?callback=foo",
+      ].join("");
+      const { text } = await request(app)
+        .get(path)
+        .expect("Content-Type", jsonResponseTypeRegex)
+        .expect(200);
+      const jsonBody = helper.jsonpResponseBody(text);
+      assert.equal(jsonBody.status, 200);
+      assert.equal(jsonBody.result.postcode, testPostcode);
+      helper.isPostcodeObject(jsonBody.result);
+    });
+  });
 
-	describe("/outcodes/:outcode", function (done) {
-		it ("should return correct geolocation data for a given outcode", function (done) {
-			var path = ["/outcodes/", encodeURI(testOutcode), "?callback=foo"].join("");
-			request(app)
-			.get(path)
-			.expect("Content-Type", jsonResponseTypeRegex)
-			.expect(200)
-			.end(function (error, response) {
-				response.body = helper.jsonpResponseBody(response);
-				if (error) return done(error);
-				assert.equal(response.body.status, 200);
-				assert.equal(response.body.result.outcode, testOutcode);
-				assert.property(response.body.result, "longitude");
-				assert.property(response.body.result, "latitude");
-				assert.property(response.body.result, "northings");
-				assert.property(response.body.result, "eastings");
-				done();
-			});
-		});
-	});
+  describe("/outcodes/:outcode", () => {
+    it("should return correct geolocation data for a given outcode", async () => {
+      const path = ["/outcodes/", encodeURI(testOutcode), "?callback=foo"].join(
+        ""
+      );
+      const { text } = await request(app)
+        .get(path)
+        .expect("Content-Type", jsonResponseTypeRegex)
+        .expect(200);
+      const jsonBody = helper.jsonpResponseBody(text);
+      assert.equal(jsonBody.status, 200);
+      assert.equal(jsonBody.result.outcode, testOutcode);
+      assert.property(jsonBody.result, "longitude");
+      assert.property(jsonBody.result, "latitude");
+      assert.property(jsonBody.result, "northings");
+      assert.property(jsonBody.result, "eastings");
+    });
+  });
 
-	describe("GET /postcodes/:postcode/validate", function () {
-		it ("should return true if postcode found", function (done) {
-			var path = ["/postcodes/", encodeURI(testPostcode), "/validate", "?callback=foo"].join("");
-			request(app)
-			.get(path)
-			.expect('Content-Type', jsonResponseTypeRegex)
-			.expect(200)
-			.end(function (error, response) {
-				response.body = helper.jsonpResponseBody(response);
-				if (error) return done(error);
-				assert.equal(response.body.status, 200);
-				assert.isTrue(response.body.result);
-				done();
-			});
-		});
-	});
+  describe("GET /postcodes/:postcode/validate", () => {
+    it("should return true if postcode found", async () => {
+      const path = [
+        "/postcodes/",
+        encodeURI(testPostcode),
+        "/validate",
+        "?callback=foo",
+      ].join("");
+      const { text } = await request(app)
+        .get(path)
+        .expect("Content-Type", jsonResponseTypeRegex)
+        .expect(200);
+      const jsonBody = helper.jsonpResponseBody(text);
+      assert.equal(jsonBody.status, 200);
+      assert.isTrue(jsonBody.result);
+    });
+  });
 
-	describe("GET /postcodes/:postcode/nearest", function () {
-		it ("should return a list of nearby postcodes", function (done) {
-			var uri = encodeURI("/postcodes/" + testPostcode + "/nearest");
+  describe("GET /postcodes/:postcode/nearest", () => {
+    it("should return a list of nearby postcodes", async () => {
+      const uri = encodeURI("/postcodes/" + testPostcode + "/nearest");
 
-			request(app)
-			.get(uri)
-			.query({
-				callback: "foo"
-			})
-			.expect(200)
-			.end(function (error, response) {
-				response.body = helper.jsonpResponseBody(response);
-				if (error) return done(error);
-				assert.isArray(response.body.result);
-				assert.isTrue(response.body.result.length > 0);
-				response.body.result.forEach(function (postcode) {
-					helper.isPostcodeWithDistanceObject(postcode);
-				});
-				done();
-			});
-		});
-	});
+      const { text } = await request(app)
+        .get(uri)
+        .query({
+          callback: "foo",
+        })
+        .expect(200);
+      const jsonBody = helper.jsonpResponseBody(text);
+      assert.isArray(jsonBody.result);
+      assert.isTrue(jsonBody.result.length > 0);
+      jsonBody.result.forEach(pc => helper.isPostcodeWithDistanceObject(pc));
+    });
+  });
 
-	describe("GET /random/postcode", function () {
-		it ("should return a random postcode", function (done) {
-			var path = "/random/postcodes?callback=foo";
-			request(app)
-			.get(path)
-			.expect('Content-Type', jsonResponseTypeRegex)
-			.expect(200)
-			.end(function (error, response) {
-				response.body = helper.jsonpResponseBody(response);
-				if (error) return done(error);
-				assert.property(response.body.result, "postcode");
-				helper.isPostcodeObject(response.body.result);
-				done();
-			});
-		});
-	});
+  describe("GET /random/postcode", () => {
+    it("should return a random postcode", async () => {
+      const path = "/random/postcodes?callback=foo";
+      const { text } = await request(app)
+        .get(path)
+        .expect("Content-Type", jsonResponseTypeRegex)
+        .expect(200);
+      const jsonBody = helper.jsonpResponseBody(text);
+      assert.property(jsonBody.result, "postcode");
+      helper.isPostcodeObject(jsonBody.result);
+    });
+  });
 
-	describe("GET /postcodes/:postcode/autocomplete", function () {
-		var uri, limit;
+  describe("GET /postcodes/:postcode/autocomplete", () => {
+    let uri, limit;
 
-		it ("should return a list of matching postcodes only", function (done) {
-			uri = encodeURI("/postcodes/" + testPostcode.slice(0, 2) + "/autocomplete?callback=foo");
+    it("should return a list of matching postcodes only", async () => {
+      uri = encodeURI(
+        "/postcodes/" + testPostcode.slice(0, 2) + "/autocomplete?callback=foo"
+      );
 
-			request(app)
-			.get(uri)
-			.expect("Content-Type", jsonResponseTypeRegex)
-			.expect(200)
-			.end(function (error, response) {
-				response.body = helper.jsonpResponseBody(response);
-				if (error) return done(error);
-				assert.isArray(response.body.result);
-				assert.equal(response.body.result.length, 10);
-				response.body.result.forEach(function (postcode) {
-					assert.isString(postcode);
-				});
-				done();
-			});
-		});
-	});
+      const { text } = await request(app)
+        .get(uri)
+        .expect("Content-Type", jsonResponseTypeRegex)
+        .expect(200);
+      const jsonBody = helper.jsonpResponseBody(text);
+      assert.isArray(jsonBody.result);
+      assert.equal(jsonBody.result.length, 10);
+      jsonBody.result.forEach(pc => assert.isString(pc));
+    });
+  });
 
-	describe("GET /postcodes/lon/:longitude/lat/latitude", function () {
-		var loc;
+  describe("GET /postcodes/lon/:longitude/lat/latitude", () => {
+    let loc;
 
-		beforeEach(function (done) {
-			helper.locationWithNearbyPostcodes(function (error, postcode) {
-				if (error) return done(error);
-				loc = postcode;
-				done();
-			});
-		});
+    beforeEach(done => {
+      helper.locationWithNearbyPostcodes((error, postcode) => {
+        if (error) return done(error);
+        loc = postcode;
+        done();
+      });
+    });
 
-		it ("should return a list of nearby postcodes", function (done) {
-			var uri = encodeURI("/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude + "?callback=foo");
+    it("should return a list of nearby postcodes", async () => {
+      const uri = encodeURI(
+        "/postcodes/lon/" +
+          loc.longitude +
+          "/lat/" +
+          loc.latitude +
+          "?callback=foo"
+      );
 
-			request(app)
-			.get(uri)
-			.expect("Content-Type", jsonResponseTypeRegex)
-			.expect(200)
-			.end(function (error, response) {
-				response.body = helper.jsonpResponseBody(response);
-				if (error) return done(error);
-				assert.isArray(response.body.result);
-				assert.isTrue(response.body.result.length > 0);
-				response.body.result.forEach(function (postcode) {
-					helper.isPostcodeWithDistanceObject(postcode);
-				});
-				assert.isTrue(response.body.result.some(function (elem) {
-					return elem.postcode === loc.postcode;
-				}));
-				done();
-			});
-		});
-	});
+      const { text } = await request(app)
+        .get(uri)
+        .expect("Content-Type", jsonResponseTypeRegex)
+        .expect(200);
+      const jsonBody = helper.jsonpResponseBody(text);
+      assert.isArray(jsonBody.result);
+      assert.isTrue(jsonBody.result.length > 0);
+      jsonBody.result.forEach(pc => helper.isPostcodeWithDistanceObject(pc));
+      assert.isTrue(
+        jsonBody.result.some(elem => elem.postcode === loc.postcode)
+      );
+    });
+  });
 });

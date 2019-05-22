@@ -1,10 +1,10 @@
 "use strict";
 
-const app = require("../server");
 const request = require("supertest");
-const assert = require("chai").assert;
+const { assert } = require("chai");
 const helper = require("./helper");
 const async = require("async");
+const app = helper.postcodesioApplication();
 
 describe("Postcodes routes", () => {
   let testPostcode, testOutcode;
@@ -95,9 +95,9 @@ describe("Postcodes routes", () => {
             geolocations: [
               {
                 longitude: 0,
-                latitude: 0
-              }
-            ]
+                latitude: 0,
+              },
+            ],
           })
           .expect("Content-Type", /json/)
           .expect(helper.allowsCORS)
@@ -194,7 +194,7 @@ describe("Postcodes routes", () => {
         const testLocation = {
           longitude: -2.12659411941741,
           latitude: 57.2465923827836,
-          wideSearch: true
+          wideSearch: true,
         };
         request(app)
           .post("/postcodes")
@@ -215,7 +215,7 @@ describe("Postcodes routes", () => {
         const testLocation = {
           longitude: -2.12659411941741,
           latitude: 57.2465923827836,
-          widesearch: true
+          widesearch: true,
         };
         request(app)
           .post("/postcodes")
