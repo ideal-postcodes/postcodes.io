@@ -95,6 +95,7 @@ module.exports = env => {
     PROMETHEUS_USERNAME,
     PROMETHEUS_PASSWORD,
     SERVE_STATIC_ASSETS,
+    HTTP_HEADERS,
   } = process.env;
 
   if (PORT !== undefined) cfg.port = PORT;
@@ -116,10 +117,22 @@ module.exports = env => {
 
   if (GA_KEY !== undefined) cfg.googleAnalyticsKey = GA_KEY;
 
-  if (PROMETHEUS_USERNAME !== undefined) cfg.prometheusUsername = PROMETHEUS_USERNAME;
-  if (PROMETHEUS_PASSWORD !== undefined) cfg.prometheusPassword = PROMETHEUS_PASSWORD;
+  if (PROMETHEUS_USERNAME !== undefined)
+    cfg.prometheusUsername = PROMETHEUS_USERNAME;
+  if (PROMETHEUS_PASSWORD !== undefined)
+    cfg.prometheusPassword = PROMETHEUS_PASSWORD;
 
-  if (SERVE_STATIC_ASSETS !== undefined) cfg.serveStaticAssets = SERVE_STATIC_ASSETS.toLowerCase() !== "false";
+  if (SERVE_STATIC_ASSETS !== undefined)
+    cfg.serveStaticAssets = SERVE_STATIC_ASSETS.toLowerCase() !== "false";
+
+  try {
+    if (HTTP_HEADERS !== undefined) cfg.httpHeaders = JSON.parse(HTTP_HEADERS);
+  } catch (error) {
+    process.stdout.write(
+      "Invalid HTTP Header configuration. Please supply valid JSON string for HTTP_HEADERS"
+    );
+    throw error;
+  }
 
   return cfg;
 };

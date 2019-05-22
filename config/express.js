@@ -20,6 +20,13 @@ module.exports = (app, config) => {
     app.use(favicon("public/favicon.ico"));
     app.use(express.static(join(__dirname, "../public")));
   }
+  const { httpHeaders } = config;
+  if (httpHeaders) {
+    app.use((_, response, next) => {
+      response.header(httpHeaders);
+      next();
+    });
+  }
   app.use(cors);
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));

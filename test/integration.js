@@ -92,3 +92,15 @@ describe("Serve static assets", () => {
       .expect(404);
   });
 });
+
+describe("httpHeaders", () => {
+  it("sets arbitrary headers on all HTTP responses", async () => {
+    const config = configFactory();
+    config.httpHeaders = { foo: "bar" };
+    const newApp = postcodesioApplication(config);
+    const response = await request(newApp)
+      .get("/ping")
+      .expect("foo", "bar")
+      .expect(200);
+  });
+});
