@@ -144,6 +144,12 @@ describe("Prometheus /metrics endpoint", () => {
         await testMetric(url, expectedMetric);
       });
 
+      it("normalises /PLACES/:code", async () => {
+        const url = "/PLACES/foobar";
+        const expectedMetric = "/places/:code";
+        await testMetric(url, expectedMetric);
+      });
+
       it("does not generate metrics for unexpected paths", async () => {
         const url = "/bogus";
         const expectedMetric = "other";
