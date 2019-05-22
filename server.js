@@ -7,11 +7,11 @@ const { port } = config;
 
 const server = app.listen(port);
 
-server.on("clientError", (error, socket) => {
-  if (!socket.destroyed) {
-    socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
-  }
-});
+const closeSocket = (_, socket) => {
+  if (!socket.destroyed) socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
+}
+server.on("clientError", closeSocket);
+server.on("connect", closeSocket);
 
 process.on("SIGTERM", () => {
   logger.info("Quitting Postcode API");
