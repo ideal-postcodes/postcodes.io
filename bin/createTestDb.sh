@@ -3,7 +3,7 @@
 "use strict";
 
 const path = require("path");
-const helper = require(path.join(__dirname, "../tests/helper"));
+const helper = require(path.join(__dirname, "../test/helper"));
 const handleError = error => {
 	if (!error) return;
 	console.log(`Error stopped test environment creation: ${error.message}`);

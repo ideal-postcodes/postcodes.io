@@ -36,6 +36,7 @@ const config = {
       file: "stdout",
     },
     port: 8000,
+    serveStaticAssets: true,
   },
 
   test: {
@@ -52,6 +53,7 @@ const config = {
       file: join(__dirname, "../test.log"),
     },
     port: 8000,
+    serveStaticAssets: true,
   },
 
   production: {
@@ -68,6 +70,7 @@ const config = {
       file: "perf", // Use pino.extreme
     },
     port: 8000,
+    serveStaticAssets: false,
   },
 };
 
@@ -91,6 +94,8 @@ module.exports = env => {
     LOG_DESTINATION,
     PROMETHEUS_USERNAME,
     PROMETHEUS_PASSWORD,
+    SERVE_STATIC_ASSETS,
+    HTTP_HEADERS,
   } = process.env;
 
   if (PORT !== undefined) cfg.port = PORT;
@@ -112,8 +117,22 @@ module.exports = env => {
 
   if (GA_KEY !== undefined) cfg.googleAnalyticsKey = GA_KEY;
 
-  if (PROMETHEUS_USERNAME !== undefined) cfg.prometheusUsername = PROMETHEUS_USERNAME;
-  if (PROMETHEUS_PASSWORD !== undefined) cfg.prometheusPassword = PROMETHEUS_PASSWORD;
+  if (PROMETHEUS_USERNAME !== undefined)
+    cfg.prometheusUsername = PROMETHEUS_USERNAME;
+  if (PROMETHEUS_PASSWORD !== undefined)
+    cfg.prometheusPassword = PROMETHEUS_PASSWORD;
+
+  if (SERVE_STATIC_ASSETS !== undefined)
+    cfg.serveStaticAssets = SERVE_STATIC_ASSETS.toLowerCase() !== "false";
+
+  try {
+    if (HTTP_HEADERS !== undefined) cfg.httpHeaders = JSON.parse(HTTP_HEADERS);
+  } catch (error) {
+    process.stdout.write(
+      "Invalid HTTP Header configuration. Please supply valid JSON string for HTTP_HEADERS"
+    );
+    throw error;
+  }
 
   return cfg;
 };
