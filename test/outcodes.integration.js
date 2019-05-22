@@ -1,9 +1,9 @@
 "use strict";
 
-const app = require("../server");
 const request = require("supertest");
 const assert = require("chai").assert;
 const helper = require("./helper");
+const app = helper.postcodesioApplication();
 
 describe("Outcodes routes", () => {
 	before(function (done) {

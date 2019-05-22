@@ -9,7 +9,7 @@ const csv = require("csv")
 const dataPath = process.argv[process.argv.length - 1]
 
 const MAX_DATASET = 5000;
-const DESTINATION = path.join(__dirname, "../tests/seed/postcode.csv");
+const DESTINATION = path.join(__dirname, "../test/seed/postcode.csv");
 
 const parser = csv.parse({ delimiter: "," });
 const stringifier = csv.stringify();
