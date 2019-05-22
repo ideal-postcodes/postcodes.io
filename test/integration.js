@@ -1,6 +1,6 @@
 "use strict";
 
-const { postcodesioApplication } = require("./helper");
+const { postcodesioApplication, configFactory } = require("./helper");
 const request = require("supertest");
 const { assert } = require("chai");
 const app = postcodesioApplication();
@@ -71,5 +71,24 @@ describe("Utils", () => {
         .expect("Content-Type", /json/);
       assert.equal(body.result, "pong");
     });
+  });
+});
+
+describe("Serve static assets", () => {
+  it("serves public/ when enabled", async () => {
+    const config = configFactory();
+    config.serveStaticAssets = true;
+    const newApp = postcodesioApplication(config);
+    await request(newApp)
+      .get("/js/app.js")
+      .expect(200);
+  });
+  it("does not serve public/ when disabled", async () => {
+    const config = configFactory();
+    config.serveStaticAssets = false;
+    const newApp = postcodesioApplication(config);
+    const response = await request(newApp)
+      .get("/js/app.js")
+      .expect(404);
   });
 });

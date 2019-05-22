@@ -13,6 +13,7 @@ Default configuration values can be found at `config/config.js` and `config/defa
 ```bash
 # HTTP
 PORT # Port to listen on
+SERVE_STATIC_ASSETS # Set to `false` to prevent `public/` from being served
 
 # Postgresl Configuration
 POSTGRES_USER # Postgres user
