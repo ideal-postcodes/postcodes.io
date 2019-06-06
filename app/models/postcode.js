@@ -6,6 +6,7 @@ const { series } = require("async");
 const { Base, populateLocation, extractOnspdVal } = require("./base");
 const QueryStream = require("pg-query-stream");
 const { defaults } = require("../../config/config.js")();
+const { InvalidGeolocationError } = require("../lib/errors");
 
 const postcodeSchema = {
 	"id": "SERIAL PRIMARY KEY",
@@ -412,10 +413,10 @@ Postcode.prototype.nearestPostcodes = function (params, callback) {
 	if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 
 	const longitude = parseFloat(params.longitude);
-	if (isNaN(longitude)) return callback(new Error("Invalid longitude"), null);
+	if (isNaN(longitude)) return callback(new InvalidGeolocationError(), null);
 
 	const latitude = parseFloat(params.latitude);
-	if (isNaN(latitude)) return callback(new Error("Invalid latitude"), null);
+	if (isNaN(latitude)) return callback(new InvalidGeolocationError(), null);
 
 	let radius = parseFloat(params.radius) || DEFAULT_RADIUS;
 	if (radius > MAX_RADIUS) radius = MAX_RADIUS;

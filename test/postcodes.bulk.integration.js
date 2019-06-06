@@ -232,6 +232,46 @@ describe("Postcodes routes", () => {
             done();
           });
       });
+
+      it("should return 400 if type of value associated with latitude key is invalid", done => {
+        const invalidTestLocation = {
+          longitude: -2.12659411941741,
+          latitude: null,
+          widesearch: true,
+        };
+
+        request(app)
+        .post("/postcodes")
+        .send({geolocations: [invalidTestLocation]})
+        .expect("Content-Type", /json/)
+        .expect(helper.allowsCORS)
+        .expect(400)
+        .end((error, response) => {
+          if(error) return done(error)
+          assert.match(response.body.error, /Invalid longitude\/latitude submitted/i);
+          done();
+        })
+      });
+
+      it("should return 400 if type of value associated with longitude key is invalid", done => {
+        const invalidTestLocation = {
+          longitude: null,
+          latitude: 53.5351312861402,
+          widesearch: true,
+        };
+
+        request(app)
+        .post("/postcodes")
+        .send({geolocations: [invalidTestLocation]})
+        .expect("Content-Type", /json/)
+        .expect(helper.allowsCORS)
+        .expect(400)
+        .end((error, response) => {
+          if(error) return done(error)
+          assert.match(response.body.error, /Invalid longitude\/latitude submitted/i);
+          done();
+        })
+      });
     });
 
     describe("Bulk postcode lookup", () => {

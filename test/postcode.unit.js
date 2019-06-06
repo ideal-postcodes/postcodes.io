@@ -498,7 +498,7 @@ describe("Postcode Model", function () {
 			};
 			Postcode.nearestPostcodes(params, (error, postcodes) => {
 				assert.isNotNull(error);
-				assert.match(error.message, /invalid longitude/i);
+				assert.match(error.message, /Invalid longitude\/latitude submitted/i);
 				done();
 			});
 		});
@@ -509,7 +509,7 @@ describe("Postcode Model", function () {
 			};
 			Postcode.nearestPostcodes(params, (error, postcodes) => {
 				assert.isNotNull(error);
-				assert.match(error.message, /invalid latitude/i);
+				assert.match(error.message, /Invalid longitude\/latitude submitted/i);
 				done();
 			});
 		});
