@@ -368,6 +368,8 @@
         <p><code>radius=</code> (not required) Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.</p>
         <p><code>wideSearch=</code> (not required) Search up to 20km radius, but subject to a maximum of 10 results. Since lookups over a wide area can be very expensive, we've created this method to allow you choose to make the trade off between search
         radius and number of results. Defaults to false. When enabled, radius and limits over 10 are ignored.</p>
+        <h4>Additional Response Attributes</h4>
+        <p><code>distance</code> Distance in metres from specified postode</p>
         <h4>Legacy</h4>
         <p>Note that the old style of reverse geocoding (including optional headers above) will still be supported. Namely,</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude</h4></pre>
         <h3 id="Bulk-Geocode-Postcode">Bulk Reverse Geocoding</h3>
@@ -389,10 +391,12 @@
     <p><code>filter=</code> (not required) A comma separated whitelist of attributes to be returned in the result object(s). e.g. <code>filter=postcode,longitude,latitude</code>. <code>null</code> responses will continue to return <code>null</code>.
     If no attributes match the result object, an empty object is returned</p>
     <p><code>wideSearch=</code> (not required) Search up to 20km radius, but subject to a maximum of 10 results</p>
+    <h4>Additional Response Attributes</h4>
+    <p><code>distance</code> Distance in metres from specified postode</p>
     <h3 id="Postcode-Query">Postcode Query</h3>
     <p>Submit a postcode query and receive a complete list of postcode matches and all associated postcode data.</p>
     <p>This is essentially a postcode search which prefix matches and returns postcodes in sorted order (case insensitive)</p>
-    <p>This method space sensitive, i.e. it detects for spaces between outward and inward parts of the postcode (some examples detailed <a href="https://github.com/ideal-postcodes/postcodes.io/issues/44">in this issue</a>)</p>
+    <p>This method is space sensitive, i.e. it detects for spaces between outward and inward parts of the postcode (some examples detailed <a href="https://github.com/ideal-postcodes/postcodes.io/issues/44">in this issue</a>)</p>
     <p>The result set can either be empty or populated with up to 100 postcode entities. Either way it will always return a 200 response code</p>
     <pre><h4><div class="http-method">GET</div>https://api.postcodes.io/postcodes?q=[query]</h4></pre>
     <h4>Optional Query Parameters</h4>
@@ -405,6 +409,8 @@
     <h4>Optional Query Parameters</h4>
     <p><code>limit=</code> (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.</p>
     <p><code>radius=</code> (not required) Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.</p>
+    <h4>Additional Response Attributes</h4>
+    <p><code>distance</code> Distance in metres from specified postode</p>
     <h3 id="Postcode-Autocomplete">Postcode Autocomplete</h3>
     <p>Convenience method to return an list of matching postcodes.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/postcodes/:postcode/autocomplete</h4></pre>
     <h4>Optional Query Parameters</h4>
@@ -426,6 +432,8 @@
     <h4>Optional Query Parameters</h4>
     <p><code>limit=</code> (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.</p>
     <p><code>radius=</code> (not required) Limits number of postcodes matches to return. Defaults to 5,000m. Needs to be less than 25,000m.</p>
+    <h4>Additional Response Attributes</h4>
+    <p><code>distance</code> Distance in metres from specified postode</p>
     <h3 id="Terminated">Terminated Postcode Lookup</h3>
     <p>Lookup a terminated postcode. Returns the postcode, year and month of termination. Returns 404 if postcode does not exist in our database of terminated postcodes or not valid.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/terminated_postcodes/:postcode</h4></pre>
     <h3
