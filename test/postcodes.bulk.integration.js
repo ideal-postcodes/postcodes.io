@@ -246,7 +246,7 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(400)
-        .end((err, response) => {
+        .end((error, response) => {
           if(error) return done(error)
           assert.match(response.body.error, /Invalid longitude\/latitude submitted/i);
           done();
@@ -266,7 +266,7 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(400)
-        .end((err, response) => {
+        .end((error, response) => {
           if(error) return done(error)
           assert.match(response.body.error, /Invalid longitude\/latitude submitted/i);
           done();
