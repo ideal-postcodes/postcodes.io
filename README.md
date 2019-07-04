@@ -53,7 +53,7 @@ docker-compose up
 
 ```bash
 # Run a postgres container listening on port 5432
-docker-compose -f docker-compose-test.yml up 
+docker-compose -f .docker/docker-compose.testenv.yml up 
 
 npm test
 ```
