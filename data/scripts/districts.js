@@ -18,13 +18,13 @@ const LA_UA_VALUE_OFFSET = 1;
 const LA_UA_NAMES_transform = row => {
 	const code = row[LA_UA_CODE_OFFSET];
 	const value = row[LA_UA_VALUE_OFFSET];
-	if (code === "LAD18CD") return []; // Escape if header
+	if (code === "LAD19CD") return []; // Escape if header
 	return [code, value];
 };
 
 const configs = [
 	{
-		file: "LA_UA names and codes UK as at 12_18.csv",
+		file: "LA_UA names and codes UK as at 12_19.csv",
 		transform: LA_UA_NAMES_transform,
 		parseOptions: {
 			delimiter: ",",
