@@ -21,14 +21,14 @@ const ccgRegex = /\sCCG$/;
 const transform = row => {
 	const code = row[CODE_OFFSET];
 	const value = row[VALUE_OFFSET];
-	if (code === "CCG18CD") return []; // Escape if header
+	if (code === "CCG19CD") return []; // Escape if header
 	if (isPseudoCode(code)) return [];
 	return [code, value.replace(ccgRegex, "").trim()];
 };
 
 const configs = [
 	{
-		file: "CCG names and codes UK as at 04_18.csv",
+		file: "CCG names and codes UK as at 04_19.csv",
 		transform,
 		parseOptions: {
 			delimiter: ",",
