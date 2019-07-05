@@ -14,13 +14,13 @@ const VALUE_OFFSET = 1;
 const transform = row => {
 	const code = row[CODE_OFFSET];
 	const value = row[VALUE_OFFSET];
-	if (code === "WD18CD") return []; // Escape if header
+	if (code === "WD19CD") return []; // Escape if header
 	return [code, value];
 };
 
 const configs = [
 	{
-		file: "Ward names and code UK as at 12_18.csv",
+		file: "Ward names and codes UK as at 05_19_NSPD.csv",
 		transform,
 		parseOptions: {
 			delimiter: ",",
