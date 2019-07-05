@@ -17,7 +17,7 @@ const VALUE_OFFSET = 1;
 const transform = row => {
 	const code = row[CODE_OFFSET];
 	const value = row[VALUE_OFFSET];
-	if (code === "PAR15CD") return []; // Escape if header
+	if (value === "PARNCP18NM") return []; // Escape if header
 	return [code, value];
 };
 
@@ -28,10 +28,13 @@ const appendMissing = {
 	"E43000245": "Swindon, unparished area"
 };
 
+const parseOptions = { delimiter: "," };
+
 const configs = [
 	{
-		file: "Parish_NCP names and codes EW as at 12_17.txt",
-		transform
+		file: "Parish_NCP names and codes EW as at 12_18.csv",
+    transform,
+    parseOptions,
 	},
 ];
 
