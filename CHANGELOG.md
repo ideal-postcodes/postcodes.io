@@ -2,11 +2,14 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
-## HEAD
+## 10.1.4 (5/7/2019)
 
 - CI testing on node 12 (instead of 11)
 - Deprecated PMX configuration option. Use prom-client for monitoring
 - Fix: Prom client uses stricter path matching to reduce cardinaility in `path=` label
+- Update ONSPD to May 2019
+- Update OS Names dataset to April 2019
+- Rebuild GSS codes
 
 ## 10.1.3 (23/3/2019)
 
