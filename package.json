@@ -81,7 +81,7 @@
     "pg-query-stream": "~2.0.0",
     "pino": "~5.12.6",
     "postcode": "~2.0.0",
-    "prom-client": "~11.5.2",
+    "prom-client": "~11.5.3",
     "prompt": "~1.0.0",
     "serve-favicon": "~2.5.0"
   },
