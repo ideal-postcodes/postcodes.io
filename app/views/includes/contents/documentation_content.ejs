@@ -460,17 +460,29 @@
 
     <h2 class="doc-header anchor" id="docker-install">1. Docker Installation</h2>
 
-    <p>Postcodes.io can be installed using two docker containers. The postcodes.io application container and the postcodes.io database container (a Postgresql image loaded with the dataset at runtime)</p>
+    <p>2 Containers are required to run Postcodes.io; the API application container and the database container.</p>
 
     <h3 id="docker-install-requirements">Requirements</h3>
     <ul><li><a href="https://docker.com">Docker</a></li></ul>
 
-    <h3>Postcodes.io Docker Application Container</h3>
+    <h3>The database container</h3>
 
-    <p>The Postcodes.io application is packaged as a Docker container identified on the Docker Hub as <code>idealpostcodes/postcodes.io</code>.</p>
+    <p>The database container (<code>idealpostcodes/postcodes.io.db</code>) is a PostgreSQL container that comes preloaded with the latest <code>pg_dump</code>. This uses <a href="https://hub.docker.com/r/mdillon/postgis/">mdillon/postgis</a> as the base image.</p>
+    
+    <p>Upon the first start of this container, the <code>pg_dump</code> is restored and the postgres server is started. The dump usually takes about a minute to restore.</p>
 
     <p>Example usage:</p>
-    <pre>docker run -d -p 8000 idealpostcodes/postcodes.io</pre>
+
+    <pre>docker run --name db -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e POSTGRES_PASSWORD=password idealpostcodes/postcodes.io.db</pre>
+
+    <p>This will start the container (with the name of db) and detach you from the container.</p>
+
+    <h3>The API application container</h3>
+
+    <p>Example usage:</p>
+    <pre>docker run -d -p 80:8000 --link db -e POSTGRES_HOST=db idealpostcodes/postcodes.io</pre>
+
+    <p>Because the API application runs (by default) on port 8000, we use <pre>-p 80:8000</pre> which allows us to access the API without the need to specify the port.</p>
 
     <p>Configuration available via Environment Variables:</p>
     <ul>
@@ -482,15 +494,6 @@
       <li><code>PORT</code> (HTTP Port to run on)</li>
       <li><code>MAPBOX_PUBLIC_KEY</code></li>
     </ul>
-
-    <h3>Postcodes.io Database Application</h3>
-    <p><code>idealpostcodes/postcodes.io.db</code> points to a <a href="https://hub.docker.com/r/mdillon/postgis/">PostgreSQL &amp; PostGIS</a> base image and preloads the latest <code>pg_dump</code> in the initialisation process. Upon starting a container for the first time, PostGIS will be enabled and the <code>pg_dump</code> will take around a minute to restore.</p>
-
-    <p>Example usage:</p>
-
-    <pre>docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e POSTGRES_PASSWORD=password idealpostcodes/postcodes.io.db</pre>
-
-    <p>As this contains the official postgres base image, the available configuration environment variables are documented here: <a href="https://hub.docker.com/_/postgres/">hub.docker.com/_/postgres/</a></p>
 
     <br />
     <h2 id="doc-header anchor">Classic Installation Methods (without Docker)</h3>
