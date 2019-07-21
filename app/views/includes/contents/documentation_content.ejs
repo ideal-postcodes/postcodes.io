@@ -503,7 +503,9 @@
     </ul>
 
     <h4>Database Container</h4>
-    <p><code>idealpostcodes/postcodes.io.db</code> points to a <a href="https://hub.docker.com/r/mdillon/postgis/">PostgreSQL &amp; PostGIS</a> base image and preloads the latest <code>pg_dump</code> in the initialisation process. Upon starting a container for the first time, PostGIS will be enabled and the <code>pg_dump</code> will take around a minute to restore.</p>
+    <p><code>idealpostcodes/postcodes.io.db</code> points to a <a href="https://hub.docker.com/r/mdillon/postgis/">PostgreSQL &amp; PostGIS</a> base image and preloads the latest <code>pg_dump</code> in the initialisation process.</p>
+
+    <p><strong>Take Note:</strong> Upon starting a container for the first time, PostGIS will be enabled and the <code>pg_dump</code> will take 15s-60s to restore depending on your system resources.</p>
 
     <p>Example usage:</p>
 
