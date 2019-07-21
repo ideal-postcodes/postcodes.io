@@ -447,27 +447,46 @@
     <h3 id="Random-Place">Random Place</h3>
     <p>Returns a random place and all associated data</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/random/places</h4></pre>
 
-    <h2 class="doc-header anchor" id="Install-notes">Install Notes</h2>
+    <hr />
+
+    <h2 class="doc-header anchor" id="Install-notes">Self Hosting &amp; Local Installations</h2>
 
     <p>There may be occasions where you want to host postcodes.io yourself. We've laid out instructions below on how to do this.</p>
     <p>We currently provide 4 methods to import the necessary datasets and run the postcodes.io API application:</p>
     <ol>
-      <li>Use our docker application and database images</li>
-      <li>Use our install script. This will require postgres superuser privileges to create and provision your database. It will then download the database and import the data from a <code>pg_dump</code>.</li>
-      <li>You can download the <code>pg_dump</code> and attempt to import the database yourself with <code>psql</code> or pg_restore.</li>
-      <li>Lastly, you can retrieve the raw CSV data from the ONS and import it with our import script.</li>
+      <li><strong>Docker Installation.</strong> Use our docker application and database images.</li>
+      <li><strong>Install Script</strong>. Clone the repository, install dependencies and <code>npm run setup</code>. This will download the database and import the data from a <code>pg_dump</code> into a locally running instance of PostreSQL.</li>
+      <li><strong>Manual Installation via pg_dump</strong>. You can download the <code>pg_dump</code> and attempt to import the database yourself with <code>psql</code> or pg_restore.</li>
+      <li><strong>Manual Installation</strong>. Retrieve the raw CSV datasets from Ordnance Survey and ONS; then import it with our import scripts.</li>
     </ol>
 
-    <h2 class="doc-header anchor" id="docker-install">1. Docker Installation</h2>
+    <h3 class="doc-header anchor" id="docker-install">1. Docker Installation</h3>
 
-    <p>Postcodes.io can be installed using two docker containers. The postcodes.io application container and the postcodes.io database container (a Postgresql image loaded with the dataset at runtime)</p>
+    <p>Postcodes.io can be installed using two docker containers: the postcodes.io application container and the postcodes.io database container.</p>
 
-    <h3 id="docker-install-requirements">Requirements</h3>
-    <ul><li><a href="https://docker.com">Docker</a></li></ul>
+    <h4 id="docker-install-requirements">Requirements</h4>
+    <ul>
+      <li>Local copy of <a href="https://github.com/ideal-postcodes/postcodes.io">postcodes.io repository</a></li>
+      <li><a href="https://docker.com">Docker</a></li>
+    </ul>
 
-    <h3>Postcodes.io Docker Application Container</h3>
+    <h4>Quickstart</h4>
 
-    <p>The Postcodes.io application is packaged as a Docker container identified on the Docker Hub as <code>idealpostcodes/postcodes.io</code>.</p>
+    <p>If you want to launch the postcodes.io HTTP interface and underlying database quickly, you may do so with <code>docker-compose</code>.</p> 
+
+    <p>Clone the project repository and run docker-compose:</p>
+
+    <pre>$ docker-compose up -d</pre> 
+
+    <p align="center">
+      <img src="https://img.ideal-postcodes.co.uk/postcodesio-docker-compose-demo.gif" alt="Docker Compose Demo">
+    </p>
+
+    <p>Running the above command in your terminal will create and network the containers. The HTTP service will be available on port <code>8000</code>.</p>
+
+    <h4>Application Container</h4>
+
+    <p>The Postcodes.io application, which provides the HTTP interface, is packaged as a Docker container identified on the Docker Hub as <code>idealpostcodes/postcodes.io</code>.</p>
 
     <p>Example usage:</p>
     <pre>docker run -d -p 8000 idealpostcodes/postcodes.io</pre>
@@ -483,31 +502,28 @@
       <li><code>MAPBOX_PUBLIC_KEY</code></li>
     </ul>
 
-    <h3>Postcodes.io Database Application</h3>
+    <h4>Database Container</h4>
     <p><code>idealpostcodes/postcodes.io.db</code> points to a <a href="https://hub.docker.com/r/mdillon/postgis/">PostgreSQL &amp; PostGIS</a> base image and preloads the latest <code>pg_dump</code> in the initialisation process. Upon starting a container for the first time, PostGIS will be enabled and the <code>pg_dump</code> will take around a minute to restore.</p>
 
     <p>Example usage:</p>
 
     <pre>docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e POSTGRES_PASSWORD=password idealpostcodes/postcodes.io.db</pre>
 
-    <p>As this contains the official postgres base image, the available configuration environment variables are documented here: <a href="https://hub.docker.com/_/postgres/">hub.docker.com/_/postgres/</a></p>
+    <p>As this contains the official PostreSQL base image, the available configuration environment variables are documented here: <a href="https://hub.docker.com/_/postgres/">hub.docker.com/_/postgres/</a></p>
 
-    <br />
-    <h2 id="doc-header anchor">Classic Installation Methods (without Docker)</h3>
+    <h3 id="install-script">2. Install Script</h3>
 
-    <h3 id="install-requirements">Requirements</h3>
-
-    <p>For non-docker installations, running Postcodes.io begins with cloning the repository: </p><pre>$ git clone https://github.com/ideal-postcodes/postcodes.io.git</pre>
+    <h4 id="install-requirements">Requirements</h4>
 
     <ul>
+      <li>Local copy of <a href="https://github.com/ideal-postcodes/postcodes.io">postcodes.io repository</a></li>
       <li><a href="https://nodejs.org">Node.js</a></li>
-      <li><a href="https://postgis.net/install/">Postgresql and Postgis</a></li>
+      <li><a href="https://postgis.net/install/">PostreSQL and PostGIS</a></li>
     </ul>
-    <h3 id="install-script">2. Install Script</h3>
-      <p>Currently the install process targets Linux and macOS systems. Please <a href="/about">let us know</a> if you have issues on those or any other operating systems.</p>
-      <p>Postcodes.io is packaged with a<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/bin/setup.sh"> script</a> to provision postgres and download a dump of the dataset. The script will,</p>
+    <p>Currently the install process targets Linux and macOS systems. Please <a href="/about">let us know</a> if you have issues on those or any other operating systems.</p>
+    <p>Postcodes.io is packaged with a<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/bin/setup.sh"> script</a> to provision PostgreSQL and download a dump of the dataset. The script will,</p>
       <ul>
-        <li>Prompt you for your postgres superuser credentials (most of the setup steps require this level of privilege)</li>
+        <li>Prompt you for your PostgreSQL superuser credentials (most of the setup steps require this level of privilege)</li>
         <li>Create a new database</li>
         <li>Create a new readonly user for the new database</li>
         <li>Download, unzip and stream the <code>pg_dump</code> into the new database</li>
@@ -518,7 +534,7 @@
     <h3 id="import-from-pgdump">3. Manual Installation <code>pg_dump</code></h3>
 
     <p>You can download a <code>pg_dump</code> of the database. This is the same dump used by the install script. The link to the latest dump can be found in our<a href="https://github.com/ideal-postcodes/postcodes.io/blob/master/latest"> repository.</a></p>
-    <p>To setup the database from our <code>pg_dump</code> download, <code>gunzip</code> and use either <code>psql</code> or <code>pg_restore</code> to import the data into Postgresql.</p>
+    <p>To setup the database from our <code>pg_dump</code> download, <code>gunzip</code> and use either <code>psql</code> or <code>pg_restore</code> to import the data into PostgreSQL.</p>
     <p>For example,</p><pre>$ cat postcodeiodb.sql | psql postcodesiodb</pre>
 
     <h3 id="import-from-ons">4. Manual Installation</h3>
