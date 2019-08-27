@@ -1,7 +1,8 @@
 "use strict";
 
 const util = require("util");
-const { Base, populateLocation, extractOnspdVal } = require("./base");
+const { Base, populateLocation, csvExtractor } = require("./base");
+const extractOnspdVal = csvExtractor(require("../../data/onspd_schema.json"));
 const async = require("async");
 const Pc = require("postcode");
 

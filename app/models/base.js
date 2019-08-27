@@ -236,33 +236,35 @@ const setupWithTableSwap = (Model, sourceFile) => {
 const toTempName = name => `${name}_temp`;
 const toArchiveName = name => `${name}_archived`;
 
-const indexCache = {};
-let ONSPD_CSV_SCHEMA;
-
 /**
- * Returns the index location of an ONSPD param, -1 if not found
- * @param  {string} code ONSPD column code e.g. `pcd`
- * @return {number}
+ * Returns a function that extracts a CSV value for a given code
+ * @param schema - Defines where to find CSV value given code
  */
-const indexFor = code => {
-  if (indexCache[code] !== undefined) return indexCache[code];
-  if (ONSPD_CSV_SCHEMA === undefined)
-    ONSPD_CSV_SCHEMA = require("../../data/onspd_schema.json");
-  indexCache[code] = ONSPD_CSV_SCHEMA.reduce((result, elem, i) => {
-    if (elem.code === code) return i;
-    return result;
-  }, -1);
-  return indexCache[code];
+const csvExtractor = schema => {
+  const cache = {};
+
+  /**
+   * Returns the index location of an given param, -1 if not found
+   * @param  {string} code column code e.g. `pcd`
+   * @return {number}
+   */
+  const indexFor = code => {
+    if (cache[code] !== undefined) return cache[code];
+    cache[code] = schema.reduce((result, elem, i) => {
+      if (elem.code === code) return i;
+      return result;
+    }, -1);
+    return cache[code];
+  };
+
+  /**
+   * Extracts the value for `code` from an CSV record defined by `schema`
+   * @param  {string[]} row
+   * @param  {string} code
+   * @return {string}
+   */
+  return (row, code) => row[indexFor(code)];
 };
-
-/**
- * Extracts the value for `code` from an ONSPD CSV record
- * @param  {string[]} row
- * @param  {string} code
- * @return {string}
- */
-const extractOnspdVal = (exports.extractOnspdVal = (row, code) =>
-  row[indexFor(code)]);
 
 module.exports = {
   Base,
@@ -270,5 +272,5 @@ module.exports = {
   setupWithTableSwap,
   toTempName,
   toArchiveName,
-  extractOnspdVal,
+  csvExtractor,
 };
