@@ -14,6 +14,7 @@ const SUPPORT_TABLES = [
   "Nuts",
   "Parish",
   "Ward",
+  "ScottishConstituency",
 ].map(name => models[name]);
 
 /**
@@ -44,9 +45,8 @@ const setupOutcodeTable = () => {
   });
 };
 
-module.exports = { 
+module.exports = {
   setupSupportTables,
   setupOutcodeTable,
   SUPPORT_TABLES,
 };
-
