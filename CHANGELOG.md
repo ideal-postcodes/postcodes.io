@@ -5,7 +5,10 @@ Any changes, including backwards incompatible changes will be listed here
 ## 10.2.0 (27/8/2019)
 
 - Update ONSPD to August 2019
+- Update OS Open Names to July 2019
 - Updated GSS codes for missing wards
+- Integrated Scotland Postcode Directory (SPD) dataset
+- Added Scotland postcode lookup (for Scottish Constituencies) `/scotland/postcodes/:postcode`
 
 ## 10.1.4 (5/7/2019)
 
