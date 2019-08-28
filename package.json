@@ -1,6 +1,6 @@
 {
   "name": "postcodes.io",
-  "version": "10.1.4",
+  "version": "10.2.0",
   "description": "A postcode lookup API",
   "main": "app.js",
   "prettier": {
@@ -27,6 +27,7 @@
   },
   "bin": {
     "postcodesio-onspd": "./bin/import.js",
+    "postcodesio-scotpd": "./bin/import_scot.js",
     "postcodesio-oson": "./bin/import_oson.js"
   },
   "repository": {

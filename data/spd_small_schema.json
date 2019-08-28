@@ -1,0 +1,22 @@
+[
+  { "code": "Postcode", "description": "Unit Postcode (Variable)" },
+  {},
+  {},
+  {
+    "code": "DateOfIntroduction",
+    "description": "Date of Introduction"
+  },
+  { "code": "DateOfDeletion", "description": "Date of Deletion" },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {
+    "code": "ScottishParliamentaryConstituency2014Code",
+    "description": "Scottish Parliamentary Constituency"
+  }
+]

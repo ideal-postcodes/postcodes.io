@@ -224,8 +224,36 @@
           </tr>
         </tbody>
       </table>
+      <h4>Scottish Postcode Data (Scottish Postcode Directory)</h4>
+      <p>Data returned by the <code>/scotland/*</code> APIs</p>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="postcode">
+            <td>postcode <br/> <code>string</code></td>
+            <td><strong>Postcode. </strong> Royal Mail postcode.</td>
+          </tr>
+          <tr id="scottish_parliamentary_constituency">
+            <td>scottish_parliamentary_constituency <br/> <code>string</code></td>
+            <td><strong>Scottish Parliamentary Constituency </strong>2014 Scottish Parliamentary Constituency.</td>
+          </tr>
+          <tr id="codes-spd">
+            <td>codes <br/> <code>Object</code></td>
+            <td><strong>Returns an ID or Code associated with the postcode.</strong> Typically, these are a 9 character code known as an ONS Code or GSS Code.</td>
+          </tr>
+          <tr id="code-scottish_parliamentary_constituency">
+            <td>codes.scottish_parliamentary_constituency <br/> <code>string</code></td>
+            <td><strong>Scottish Parliamentary Constituency GSS Code. </strong> A code that identifies a 2014 Scottish Parliamentary Constituency.</td>
+          </tr>
+        </tbody>
+      </table>
       <h4>Terminated Postcode Data (Ordnance Survey Postcode Directory Dataset)</h4>
-      <p>Data returned by the <code>/terminated_postcodes</code> API</p>
+      <p>Data returned by the <code>/terminated_postcodes/*</code> APIs</p>
       <table class="table table-hover">
         <thead>
           <tr>
@@ -434,6 +462,9 @@
     <p><code>radius=</code> (not required) Limits number of postcodes matches to return. Defaults to 5,000m. Needs to be less than 25,000m.</p>
     <h4>Additional Response Attributes</h4>
     <p><code>distance</code> Distance in metres from specified postode</p>
+    <h3 id="scottish-postcode">Scottish Postcode Lookup</h3>
+    <p>Lookup a Scottish postcode. Returns SPD data associated with postcode. At the moment this is just Scottish Parliamentary Constituency. Returns 404 if postcode does not exist in SPD or is not valid.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/scotland/postcodes/:postcode</h4></pre>
+    <h3
     <h3 id="Terminated">Terminated Postcode Lookup</h3>
     <p>Lookup a terminated postcode. Returns the postcode, year and month of termination. Returns 404 if postcode does not exist in our database of terminated postcodes or not valid.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/terminated_postcodes/:postcode</h4></pre>
     <h3
@@ -544,7 +575,12 @@
     <br />
 
     <h4>ONS Postcode Directory</h4>
-    <p>Download the latest Office for National Statistic's "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ postcodesio-onspd</code> passing the path to the CSV data.</p><pre>$ postcodesio-onspd /path/to/data/ONSPD/Data/data.csv</pre>
+    <p>Download the latest Office for National Statistics "Postcode Lookup Dataset". Unzip the data locally. Run the import script <code>$ postcodesio-onspd</code> passing the path to the CSV data.</p><pre>$ postcodesio-onspd /path/to/data/ONSPD/Data/data.csv</pre>
+    <br />
+
+    <h4>Scottish Postcode Directory</h4>
+    <p>Download the latest National Records Scotland "Scottish Postcode Directory". Unzip the data locally. Run the import script <code>$ postcodesio-scotpd</code> passing the path CSV data directory.</p>
+    <pre>$ postcodesio-scotpd /path/to/data</pre>
     <br />
 
     <h4>OS Open Names</h4>

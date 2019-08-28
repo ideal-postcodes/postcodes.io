@@ -6,9 +6,10 @@ const helper = require("./helper/index.js");
   "County",
   "Constituency",
   "District",
+  "ScottishConstituency",
   "Nuts",
   "Parish",
   "Ward",
-].map(name => helper[name])
- .forEach(model => helper.AttributeBaseSuite.rigCoreSpecs(model));
-
+]
+  .map(name => helper[name])
+  .forEach(model => helper.AttributeBaseSuite.rigCoreSpecs(model));
