@@ -85,33 +85,34 @@ Base.prototype._destroyRelation = function(callback) {
   this._query(`DROP TABLE IF EXISTS ${this.relation} CASCADE`, callback);
 };
 
+/**
+ * Build  SQL string to generate index
+ *
+ * @param index {IndexConfigurationObject}
+ * @param relation {string}
+ * @returns {string}
+ */
+const generateInstruction = (index, relation) => {
+  const { unique, type, column, opClass } = index;
+  return `
+    CREATE ${unique ? "UNIQUE INDEX" : "INDEX"} 
+    ON ${relation} 
+    USING ${type || "BTREE"} 
+    (${column} ${opClass || ""})
+  `;
+};
+
+/**
+ * Generate index given instances internal array of IndexConfigurationObjects
+ *
+ * @param callback
+ * @returns {undefined}
+ */
 Base.prototype.createIndexes = function(callback) {
-  const indexExecution = [];
-  const returnInstruction = index => {
-    const instruction = ["CREATE"];
-    if (index.unique) {
-      instruction.push("UNIQUE INDEX");
-    } else {
-      instruction.push("INDEX");
-    }
-    instruction.push(`ON ${this.relation}`);
-    instruction.push(`USING ${index.type || "BTREE"}`);
-    if (index.opClass) {
-      instruction.push(`(${index.column} ${index.opClass})`);
-    } else {
-      instruction.push(`(${index.column})`);
-    }
-    return instruction.join(" ");
-  };
-
-  for (let i = 0; i < this.indexes.length; i += 1) {
-    indexExecution.push(returnInstruction(this.indexes[i]));
-  }
-
   async.series(
-    indexExecution.map(instruction => {
-      return callback => this._query(instruction, callback);
-    }),
+    this.indexes
+      .map(index => generateInstruction(index, this.relation))
+      .map(instruction => cb => this._query(instruction, cb)),
     callback
   );
 };
