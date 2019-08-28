@@ -5,7 +5,8 @@ const utils = require("../app/controllers/utils_controller");
 const places = require("../app/controllers/places_controller");
 const outcodes = require("../app/controllers/outcodes_controller");
 const postcodes = require("../app/controllers/postcodes_controller");
-const terminatedPostcodes = require("../app/terminated_postcodes_controller");
+const scottishPostcodes = require("../app/controllers/scottish_postcodes_controller");
+const terminatedPostcodes = require("../app/controllers/terminated_postcodes_controller");
 
 module.exports = app => {
   app.get("/", pages.home);
@@ -36,4 +37,6 @@ module.exports = app => {
   app.get("/random/postcodes", postcodes.random);
 
   app.get("/terminated_postcodes/:postcode", terminatedPostcodes.show);
+
+  app.get("/scotland/postcodes/:postcode", scottishPostcodes.show);
 };

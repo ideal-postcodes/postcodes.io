@@ -101,11 +101,23 @@ const clearScottishPostcodeDb = callback => {
   ScottishPostcode._destroyRelation(callback);
 };
 
+const seedScottishPostcodeDb = callback => {
+  if (NO_RELOAD_DB) return callback(null);
+  async.series(
+    [
+      cb => ScottishPostcode._setupTable(seedScotlandPostcodePath, cb),
+      cb => ScottishConstituency._setupTable(cb),
+    ],
+    callback
+  );
+};
+
 module.exports = {
   clearTestDb,
   seedPostcodePath,
   seedTerminatedPostcodeDb,
   seedPostcodeDb,
+  seedScottishPostcodeDb,
   seedScotlandPostcodePath,
   clearTerminatedPostcodesDb,
   clearPostcodeDb,
