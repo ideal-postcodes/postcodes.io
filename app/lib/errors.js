@@ -71,7 +71,7 @@ class PostcodeNotFoundError extends PostcodesioHttpError {
 
 class PostcodeNotScottishError extends PostcodesioHttpError {
   constructor() {
-    super(404, "Postcode exists but is not Scottish");
+    super(404, "Postcode exists but not in SPD");
   }
 }
 const INVALID_JSON_QUERY_MESSAGE = `Invalid JSON query submitted. 
@@ -162,11 +162,11 @@ class OutcodeNotFoundError extends PostcodesioHttpError {
 
 module.exports = {
   PostcodesioHttpError,
-  PostcodeNotScottishError,
   InvalidJsonError,
   NotFoundError,
   InvalidPostcodeError,
   PostcodeNotFoundError,
+  PostcodeNotScottishError,
   InvalidJsonQueryError,
   JsonArrayRequiredError,
   ExceedMaxGeolocationsError,

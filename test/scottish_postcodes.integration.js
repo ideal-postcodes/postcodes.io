@@ -126,7 +126,7 @@ describe("Scottish postcode route", () => {
           assert.equal(response.body.status, 404);
           assert.property(response.body, "error");
           assert.equal(Object.keys(response.body).length, 2);
-          assert.equal(response.body.error, "Postcode exists but is not Scottish");
+          assert.equal(response.body.error, "Postcode exists but not in SPD");
           done();
         });
     });
