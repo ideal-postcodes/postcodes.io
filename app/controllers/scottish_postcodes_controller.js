@@ -6,7 +6,7 @@ const Pc = require("postcode");
 const {
   InvalidPostcodeError,
   PostcodeNotFoundError,
-  PostcodeNotScottishError,
+  PostcodeNotInSpdError,
 } = require("../lib/errors.js");
 
 exports.show = (request, response, next) => {
@@ -20,7 +20,7 @@ exports.show = (request, response, next) => {
       Postcode.find(postcode, (gerr, gres) => {
         if (gerr) return next(gerr);
         if (!gres) return next(new PostcodeNotFoundError());
-        return next(new PostcodeNotScottishError());
+        return next(new PostcodeNotInSpdError());
       });
     }
     response.jsonApiResponse = {

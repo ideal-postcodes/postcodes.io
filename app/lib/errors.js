@@ -69,7 +69,7 @@ class PostcodeNotFoundError extends PostcodesioHttpError {
   }
 }
 
-class PostcodeNotScottishError extends PostcodesioHttpError {
+class PostcodeNotInSpdError extends PostcodesioHttpError {
   constructor() {
     super(404, "Postcode exists but not in SPD");
   }
@@ -166,7 +166,7 @@ module.exports = {
   NotFoundError,
   InvalidPostcodeError,
   PostcodeNotFoundError,
-  PostcodeNotScottishError,
+  PostcodeNotInSpdError,
   InvalidJsonQueryError,
   JsonArrayRequiredError,
   ExceedMaxGeolocationsError,
