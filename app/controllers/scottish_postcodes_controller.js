@@ -17,7 +17,9 @@ exports.show = (request, response, next) => {
   ScottishPostcode.find(postcode, (error, result) => {
     if (error) return next(error);
     if (!result) {
-      Postcode.find(postcode, (gerr, gres) => {
+      // The return value of Postcode.find is the return value of the callback
+      // see postcode.js lines 186-188
+      return Postcode.find(postcode, (gerr, gres) => {
         if (gerr) return next(gerr);
         if (!gres) return next(new PostcodeNotFoundError());
         return next(new PostcodeNotInSpdError());
