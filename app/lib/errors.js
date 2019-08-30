@@ -71,7 +71,7 @@ class PostcodeNotFoundError extends PostcodesioHttpError {
 
 class PostcodeNotInSpdError extends PostcodesioHttpError {
   constructor() {
-    super(404, "Postcode exists but not in SPD");
+    super(404, "Postcode exists in ONSPD but not in SPD");
   }
 }
 const INVALID_JSON_QUERY_MESSAGE = `Invalid JSON query submitted. 
