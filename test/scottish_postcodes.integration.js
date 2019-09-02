@@ -112,5 +112,23 @@ describe("Scottish postcode route", () => {
           done();
         });
     });
+
+    it("should return error if postcode not found but is found in main database", done => {
+      const postcode = "M11AD";
+      const path = `/scotland/postcodes/${encodeURI(postcode)}`;
+      request(app)
+        .get(path)
+        .expect("Content-Type", /json/)
+        .expect(404)
+        .end((error, response) => {
+          if (error) return done(error);
+          assert.property(response.body, "status");
+          assert.equal(response.body.status, 404);
+          assert.property(response.body, "error");
+          assert.equal(Object.keys(response.body).length, 2);
+          assert.equal(response.body.error, "Postcode exists in ONSPD but not in SPD");
+          done();
+        });
+    });
   });
 });
