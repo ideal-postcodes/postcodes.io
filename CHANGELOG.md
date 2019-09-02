@@ -2,6 +2,10 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 10.2.1 (2/9/2019)
+
+- Return specific error message if postcode not in SPD but in ONSPD. Thanks to [@mashedkeyboard](https://github.com/mashedkeyboard)
+
 ## 10.2.0 (27/8/2019)
 
 - Update ONSPD to August 2019
