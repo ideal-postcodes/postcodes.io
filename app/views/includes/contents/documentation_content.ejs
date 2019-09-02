@@ -463,8 +463,9 @@
     <h4>Additional Response Attributes</h4>
     <p><code>distance</code> Distance in metres from specified postode</p>
     <h3 id="scottish-postcode">Scottish Postcode Lookup</h3>
-    <p>Lookup a Scottish postcode. Returns SPD data associated with postcode. At the moment this is just Scottish Parliamentary Constituency. Returns 404 if postcode does not exist in SPD or is not valid.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/scotland/postcodes/:postcode</h4></pre>
-    <h3
+    <p>Lookup a Scottish postcode. Returns SPD data associated with postcode. At the moment this is just Scottish Parliamentary Constituency.</p>
+    <p>Returns 404 if postcode does not exist in SPD or is not valid. For postcodes not in SPD but in ONSPD, 404 is returned with error message <code>Postcode exists in ONSPD but not in SPD</code>.</p>
+    <pre><h4><div class="http-method">GET</div>https://api.postcodes.io/scotland/postcodes/:postcode</h4></pre>
     <h3 id="Terminated">Terminated Postcode Lookup</h3>
     <p>Lookup a terminated postcode. Returns the postcode, year and month of termination. Returns 404 if postcode does not exist in our database of terminated postcodes or not valid.</p><pre><h4><div class="http-method">GET</div>https://api.postcodes.io/terminated_postcodes/:postcode</h4></pre>
     <h3
