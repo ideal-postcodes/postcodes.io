@@ -66,7 +66,7 @@
     "body-parser": "~1.19.0",
     "cors": "~2.8.5",
     "csv": "~1.1.0",
-    "csv-parse": "~4.6.3",
+    "csv-parse": "~4.6.5",
     "dotenv": "~8.2.0",
     "ejs": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
     "escape-string-regexp": "~2.0.0",
