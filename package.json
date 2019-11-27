@@ -88,7 +88,7 @@
   },
   "devDependencies": {
     "chai": "~4.2.0",
-    "coveralls": "~3.0.6",
+    "coveralls": "~3.0.9",
     "ejs-cli": "~2.1.1",
     "jshint": "~2.10.3",
     "mocha": "~6.2.2",
