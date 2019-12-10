@@ -14,16 +14,21 @@ const {extract, isPseudoCode} = require("./index");
 
 
 const CODE_OFFSET = 0;
+const SECOND_CODE_OFFSET = 1;
 const VALUE_OFFSET = 2;
 
 const ccgRegex = /\sCCG$/;
 
 const transform = row => {
 	const code = row[CODE_OFFSET];
+  const second_code = row[SECOND_CODE_OFFSET];
 	const value = row[VALUE_OFFSET];
 	if (code === "CCG19CD") return []; // Escape if header
 	if (isPseudoCode(code)) return [];
-	return [code, value.replace(ccgRegex, "").trim()];
+	return [code, {
+	  "code": second_code,
+    "name": value.replace(ccgRegex, "").trim()
+  }];
 };
 
 const configs = [
