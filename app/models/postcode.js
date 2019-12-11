@@ -141,6 +141,10 @@ const foreignColumns = [
     as: "ced",
   },
   {
+    field: "ccgs.ccg19cdh",
+    as: "ccg19cdh",
+  },
+  {
     field: "ccgs.name",
     as: "ccg",
   },
@@ -170,12 +174,12 @@ function Postcode() {
 inherits(Postcode, Base);
 
 const findQuery = `
-	SELECT 
-		postcodes.*, ${toColumnsString()} 
-	FROM 
-		postcodes 
-	${toJoinString()} 
-	WHERE pc_compact=$1 
+	SELECT
+		postcodes.*, ${toColumnsString()}
+	FROM
+		postcodes
+	${toJoinString()}
+	WHERE pc_compact=$1
 `;
 
 Postcode.prototype.find = function(postcode, callback) {
@@ -290,10 +294,10 @@ Postcode.prototype.random = function(options, callback) {
 };
 
 const findByIdQuery = `
-	SELECT 
-		postcodes.*, ${toColumnsString()} 
-	FROM 
-		postcodes 
+	SELECT
+		postcodes.*, ${toColumnsString()}
+	FROM
+		postcodes
 	${toJoinString()}
 	WHERE id=$1
 `;
@@ -378,15 +382,15 @@ Postcode.prototype.search = function(options, callback) {
 };
 
 const searchQuery = `
-	SELECT 
+	SELECT
 		postcodes.*, ${toColumnsString()}
-	FROM 
+	FROM
 		postcodes
 	${toJoinString()}
-	WHERE 
-		postcode >= $1 
-	ORDER BY 
-		postcode ASC 
+	WHERE
+		postcode >= $1
+	ORDER BY
+		postcode ASC
 	LIMIT $2
 `;
 
@@ -398,15 +402,15 @@ Postcode.prototype.searchPostcode = function(options, callback) {
 };
 
 const pccompactSearchQuery = `
-	SELECT 
+	SELECT
 		postcodes.*, ${toColumnsString()}
-	FROM 
+	FROM
 		postcodes
 	${toJoinString()}
-	WHERE 
-		pc_compact >= $1 
-	ORDER BY 
-		pc_compact ASC 
+	WHERE
+		pc_compact >= $1
+	ORDER BY
+		pc_compact ASC
 	LIMIT $2
 `;
 
@@ -418,21 +422,21 @@ Postcode.prototype.searchPcCompact = function(options, callback) {
 };
 
 const nearestPostcodeQuery = `
-	SELECT 
-		postcodes.*, 
+	SELECT
+		postcodes.*,
 		ST_Distance(
 			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')
 		) AS distance,
-		${toColumnsString()} 
-	FROM 
-		postcodes 
+		${toColumnsString()}
+	FROM
+		postcodes
 	${toJoinString()}
-	WHERE 
+	WHERE
 		ST_DWithin(
 			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3
-		) 
-	ORDER BY 
-		distance ASC, postcode ASC 
+		)
+	ORDER BY
+		distance ASC, postcode ASC
 	LIMIT $4
 `;
 
@@ -478,18 +482,18 @@ Postcode.prototype.nearestPostcodes = function(params, callback) {
 };
 
 const nearestPostcodeCount = `
-	SELECT 
-		postcodes.*, 
+	SELECT
+		postcodes.*,
 		ST_Distance(
 			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')
-		) AS distance  
-	FROM 
-		postcodes 
-	WHERE 
+		) AS distance
+	FROM
+		postcodes
+	WHERE
 		ST_DWithin(
 			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3
-		) 
-	LIMIT $4 
+		)
+	LIMIT $4
 `;
 
 const START_RANGE = 500; // 0.5km
@@ -536,78 +540,78 @@ Postcode.prototype._deriveMaxRange = function(params, callback) {
 const attributesQuery = [];
 attributesQuery.push(`
 	array(
-		SELECT 
-			DISTINCT districts.name 
-		FROM 
-			postcodes 
-		LEFT OUTER JOIN 
-			districts ON postcodes.admin_district_id = districts.code 
-		WHERE 
+		SELECT
+			DISTINCT districts.name
+		FROM
+			postcodes
+		LEFT OUTER JOIN
+			districts ON postcodes.admin_district_id = districts.code
+		WHERE
 			outcode=$1 AND districts.name IS NOT NULL
 	) as admin_district
 `);
 
 attributesQuery.push(`
 	array(
-		SELECT 
-			DISTINCT parishes.name 
-		FROM 
-			postcodes 
-		LEFT OUTER JOIN 
-			parishes ON postcodes.parish_id = parishes.code 
-		WHERE 
+		SELECT
+			DISTINCT parishes.name
+		FROM
+			postcodes
+		LEFT OUTER JOIN
+			parishes ON postcodes.parish_id = parishes.code
+		WHERE
 			outcode=$1 AND parishes.name IS NOT NULL
 	) as parish
 `);
 
 attributesQuery.push(`
 	array(
-		SELECT 
-			DISTINCT counties.name 
-		FROM 
-			postcodes 
-		LEFT OUTER JOIN 
-			counties ON postcodes.admin_county_id = counties.code 
-		WHERE 
+		SELECT
+			DISTINCT counties.name
+		FROM
+			postcodes
+		LEFT OUTER JOIN
+			counties ON postcodes.admin_county_id = counties.code
+		WHERE
 			outcode=$1 AND counties.name IS NOT NULL
 	) as admin_county
 `);
 
 attributesQuery.push(`
 	array(
-		SELECT 
-			DISTINCT wards.name 
-		FROM 
-			postcodes 
-		LEFT OUTER JOIN 
-			wards ON postcodes.admin_ward_id = wards.code 
-		WHERE 
+		SELECT
+			DISTINCT wards.name
+		FROM
+			postcodes
+		LEFT OUTER JOIN
+			wards ON postcodes.admin_ward_id = wards.code
+		WHERE
 			outcode=$1 AND wards.name IS NOT NULL
 	) as admin_ward
 `);
 
 attributesQuery.push(`
 	array(
-		SELECT 
-			DISTINCT country 
-		FROM 
-			postcodes 
+		SELECT
+			DISTINCT country
+		FROM
+			postcodes
 		WHERE
 			outcode=$1
 	) as country
 `);
 
 const outcodeQuery = `
-	SELECT 
-		outcode, avg(northings) as northings, avg(eastings) as eastings, 
-		avg(ST_X(location::geometry)) as longitude, 
-		avg(ST_Y(location::geometry)) as latitude, 
-		${attributesQuery.join(",")} 
-	FROM 
-		postcodes 
-	WHERE 
-		outcode=$1 
-	GROUP BY 
+	SELECT
+		outcode, avg(northings) as northings, avg(eastings) as eastings,
+		avg(ST_X(location::geometry)) as longitude,
+		avg(ST_Y(location::geometry)) as latitude,
+		${attributesQuery.join(",")}
+	FROM
+		postcodes
+	WHERE
+		outcode=$1
+	GROUP BY
 		outcode
 `;
 
@@ -737,7 +741,7 @@ Postcode.prototype.seedPostcodes = function(filepath, callback) {
       transform: row => {
         row.extract = code => extractOnspdVal(row, code); // Append csv extraction logic
         if (row.extract("pcd") === "pcd") return null; // Skip if header
-        if (row.extract("doterm").length !== 0) return null; // Skip row if terminated
+        if (row.extract("doterm") && row.extract("doterm").length !== 0) return null; // Skip row if terminated
         return ONSPD_COL_MAPPINGS.map(elem => elem.method(row));
       },
       columns: ONSPD_COL_MAPPINGS.map(elem => elem.column).join(","),
