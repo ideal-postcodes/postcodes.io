@@ -26,7 +26,7 @@ const transform = row => {
 	if (code === "CCG19CD") return []; // Escape if header
 	if (isPseudoCode(code)) return [];
 	return [code, {
-	  "code": second_code,
+	  "ccg19cdh": second_code,
     "name": value.replace(ccgRegex, "").trim()
   }];
 };
