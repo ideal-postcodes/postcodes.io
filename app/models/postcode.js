@@ -650,6 +650,7 @@ Postcode.prototype.toJson = function(address) {
     parish: address.parish_id,
     parliamentary_constituency: address.constituency_id,
     ccg: address.ccg_id,
+    ccg19cdh: address.ccg19cdh,
     ced: address.ced_id,
     nuts: address.nuts_code,
   };
@@ -661,6 +662,7 @@ Postcode.prototype.toJson = function(address) {
   delete address.admin_ward_id;
   delete address.parish_id;
   delete address.ccg_id;
+  delete address.ccg19cdh;
   delete address.ced_id;
   delete address.nuts_id;
   delete address.nuts_code;
