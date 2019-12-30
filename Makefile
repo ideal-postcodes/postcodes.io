@@ -9,10 +9,15 @@ init:
 
 ## -- Test Methods --
 
+## Launches test and pg containers with tests running
+.PHONY: test
+test:
+	docker-compose -f docker/test/docker-compose.yml -f docker/test/test.yml up --exit-code-from api --build
+
 ## Launch test application and database
 .PHONY: test-up
 test-up:
-	docker-compose -f docker/test/docker-compose.yml up -d
+	docker-compose -f docker/test/docker-compose.yml up -d --build
 
 ## Shut down test services
 .PHONY: test-down
