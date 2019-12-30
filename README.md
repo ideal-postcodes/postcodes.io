@@ -52,13 +52,15 @@ docker-compose up
 ## Testing
 
 ```bash
-# Run a postgres container listening on port 5432
-docker-compose -f .docker/docker-compose.testenv.yml up 
+# Run entire test suite
+make test
 
-npm test
+# Launch test application container and services, and run tests from container
+make test-up
+make test-shell
+$api-container> npm test
 ```
 
 ## License
 
 MIT
-
