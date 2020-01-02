@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npm run test:create && npm run nyc_mocha",
     "nyc_mocha": "NODE_ENV=test NO_RELOAD_DB=true nyc mocha",
-    "coverage": "nyc report --reporter=text-lcov | coveralls || true",
+    "coverage": "codecov",
     "start": "node server.js",
     "setup": "./bin/setup.sh",
     "rebuild_support_tables": "./bin/rebuild_support_tables.js",
@@ -53,6 +53,7 @@
   "nyc": {
     "reporter": [
       "text-summary",
+      "lcov",
       "html"
     ],
     "all": true,
@@ -88,7 +89,7 @@
   },
   "devDependencies": {
     "chai": "~4.2.0",
-    "coveralls": "~3.0.6",
+    "codecov": "~3.6.1",
     "ejs-cli": "~2.1.1",
     "jshint": "~2.10.3",
     "mocha": "~6.2.2",
