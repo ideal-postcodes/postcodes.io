@@ -5,7 +5,7 @@
 > UK postcode & geolocation API, serving up open data
 
 [![CircleCI](https://circleci.com/gh/ideal-postcodes/postcodes.io/tree/master.svg?style=svg)](https://circleci.com/gh/ideal-postcodes/postcodes.io/tree/master)
-[![Coverage Status](https://coveralls.io/repos/github/ideal-postcodes/postcodes.io/badge.svg?branch=master)](https://coveralls.io/github/ideal-postcodes/postcodes.io?branch=master)
+[![codecov](https://codecov.io/gh/ideal-postcodes/postcodes.io/branch/master/graph/badge.svg)](https://codecov.io/gh/ideal-postcodes/postcodes.io)
 [![Dependency Status](https://david-dm.org/ideal-postcodes/postcodes.io.svg)](https://david-dm.org/ideal-postcodes/postcodes.io)
 
 Query for UK postcodes and geolocations over HTTP.
