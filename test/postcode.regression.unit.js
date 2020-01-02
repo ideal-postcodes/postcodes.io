@@ -54,7 +54,7 @@ describe("Postcode data regression testing", function () {
 			  admin_county: null,
 			  admin_ward: 'Kincorth/Nigg/Cove',
 			  ccg: 'Aberdeen City Community Health Partnership',
-        ccg19cdh: '012',
+        ccg_id: '012',
 			  nuts: 'Aberdeen City and Aberdeenshire',
 			  nuts_code: 'UKM50',
 			}, result);
@@ -99,7 +99,7 @@ describe("Postcode data regression testing", function () {
         admin_county: null,
         admin_ward: 'London Bridge & West Bermondsey',
         ccg: 'NHS Southwark',
-        ccg19cdh: '08Q',
+        ccg_id: '08Q',
         nuts: 'Lewisham and Southwark',
         nuts_code: 'UKI44'
       }, result);
@@ -146,7 +146,7 @@ describe("Postcode data regression testing", function () {
 			  admin_county: null,
 			  admin_ward: null,
 			  ccg: null,
-        ccg19cdh: null,
+        ccg_id: null,
 			  nuts: null,
 			  nuts_code: null,
 			}, result);

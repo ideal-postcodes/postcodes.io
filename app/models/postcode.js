@@ -142,7 +142,7 @@ const foreignColumns = [
   },
   {
     field: "ccgs.ccg19cdh",
-    as: "ccg19cdh",
+    as: "ccg_id",
   },
   {
     field: "ccgs.name",
@@ -643,31 +643,44 @@ Postcode.prototype.findOutcode = function(o, callback) {
 };
 
 Postcode.prototype.toJson = function(address) {
-  address.codes = {
-    admin_district: address.admin_district_id,
-    admin_county: address.admin_county_id,
-    admin_ward: address.admin_ward_id,
-    parish: address.parish_id,
-    parliamentary_constituency: address.constituency_id,
-    ccg: address.ccg_id,
-    ccg19cdh: address.ccg19cdh,
-    ced: address.ced_id,
-    nuts: address.nuts_code,
+  return {
+    postcode: address.postcode,
+    quality: address.quality,
+    eastings: address.eastings,
+    northings: address.northings,
+    country: address.country,
+    nhs_ha: address.nhs_ha,
+    longitude: address.longitude,
+    latitude: address.latitude,
+    european_electoral_region: address.european_electoral_region,
+    primary_care_trust: address.primary_care_trust,
+    region: address.region,
+    lsoa: address.lsoa,
+    msoa: address.msoa,
+    incode: address.incode,
+    outcode: address.outcode,
+    parliamentary_constituency: address.parliamentary_constituency,
+    admin_district: address.admin_district,
+    parish: address.parish,
+    admin_county: address.admin_county,
+    admin_ward: address.admin_ward,
+    ced: address.ced,
+    ccg: address.ccg,
+    nuts: address.nuts,
+    codes: {
+      admin_district: address.admin_district_id,
+      admin_county: address.admin_county_id,
+      admin_ward: address.admin_ward_id,
+      parish: address.parish_id,
+      parliamentary_constituency: address.constituency_id,
+      ccg: address.ccg_id,
+      ccg_id: address.ccg_id,
+      ced: address.ced_id,
+      nuts: address.nuts_code,
+    },
+    // Insert distance if present
+    ...(address.distance !== undefined && { distance: address.distance }),
   };
-  delete address.id;
-  delete address.location;
-  delete address.pc_compact;
-  delete address.admin_district_id;
-  delete address.admin_county_id;
-  delete address.admin_ward_id;
-  delete address.parish_id;
-  delete address.ccg_id;
-  delete address.ccg19cdh;
-  delete address.ced_id;
-  delete address.nuts_id;
-  delete address.nuts_code;
-  delete address.constituency_id;
-  return address;
 };
 
 Postcode.prototype._setupTable = function(filepath, callback) {
@@ -743,7 +756,8 @@ Postcode.prototype.seedPostcodes = function(filepath, callback) {
       transform: row => {
         row.extract = code => extractOnspdVal(row, code); // Append csv extraction logic
         if (row.extract("pcd") === "pcd") return null; // Skip if header
-        if (row.extract("doterm") && row.extract("doterm").length !== 0) return null; // Skip row if terminated
+        if (row.extract("doterm") && row.extract("doterm").length !== 0)
+          return null; // Skip row if terminated
         return ONSPD_COL_MAPPINGS.map(elem => elem.method(row));
       },
       columns: ONSPD_COL_MAPPINGS.map(elem => elem.column).join(","),
