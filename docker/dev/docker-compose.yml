@@ -1,0 +1,12 @@
+---
+version: '3'
+services:
+  db:
+    image: mdillon/postgis:10
+    environment:
+      - POSTGRES_DB=postcodesiodb
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_HOST=localhost
+      - POSTGRES_USER=postcodesio
+    ports:
+      - "5432:5432"

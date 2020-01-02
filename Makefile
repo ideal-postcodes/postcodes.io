@@ -7,6 +7,28 @@
 init:
 	docker-compose up
 
+## -- Development Methods --
+
+## Launch services to support development environment
+.PHONY: up
+up:
+	docker-compose -f docker/dev/docker-compose.yml up -d
+
+## Terminate development environment
+.PHONY: down
+down:
+	docker-compose -f docker/dev/docker-compose.yml down
+
+## Tail development service logs
+.PHONY: logs
+logs:
+	docker-compose -f docker/dev/docker-compose.yml logs -f
+
+## Open psql shell to development pg instance
+.PHONY: psql
+psql:
+	psql -h 0.0.0.0 --username postcodesio postcodesiodb
+
 ## -- Test Methods --
 
 ## Launches test and pg containers with tests running
