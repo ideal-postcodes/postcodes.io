@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "npm run test:create && npm run nyc_mocha",
-    "nyc_mocha": "NODE_ENV=test NO_RELOAD_DB=true node_modules/.bin/nyc node_modules/.bin/mocha",
-    "coverage": "node_modules/.bin/nyc report --reporter=text-lcov | node_modules/.bin/coveralls || true",
+    "nyc_mocha": "NODE_ENV=test NO_RELOAD_DB=true nyc mocha",
+    "coverage": "nyc report --reporter=text-lcov | coveralls || true",
     "start": "node server.js",
     "setup": "./bin/setup.sh",
     "rebuild_support_tables": "./bin/rebuild_support_tables.js",
@@ -17,8 +17,8 @@
     "test:seed": "NODE_ENV=test ./bin/generate_test_data.js",
     "test:create": "NODE_ENV=test ./bin/createTestDb.sh",
     "test:clear": "NODE_ENV=test ./bin/clearTestDb.sh",
-    "lint": "./node_modules/.bin/jshint .",
-    "ejs": "./node_modules/.bin/ejs-cli"
+    "lint": "jshint .",
+    "ejs": "ejs-cli"
   },
   "mocha": {
     "exit": true,
