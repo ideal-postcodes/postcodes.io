@@ -1,15 +1,15 @@
 "use strict";
 
 const fs = require("fs");
-const pg = require("pg");
-const copyFrom = require("pg-copy-streams").from;
+const { Pool } = require("pg");
+const { from } = require("pg-copy-streams");
 const async = require("async");
 const csv = require("csv");
 const defaults = require("../../config/config")();
 const config = defaults.postgres;
 
 // Instantiate postgres client pool
-const pool = pg.Pool(config);
+const pool = new Pool(config);
 
 // All models inherit from base
 // Requires schema and relation name
@@ -134,7 +134,7 @@ Base.prototype._csvSeed = function(options, callback) {
     (filepath, cb) => {
       pool.connect((error, client, done) => {
         const pgStream = client
-          .query(copyFrom(query))
+          .query(from(query))
           .on("end", () => {
             done();
             return cb();
