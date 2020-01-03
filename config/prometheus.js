@@ -44,7 +44,6 @@ const paths = [
  */
 const normalizePath = request => {
     for (const [regex, path] of paths) {
-        console.log(request.originalUrl, regex.test(request.originalUrl));
         if (regex.test(request.originalUrl)) return path;
     }
     return "other";
