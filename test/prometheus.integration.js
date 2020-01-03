@@ -58,12 +58,16 @@ describe("Prometheus /metrics endpoint", () => {
     });
 
     const testMetric = (url, expectedMetric) => {
-      return new Promise(async resolve => {
-        const response = await generateMetric(url);
-        const { text } = await getMetrics();
-        assert.notInclude(text, url);
-        assert.include(text, expectedMetric);
-        return resolve();
+      return new Promise(async (resolve, reject) => {
+        try {
+          const response = await generateMetric(url);
+          const { text } = await getMetrics();
+          assert.notInclude(text, url);
+          assert.include(text, expectedMetric);
+          return resolve();
+        } catch(err) {
+          return reject(err);
+        }
       });
     };
 
@@ -84,9 +88,21 @@ describe("Prometheus /metrics endpoint", () => {
     };
 
     describe("URL normalisation", () => {
+      it("normalises /postcodes?q=[query]", async () => {
+        const url = "/postcodes?q=foobar";
+        const expectedMetric = "/postcodes/query/:query";
+        await testMetric(url, expectedMetric);
+      });
+
       it("normalises /postcodes/:postcode", async () => {
         const url = "/postcodes/foobar";
         const expectedMetric = "/postcodes/:postcode";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /scotland/postcodes/:postcode", async () => {
+        const url = "/scotland/postcodes/foobar";
+        const expectedMetric = "/scotland/postcodes/:postcode";
         await testMetric(url, expectedMetric);
       });
 
@@ -98,6 +114,12 @@ describe("Prometheus /metrics endpoint", () => {
 
       it("normalises /postcodes/lon/:longitude/lat/:latitude", async () => {
         const url = "/postcodes/lat/12.1/lon/8.2";
+        const expectedMetric = "/postcodes/lon/:lon/lat/:lat";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes?lon=:longitude&lat=:latitude", async () => {
+        const url = "/postcodes?lon=12.1&lat=8.2";
         const expectedMetric = "/postcodes/lon/:lon/lat/:lat";
         await testMetric(url, expectedMetric);
       });
@@ -132,6 +154,12 @@ describe("Prometheus /metrics endpoint", () => {
         await testMetric(url, expectedMetric);
       });
 
+      it("normalises /outcodes?lon=:longitude&lat=:latitude", async () => {
+        const url = "/outcodes?lon=12.1&lat=8.2";
+        const expectedMetric = "/outcodes/lon/:lon/lat/:lat";
+        await testMetric(url, expectedMetric);
+      });
+
       it("normalises /terminated_postcodes/:postcode", async () => {
         const url = "/terminated_postcodes/foobar";
         const expectedMetric = "/terminated_postcodes/:postcode";
@@ -156,5 +184,104 @@ describe("Prometheus /metrics endpoint", () => {
         await testMetric(url, expectedMetric);
       });
     });
+
+    describe("URL normalisation with callback", () => {
+      it("normalises /postcodes?q=[query]", async () => {
+        const url = "/postcodes?q=foobar&callback=foo";
+        const expectedMetric = "/postcodes/query/:query";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes/:postcode", async () => {
+        const url = "/postcodes/foobar&callback=foo";
+        const expectedMetric = "/postcodes/:postcode";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /scotland/postcodes/:postcode", async () => {
+        const url = "/scotland/postcodes/foobar&callback=foo";
+        const expectedMetric = "/scotland/postcodes/:postcode";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes/lon/:longitude/lat/:latitude", async () => {
+        const url = "/postcodes/lon/12.1/lat/8?callback=foo";
+        const expectedMetric = "/postcodes/lon/:lon/lat/:lat";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes/lon/:longitude/lat/:latitude", async () => {
+        const url = "/postcodes/lat/12.1/lon/8.2?callback=foo";
+        const expectedMetric = "/postcodes/lon/:lon/lat/:lat";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes?lon=:longitude&lat=:latitude", async () => {
+        const url = "/postcodes?lon=12.1&lat=8.2&callback=foo";
+        const expectedMetric = "/postcodes/lon/:lon/lat/:lat";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes/:postcode/validate", async () => {
+        const url = "/postcodes/foobar/validate?callback=foo";
+        const expectedMetric = "/postcodes/:postcode/validate";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes/:postcode/nearest", async () => {
+        const url = "/postcodes/foobar/nearest?callback=foo";
+        const expectedMetric = "/postcodes/:postcode/nearest";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes/:postcode/autocomplete", async () => {
+        const url = "/postcodes/foobar/autocomplete?callback=foo";
+        const expectedMetric = "/postcodes/:postcode/autocomplete";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /outcodes/:outcode", async () => {
+        const url = "/outcodes/foo?callback=foo";
+        const expectedMetric = "/outcodes/:outcode";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /outcodes/:outcode/nearest", async () => {
+        const url = "/outcodes/foo/nearest?callback=foo";
+        const expectedMetric = "/outcodes/:outcode/nearest";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /outcodes?lon=:longitude&lat=:latitude", async () => {
+        const url = "/outcodes?lon=12.1&lat=8.2&callback=foo";
+        const expectedMetric = "/outcodes/lon/:lon/lat/:lat";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /terminated_postcodes/:postcode", async () => {
+        const url = "/terminated_postcodes/foobar?callback=foo";
+        const expectedMetric = "/terminated_postcodes/:postcode";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /places/:code", async () => {
+        const url = "/places/foobar?callback=foo";
+        const expectedMetric = "/places/:code";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /PLACES/:code", async () => {
+        const url = "/PLACES/foobar?callback=foo";
+        const expectedMetric = "/places/:code";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("does not generate metrics for unexpected paths", async () => {
+        const url = "/bogus?callback=foo";
+        const expectedMetric = "other";
+        await testMetric(url, expectedMetric);
+      });
+    });
+
   });
 });
