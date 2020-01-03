@@ -1,0 +1,23 @@
+---
+version: "3"
+services:
+  api:
+    build:
+      context: ../../
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_DB=postcodesiodb
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=postcodesio
+      - POSTGRES_HOST=db
+    ports:
+      - 8000:8000
+  db:
+    build:
+      context: ../../
+      dockerfile: Dockerfile.pg
+    environment:
+      - POSTGRES_DB=postcodesiodb
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=postcodesio

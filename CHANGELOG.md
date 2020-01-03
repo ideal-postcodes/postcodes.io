@@ -2,6 +2,16 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 11.0.0 (3/1/2020)
+
+- *Breaking Change* CCG Short Code column added to ccgs table
+- CCG Short Code returned in `codes` object
+- Update ONSPD to November 2019
+- Update OS Open Names to October 2019
+- Updated GSS codes for midding NUTS
+- Updated GSS codes for midding wards
+- New docker-compose setup for test, dev and s3 pg_dump testing
+
 ## 10.2.1 (2/9/2019)
 
 - Return specific error message if postcode not in SPD but in ONSPD. Thanks to [@mashedkeyboard](https://github.com/mashedkeyboard)
@@ -100,7 +110,7 @@ Minor updates and fixes. Many related to docker improvements
 ## 9.0.0 (8/6/2018)
 
 - *Breaking Change* Updated `postcode` and `terminated_postcode` models for the new schema in ONSPD CSV file. This means `>9.0.0` will not be able to import ONSPD CSV files produced before May 2018. `pg_dump` imports will not be affected
-- Added package.lock file 
+- Added package.lock file
 - Updated wards, districts, nuts, ccgs GSS Codes
 - Updated ONSPD dataset to May 2018
 - Updated OS Names dataset to April 2018
@@ -207,22 +217,22 @@ For the exact changes, you can may inspect the most recent commit applied to the
 - Minimum advised required Postgresql version of 9.5 (due to backwards incompatible pg_dump)
 - Updated latest pg_dump for Feb 2017 ONSPD, January 2017 OS Places data
 
-## 3.0.3 
+## 3.0.3
 - Updated latest pg_dump for Nov 2016 ONSPD
 - Updated NUTS GSS codes
 - Added support for Node.js 6.9
 
-## 3.0.2 
+## 3.0.2
 - Updated latest pg_dump for Aug 2016 ONSPD
 
-## 3.0.1 
+## 3.0.1
 - Added some missing GSS codes. Fix import script for Aug 2016 ONSPD
 
-## 3.0.0 
+## 3.0.0
 - Drop support for node.js 0.10 and 0.12
 
-## 2.0.1 
+## 2.0.1
 - Expanded accept headers and HTTP methods in CORS preflight requests
 
-## 2.0.0 
+## 2.0.0
 - Updated dataset to February 2016

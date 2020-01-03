@@ -51,6 +51,18 @@ test-down:
 test-shell:
 	docker-compose -f docker/test/docker-compose.yml exec api /bin/bash
 
+## -- Live Test Methods --
+
+## Build local pg and api images using pg_dump from S3
+.PHONY: live-up
+live-up:
+	docker-compose -f docker/live-test/docker-compose.yml up -d --build
+
+## Shut down live test services
+.PHONY: live-down
+live-down:
+	docker-compose -f docker/live-test/docker-compose.yml down -v
+
 ## -- Misc --
 
 ## Update repository against origin/master

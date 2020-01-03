@@ -1,10 +1,13 @@
 ---
-version: '3'
+version: "3"
 services:
   db:
-    image: mdillon/postgis:10
+    build:
+      context: .
+      args:
+        - PCIO_DB_NAME=postcodesiodb
     environment:
-      - POSTGRES_DB=postcodesiodb
+      - POSTGRES_DB=postcodesio
       - POSTGRES_PASSWORD=password
       - POSTGRES_HOST=localhost
       - POSTGRES_USER=postcodesio
