@@ -12,19 +12,32 @@ const promClient = {
   },
 };
 
+const DEFAULT_PATH = "other";
+
 const paths = [
   [
     `^/postcodes/(lat|lon)/\\d+(\\.\\d+)?/(lat|lon)/\\d+(\\.\\d+)?$`,
-    "/postcodes/lon/:lon/lat/:lat",
+    request => "/postcodes/lon/:lon/lat/:lat",
   ],
-  ["^/postcodes/[^/]+$", "/postcodes/:postcode"],
-  ["^/postcodes/.+/validate$", "/postcodes/:postcode/validate"],
-  ["^/postcodes/.+/nearest$", "/postcodes/:postcode/nearest"],
-  ["^/postcodes/.+/autocomplete$", "/postcodes/:postcode/autocomplete"],
-  ["^/outcodes/[^/]+$", "/outcodes/:outcode"],
-  ["^/outcodes/.+/nearest$", "/outcodes/:outcode/nearest"],
-  ["^/terminated_postcodes/[^/]+$", "/terminated_postcodes/:postcode"],
-  ["^/places/[^/]+$", "/places/:code"],
+  [
+    "^/postcodes/[^/]+$",
+    request => {
+      return "/postcodes/:postcode";
+    },
+  ],
+  ["^/postcodes/.+/validate$", request => "/postcodes/:postcode/validate"],
+  ["^/postcodes/.+/nearest$", request => "/postcodes/:postcode/nearest"],
+  [
+    "^/postcodes/.+/autocomplete$",
+    request => "/postcodes/:postcode/autocomplete",
+  ],
+  ["^/outcodes/[^/]+$", request => "/outcodes/:outcode"],
+  ["^/outcodes/.+/nearest$", request => "/outcodes/:outcode/nearest"],
+  [
+    "^/terminated_postcodes/[^/]+$",
+    request => "/terminated_postcodes/:postcode",
+  ],
+  ["^/places/[^/]+$", request => "/places/:code"],
 ].map(([regex, path]) => [new RegExp(regex, "i"), path]);
 
 /**
@@ -34,9 +47,9 @@ const paths = [
  */
 const normalizePath = request => {
   for (const [regex, path] of paths) {
-    if (regex.test(request.path)) return path;
+    if (regex.test(request.path)) return path(request);
   }
-  return "other";
+  return DEFAULT_PATH;
 };
 
 /**
