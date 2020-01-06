@@ -142,7 +142,7 @@ const foreignColumns = [
   },
   {
     field: "ccgs.ccg19cdh",
-    as: "ccg_id",
+    as: "ccg_code",
   },
   {
     field: "ccgs.name",
@@ -674,7 +674,7 @@ Postcode.prototype.toJson = function(address) {
       parish: address.parish_id,
       parliamentary_constituency: address.constituency_id,
       ccg: address.ccg_id,
-      ccg_id: address.ccg_id,
+      ccg_id: address.ccg_code,
       ced: address.ced_id,
       nuts: address.nuts_code,
     },

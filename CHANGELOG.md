@@ -2,6 +2,10 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 11.0.1 (6/1/2020)
+
+- Fix: codes.cgg incorrectly returning short code rather than GSS code
+
 ## 11.0.0 (3/1/2020)
 
 - *Breaking Change* CCG Short Code column added to ccgs table
