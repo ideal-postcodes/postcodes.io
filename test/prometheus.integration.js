@@ -57,14 +57,12 @@ describe("Prometheus /metrics endpoint", () => {
         .end(done);
     });
 
-    const testMetric = (url, expectedMetric) => {
-      return new Promise(async resolve => {
-        const response = await generateMetric(url);
-        const { text } = await getMetrics();
-        assert.notInclude(text, url);
-        assert.include(text, expectedMetric);
-        return resolve();
-      });
+    const testMetric = async (url, expectedMetric) => {
+      const response = await generateMetric(url);
+      const { text } = await getMetrics();
+      assert.notInclude(text, url);
+      assert.include(text, expectedMetric);
+      return;
     };
 
     /**
