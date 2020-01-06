@@ -16,6 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: Test
+        run: make test
+        
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -29,9 +32,6 @@ jobs:
 
       - name: Install
         run: npm install
-
-      - name: Test
-        run: npm test
 
       - name: Semantic Release
         run: npm run semantic-release
