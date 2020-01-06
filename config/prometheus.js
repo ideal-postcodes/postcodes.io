@@ -19,12 +19,7 @@ const paths = [
     `^/postcodes/(lat|lon)/\\d+(\\.\\d+)?/(lat|lon)/\\d+(\\.\\d+)?$`,
     request => "/postcodes/lon/:lon/lat/:lat",
   ],
-  [
-    "^/postcodes/[^/]+$",
-    request => {
-      return "/postcodes/:postcode";
-    },
-  ],
+  ["^/postcodes/[^/]+$", request => "/postcodes/:postcode"],
   ["^/postcodes/.+/validate$", request => "/postcodes/:postcode/validate"],
   ["^/postcodes/.+/nearest$", request => "/postcodes/:postcode/nearest"],
   [
@@ -46,8 +41,8 @@ const paths = [
  * e.g. /postcodes/sw1a2aa -> /postcodes/:postcode
  */
 const normalizePath = request => {
-  for (const [regex, path] of paths) {
-    if (regex.test(request.path)) return path(request);
+  for (const [regex, getPath] of paths) {
+    if (regex.test(request.path)) return getPath(request);
   }
   return DEFAULT_PATH;
 };
