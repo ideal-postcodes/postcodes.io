@@ -7,6 +7,7 @@
     "trailingComma": "es5"
   },
   "scripts": {
+    "semantic-release": "semantic-release",
     "test": "npm run test:create && npm run nyc_mocha",
     "nyc_mocha": "NODE_ENV=test NO_RELOAD_DB=true nyc mocha",
     "coverage": "codecov",
@@ -62,6 +63,9 @@
       "config"
     ]
   },
+  "release": {
+    "extends": "@cablanchard/semantic-release"
+  },
   "dependencies": {
     "async": "~3.1.0",
     "body-parser": "~1.19.0",
@@ -88,6 +92,7 @@
     "serve-favicon": "~2.5.0"
   },
   "devDependencies": {
+    "@cablanchard/semantic-release": "~1.3.1",
     "chai": "~4.2.0",
     "codecov": "~3.6.1",
     "ejs-cli": "~2.1.1",
@@ -97,6 +102,7 @@
     "nyc": "~15.0.0",
     "prettier": "~1.19.1",
     "random-string": "~0.2.0",
+    "semantic-release": "~15.14.0",
     "supertest": "~4.0.2"
   },
   "engines": {
