@@ -68,23 +68,42 @@ describe("Prometheus /metrics endpoint", () => {
     /**
      * Generates metric for URL, swallows any error
      */
-    const generateMetric = url => {
-      return new Promise(async resolve => {
-        try {
-          const response = await request(app).get(url);
-          resolve(response);
-        } catch (error) {
-          // When database is not instantiated,
-          // requesting data will generally return errors like 404
-          resolve(error);
-        }
-      });
-    };
+    const generateMetric = async url => request(app).get(url);
 
     describe("URL normalisation", () => {
       it("normalises /postcodes/:postcode", async () => {
         const url = "/postcodes/foobar";
         const expectedMetric = "/postcodes/:postcode";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes?q=foo", async () => {
+        const url = "/postcodes?q=foo";
+        const expectedMetric = "/postcodes/:postcode/query";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes?query=foo", async () => {
+        const url = "/postcodes?query=foo";
+        const expectedMetric = "/postcodes/:postcode/query";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /scotland/postcodes/:postcode", async () => {
+        const url = "/scotland/postcodes/foobar";
+        const expectedMetric = "/scotland/postcodes/:postcode";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /postcodes?lon=:longitude&lat=:latitude", async () => {
+        const url = "/postcodes?lon=12.1&lat=8.2";
+        const expectedMetric = "/postcodes/lon/:lon/lat/:lat";
+        await testMetric(url, expectedMetric);
+      });
+
+      it("normalises /outcodes?lon=:longitude&lat=:latitude", async () => {
+        const url = "/outcodes?lon=12.1&lat=8.2";
+        const expectedMetric = "/outcodes/lon/:lon/lat/:lat";
         await testMetric(url, expectedMetric);
       });
 
