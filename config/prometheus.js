@@ -12,29 +12,21 @@ const promClient = {
 };
 
 const paths = [
-    //query call
-    ["^\\/postcodes\\?q=([^&]+)(&callback=(.+))?$", "/postcodes/query/:query"],
     //reverse geocoding
     [
-        "^\\/postcodes\\/((lat|lon)\\/\\d+(\\.\\d+)?)?\\/?((lat|lon)\\/\\d+(\\.\\d+)?)?(\\?callback=(.+))?$",
+        "^\\/postcodes\\/((lat|lon)\\/\\d+(\\.\\d+)?)?\\/?((lat|lon)\\/\\d+(\\.\\d+)?)?$",
         "/postcodes/lon/:lon/lat/:lat",
     ],
-    [
-      "^\\/postcodes\\?((lat|lon)=(\\d+(\\.\\d+)?))&?((lat|lon)=(\\d+(\\.\\d+)?))?(&callback=(.+))?$",
-      "/postcodes/lon/:lon/lat/:lat",
-    ],
-    ["^\\/postcodes\\/([^\\/]+)(\\?callback=(.+))?$", "/postcodes/:postcode"],
+    ["^\\/postcodes\\/([^\\/]+)$", "/postcodes/:postcode"],
     //scotland call
-    ["^\\/scotland\\/postcodes\\/([^\\/]+)(\\?callback=(.+))?$", "/scotland/postcodes/:postcode"],
-    ["^\\/postcodes\\/(.+)\\/validate(\\?callback=(.+))?$", "/postcodes/:postcode/validate"],
-    ["^\\/postcodes\\/(.+)\\/nearest(\\?callback=(.+))?$", "/postcodes/:postcode/nearest"],
-    ["^\\/postcodes\\/(.+)\\/autocomplete(\\?callback=(.+))?$", "/postcodes/:postcode/autocomplete"],
-    ["^\\/outcodes\\/([^\\/]+)(\\?callback=(.+))?$", "/outcodes/:outcode"],
-    ["^\\/outcodes\\/(.+)\\/nearest(\\?callback=(.+))?$", "/outcodes/:outcode/nearest"],
-    //outcodes reverse geocoding
-    ["^\\/outcodes\\?((lat|lon)=(\\d+\\.\\d+))&?((lat|lon)=(\\d+\\.\\d+))?(&callback=(.+))?$", "/outcodes/lon/:lon/lat/:lat"],
-    ["^\\/terminated_postcodes\\/([^\\/]+)(\\?callback=(.+))?$", "/terminated_postcodes/:postcode"],
-    ["^\\/places\\/([^\\/]+)(\\?callback=(.+))?$", "/places/:code"],
+    ["^\\/scotland\\/postcodes\\/([^\\/]+)$", "/scotland/postcodes/:postcode"],
+    ["^\\/postcodes\\/(.+)\\/validate$", "/postcodes/:postcode/validate"],
+    ["^\\/postcodes\\/(.+)\\/nearest$", "/postcodes/:postcode/nearest"],
+    ["^\\/postcodes\\/(.+)\\/autocomplete$", "/postcodes/:postcode/autocomplete"],
+    ["^\\/outcodes\\/([^\\/]+)$", "/outcodes/:outcode"],
+    ["^\\/outcodes\\/(.+)\\/nearest$", "/outcodes/:outcode/nearest"],
+    ["^\\/terminated_postcodes\\/([^\\/]+)$", "/terminated_postcodes/:postcode"],
+    ["^\\/places\\/([^\\/]+)$", "/places/:code"],
 ].map(([regex, path]) => [new RegExp(regex, "i"), path]);
 
 /**
@@ -43,8 +35,17 @@ const paths = [
  * e.g. /postcodes/sw1a2aa -> /postcodes/:postcode
  */
 const normalizePath = request => {
+    if(/^(\/postcodes)$/.test(request.path) && request.query.q) {
+        return "/postcodes/query/:query";
+    }
+    if(/^(\/postcodes)$/.test(request.path) && (request.query.lat || request.query.lon)) {
+        return "/postcodes/lon/:lon/lat/:lat";
+    }
+    if(/^(\/outcodes)$/.test(request.path) && (request.query.lat || request.query.lon)) {
+        return "/outcodes/lon/:lon/lat/:lat";
+    }
     for (const [regex, path] of paths) {
-        if (regex.test(request.originalUrl)) return path;
+        if (regex.test(request.path)) return path;
     }
     return "other";
 };
