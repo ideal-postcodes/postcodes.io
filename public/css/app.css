@@ -15,7 +15,6 @@ body {
 }
 
 #footer {
-  height: 60px;
   background-color: #f5f5f5;
 }
 
@@ -75,15 +74,12 @@ body {
 }
 
 .footer {
-  text-align: center;
-  font-size: 12px;
-  padding-top: 20px;
-  color: #aaa;
+  display: flex;
+  justify-content: center;
 }
 
-.footer > a {
-  color: #888;
-  font-weight: bold;
+.iddqd-logo {
+  width: 80px;
 }
 
 .alert {
@@ -108,7 +104,7 @@ body {
   text-align: center;
 }
 
-h1.mast-text, 
+h1.mast-text,
 h1.tagline {
   font-size: 58px;
 }
@@ -303,6 +299,10 @@ li.active a {
   height: 20px;
   margin-left: 0.5em;
   width: 120px;
+}
+
+.header-icon {
+  width: 18px;
 }
 
 @media only screen and (max-width: 420px) {
