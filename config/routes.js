@@ -26,6 +26,7 @@ module.exports = app => {
 
   app.get("/outcodes", outcodes.query);
   app.get("/outcodes/:outcode", outcodes.showOutcode);
+  app.get("/outcodes/:outcode/validate", outcodes.validOutcode);
   app.get("/outcodes/:outcode/nearest", outcodes.nearest);
 
   app.get("/places", places.query);
