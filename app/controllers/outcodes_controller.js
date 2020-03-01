@@ -26,7 +26,6 @@ exports.query = (request, response, next) => {
   return next(new InvalidGeolocationError());
 };
 
-
 exports.showOutcode = (request, response, next) => {
 	const { outcode } = request.params;
 
