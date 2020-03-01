@@ -26,6 +26,7 @@ exports.query = (request, response, next) => {
   return next(new InvalidGeolocationError());
 };
 
+
 exports.showOutcode = (request, response, next) => {
 	const { outcode } = request.params;
 
@@ -39,6 +40,20 @@ exports.showOutcode = (request, response, next) => {
 		return next();
 	});
 };
+
+exports.validOutcode = (request, response, next) => {
+	const { outcode } = request.params;
+
+	Outcode.find(outcode, (error, result) => {
+		if (error) return next(error);
+		response.jsonApiResponse = {
+      			status: 200,
+      			result: !!result,
+    		};
+    	return next();
+	});
+};
+
 
 exports.nearest = (request, response, next) => {
 	const { outcode } = request.params;
