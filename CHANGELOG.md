@@ -2,6 +2,13 @@
 
 Any changes, including backwards incompatible changes will be listed here
 
+## 11.1.0 (6/3/2020)
+
+- Updated ONSPD to Feb 2020
+- Updated Open Names to Jan 2020
+- Updated GSS codes for missing parishes
+- Chore: Refactored static ejs templates
+
 ## 11.0.1 (6/1/2020)
 
 - Fix: codes.cgg incorrectly returning short code rather than GSS code
