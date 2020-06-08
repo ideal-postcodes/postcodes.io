@@ -113,6 +113,11 @@ h1.mast-text {
   font-weight: 500;
 }
 
+.caption {
+  font-size: 1.5em;
+  font-weight: 300;
+}
+
 .gitlinks {
   margin-top: 2em;
 }
@@ -165,7 +170,7 @@ h1.mast-text {
   cursor: pointer;
 }
 
-h1.api-header {
+h2.api-header {
   text-align: center;
   margin-top: 1em;
 }
