@@ -1,12 +1,10 @@
-name: Release
+name: CI
 
 on:
-  push:
-    branches:
-      - master
+  - push
 
 jobs:
-  release:
+  ci:
     runs-on: ubuntu-latest
 
     strategy:
@@ -32,8 +30,3 @@ jobs:
 
       - name: Test
         run: make test
-
-      - name: Semantic Release
-        run: npm run semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
