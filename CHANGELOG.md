@@ -1,3 +1,25 @@
+# [12.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/11.1.0...12.0.0) (2020-06-22)
+
+
+### Bug Fixes
+
+* **a11y:** add title attributes to iframe elements and structure headings on page ([65ca5a3](https://github.com/ideal-postcodes/postcodes.io/commit/65ca5a3efaa53db39bb8263ed5cb5f45685a88ee))
+
+
+### chore
+
+* **Node:** Deprecate node 8, switch to node 12 LTS ([e8d211c](https://github.com/ideal-postcodes/postcodes.io/commit/e8d211c98bbc583061cfb8200a5d75c460cca7a7))
+
+
+### Features
+
+* **Data:** Update ONSPD, Open Names, SPD ([a92a91a](https://github.com/ideal-postcodes/postcodes.io/commit/a92a91a5a0ba76886c10fbc7016c3044ca073b87))
+
+
+### BREAKING CHANGES
+
+* **Node:** Node 8 no longer supported
+
 # Changelog
 
 Any changes, including backwards incompatible changes will be listed here
