@@ -30,3 +30,8 @@ jobs:
 
       - name: Test
         run: make test
+      
+      - name: Semantic Release (Dry Run)
+        run: npm run semantic-release --dry-run
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
