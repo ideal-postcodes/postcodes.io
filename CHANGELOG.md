@@ -1,3 +1,10 @@
+## [12.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.0...12.0.1) (2020-07-02)
+
+
+### Bug Fixes
+
+* **Demo:** Don't clear input on click ([8f70d0e](https://github.com/ideal-postcodes/postcodes.io/commit/8f70d0e9b8a844364047ce1baca47a8c332fef32)), closes [#541](https://github.com/ideal-postcodes/postcodes.io/issues/541)
+
 # [12.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/11.1.0...12.0.0) (2020-06-22)
 
 
