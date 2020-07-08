@@ -1,0 +1,7 @@
+{
+  "extends": "@cablanchard/tslint",
+  "rules": {
+    "no-magic-numbers": false,
+    "no-require-imports": false
+  }
+}

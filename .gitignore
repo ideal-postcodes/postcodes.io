@@ -5,11 +5,12 @@ test.log
 .ruby-gemset
 .ruby-version
 Capfile
-config/deploy.rb
-config/deploy/
+src/config/deploy.rb
+src/config/deploy/
 process.json
 .nyc_output/
 log/
 npm-debug.log
 *.swp
 *.vim
+dist
