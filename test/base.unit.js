@@ -2,184 +2,139 @@
 
 const helper = require("./helper");
 const { assert } = require("chai");
-const { Base, csvExtractor } = require("../app/models/base.js");
+const { query, csvExtractor } = require("../src/app/models/base");
 const spdSchemaLarge = require("../data/spd_large_schema.json");
 const spdSchemaSmall = require("../data/spd_small_schema.json");
 const onspdSchema = require("../data/onspd_schema.json");
 
-describe("Base model", function() {
-  describe("Base model instance methods", function() {
-    describe("#_query", function() {
-      it("should execute a query", function(done) {
-        const base = new Base();
-        base._query("SELECT * FROM pg_tables", function(error, result) {
-          if (error) return done(error);
-          assert.isArray(result.rows);
-          done();
-        });
+describe("Base model", function () {
+  describe("Base model instance methods", function () {
+    describe("#query", function () {
+      it("should execute a query", async () => {
+        const result = await query("SELECT * FROM pg_tables");
+        assert.isArray(result.rows);
       });
     });
   });
 
-  describe("CRUD methods", function() {
-    var customRelation;
-
-    before(function(done) {
-      customRelation = helper.getCustomRelation();
-      customRelation._createRelation(done);
-    });
-
-    after(function(done) {
-      customRelation._destroyRelation(done);
-    });
-
-    describe("#_create", function() {
-      it("should return an error if property no in schema", function(done) {
-        customRelation._create(
-          {
-            bogus: "bogusfield",
-          },
-          function(error, result) {
-            assert.match(error.message, /Could not create record/);
-            done();
-          }
-        );
-      });
-      it("should create a new record", function(done) {
-        customRelation._create(
-          {
-            somefield: "unique",
-          },
-          function(error, result) {
-            if (error) return done(error);
-            done();
-          }
-        );
-      });
-    });
-
-    describe("#all", function() {
-      it("should return list of all records", function(done) {
-        customRelation.all(function(error, result) {
-          if (error) return done(error);
-          var containsUnique = result.rows.some(function(elem) {
-            return elem.somefield === "unique";
-          });
-          assert.isTrue(result.rows.length > 0);
-          assert.isTrue(containsUnique);
-          done();
-        });
-      });
-    });
-  });
-
-  describe("#_createRelation", function() {
-    var customRelation;
-
-    before(function() {
-      customRelation = helper.getCustomRelation();
-    });
-
-    it("should create a table with the right attributes", function(done) {
-      customRelation._createRelation(function(error, result) {
-        if (error) return done(error);
-        done();
-      });
-    });
-
-    after(function(done) {
-      customRelation._destroyRelation(function(error, result) {
-        if (error) return done(error)();
-        done();
-      });
-    });
-  });
-
-  describe("#_destroyRelation", function() {
-    var customRelation;
-
-    before(function(done) {
-      customRelation = helper.getCustomRelation();
-      customRelation._createRelation(function(error, result) {
-        if (error) return done(error);
-        done();
-      });
-    });
-
-    it("should delete the relation", function(done) {
-      customRelation._destroyRelation(function(error, result) {
-        if (error) return done(error);
-        done();
-      });
-    });
-  });
-
-  describe("#_csvSeed", done => {
+  describe("CRUD methods", function () {
     let customRelation;
 
-    before(done => {
+    before(async () => {
       customRelation = helper.getCustomRelation();
-      customRelation._createRelation(done);
+      await customRelation.createRelation();
     });
 
-    after(done => customRelation._destroyRelation(done));
+    after(async () => {
+      await customRelation.destroyRelation();
+    });
 
-    it("should seed the relation table with data", done => {
-      customRelation._csvSeed(
-        {
-          filepath: helper.seedPaths.customRelation,
-          columns: "someField",
-        },
-        (error, result) => {
-          if (error) return done(error);
-          customRelation.all((error, data) => {
-            if (error) return done(error);
-            var hasLorem = data.rows.some(function(elem) {
-              return elem.somefield === "Lorem";
-            });
-            assert.isTrue(hasLorem);
-            done();
+    describe("#_create", () => {
+      it("should return an error if property no in schema", async () => {
+        try {
+          await customRelation.create({
+            bogus: "bogusfield",
           });
+        } catch (error) {
+          assert.equal(
+            error.message,
+            `column "bogus" of relation "${customRelation.relation.relation}" does not exist`
+          );
         }
-      );
+      });
+      it("should create a new record", async () => {
+        const some = await customRelation.create({
+          somefield: "unique",
+        });
+      });
+    });
+
+    describe("#all", () => {
+      it("should return list of all records", async () => {
+        const result = await customRelation.all();
+        const containsUnique = result.rows.some(function (elem) {
+          return elem.somefield === "unique";
+        });
+        assert.isTrue(result.rows.length > 0);
+        assert.isTrue(containsUnique);
+      });
     });
   });
 
-  describe("#clear", function(done) {
-    var customRelation;
+  describe("#_createRelation", function () {
+    let customRelation;
 
-    before(done => {
+    before(function () {
       customRelation = helper.getCustomRelation();
-      customRelation._createRelation((error, result) => {
-        if (error) return done(error);
-        customRelation._csvSeed(
-          {
-            filepath: helper.seedPaths.customRelation,
-            columns: "someField",
-          },
-          (error, result) => {
-            if (error) return done(error);
-            customRelation.all((error, data) => {
-              if (error) return done(error);
-              assert.isTrue(data.rows.length > 0);
-              done();
-            });
-          }
-        );
-      });
     });
 
-    after(done => customRelation._destroyRelation(done));
+    it("should create a table with the right attributes", async () => {
+      await customRelation.createRelation();
+    });
 
-    it("should clear the table", function(done) {
-      customRelation.clear(function(error, result) {
-        if (error) return done(error);
-        customRelation.all(function(error, data) {
-          if (error) return done(error);
-          assert.equal(data.rows.length, 0);
-          done();
-        });
+    after(async () => {
+      await customRelation.destroyRelation();
+    });
+  });
+
+  describe("#_destroyRelation", function () {
+    let customRelation;
+
+    before(async () => {
+      customRelation = helper.getCustomRelation();
+      await customRelation.createRelation();
+    });
+
+    it("should delete the relation", async () => {
+      await customRelation.destroyRelation();
+    });
+  });
+
+  describe("#csvSeed", function () {
+    let customRelation;
+
+    before(async () => {
+      customRelation = helper.getCustomRelation();
+      await customRelation.createRelation();
+    });
+
+    after(async () => {
+      await customRelation.destroyRelation();
+    });
+
+    it("should seed the relation table with data", async () => {
+      await customRelation.csvSeed({
+        filepath: [helper.seedPaths.customRelation],
+        columns: "someField",
       });
+      const result = await customRelation.all();
+      const hasLorem = result.rows.some(function (elem) {
+        return elem.somefield === "Lorem";
+      });
+      assert.isTrue(hasLorem);
+    });
+  });
+
+  describe("#clear", function () {
+    let customRelation;
+
+    before(async () => {
+      customRelation = helper.getCustomRelation();
+      await customRelation.createRelation();
+      await customRelation.csvSeed({
+        filepath: [helper.seedPaths.customRelation],
+        columns: "someField",
+      });
+      const data = await customRelation.all();
+      assert.isTrue(data.rows.length > 0);
+    });
+
+    after(async () => await customRelation.destroyRelation());
+
+    it("should clear the table", async () => {
+      await customRelation.clear();
+      const data = await customRelation.all();
+      assert.equal(data.rows.length, 0);
     });
   });
 

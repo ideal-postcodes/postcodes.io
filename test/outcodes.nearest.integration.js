@@ -9,15 +9,10 @@ const async = require("async");
 describe("Outcodes routes", () => {
   let testOutcode, uri;
 
-  before(function(done) {
+  before(async function () {
     this.timeout(0);
-    helper.clearPostcodeDb(function(error, result) {
-      if (error) return done(error);
-      helper.seedPostcodeDb(function(error, result) {
-        if (error) return done(error);
-        done();
-      });
-    });
+    await helper.clearPostcodeDb();
+    await helper.seedPostcodeDb();
   });
 
   beforeEach(() => {
@@ -25,12 +20,10 @@ describe("Outcodes routes", () => {
     uri = `/outcodes/${encodeURI(testOutcode)}/nearest`;
   });
 
-  after(done => {
-    helper.clearPostcodeDb(done);
-  });
+  after(async () => helper.clearPostcodeDb);
 
   describe("GET /outcodes/:outcode/nearest", () => {
-    it("should return a list of nearby outcodes", done => {
+    it("should return a list of nearby outcodes", (done) => {
       request(app)
         .get(uri)
         .expect("Content-Type", /json/)
@@ -40,11 +33,11 @@ describe("Outcodes routes", () => {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach(o => helper.isOutcodeObject(o));
+          response.body.result.forEach((o) => helper.isOutcodeObject(o));
           done();
         });
     });
-    it("should be sensitive to distance query", done => {
+    it("should be sensitive to distance query", (done) => {
       request(app)
         .get(uri)
         .expect(200)
@@ -67,7 +60,7 @@ describe("Outcodes routes", () => {
         });
     });
 
-    it("should be sensitive to limit query", done => {
+    it("should be sensitive to limit query", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -81,7 +74,7 @@ describe("Outcodes routes", () => {
         });
     });
 
-    it("should throw a 400 error if invalid limit", done => {
+    it("should throw a 400 error if invalid limit", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -95,7 +88,7 @@ describe("Outcodes routes", () => {
         });
     });
 
-    it("should throw a 400 error if invalid distance", done => {
+    it("should throw a 400 error if invalid distance", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -109,7 +102,7 @@ describe("Outcodes routes", () => {
         });
     });
 
-    it("should respond to options", done => {
+    it("should respond to options", (done) => {
       request(app)
         .options(uri)
         .expect(204)
@@ -120,7 +113,7 @@ describe("Outcodes routes", () => {
         });
     });
 
-    it("should return 404 if outcode not found", done => {
+    it("should return 404 if outcode not found", (done) => {
       const testOutcode = "ZZ10";
       const path = ["/outcodes/", encodeURI(testOutcode), "/nearest"].join("");
       request(app)

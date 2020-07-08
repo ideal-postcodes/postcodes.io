@@ -2,31 +2,19 @@
 
 const { inherits } = require("util");
 const { join } = require("path");
-const async = require("async");
-const { assert } = require("chai");
-const randomString = require("random-string");
-const configFactory = require("../../config/config");
+const { generateMethods, query } = require("../../src/app/models/base");
+const configFactory = require("../../src/config/config");
 const config = configFactory();
-const AttributeBaseSuite = require("./attribute_base.suite.js");
+const AttributeBaseSuite = require("./attribute_base.suite");
 
-const postcodesioApplication = cfg => require("../../app")(cfg || config);
+const postcodesioApplication = (cfg) => require("../../src/app")(cfg || config);
 
 // Load models
-const {
-  Base,
-  AttributeBase,
-  Postcode,
-  TerminatedPostcode,
-} = require("../../app/models/index.js");
-
-const CSV_INDEX = Object.freeze({
-  postcode: 2,
-  northings: 10,
-  eastings: 9,
-});
+const { Base } = require("../../src/app/models/index");
+const { Postcode } = require("../../src/app/models/postcode");
 
 // Infers columns schema from columnData
-const inferSchemaData = columnData => {
+const inferSchemaData = (columnData) => {
   const columnName = columnData.column_name;
   const collationName = columnData.collation_name;
 
@@ -66,7 +54,7 @@ const sortByIndexColumns = (a, b) => {
 
 // infers expected definition of javascript object that defines creation of an index
 // for #createIndexes method
-const inferIndexInfo = indexDef => {
+const inferIndexInfo = (indexDef) => {
   const impliedIndex = {};
 
   if (indexDef.search("UNIQUE") !== -1) {
@@ -95,37 +83,28 @@ const inferIndexInfo = indexDef => {
 };
 
 // Location with nearby postcodes to be used in lonlat test requests
-const locationWithNearbyPostcodes = function(callback) {
+const locationWithNearbyPostcodes = async function () {
   const postcodeWithNearbyPostcodes = "AB14 0LP";
-  Postcode.find(postcodeWithNearbyPostcodes, function(error, result) {
-    if (error) return callback(error, null);
-    return callback(null, result);
-  });
+  return Postcode.find(postcodeWithNearbyPostcodes);
 };
 
 function getCustomRelation() {
-  const relationName = randomString({
-      length: 8,
-      numeric: false,
-      letters: true,
-      special: false,
-    }),
-    schema = {
-      id: "serial PRIMARY KEY",
-      somefield: "varchar(255)",
-    };
+  const schema = {
+    id: "serial PRIMARY KEY",
+    somefield: "varchar(255)",
+  };
 
-  function CustomRelation() {
-    Base.call(this, relationName, schema);
-  }
+  const relation = {
+    relation: `custom${Date.now()}`,
+    schema,
+    index: [],
+  };
 
-  inherits(CustomRelation, Base);
-
-  return new CustomRelation();
+  return generateMethods(relation);
 }
 
 //Generates a random integer from 1 to max inclusive
-const getRandom = max => Math.ceil(Math.random() * max);
+const getRandom = (max) => Math.ceil(Math.random() * max);
 
 const QueryTerminatedPostcode = `
 	SELECT
@@ -135,45 +114,30 @@ const QueryTerminatedPostcode = `
 	OFFSET $1
 `;
 
-function randomTerminatedPostcode(callback) {
+async function randomTerminatedPostcode(callback) {
   const randomId = getRandom(8); // 9 terminated postcodes in the
   // testing database
-  TerminatedPostcode._query(
-    QueryTerminatedPostcode,
-    [randomId],
-    (error, result) => {
-      if (error) return callback(error, null);
-      if (result.rows.length === 0) return callback(null, null);
-      callback(null, result.rows[0]);
-    }
-  );
+  const result = await query(QueryTerminatedPostcode, [randomId]);
+  return result.rows.length === 0 ? null : result.rows[0];
 }
 
-const randomPostcode = callback => {
-  Postcode.random((error, { postcode }) => {
-    callback(error, postcode);
-  });
+const randomPostcode = async () => {
+  const { postcode } = await Postcode.random();
+  return postcode;
 };
 
-const randomOutcode = callback => {
-  return Postcode.random((error, { outcode }) => {
-    callback(error, outcode);
-  });
+const randomOutcode = async () => {
+  const { outcode } = await Postcode.random();
+  return outcode;
 };
 
-const randomLocation = callback => {
-  return Postcode.random((error, { longitude, latitude }) => {
-    callback(error, { longitude, latitude });
-  });
+const randomLocation = async () => {
+  const { longitude, latitude } = await Postcode.random();
+  return { longitude, latitude };
 };
 
-const lookupRandomPostcode = callback => {
-  Postcode.random((error, result) => {
-    if (error) {
-      throw error;
-    }
-    callback(result);
-  });
+const lookupRandomPostcode = async () => {
+  return Postcode.random();
 };
 
 module.exports = {
@@ -182,10 +146,10 @@ module.exports = {
   config,
 
   // Methods
-  ...require("./setup.js"),
+  ...require("./setup"),
 
   // HTTP Helpers
-  ...require("./http.js"),
+  ...require("./http"),
 
   removeDiacritics: require("./remove_diacritics"),
   inferIndexInfo,
@@ -200,22 +164,22 @@ module.exports = {
   locationWithNearbyPostcodes,
 
   // Type checking methods
-  ...require("./type_checking.js"),
+  ...require("./type_checking"),
 
   // PG helper methods
-  ...require("./pg.js"),
+  ...require("./pg"),
 
   // Test suites
   AttributeBaseSuite,
 
   // Libs
-  unaccent: require("../../app/lib/unaccent.js"),
-  errors: require("../../app/lib/errors.js"),
-  string: require("../../app/lib/string.js"),
-  timeout: require("../../app/lib/timeout.js"),
+  unaccent: require("../../src/app/lib/unaccent"),
+  errors: require("../../src/app/lib/errors"),
+  string: require("../../src/app/lib/string"),
+  timeout: require("../../src/app/lib/timeout"),
 
   // Load in models
-  ...require("../../app/models/index.js"),
+  ...require("../../src/app/models/index"),
 
   seedPaths: {
     customRelation: join(__dirname, "../seed/customRelation.csv"),

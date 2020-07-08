@@ -11,75 +11,59 @@ const {
   inferSchemaData,
   clearPostcodeDb,
   seedPostcodeDb,
-} = require("./helper");
-const { resolve } = require("path");
-const seedFilePath = resolve(`${__dirname}/seed/`);
+} = require(`./helper`);
+const seedFilePath = `${__dirname}/seed/`;
+const { query } = require("../src/app/models/base");
 
 describe("Scottish Postcode Model", () => {
   const testPostcodeLarge = "ML11 0GH";
   const testPostcodeSmall = "G82 1JW";
 
-  before(function (done) {
+  before(async function () {
     this.timeout(0);
-    series([clearPostcodeDb, seedPostcodeDb], done);
+    await clearPostcodeDb();
+    await seedPostcodeDb();
   });
 
-  after(clearPostcodeDb);
+  after(async () => clearPostcodeDb());
 
   describe("#setupTable", () => {
-    before(function (done) {
+    before(async function () {
       this.timeout(0);
-      ScottishPostcode._destroyRelation((error) => {
-        if (error) return done(error);
-        ScottishPostcode._setupTable(seedFilePath, done);
-      });
+      await ScottishPostcode.destroyRelation();
+      await ScottishPostcode.setupTable(seedFilePath);
     });
 
-    after(function (done) {
+    after(async function () {
       this.timeout(0);
-      ScottishPostcode._destroyRelation((error) => {
-        if (error) return done(error);
-        ScottishPostcode._setupTable(seedFilePath, done);
-      });
+      await ScottishPostcode.destroyRelation();
+      await ScottishPostcode.setupTable(seedFilePath);
     });
 
     describe("#_createRelation", () => {
-      it(`creates a relation that matches ${ScottishPostcode.relation} schema`, (done) => {
-        const query = `
+      it(`creates a relation that matches ${ScottishPostcode.relation.relation} schema`, async () => {
+        const q = `
           SELECT 
             column_name, data_type, character_maximum_length, collation_name
           FROM INFORMATION_SCHEMA.COLUMNS 
-          WHERE table_name = '${ScottishPostcode.relation}'
+          WHERE table_name = '${ScottishPostcode.relation.relation}'
         `;
-        ScottishPostcode._query(query, (error, result) => {
-          if (error) return done(error);
-          const impliedSchema = {};
-          result.rows.forEach((columnInfo) => {
-            let columnName, dataType;
-            [columnName, dataType] = inferSchemaData(columnInfo);
-            impliedSchema[columnName] = dataType;
-          });
-          assert.deepEqual(impliedSchema, ScottishPostcode.schema);
-          done();
+        const result = await query(q);
+        const impliedSchema = {};
+        result.rows.forEach((columnInfo) => {
+          let columnName, dataType;
+          [columnName, dataType] = inferSchemaData(columnInfo);
+          impliedSchema[columnName] = dataType;
         });
+        assert.deepEqual(impliedSchema, ScottishPostcode.relation.schema);
       });
     });
 
     describe("#seedData", () => {
-      it("loads correct data from data directory", (done) => {
-        const query = `SELECT count(*) FROM ${ScottishPostcode.relation}`;
-        ScottishPostcode._query(query, (error, result) => {
-          if (error) return done(error);
-          assert.isTrue(result.rows[0].count > 0);
-          done();
-        });
-      });
-      it("loads postcodes suffixed with additional character", (done) => {
-        ScottishPostcode.find("PA31 8UA", (error, result) => {
-          if (error) return done(error);
-          assert.isNotNull(result);
-          done();
-        });
+      it("loads correct data from data directory", async () => {
+        const q = `SELECT count(*) FROM ${ScottishPostcode.relation.relation}`;
+        const result = await query(q);
+        assert.isTrue(result.rows[0].count > 0);
       });
     });
   });
@@ -107,67 +91,48 @@ describe("Scottish Postcode Model", () => {
   });
 
   describe("#find", () => {
-    it("should return postcode with the right attributes for large user", (done) => {
-      ScottishPostcode.find(testPostcodeLarge, (error, result) => {
-        if (error) return done(error);
-        assert.deepEqual(result, {
-          id: result.id,
-          pc_compact: "ML110GH",
-          postcode: "ML11 0GH",
-          scottish_constituency_id: "S16000090",
-          scottish_parliamentary_constituency: "Clydesdale",
-        });
-        done();
+    it("should return postcode with the right attributes for large user", async () => {
+      const result = await ScottishPostcode.find(testPostcodeLarge);
+      assert.deepEqual(result, {
+        id: result.id,
+        pc_compact: "ML110GH",
+        postcode: "ML11 0GH",
+        scottish_constituency_id: "S16000090",
+        scottish_parliamentary_constituency: "Clydesdale",
       });
     });
 
-    it("should return postcode with the right attributes for small users", (done) => {
-      ScottishPostcode.find(testPostcodeSmall, (error, result) => {
-        if (error) return done(error);
-        assert.deepEqual(result, {
-          id: result.id,
-          pc_compact: "G821JW",
-          postcode: "G82 1JW",
-          scottish_constituency_id: "S16000096",
-          scottish_parliamentary_constituency: "Dumbarton",
-        });
-        done();
+    it("should return postcode with the right attributes for small users", async () => {
+      const result = await ScottishPostcode.find(testPostcodeSmall);
+      assert.deepEqual(result, {
+        id: result.id,
+        pc_compact: "G821JW",
+        postcode: "G82 1JW",
+        scottish_constituency_id: "S16000096",
+        scottish_parliamentary_constituency: "Dumbarton",
       });
     });
 
-    it("should return null for null/undefined postcode search", (done) => {
-      ScottishPostcode.find(null, (error, result) => {
-        if (error) return done(error);
-        assert.isNull(result);
-        done();
-      });
+    it("should return null for null/undefined postcode search", async () => {
+      const result = await ScottishPostcode.find(null);
+      assert.isNull(result);
     });
 
-    it("returns null if invalid postcode", (done) => {
-      ScottishPostcode.find("1", (error, result) => {
-        if (error) return done(error);
-        assert.isNull(result);
-        done();
-      });
+    it("returns null if invalid postcode", async () => {
+      const result = await ScottishPostcode.find("1");
+      assert.isNull(result);
     });
 
-    it("should be insensitive to space", (done) => {
-      ScottishPostcode.find(
-        testPostcodeLarge.replace(/\s/, ""),
-        (error, result) => {
-          if (error) return done(error);
-          assert.equal(result.postcode, testPostcodeLarge);
-          done();
-        }
+    it("should be insensitive to space", async () => {
+      const result = await ScottishPostcode.find(
+        testPostcodeLarge.replace(/\s/, "")
       );
+      assert.equal(result.postcode, testPostcodeLarge);
     });
 
-    it("should return null if postcode does not exist", (done) => {
-      ScottishPostcode.find("ID11QD", (error, result) => {
-        if (error) return done(error);
-        assert.isNull(result);
-        done();
-      });
+    it("should return null if postcode does not exist", async () => {
+      const result = await ScottishPostcode.find("ID11QD");
+      assert.isNull(result);
     });
   });
 });

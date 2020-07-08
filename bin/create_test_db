@@ -1,0 +1,4 @@
+#! /usr/bin/env node
+
+require("./exec")("../dist/bin/create_test_db");
+

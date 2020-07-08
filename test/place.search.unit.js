@@ -3,274 +3,211 @@
 const fs = require("fs");
 const async = require("async");
 const { assert } = require("chai");
-const parse = require('csv-parse/lib/sync');
+const parse = require("csv-parse/lib/sync");
 const helper = require("./helper/index");
-const { defaults } = require("../config/config")();
+const { defaults } = require("../src/config/config")();
 const searchDefaults = defaults.placesSearch;
 const { Place } = helper;
 
 describe("Place Model", () => {
-	let testPostcode, testOutcode;
+  let testPostcode, testOutcode;
 
-	before(function (done) {
-		this.timeout(0);
-		async.series([
-			helper.clearPostcodeDb,
-			helper.seedPostcodeDb
-		], done);
-	});
+  before(async function () {
+    this.timeout(0);
+    await helper.clearPostcodeDb();
+    await helper.seedPostcodeDb();
+  });
 
-	after(helper.clearPostcodeDb);
-	
-	const searchMethods = [{
-		name: "Prefix Search",
-		fn: Place._prefixSearch.bind(Place)
-	}, {
-		name: "Terms Search",
-		fn: Place._termsSearch.bind(Place)
-	}];
+  after(async () => helper.clearPostcodeDb);
 
-	const testQueries = [
-		"taobh a chaolais",
-		"llwyn y groes",
-		"corston"
-	];
+  const searchMethods = [
+    {
+      name: "Prefix Search",
+      fn: Place.prefixSearch,
+    },
+    {
+      name: "Terms Search",
+      fn: Place.termsSearch,
+    },
+  ];
 
-	searchMethods.forEach(method => {
-		const fn = method.fn;
-		describe(`${method.name}`, () => {
-			testQueries.forEach(testQuery => {
-				it (`finds exact matches on query: ${testQuery}`, done => {
-					fn({name: testQuery}, (error, results) => {
-						if (error) return done(error);
-						assert.equal(results.length, 1);
-						results.forEach(helper.isRawPlaceObject);
-						assert.equal(results[0].name_1_search, testQuery);
-						done();
-					});
-				});
-			});
-		});
-	});
+  const testQueries = ["taobh a chaolais", "llwyn y groes", "corston"];
 
-	describe("_prefixSearch", () => {
-		const testQueries = ["be", "s", "br"];
-		testQueries.forEach(query => {
-			it (`finds incomplete words. like '${query}'`, done => {
-				Place._prefixSearch({name: query}, (err, results) => {
-					if (err) return done(err);
-					assert(results.length > 0);
-					results.forEach(helper.isRawPlaceObject);
-					results.forEach(result => {
-						assert(result.name_1_search.startsWith(query));
-					});
-					done();
-				});
-			});
-		});
-	});
+  searchMethods.forEach((method) => {
+    const fn = method.fn;
+    describe(`${method.name}`, () => {
+      testQueries.forEach((testQuery) => {
+        it(`finds exact matches on query: ${testQuery}`, async () => {
+          const results = await fn({ name: testQuery });
+          assert.equal(results.length, 1);
+          results.forEach(helper.isRawPlaceObject);
+          assert.equal(results[0].name_1_search, testQuery);
+        });
+      });
+    });
+  });
 
-	describe("_termsSearch", () => {
-		it ("matches prepositions like 'of'", done => {
-			Place._termsSearch({name: "of"}, (err, results) => {
-				if (err) return done(err);
-				assert(results.length > 0);
-				results.forEach(helper.isRawPlaceObject);
-				results.forEach(result => {
-					assert(result.name_1_search.includes("of"));
-				})
-				done();
-			});
-		});
-	});
-	
-	describe("#search", () => {
-		it ("returns a list of places for given search term", done => {
-			Place.search({ name: "b" }, (error, results) => {
-				if (error) return done(error);
-				results.forEach(helper.isRawPlaceObject);
-				done();
-			});
-		});
-		it ("returns null if no query", done => {
-			Place.search({}, (error, results) => {
-				if (error) return done(error);
-				assert.isNull(results);
-				done();
-			});
-		});
-		it ("is sensitive to limit", done => {
-			Place.search({ 
-				name: "b",
-				limit: 1
-			}, (error, results) => {
-				if (error) return done(error);
-				assert.equal(results.length, 1);
-				results.forEach(helper.isRawPlaceObject);
-				done();
-			});
-		});
-		it ("returns up to 10 results by default", done => {
-			Place.search({ name: "b" }, (error, results) => {
-				if (error) return done(error);
-				assert.equal(results.length, 10);
-				results.forEach(helper.isRawPlaceObject);
-				done();
-			});
-		});
-		it ("sets limit to default maximum if it's greater than it", done => {
-			const searchDefaultMax = searchDefaults.limit.MAX;
-			searchDefaults.limit.MAX = 5
-			Place.search({ 
-				name: "b",
-			 	limit: 1000
-			}, (error, results) => {
-				if (error) return done(error);
-				assert.equal(results.length, 5);
-				results.forEach(helper.isRawPlaceObject);
-				searchDefaults.limit.MAX = searchDefaultMax;
-				done();
-			});
-		});
-		it ("uses default limit if invalid limit supplied", done => {
-			Place.search({ 
-				name: "b",
-				limit: -1 
-			}, (error, results) => {
-				if (error) return done(error);
-				assert.equal(results.length, 10);
-				results.forEach(helper.isRawPlaceObject);
-				done();
-			});
-		});
-		it ("searches with name_2", done => {
-			const name = "East Kilbride";
-			Place.search({ name: name }, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_2, name);
-					done();
-				});
-		});
-		describe("result specs", () => {
-			it ("returns names with apostrophes", done => {
-				const name = "Taobh a' Chaolais";
-				Place.search({ 
-					name: name.replace(/'/g, "")
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("returns names with non-ascii characters", done => {
-				const name = "Mynydd-llêch";
-				Place.search({ 
-					name: name.replace("ê", "e") 
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("returns names with hyphens", done => {
-				const name = "Llwyn-y-groes";
-				Place.search({ 
-					name: name.replace(/-/g, " ") 
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("successfully matches where query is middle word", done => {
-				const query = "of";
-				Place.search({ 
-					name: query
-				}, (error, results) => {
-					if (error) return done(error);
-					assert(results.length > 0);
-					results.forEach(helper.isRawPlaceObject);
-					results.forEach(result => {
-						assert(result.name_1_search.includes(query));
-					});
-					done();
-				});
-			});
-			it ("returns null if both prefix and terms search fail", done => {
-				const query = "this is never gonna get matched";
-				Place.search({ 
-					name: query
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.isNull(results);
-					done();
-				});
-			});
-		});
-		describe("query specs", () => {
-			it ("is case insensitive", done => {
-				const name = "Corston";
-				Place.search({ 
-					name: name.toUpperCase() 
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("handles apostrophes", done => {
-				const name = "Taobh a' Chaolais";
-				Place.search({ 
-					name: name
-				}, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("handles non-ascii characters", done => {
-				const name = "Mynydd-llêch";
-				Place.search({ name: name }, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("handles non-ascii character prefix searches", done => {
-				const prefix = "Mynydd-llêc";
-				const name = "Mynydd-llêch";
-				Place.search({ name: prefix }, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-			it ("handles hyphens as spaces", done => {
-				const name = "Llwyn-y-groes";
-				Place.search({ name: name }, (error, results) => {
-					if (error) return done(error);
-					assert.equal(results.length, 1);
-					results.forEach(helper.isRawPlaceObject);
-					assert.equal(results[0].name_1, name);
-					done();
-				});
-			});
-		});
-	});	
+  describe("_prefixSearch", () => {
+    const testQueries = ["be", "s", "br"];
+    testQueries.forEach((query) => {
+      it(`finds incomplete words. like '${query}'`, async () => {
+        const results = await Place.prefixSearch({ name: query });
+        assert(results.length > 0);
+        results.forEach(helper.isRawPlaceObject);
+        results.forEach((result) => {
+          assert(result.name_1_search.startsWith(query));
+        });
+      });
+    });
+  });
+
+  describe("_termsSearch", () => {
+    it("matches prepositions like 'of'", async () => {
+      const results = await Place.termsSearch({ name: "of" });
+      assert(results.length > 0);
+      results.forEach(helper.isRawPlaceObject);
+      results.forEach((result) => {
+        assert(result.name_1_search.includes("of"));
+      });
+    });
+  });
+
+  describe("#search", () => {
+    it("returns a list of places for given search term", async () => {
+      const results = await Place.search({ name: "b" });
+      results.forEach(helper.isRawPlaceObject);
+    });
+    it("returns null if no query", async () => {
+      const results = await Place.search({});
+      assert.isNull(results);
+    });
+    it("is sensitive to limit", async () => {
+      const results = await Place.search({
+        name: "b",
+        limit: 1,
+      });
+      assert.equal(results.length, 1);
+      results.forEach(helper.isRawPlaceObject);
+    });
+    it("returns up to 10 results by default", async () => {
+      const results = await Place.search({ name: "b" });
+      assert.equal(results.length, 10);
+      results.forEach(helper.isRawPlaceObject);
+    });
+    it("sets limit to default maximum if it's greater than it", async () => {
+      const searchDefaultMax = searchDefaults.limit.MAX;
+      searchDefaults.limit.MAX = 5;
+      const results = await Place.search({
+        name: "b",
+        limit: 1000,
+      });
+      assert.equal(results.length, 5);
+      results.forEach(helper.isRawPlaceObject);
+      searchDefaults.limit.MAX = searchDefaultMax;
+    });
+    it("uses default limit if invalid limit supplied", async () => {
+      const results = await Place.search({
+        name: "b",
+        limit: -1,
+      });
+      assert.equal(results.length, 10);
+      results.forEach(helper.isRawPlaceObject);
+    });
+    it("searches with name_2", async () => {
+      const name = "East Kilbride";
+      const results = await Place.search({ name: name });
+      assert.equal(results.length, 1);
+      results.forEach(helper.isRawPlaceObject);
+      assert.equal(results[0].name_2, name);
+    });
+    describe("result specs", () => {
+      it("returns names with apostrophes", async () => {
+        const name = "Taobh a' Chaolais";
+        const results = await Place.search({
+          name: name.replace(/'/g, ""),
+        });
+        assert.equal(results.length, 1);
+        results.forEach(helper.isRawPlaceObject);
+        assert.equal(results[0].name_1, name);
+      });
+      it("returns names with non-ascii characters", async () => {
+        const name = "Mynydd-llêch";
+        const results = await Place.search({
+          name: name.replace("ê", "e"),
+        });
+        assert.equal(results.length, 1);
+        results.forEach(helper.isRawPlaceObject);
+        assert.equal(results[0].name_1, name);
+      });
+      it("returns names with hyphens", async () => {
+        const name = "Llwyn-y-groes";
+        const results = await Place.search({
+          name: name.replace(/-/g, " "),
+        });
+        assert.equal(results.length, 1);
+        results.forEach(helper.isRawPlaceObject);
+        assert.equal(results[0].name_1, name);
+      });
+      it("successfully matches where query is middle word", async () => {
+        const query = "of";
+        const results = await Place.search({
+          name: query,
+        });
+        assert(results.length > 0);
+        results.forEach(helper.isRawPlaceObject);
+        results.forEach((result) => {
+          assert(result.name_1_search.includes(query));
+        });
+      });
+      it("returns null if both prefix and terms search fail", async () => {
+        const query = "this is never gonna get matched";
+        const results = await Place.search({
+          name: query,
+        });
+        assert.isNull(results);
+      });
+    });
+    describe("query specs", () => {
+      it("is case insensitive", async () => {
+        const name = "Corston";
+        const results = await Place.search({
+          name: name.toUpperCase(),
+        });
+        assert.equal(results.length, 1);
+        results.forEach(helper.isRawPlaceObject);
+        assert.equal(results[0].name_1, name);
+      });
+      it("handles apostrophes", async () => {
+        const name = "Taobh a' Chaolais";
+        const results = await Place.search({
+          name: name,
+        });
+        assert.equal(results.length, 1);
+        results.forEach(helper.isRawPlaceObject);
+        assert.equal(results[0].name_1, name);
+      });
+      it("handles non-ascii characters", async () => {
+        const name = "Mynydd-llêch";
+        const results = await Place.search({ name: name });
+        assert.equal(results.length, 1);
+        results.forEach(helper.isRawPlaceObject);
+        assert.equal(results[0].name_1, name);
+      });
+      it("handles non-ascii character prefix searches", async () => {
+        const prefix = "Mynydd-llêc";
+        const name = "Mynydd-llêch";
+        const results = await Place.search({ name: prefix });
+        assert.equal(results.length, 1);
+        results.forEach(helper.isRawPlaceObject);
+        assert.equal(results[0].name_1, name);
+      });
+      it("handles hyphens as spaces", async () => {
+        const name = "Llwyn-y-groes";
+        const results = await Place.search({ name: name });
+        assert.equal(results.length, 1);
+        results.forEach(helper.isRawPlaceObject);
+        assert.equal(results[0].name_1, name);
+      });
+    });
+  });
 });

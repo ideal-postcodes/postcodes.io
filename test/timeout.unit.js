@@ -1,7 +1,7 @@
 "use strict";
 
 const { assert } = require("chai");
-const helper = require("./helper/index.js");
+const helper = require("./helper/index");
 const { startTimer } = helper.timeout;
 
 describe("startTimer", () => {
@@ -10,7 +10,7 @@ describe("startTimer", () => {
     assert.isFalse(timer.timedOut);
     assert.isDefined(timer.id);
   });
-  it("times out after an interval", done => {
+  it("times out after an interval", (done) => {
     const timer = startTimer(100);
     assert.isFalse(timer.timedOut);
     setTimeout(() => {
@@ -24,4 +24,3 @@ describe("startTimer", () => {
     assert.isUndefined(timer.id);
   });
 });
-

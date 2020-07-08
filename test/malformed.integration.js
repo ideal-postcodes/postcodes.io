@@ -2,10 +2,10 @@
 
 const net = require("net");
 const { assert } = require("chai");
-const app = require("../server");
+const app = require("../src/server");
 
 describe("Malformed request", () => {
-  it("returns a 400 response in node 6 and greater", done => {
+  it("returns a 400 response in node 6 and greater", (done) => {
     const majorVersion = parseInt(
       process.version.replace(/[a-z]/gi, "").split(".")[0],
       10
@@ -24,7 +24,7 @@ describe("Malformed request", () => {
           "User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)\r\n\r\n\r\n\r\n"
         );
       })
-      .on("data", data => {
+      .on("data", (data) => {
         dataReceived = true;
         assert.match(data.toString(), /400\sBad\sRequest/);
       })
@@ -35,7 +35,7 @@ describe("Malformed request", () => {
       .on("error", done);
   });
 
-  it("returns 400 on CONNECT requests", done => {
+  it("returns 400 on CONNECT requests", (done) => {
     let dataReceived = false;
     const client = net
       .connect({ port: 8000 })
@@ -46,7 +46,7 @@ describe("Malformed request", () => {
           "User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)\r\n\r\n\r\n\r\n"
         );
       })
-      .on("data", data => {
+      .on("data", (data) => {
         dataReceived = true;
         assert.match(data.toString(), /400\sBad\sRequest/);
       })

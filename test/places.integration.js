@@ -17,18 +17,16 @@ const app = postcodesioApplication();
 const DEFAULT_LIMIT = defaults.placesSearch.limit.DEFAULT;
 
 describe("Places Routes", () => {
-  before(function(done) {
+  before(async function () {
     this.timeout(0);
-    clearPostcodeDb((error, result) => {
-      if (error) return done(error);
-      seedPostcodeDb(done);
-    });
+    await clearPostcodeDb();
+    await seedPostcodeDb();
   });
 
-  after(clearPostcodeDb);
+  after(async () => clearPostcodeDb);
 
   describe("/places/:id", () => {
-    it("returns a place by id", done => {
+    it("returns a place by id", (done) => {
       const code = "osgb4000000074559490";
       request(app)
         .get(`/places/${code}`)
@@ -43,7 +41,7 @@ describe("Places Routes", () => {
           done();
         });
     });
-    it("is case insensitive", done => {
+    it("is case insensitive", (done) => {
       const code = "osgb4000000074559490";
       request(app)
         .get(`/places/${code.toUpperCase()}`)
@@ -58,7 +56,7 @@ describe("Places Routes", () => {
           done();
         });
     });
-    it("returns 404 if place not a valid resource", done => {
+    it("returns 404 if place not a valid resource", (done) => {
       const code = "foo";
       request(app)
         .get(`/places/${code}`)
@@ -72,7 +70,7 @@ describe("Places Routes", () => {
           done();
         });
     });
-    it("responds to options", done => {
+    it("responds to options", (done) => {
       const code = "osgb4000000074559490";
       request(app)
         .options(`/places/${code}`)
@@ -87,7 +85,7 @@ describe("Places Routes", () => {
   });
 
   describe("/places?q= (search)", () => {
-    it("returns places by search term", done => {
+    it("returns places by search term", (done) => {
       const query = "b";
       request(app)
         .get("/places")
@@ -99,11 +97,11 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.isTrue(places.length > 0);
-          places.forEach(p => isPlaceObject(p));
+          places.forEach((p) => isPlaceObject(p));
           done();
         });
     });
-    it("accepts q as parameter", done => {
+    it("accepts q as parameter", (done) => {
       const query = "b";
       request(app)
         .get("/places")
@@ -115,11 +113,11 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.isTrue(places.length > 0);
-          places.forEach(p => isPlaceObject(p));
+          places.forEach((p) => isPlaceObject(p));
           done();
         });
     });
-    it("returns empty array if empty query", done => {
+    it("returns empty array if empty query", (done) => {
       request(app)
         .get("/places")
         .query({ query: " " })
@@ -132,7 +130,7 @@ describe("Places Routes", () => {
           done();
         });
     });
-    it("returns empty array no matching places", done => {
+    it("returns empty array no matching places", (done) => {
       const query = "foobarbaz";
       request(app)
         .get("/places")
@@ -146,7 +144,7 @@ describe("Places Routes", () => {
           done();
         });
     });
-    it("responds to options", done => {
+    it("responds to options", (done) => {
       request(app)
         .options("/places")
         .expect(204)
@@ -157,7 +155,7 @@ describe("Places Routes", () => {
           done();
         });
     });
-    it("accepts a limit paramater", done => {
+    it("accepts a limit paramater", (done) => {
       const query = "b";
       request(app)
         .get("/places")
@@ -169,11 +167,11 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.equal(places.length, 1);
-          places.forEach(p => isPlaceObject(p));
+          places.forEach((p) => isPlaceObject(p));
           done();
         });
     });
-    it("uses default limit if invalid", done => {
+    it("uses default limit if invalid", (done) => {
       const query = "b";
       request(app)
         .get("/places")
@@ -185,11 +183,11 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.equal(places.length, DEFAULT_LIMIT);
-          places.forEach(p => isPlaceObject(p));
+          places.forEach((p) => isPlaceObject(p));
           done();
         });
     });
-    it("accepts l as limit parameter", done => {
+    it("accepts l as limit parameter", (done) => {
       const query = "b";
       request(app)
         .get("/places")
@@ -201,11 +199,11 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.equal(places.length, 1);
-          places.forEach(p => isPlaceObject(p));
+          places.forEach((p) => isPlaceObject(p));
           done();
         });
     });
-    it("returns 400 if invalid limit", done => {
+    it("returns 400 if invalid limit", (done) => {
       request(app)
         .get("/places")
         .expect(400)
@@ -216,7 +214,7 @@ describe("Places Routes", () => {
           done();
         });
     });
-    it("sets limit to default if requested limit < 1", done => {
+    it("sets limit to default if requested limit < 1", (done) => {
       const query = "b";
       request(app)
         .get("/places")
@@ -228,14 +226,14 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.equal(places.length, DEFAULT_LIMIT);
-          places.forEach(p => isPlaceObject(p));
+          places.forEach((p) => isPlaceObject(p));
           done();
         });
     });
   });
 
   describe("/random/places", () => {
-    it("returns a random place", done => {
+    it("returns a random place", (done) => {
       request(app)
         .get("/random/places")
         .expect(200)

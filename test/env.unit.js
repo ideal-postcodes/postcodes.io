@@ -1,7 +1,7 @@
 "use strict";
 
 const { assert } = require("chai");
-const { parseEnv } = require("../app/lib/env");
+const { parseEnv } = require("../src/app/lib/env");
 
 describe("parseEnv", () => {
   it("returns default if variable is undefined", () => {

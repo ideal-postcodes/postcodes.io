@@ -1,37 +1,40 @@
 "use strict";
 
 const { assert } = require("chai");
-const util = require("util");
-const { AttributeBase } = require("./helper");
+const {
+  generateAttributeMethods,
+} = require("../src/app/models/attribute_base");
+const { query, dollarise } = require("../src/app/models/index");
 
-function CustomAttribute() {
-  AttributeBase.call(this, "customattribute");
-}
+const relation = "customattribute";
 
-util.inherits(CustomAttribute, AttributeBase);
-
-const customAttribute = new CustomAttribute();
+const customAttribute = generateAttributeMethods({ relation });
 
 describe("AttributeBase model", () => {
   describe("_createRelation", () => {
-    after(done => {
-      customAttribute._query(`DROP TABLE ${customAttribute.relation}`, done);
+    after(async () => {
+      await customAttribute.destroyRelation();
     });
 
-    it("creates a relation with the correct default attributes", done => {
-      customAttribute._createRelation(error => {
-        if (error) return done(error);
-        const query = `INSERT INTO ${
-          customAttribute.relation
-        } (code, name) VALUES ($1, $2) RETURNING *`;
-        customAttribute._query(query, ["foo", "bar"], (error, result) => {
-          if (error) return done(error);
-          assert.equal(result.rows.length, 1);
-          assert.equal(result.rows[0].code, "foo");
-          assert.equal(result.rows[0].name, "bar");
-          done();
-        });
-      });
+    it("creates a relation with the correct default attributes", async () => {
+      const record = {
+        code: "foo",
+        name: "bar",
+      };
+      await customAttribute.createRelation();
+      const result = await query(
+        `
+          INSERT INTO ${relation}
+            (${Object.keys(record).join(", ")})
+          VALUES
+            (${dollarise(Object.values(record))})
+          RETURNING *
+        `,
+        Object.values(record)
+      );
+      assert.equal(result.rows.length, 1);
+      assert.equal(result.rows[0].code, "foo");
+      assert.equal(result.rows[0].name, "bar");
     });
   });
 });

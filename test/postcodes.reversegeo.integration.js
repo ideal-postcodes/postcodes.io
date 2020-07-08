@@ -9,37 +9,27 @@ const async = require("async");
 describe("Postcodes routes", () => {
   let testPostcode;
 
-  before(function(done) {
+  before(async function () {
     this.timeout(0);
-    helper.clearPostcodeDb(error => {
-      if (error) return done(error);
-      helper.seedPostcodeDb(done);
-    });
+    await helper.clearPostcodeDb();
+    await helper.seedPostcodeDb();
   });
 
-  beforeEach(done => {
-    helper.lookupRandomPostcode(result => {
-      testPostcode = result.postcode;
-      done();
-    });
+  beforeEach(async () => {
+    const result = await helper.lookupRandomPostcode();
+    testPostcode = result.postcode;
   });
 
-  after(done => {
-    helper.clearPostcodeDb(done);
-  });
+  after(async () => helper.clearPostcodeDb);
 
   describe("GET /postcodes/lon/:longitude/lat/latitude", () => {
     let loc;
 
-    beforeEach(done => {
-      helper.locationWithNearbyPostcodes((error, postcode) => {
-        if (error) return done(error);
-        loc = postcode;
-        done();
-      });
+    beforeEach(async () => {
+      loc = await helper.locationWithNearbyPostcodes();
     });
 
-    it("should return a list of nearby postcodes", done => {
+    it("should return a list of nearby postcodes", (done) => {
       const uri = encodeURI(
         `/postcodes/lon/${loc.longitude}/lat/${loc.latitude}`
       );
@@ -49,29 +39,29 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(200)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach(postcode => {
+          response.body.result.forEach((postcode) => {
             helper.isPostcodeWithDistanceObject(postcode);
           });
           assert.isTrue(
-            response.body.result.some(elem => {
+            response.body.result.some((elem) => {
               return elem.postcode === loc.postcode;
             })
           );
           done();
         });
     });
-    it("should be sensitive to distance query", done => {
+    it("should be sensitive to distance query", (done) => {
       var uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude
       );
       request(app)
         .get(uri)
         .expect(200)
-        .end(function(error, firstResponse) {
+        .end(function (error, firstResponse) {
           if (error) return done(error);
           request(app)
             .get(uri)
@@ -79,7 +69,7 @@ describe("Postcodes routes", () => {
               radius: 2000,
             })
             .expect(200)
-            .end(function(error, secondResponse) {
+            .end(function (error, secondResponse) {
               if (error) return done(error);
               assert.isTrue(
                 secondResponse.body.result.length >=
@@ -89,7 +79,7 @@ describe("Postcodes routes", () => {
             });
         });
     });
-    it("should be sensitive to limit query", done => {
+    it("should be sensitive to limit query", (done) => {
       var uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude
       );
@@ -99,35 +89,35 @@ describe("Postcodes routes", () => {
           limit: 1,
         })
         .expect(200)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           assert.equal(response.body.result.length, 1);
           done();
         });
     });
-    it("should throw a 400 error if invalid longitude", done => {
+    it("should throw a 400 error if invalid longitude", (done) => {
       var uri = encodeURI("/postcodes/lon/" + "BOGUS" + "/lat/" + loc.latitude);
       request(app)
         .get(uri)
         .expect(400)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           done();
         });
     });
-    it("should throw a 400 error if invalid latitude", done => {
+    it("should throw a 400 error if invalid latitude", (done) => {
       var uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + "BOGUS"
       );
       request(app)
         .get(uri)
         .expect(400)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           done();
         });
     });
-    it("should throw a 400 error if invalid limit", done => {
+    it("should throw a 400 error if invalid limit", (done) => {
       var uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude
       );
@@ -137,12 +127,12 @@ describe("Postcodes routes", () => {
           limit: "BOGUS",
         })
         .expect(400)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           done();
         });
     });
-    it("should throw a 400 error if invalid distance", done => {
+    it("should throw a 400 error if invalid distance", (done) => {
       var uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude
       );
@@ -152,30 +142,30 @@ describe("Postcodes routes", () => {
           radius: "BOGUS",
         })
         .expect(400)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           done();
         });
     });
-    it("returns null if no postcodes nearby", done => {
+    it("returns null if no postcodes nearby", (done) => {
       var uri = encodeURI("/postcodes/lon/0/lat/0");
       request(app)
         .get(uri)
         .expect(200)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) done(error);
           assert.isNull(response.body.result);
           done();
         });
     });
-    it("should respond to options", done => {
+    it("should respond to options", (done) => {
       var uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude
       );
       request(app)
         .options(uri)
         .expect(204)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) done(error);
           helper.validCorsOptions(response);
           done();
@@ -183,19 +173,15 @@ describe("Postcodes routes", () => {
     });
   });
 
-  describe("GET /postcodes?lon=:longitude&lat=:latitude", function() {
+  describe("GET /postcodes?lon=:longitude&lat=:latitude", function () {
     var loc, uri;
 
-    beforeEach(done => {
+    beforeEach(async () => {
       uri = "/postcodes/";
-      helper.locationWithNearbyPostcodes(function(error, postcode) {
-        if (error) return done(error);
-        loc = postcode;
-        done();
-      });
+      loc = await helper.locationWithNearbyPostcodes();
     });
 
-    it("returns a list of nearby postcodes", done => {
+    it("returns a list of nearby postcodes", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -205,22 +191,22 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(200)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach(function(postcode) {
+          response.body.result.forEach(function (postcode) {
             helper.isPostcodeWithDistanceObject(postcode);
           });
           assert.isTrue(
-            response.body.result.some(function(elem) {
+            response.body.result.some(function (elem) {
               return elem.postcode === loc.postcode;
             })
           );
           done();
         });
     });
-    it("accepts full spelling of longitude and latitude", done => {
+    it("accepts full spelling of longitude and latitude", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -230,22 +216,22 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(200)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach(function(postcode) {
+          response.body.result.forEach(function (postcode) {
             helper.isPostcodeWithDistanceObject(postcode);
           });
           assert.isTrue(
-            response.body.result.some(function(elem) {
+            response.body.result.some(function (elem) {
               return elem.postcode === loc.postcode;
             })
           );
           done();
         });
     });
-    it("falls back to a postcode query if longitude is missing", done => {
+    it("falls back to a postcode query if longitude is missing", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -254,13 +240,13 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(400)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           assert.equal(response.body.status, 400);
           done();
         });
     });
-    it("falls back to a postcode query if latitude is missing", done => {
+    it("falls back to a postcode query if latitude is missing", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -269,13 +255,13 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(400)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           assert.equal(response.body.status, 400);
           done();
         });
     });
-    it("is sensitive to distance query", done => {
+    it("is sensitive to distance query", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -283,7 +269,7 @@ describe("Postcodes routes", () => {
           lat: loc.latitude,
         })
         .expect(200)
-        .end(function(error, firstResponse) {
+        .end(function (error, firstResponse) {
           if (error) return done(error);
           request(app)
             .get(uri)
@@ -293,7 +279,7 @@ describe("Postcodes routes", () => {
               radius: 2000,
             })
             .expect(200)
-            .end(function(error, secondResponse) {
+            .end(function (error, secondResponse) {
               if (error) return done(error);
               assert.isTrue(
                 secondResponse.body.result.length >=
@@ -303,7 +289,7 @@ describe("Postcodes routes", () => {
             });
         });
     });
-    it("is sensitive to limit query", done => {
+    it("is sensitive to limit query", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -312,13 +298,13 @@ describe("Postcodes routes", () => {
           limit: 1,
         })
         .expect(200)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           assert.equal(response.body.result.length, 1);
           done();
         });
     });
-    it("returns a 400 error if invalid longitude", done => {
+    it("returns a 400 error if invalid longitude", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -326,12 +312,12 @@ describe("Postcodes routes", () => {
           lat: loc.latitude,
         })
         .expect(400)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           done();
         });
     });
-    it("returns a 400 error if invalid latitude", done => {
+    it("returns a 400 error if invalid latitude", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -339,12 +325,12 @@ describe("Postcodes routes", () => {
           lat: "BOGUS",
         })
         .expect(400)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           done();
         });
     });
-    it("returns a 400 error if invalid limit", done => {
+    it("returns a 400 error if invalid limit", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -353,12 +339,12 @@ describe("Postcodes routes", () => {
           limit: "BOGUS",
         })
         .expect(400)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           done();
         });
     });
-    it("returns a 400 error if invalid distance", done => {
+    it("returns a 400 error if invalid distance", (done) => {
       request(app)
         .get(uri)
         .query({
@@ -367,12 +353,12 @@ describe("Postcodes routes", () => {
           radius: "BOGUS",
         })
         .expect(400)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) return done(error);
           done();
         });
     });
-    it("returns null if no postcodes nearby", done => {
+    it("returns null if no postcodes nearby", (done) => {
       var uri = encodeURI("/postcodes");
       request(app)
         .get(uri)
@@ -381,29 +367,29 @@ describe("Postcodes routes", () => {
           lon: 0,
         })
         .expect(200)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) done(error);
           assert.isNull(response.body.result);
           done();
         });
     });
-    it("responds to options", done => {
+    it("responds to options", (done) => {
       request(app)
         .options(uri)
         .expect(204)
-        .end(function(error, response) {
+        .end(function (error, response) {
           if (error) done(error);
           helper.validCorsOptions(response);
           done();
         });
     });
-    describe("Wide Area Searches", function() {
+    describe("Wide Area Searches", function () {
       var longitude, latitude;
-      beforeEach(function() {
+      beforeEach(function () {
         longitude = -2.12659411941741;
         latitude = 57.2465923827836;
       });
-      it("allows search over a larger area", done => {
+      it("allows search over a larger area", (done) => {
         request(app)
           .get("/postcodes")
           .query({
@@ -414,14 +400,14 @@ describe("Postcodes routes", () => {
           .expect("Content-Type", /json/)
           .expect(helper.allowsCORS)
           .expect(200)
-          .end(function(error, response) {
+          .end(function (error, response) {
             if (error) return done(error);
             assert.equal(response.body.result.length, 10);
             done();
           });
       });
 
-      it("allows search over a larger area using 'widesearch'", done => {
+      it("allows search over a larger area using 'widesearch'", (done) => {
         request(app)
           .get("/postcodes")
           .query({
@@ -432,14 +418,14 @@ describe("Postcodes routes", () => {
           .expect("Content-Type", /json/)
           .expect(helper.allowsCORS)
           .expect(200)
-          .end(function(error, response) {
+          .end(function (error, response) {
             if (error) return done(error);
             assert.equal(response.body.result.length, 10);
             done();
           });
       });
 
-      it("does not allow limit to exceed 10", done => {
+      it("does not allow limit to exceed 10", (done) => {
         request(app)
           .get("/postcodes")
           .query({
@@ -451,14 +437,14 @@ describe("Postcodes routes", () => {
           .expect("Content-Type", /json/)
           .expect(helper.allowsCORS)
           .expect(200)
-          .end(function(error, response) {
+          .end(function (error, response) {
             if (error) return done(error);
             assert.equal(response.body.result.length, 10);
             done();
           });
       });
 
-      it("does allows limit to be below 10", done => {
+      it("does allows limit to be below 10", (done) => {
         request(app)
           .get("/postcodes")
           .query({
@@ -470,7 +456,7 @@ describe("Postcodes routes", () => {
           .expect("Content-Type", /json/)
           .expect(helper.allowsCORS)
           .expect(200)
-          .end(function(error, response) {
+          .end(function (error, response) {
             if (error) return done(error);
             assert.equal(response.body.result.length, 1);
             done();

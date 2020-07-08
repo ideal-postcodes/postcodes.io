@@ -2,7 +2,7 @@
  * PG helper methods
  */
 
-const { Base } = require("../../app/models/index.js");
+const { Base, query } = require("../../src/app/models/index");
 
 // Credit: https://www.peterbe.com/plog/select-all-relations-in-postgresql
 const databaseRelationsQuery = `
@@ -26,19 +26,8 @@ const databaseRelationsQuery = `
 
 /**
  * Lists all relations
- *
- * @param cb
- * @returns {undefined}
  */
-const listDatabaseRelations = cb => {
-  if (cb) return Base.prototype._query(databaseRelationsQuery, cb);
-  return new Promise((resolve, reject) => {
-    Base.prototype._query(databaseRelationsQuery, (error, result) => {
-      if (error) return reject(error);
-      return resolve(result);
-    });
-  });
-};
+const listDatabaseRelations = async () => query(databaseRelationsQuery);
 
 // Credit: https://stackoverflow.com/questions/6777456/list-all-index-names-column-names-and-its-table-name-of-a-postgresql-database
 const databaseIndexesQuery = `
@@ -65,12 +54,9 @@ const databaseIndexesQuery = `
 `;
 
 // Lists indexes in database
-const listDatabaseIndexes = cb => {
-	Base.prototype._query(databaseIndexesQuery, cb);
-};
+const listDatabaseIndexes = async () => query(databaseIndexesQuery);
 
 module.exports = {
   listDatabaseRelations,
   listDatabaseIndexes,
 };
-

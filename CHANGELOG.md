@@ -128,7 +128,7 @@ Any changes, including backwards incompatible changes will be listed here
   - `"perf"` logs to stdout in [extreme mode](https://github.com/pinojs/pino/blob/master/docs/extreme.md)
 - Added ability to export prometheus metrics by basic auth protected `/metrics` endpoint. To enable include `PROMETHEUS_USERNAME` and `PROMETHEUS_PASSWORD` as environment variables. Those environment variables are required to authenticate using [HTTP basic authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication)
 - Updated dependencies
-- Added ability to configure application limits using environment variables. [See readme](/config/README.md)
+- Added ability to configure application limits using environment variables. [See readme](/src/config/README.md)
 - Amended `npm run setup` bash script to accept more configuration arguments
 
 ## 10.0.1 (16/01/2019)
@@ -281,7 +281,7 @@ For the exact changes, you can may inspect the most recent commit applied to the
 
 ## 4.0.0 (23/2/2017)
 - Incorporate OS Places dataset
-- npm package now points to `app.js` which exports instance postcodes.io express app
+- npm package now points to `app.ts` which exports instance postcodes.io express app
 - Minimum advised required Postgresql version of 9.5 (due to backwards incompatible pg_dump)
 - Updated latest pg_dump for Feb 2017 ONSPD, January 2017 OS Places data
 

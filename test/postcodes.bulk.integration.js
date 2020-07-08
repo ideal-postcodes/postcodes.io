@@ -9,33 +9,26 @@ const app = helper.postcodesioApplication();
 describe("Postcodes routes", () => {
   let testPostcode, testOutcode;
 
-  before(function(done) {
+  before(async function () {
     this.timeout(0);
-    helper.clearPostcodeDb((error, result) => {
-      if (error) return done(error);
-      helper.seedPostcodeDb((error, result) => {
-        if (error) return done(error);
-        done();
-      });
-    });
+    await helper.clearPostcodeDb();
+    await helper.seedPostcodeDb();
   });
 
-  beforeEach(done => {
-    helper.lookupRandomPostcode(result => {
-      testPostcode = result.postcode;
-      testOutcode = result.outcode;
-      done();
-    });
+  beforeEach(async () => {
+    const result = await helper.lookupRandomPostcode();
+    testPostcode = result.postcode;
+    testOutcode = result.outcode;
   });
 
-  after(helper.clearPostcodeDb);
+  after(async () => helper.clearPostcodeDb);
 
   describe("POST /postcodes", () => {
     let bulkLength = 10;
     let testPostcodes, testLocations;
 
     describe("Invalid JSON submission", () => {
-      it("returns 400 on invalid JSON", done => {
+      it("returns 400 on invalid JSON", (done) => {
         request(app)
           .post("/postcodes")
           .set({ "Content-Type": "application/json" })
@@ -52,11 +45,12 @@ describe("Postcodes routes", () => {
     });
 
     describe("Bulk geocoding", () => {
-      beforeEach(done => {
+      beforeEach((done) => {
         async.times(
           bulkLength,
-          (n, next) => {
-            helper.randomLocation(next);
+          async (n, next) => {
+            const locations = await helper.randomLocation();
+            next(null, locations);
           },
           (error, locations) => {
             if (error) return done(error);
@@ -66,7 +60,7 @@ describe("Postcodes routes", () => {
         );
       });
 
-      it("should return postcodes for specified geolocations", done => {
+      it("should return postcodes for specified geolocations", (done) => {
         request(app)
           .post("/postcodes")
           .send({ geolocations: testLocations })
@@ -77,18 +71,18 @@ describe("Postcodes routes", () => {
             if (error) return done(error);
             assert.isArray(response.body.result);
             assert.equal(response.body.result.length, bulkLength);
-            response.body.result.forEach(lookup => {
+            response.body.result.forEach((lookup) => {
               assert.property(lookup, "query");
               assert.property(lookup, "result");
               assert.isArray(lookup.result);
-              lookup.result.forEach(result =>
+              lookup.result.forEach((result) =>
                 helper.isPostcodeWithDistanceObject(result)
               );
             });
             done();
           });
       });
-      it("should return null if no nearby postcode", done => {
+      it("should return null if no nearby postcode", (done) => {
         request(app)
           .post("/postcodes")
           .send({
@@ -109,7 +103,7 @@ describe("Postcodes routes", () => {
             done();
           });
       });
-      it("should refuse request if lookups number over 100", done => {
+      it("should refuse request if lookups number over 100", (done) => {
         testLocations = [];
         for (let i = 0; i < 101; i++) {
           testLocations.push("bogus");
@@ -126,7 +120,7 @@ describe("Postcodes routes", () => {
             done();
           });
       });
-      it("should return 404 if invalid geolocations object", done => {
+      it("should return 404 if invalid geolocations object", (done) => {
         request(app)
           .post("/postcodes")
           .send({ geolocations: "Bogus" })
@@ -139,7 +133,7 @@ describe("Postcodes routes", () => {
             done();
           });
       });
-      it("is sensitive to limit", done => {
+      it("is sensitive to limit", (done) => {
         const testLocation = testLocations[0];
         testLocation.limit = 1;
         request(app)
@@ -158,7 +152,7 @@ describe("Postcodes routes", () => {
             done();
           });
       });
-      it("is sensitive to radius", done => {
+      it("is sensitive to radius", (done) => {
         const testLocation = testLocations[0];
         testLocation.limit = 100;
         testLocation.radius = 100;
@@ -190,7 +184,7 @@ describe("Postcodes routes", () => {
               });
           });
       });
-      it("allows wide area searches", done => {
+      it("allows wide area searches", (done) => {
         const testLocation = {
           longitude: -2.12659411941741,
           latitude: 57.2465923827836,
@@ -211,7 +205,7 @@ describe("Postcodes routes", () => {
             done();
           });
       });
-      it("allows wide area searches using 'widesearch'", done => {
+      it("allows wide area searches using 'widesearch'", (done) => {
         const testLocation = {
           longitude: -2.12659411941741,
           latitude: 57.2465923827836,
@@ -233,7 +227,7 @@ describe("Postcodes routes", () => {
           });
       });
 
-      it("should return 400 if type of value associated with latitude key is invalid", done => {
+      it("should return 400 if type of value associated with latitude key is invalid", (done) => {
         const invalidTestLocation = {
           longitude: -2.12659411941741,
           latitude: null,
@@ -241,19 +235,22 @@ describe("Postcodes routes", () => {
         };
 
         request(app)
-        .post("/postcodes")
-        .send({geolocations: [invalidTestLocation]})
-        .expect("Content-Type", /json/)
-        .expect(helper.allowsCORS)
-        .expect(400)
-        .end((error, response) => {
-          if(error) return done(error)
-          assert.match(response.body.error, /Invalid longitude\/latitude submitted/i);
-          done();
-        })
+          .post("/postcodes")
+          .send({ geolocations: [invalidTestLocation] })
+          .expect("Content-Type", /json/)
+          .expect(helper.allowsCORS)
+          .expect(400)
+          .end((error, response) => {
+            if (error) return done(error);
+            assert.match(
+              response.body.error,
+              /Invalid longitude\/latitude submitted/i
+            );
+            done();
+          });
       });
 
-      it("should return 400 if type of value associated with longitude key is invalid", done => {
+      it("should return 400 if type of value associated with longitude key is invalid", (done) => {
         const invalidTestLocation = {
           longitude: null,
           latitude: 53.5351312861402,
@@ -261,25 +258,29 @@ describe("Postcodes routes", () => {
         };
 
         request(app)
-        .post("/postcodes")
-        .send({geolocations: [invalidTestLocation]})
-        .expect("Content-Type", /json/)
-        .expect(helper.allowsCORS)
-        .expect(400)
-        .end((error, response) => {
-          if(error) return done(error)
-          assert.match(response.body.error, /Invalid longitude\/latitude submitted/i);
-          done();
-        })
+          .post("/postcodes")
+          .send({ geolocations: [invalidTestLocation] })
+          .expect("Content-Type", /json/)
+          .expect(helper.allowsCORS)
+          .expect(400)
+          .end((error, response) => {
+            if (error) return done(error);
+            assert.match(
+              response.body.error,
+              /Invalid longitude\/latitude submitted/i
+            );
+            done();
+          });
       });
     });
 
     describe("Bulk postcode lookup", () => {
-      beforeEach(done => {
+      beforeEach((done) => {
         async.times(
           bulkLength,
-          (n, next) => {
-            helper.randomPostcode(next);
+          async (n, next) => {
+            const postcode = await helper.randomPostcode();
+            next(null, postcode);
           },
           (error, postcodes) => {
             if (error) return done(error);
@@ -289,7 +290,7 @@ describe("Postcodes routes", () => {
         );
       });
 
-      it("should return addresses for postcodes", done => {
+      it("should return addresses for postcodes", (done) => {
         request(app)
           .post("/postcodes")
           .send({ postcodes: testPostcodes })
@@ -299,7 +300,7 @@ describe("Postcodes routes", () => {
             if (error) return done(error);
             assert.isArray(response.body.result);
             assert.equal(response.body.result.length, bulkLength);
-            response.body.result.forEach(lookup => {
+            response.body.result.forEach((lookup) => {
               assert.property(lookup, "query");
               assert.property(lookup, "result");
               helper.isPostcodeObject(lookup.result);
@@ -307,7 +308,7 @@ describe("Postcodes routes", () => {
             done();
           });
       });
-      it("should return an empty result for non string queries", done => {
+      it("should return an empty result for non string queries", (done) => {
         request(app)
           .post("/postcodes")
           .send({ postcodes: [null] })
@@ -316,13 +317,11 @@ describe("Postcodes routes", () => {
           .end((error, response) => {
             if (error) return done(error);
             assert.isArray(response.body.result);
-            assert.equal(response.body.result.length, 1);
-            assert.isNull(response.body.result[0].query);
-            assert.isNull(response.body.result[0].result);
+            assert.equal(response.body.result.length, 0);
             done();
           });
       });
-      it("should return a null if postcode not found", done => {
+      it("should return a null if postcode not found", (done) => {
         testPostcodes.push("B0GUS");
         request(app)
           .post("/postcodes")
@@ -332,13 +331,13 @@ describe("Postcodes routes", () => {
           .end((error, response) => {
             if (error) return done(error);
             assert.equal(response.body.result.length, bulkLength + 1);
-            let hasNull = response.body.result.some(l => l.result === null);
+            let hasNull = response.body.result.some((l) => l.result === null);
             assert.isTrue(hasNull);
             done();
           });
       });
 
-      it("returns 400 if too many postcodes submitted", done => {
+      it("returns 400 if too many postcodes submitted", (done) => {
         const postcodes = new Array(101).fill().map(() => "foo");
         request(app)
           .post("/postcodes")
@@ -351,7 +350,7 @@ describe("Postcodes routes", () => {
             done();
           });
       });
-      it("returns 400 if non-array submitted", done => {
+      it("returns 400 if non-array submitted", (done) => {
         request(app)
           .post("/postcodes")
           .set({ "Content-Type": "application/json" })
@@ -367,7 +366,7 @@ describe("Postcodes routes", () => {
           });
       });
 
-      it("should refuse requests if lookups number over 100", done => {
+      it("should refuse requests if lookups number over 100", (done) => {
         testPostcodes = [];
         for (let i = 0; i < 101; i++) {
           testPostcodes.push("bogus");
@@ -384,7 +383,7 @@ describe("Postcodes routes", () => {
       });
     });
 
-    it("should return a 400 error if array not submitted", done => {
+    it("should return a 400 error if array not submitted", (done) => {
       request(app)
         .post("/postcodes")
         .send({ wrong: "dataType" })

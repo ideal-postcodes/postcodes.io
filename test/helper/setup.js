@@ -22,7 +22,7 @@ const {
   Place,
   TerminatedPostcode,
   Ced,
-} = require("../../app/models/index.js");
+} = require("../../src/app/models/index");
 
 /**
  * Clears the test database
@@ -30,86 +30,74 @@ const {
  * @param  {function} callback
  * @return {undefined}
  */
-const clearTestDb = callback => {
-  if (process.env.PRESERVE_DB !== undefined) return callback(null);
-  async.parallel(
-    [
-      Postcode,
-      TerminatedPostcode,
-      District,
-      Parish,
-      Nuts,
-      County,
-      Constituency,
-      ScottishConstituency,
-      Ccg,
-      Ward,
-      Outcode,
-      Place,
-      Ced,
-    ].map(m => m._destroyRelation.bind(m)),
-    callback
-  );
+const clearTestDb = async () => {
+  if (process.env.PRESERVE_DB !== undefined) return null;
+  return Promise.all([
+    (async () => await Postcode.destroyRelation())(),
+    (async () => await TerminatedPostcode.destroyRelation())(),
+    (async () => await Place.destroyRelation())(),
+    (async () => await ScottishPostcode.destroyRelation())(),
+    (async () => await District.destroyRelation())(),
+    (async () => await Parish.destroyRelation())(),
+    (async () => await Nuts.destroyRelation())(),
+    (async () => await County.destroyRelation())(),
+    (async () => await Constituency.destroyRelation())(),
+    (async () => await ScottishConstituency.destroyRelation())(),
+    (async () => await Ccg.destroyRelation())(),
+    (async () => await Ward.destroyRelation())(),
+    (async () => await Outcode.destroyRelation())(),
+    (async () => await Ced.destroyRelation())(),
+  ]);
 };
 
-const seedTerminatedPostcodeDb = callback => {
-  if (NO_RELOAD_DB) return callback(null);
-  TerminatedPostcode._setupTable(seedPostcodePath, callback);
+const seedTerminatedPostcodeDb = (callback) => {
+  if (NO_RELOAD_DB) return null;
+  return TerminatedPostcode.setupTable(seedPostcodePath);
 };
 
-const seedPostcodeDb = callback => {
-  if (NO_RELOAD_DB) return callback(null);
-  async.series(
-    [
-      cb => Postcode._setupTable(seedPostcodePath, cb),
-      cb => TerminatedPostcode._setupTable(seedPostcodePath, cb),
-      cb => Place._setupTable(seedPlacesPath, cb),
-      cb => ScottishPostcode._setupTable(seedScotlandPostcodePath, cb),
-    ].concat(
-      [
-        District,
-        Parish,
-        Nuts,
-        County,
-        Constituency,
-        ScottishConstituency,
-        Ccg,
-        Ward,
-        Outcode,
-        Ced,
-      ].map(m => m._setupTable.bind(m))
-    ),
-    callback
-  );
+const seedPostcodeDb = async () => {
+  if (NO_RELOAD_DB) return null;
+  return Promise.all([
+    (async () => await Postcode.setupTable(seedPostcodePath))(),
+    (async () => await TerminatedPostcode.setupTable(seedPostcodePath))(),
+    (async () => await Place.setupTable(seedPlacesPath))(),
+    (async () => await ScottishPostcode.setupTable(seedScotlandPostcodePath))(),
+    (async () => await District.setupTable())(),
+    (async () => await Parish.setupTable())(),
+    (async () => await Nuts.setupTable())(),
+    (async () => await County.setupTable())(),
+    (async () => await Constituency.setupTable())(),
+    (async () => await ScottishConstituency.setupTable())(),
+    (async () => await Ccg.setupTable())(),
+    (async () => await Ward.setupTable())(),
+    (async () => await Outcode.setupTable())(),
+    (async () => await Ced.setupTable())(),
+  ]);
 };
 
 // Clear terminated onspd table
-const clearTerminatedPostcodesDb = callback => {
-  if (NO_RELOAD_DB) return callback(null);
-  TerminatedPostcode._destroyRelation(callback);
+const clearTerminatedPostcodesDb = async () => {
+  if (NO_RELOAD_DB) return null;
+  return TerminatedPostcode.destroyRelation();
 };
 
 // Clear ONSPD table
-const clearPostcodeDb = callback => {
-  if (NO_RELOAD_DB) return callback(null);
-  Postcode._destroyRelation(callback);
+const clearPostcodeDb = async () => {
+  if (NO_RELOAD_DB) return null;
+  await Postcode.destroyRelation();
 };
 
 // Clear SPD Table
-const clearScottishPostcodeDb = callback => {
-  if (NO_RELOAD_DB) return callback(null);
-  ScottishPostcode._destroyRelation(callback);
+const clearScottishPostcodeDb = async () => {
+  if (NO_RELOAD_DB) return null;
+  return ScottishPostcode.destroyRelation();
 };
 
-const seedScottishPostcodeDb = callback => {
-  if (NO_RELOAD_DB) return callback(null);
-  async.series(
-    [
-      cb => ScottishPostcode._setupTable(seedScotlandPostcodePath, cb),
-      cb => ScottishConstituency._setupTable(cb),
-    ],
-    callback
-  );
+const seedScottishPostcodeDb = async () => {
+  if (NO_RELOAD_DB) return null;
+  const postcode = await ScottishPostcode.setupTable(seedScotlandPostcodePath);
+  const constituency = await ScottishConstituency.setupTable();
+  return [postcode, constituency];
 };
 
 module.exports = {

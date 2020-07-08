@@ -15,21 +15,16 @@ const error404Message = "Postcode not found";
 describe("Scottish postcode route", () => {
   const testPostcode = "ML11 0GH";
 
-  before(function(done) {
+  before(async function () {
     this.timeout(0);
-    clearScottishPostcodeDb((error, result) => {
-      if (error) return done(error);
-      seedScottishPostcodeDb((error, result) => {
-        if (error) return done(error);
-        done();
-      });
-    });
+    await clearScottishPostcodeDb();
+    await seedScottishPostcodeDb();
   });
 
-  after(clearScottishPostcodeDb);
+  after(async () => clearScottishPostcodeDb());
 
   describe("/GET /scotland/postcodes/:postcode", () => {
-    it("should return 200 if postcode found", done => {
+    it("should return 200 if postcode found", (done) => {
       const path = `/scotland/postcodes/${encodeURI(testPostcode)}`;
       request(app)
         .get(path)
@@ -43,7 +38,7 @@ describe("Scottish postcode route", () => {
         });
     });
 
-    it("returns the correct attributes", done => {
+    it("returns the correct attributes", (done) => {
       const path = `/scotland/postcodes/${encodeURI(testPostcode)}`;
       request(app)
         .get(path)
@@ -63,7 +58,7 @@ describe("Scottish postcode route", () => {
         });
     });
 
-    it("accepts padded postcode", done => {
+    it("accepts padded postcode", (done) => {
       const postcode = "  " + testPostcode + "  ";
       const path = `/scotland/postcodes/${encodeURI(postcode)}`;
       request(app)
@@ -85,7 +80,7 @@ describe("Scottish postcode route", () => {
         });
     });
 
-    it("404 if not a valid postcode according to the postcode module", done => {
+    it("404 if not a valid postcode according to the postcode module", (done) => {
       const path = `/scotland/postcodes/foo`;
       assert.isFalse(Postcode.isValid("foo"));
       request(app)
@@ -95,7 +90,7 @@ describe("Scottish postcode route", () => {
         .end(done);
     });
 
-    it("should return 404 if postcode not found", done => {
+    it("should return 404 if postcode not found", (done) => {
       const postcode = "ID11QE";
       const path = `/scotland/postcodes/${encodeURI(postcode)}`;
       request(app)
@@ -113,7 +108,7 @@ describe("Scottish postcode route", () => {
         });
     });
 
-    it("should return error if postcode not found but is found in main database", done => {
+    it("should return error if postcode not found but is found in main database", (done) => {
       const postcode = "M11AD";
       const path = `/scotland/postcodes/${encodeURI(postcode)}`;
       request(app)
@@ -126,7 +121,10 @@ describe("Scottish postcode route", () => {
           assert.equal(response.body.status, 404);
           assert.property(response.body, "error");
           assert.equal(Object.keys(response.body).length, 2);
-          assert.equal(response.body.error, "Postcode exists in ONSPD but not in SPD");
+          assert.equal(
+            response.body.error,
+            "Postcode exists in ONSPD but not in SPD"
+          );
           done();
         });
     });

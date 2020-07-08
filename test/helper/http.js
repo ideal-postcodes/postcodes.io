@@ -2,11 +2,11 @@
 
 const { assert } = require("chai");
 
-const allowsCORS = response => {
+const allowsCORS = (response) => {
   assert.equal(response.headers["access-control-allow-origin"], "*");
 };
 
-const validCorsOptions = response => {
+const validCorsOptions = (response) => {
   allowsCORS(response);
   assert.equal(
     response.headers["access-control-allow-methods"],
@@ -19,7 +19,7 @@ const validCorsOptions = response => {
 };
 
 // Rough regex to extract json object
-const jsonpResponseBody = text => {
+const jsonpResponseBody = (text) => {
   const result = text.match(/\(.*\)/);
   return JSON.parse(result[0].slice(1, result[0].length - 1));
 };

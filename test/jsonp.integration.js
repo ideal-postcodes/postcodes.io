@@ -23,26 +23,19 @@ describe("Utils with JSONP", () => {
 describe("Postcodes routes with JSONP", () => {
   let testPostcode, testOutcode;
 
-  before(function(done) {
+  before(async function () {
     this.timeout(0);
-    helper.clearPostcodeDb(error => {
-      if (error) return done(error);
-      helper.seedPostcodeDb(error => {
-        if (error) return done(error);
-        done();
-      });
-    });
+    await helper.clearPostcodeDb();
+    await helper.seedPostcodeDb();
   });
 
-  beforeEach(done => {
-    helper.lookupRandomPostcode(result => {
-      testPostcode = result.postcode;
-      testOutcode = result.outcode;
-      done();
-    });
+  beforeEach(async () => {
+    const result = await helper.lookupRandomPostcode();
+    testPostcode = result.postcode;
+    testOutcode = result.outcode;
   });
 
-  after(done => helper.clearPostcodeDb(done));
+  after(async () => helper.clearPostcodeDb());
 
   describe("GET /postcodes", () => {
     let uri, limit;
@@ -59,7 +52,7 @@ describe("Postcodes routes with JSONP", () => {
       const jsonBody = helper.jsonpResponseBody(text);
       assert.isArray(jsonBody.result);
       assert.equal(jsonBody.result.length, 10);
-      jsonBody.result.forEach(pc => helper.isPostcodeObject(pc));
+      jsonBody.result.forEach((pc) => helper.isPostcodeObject(pc));
     });
   });
 
@@ -131,7 +124,7 @@ describe("Postcodes routes with JSONP", () => {
       const jsonBody = helper.jsonpResponseBody(text);
       assert.isArray(jsonBody.result);
       assert.isTrue(jsonBody.result.length > 0);
-      jsonBody.result.forEach(pc => helper.isPostcodeWithDistanceObject(pc));
+      jsonBody.result.forEach((pc) => helper.isPostcodeWithDistanceObject(pc));
     });
   });
 
@@ -163,19 +156,15 @@ describe("Postcodes routes with JSONP", () => {
       const jsonBody = helper.jsonpResponseBody(text);
       assert.isArray(jsonBody.result);
       assert.equal(jsonBody.result.length, 10);
-      jsonBody.result.forEach(pc => assert.isString(pc));
+      jsonBody.result.forEach((pc) => assert.isString(pc));
     });
   });
 
   describe("GET /postcodes/lon/:longitude/lat/latitude", () => {
     let loc;
 
-    beforeEach(done => {
-      helper.locationWithNearbyPostcodes((error, postcode) => {
-        if (error) return done(error);
-        loc = postcode;
-        done();
-      });
+    beforeEach(async () => {
+      loc = await helper.locationWithNearbyPostcodes();
     });
 
     it("should return a list of nearby postcodes", async () => {
@@ -194,9 +183,9 @@ describe("Postcodes routes with JSONP", () => {
       const jsonBody = helper.jsonpResponseBody(text);
       assert.isArray(jsonBody.result);
       assert.isTrue(jsonBody.result.length > 0);
-      jsonBody.result.forEach(pc => helper.isPostcodeWithDistanceObject(pc));
+      jsonBody.result.forEach((pc) => helper.isPostcodeWithDistanceObject(pc));
       assert.isTrue(
-        jsonBody.result.some(elem => elem.postcode === loc.postcode)
+        jsonBody.result.some((elem) => elem.postcode === loc.postcode)
       );
     });
   });

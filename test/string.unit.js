@@ -1,7 +1,7 @@
 "use strict";
 
 const { assert } = require("chai");
-const helper = require("./helper/index.js");
+const helper = require("./helper/index");
 const { isEmpty } = helper.string;
 
 describe("isEmpty", () => {
@@ -24,4 +24,3 @@ describe("isEmpty", () => {
     assert.isFalse(isEmpty("foo"));
   });
 });
-

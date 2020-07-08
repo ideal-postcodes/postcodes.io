@@ -12,23 +12,17 @@ describe("Prometheus /metrics endpoint", () => {
   });
 
   describe("when no basic auth configuration is provided", () => {
-    it("should not expose a metrics endpoint if username missing", done => {
+    it("should not expose a metrics endpoint if username missing", (done) => {
       const cfg = Object.assign({ prometheusPassword: "bar" }, config);
       assert.isUndefined(cfg.prometheusUsername);
       const app = postcodesioApplication(cfg);
-      request(app)
-        .get("/metrics")
-        .expect(404)
-        .end(done);
+      request(app).get("/metrics").expect(404).end(done);
     });
-    it("should not expose a metrics endpoint if password missing", done => {
+    it("should not expose a metrics endpoint if password missing", (done) => {
       const cfg = Object.assign({ prometheusUsername: "foo" }, config);
       assert.isUndefined(cfg.prometheusPassword);
       const app = postcodesioApplication(cfg);
-      request(app)
-        .get("/metrics")
-        .expect(404)
-        .end(done);
+      request(app).get("/metrics").expect(404).end(done);
     });
   });
 
@@ -50,15 +44,12 @@ describe("Prometheus /metrics endpoint", () => {
           .auth(prometheusUsername, prometheusPassword);
     });
 
-    it("exposes /metrics behind basic auth", done => {
-      request(app)
-        .get("/metrics")
-        .expect(401)
-        .end(done);
+    it("exposes /metrics behind basic auth", (done) => {
+      request(app).get("/metrics").expect(401).end(done);
     });
 
     const testMetric = (url, expectedMetric) => {
-      return new Promise(async resolve => {
+      return new Promise(async (resolve) => {
         const response = await generateMetric(url);
         const { text } = await getMetrics();
         assert.notInclude(text, url);
@@ -70,8 +61,8 @@ describe("Prometheus /metrics endpoint", () => {
     /**
      * Generates metric for URL, swallows any error
      */
-    const generateMetric = url => {
-      return new Promise(async resolve => {
+    const generateMetric = (url) => {
+      return new Promise(async (resolve) => {
         try {
           const response = await request(app).get(url);
           resolve(response);
