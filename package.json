@@ -2,34 +2,44 @@
   "name": "postcodes.io",
   "version": "12.0.0",
   "description": "A postcode lookup API",
-  "main": "app.js",
+  "main": "dist/app.js",
   "prettier": {
     "trailingComma": "es5"
   },
   "scripts": {
     "semantic-release": "semantic-release",
+    "build": "tsc",
     "test": "npm run test:create && npm run nyc_mocha",
     "nyc_mocha": "NODE_ENV=test NO_RELOAD_DB=true nyc mocha",
     "coverage": "codecov",
-    "start": "node server.js",
-    "setup": "./bin/setup.sh",
-    "rebuild_support_tables": "./bin/rebuild_support_tables.js",
-    "setup_test_db": "NODE_ENV=test ./bin/setup_test.sh",
-    "test:seed": "NODE_ENV=test ./bin/generate_test_data.js",
-    "test:create": "NODE_ENV=test ./bin/createTestDb.sh",
-    "test:clear": "NODE_ENV=test ./bin/clearTestDb.sh",
-    "lint": "jshint .",
+    "start": "node dist/server.js",
+    "setup": "bin/setup",
+    "rebuild_support_tables": "bin/rebuild_support_tables",
+    "setup_test_db": "NODE_ENV=test bin/setup_test",
+    "test:seed": "NODE_ENV=test bin/generate_test_data",
+    "test:create": "NODE_ENV=test bin/create_test_db",
+    "postinstall": "npm run build",
+    "test:clear": "NODE_ENV=test bin/clear_test_db",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
     "ejs": "ejs-cli"
   },
   "mocha": {
-    "exit": true,
+    "extension": [
+      "ts",
+      "js"
+    ],
     "reporter": "spec",
-    "fullTrace": true
+    "exit": true,
+    "fullTrace": true,
+    "require": [
+      "ts-node/register",
+      "source-map-support/register"
+    ]
   },
   "bin": {
-    "postcodesio-onspd": "./bin/import.js",
-    "postcodesio-scotpd": "./bin/import_scot.js",
-    "postcodesio-oson": "./bin/import_oson.js"
+    "postcodesio-onspd": "bin/import",
+    "postcodesio-scotpd": "bin/import_scot",
+    "postcodesio-oson": "bin/import_oson"
   },
   "repository": {
     "type": "git",
@@ -52,16 +62,29 @@
     "url": "https://github.com/ideal-postcodes/postcodes.io/issues"
   },
   "nyc": {
+    "cache": false,
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "dist/*",
+      "src/bin/**/*",
+      "**/*.d.ts"
+    ],
+    "extension": [
+      ".js",
+      ".ts",
+      ".tsx"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
     "reporter": [
       "text-summary",
-      "lcov",
       "html"
     ],
-    "all": true,
-    "include": [
-      "app",
-      "config"
-    ]
+    "all": true
   },
   "release": {
     "extends": "@cablanchard/semantic-release"
@@ -86,26 +109,51 @@
     "pg-copy-streams": "~3.0.0",
     "pg-query-stream": "~3.3.2",
     "pino": "~6.7.0",
-    "postcode": "~2.0.0",
-    "prom-client": "~12.0.0",
-    "prompt": "~1.0.0",
-    "serve-favicon": "~2.5.0"
+    "serve-favicon": "~2.5.0",
+    "postcode": "~5.0.0",
+    "prom-client": "~12.0.0"
   },
   "devDependencies": {
     "@cablanchard/semantic-release": "~1.3.3",
+    "@cablanchard/tsconfig": "~1.0.0",
+    "@cablanchard/tslint": "~0.0.1",
+    "@types/async": "~3.2.3",
+    "@types/chai": "~4.2.11",
+    "@types/cors": "~2.8.6",
+    "@types/express": "~4.17.7",
+    "@types/minimist": "~1.2.0",
+    "@types/mocha": "~7.0.2",
+    "@types/morgan": "~1.9.1",
+    "@types/node": "~14.0.19",
+    "@types/pg": "~7.14.4",
+    "@types/pg-copy-streams": "~1.2.1",
+    "@types/pg-query-stream": "~1.0.3",
+    "@types/pino": "~6.3.0",
+    "@types/serve-favicon": "~2.5.0",
+    "@types/supertest": "~2.0.10",
+    "@typescript-eslint/eslint-plugin": "~3.6.0",
+    "@typescript-eslint/parser": "~3.6.0",
     "chai": "~4.2.0",
     "codecov": "~3.8.1",
     "ejs-cli": "~2.2.0",
-    "jshint": "~2.12.0",
+    "es6-promise-pool": "~2.5.0",
+    "eslint": "~7.4.0",
+    "eslint-config-prettier": "~6.11.0",
+    "fast-csv": "~4.3.1",
     "mocha": "~8.2.1",
     "mocha-lcov-reporter": "~1.3.0",
+    "nodemon": "~2.0.4",
     "nyc": "~15.1.0",
     "prettier": "~2.1.2",
-    "random-string": "~0.2.0",
     "semantic-release": "~17.2.2",
-    "supertest": "~6.0.1"
+    "supertest": "~6.0.1",
+    "serve-favicon": "~2.5.0",
+    "source-map-support": "~0.5.19",
+    "ts-node": "~8.10.2",
+    "tslint": "~6.1.2",
+    "typescript": "~3.9.6"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=12.0.0"
   }
 }

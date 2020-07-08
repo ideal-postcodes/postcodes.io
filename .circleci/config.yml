@@ -16,6 +16,7 @@ default_steps: &default_steps
         key: 'nodemodules-deps-{{ checksum "package-lock.json" }}'
         paths:
           - node_modules/
+    - run: "npm run build"
     - run: "npm run test"
     - run: "npm run coverage"
 jobs:
