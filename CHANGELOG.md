@@ -1,3 +1,10 @@
+## [12.0.3](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.2...12.0.3) (2020-07-09)
+
+
+### Bug Fixes
+
+* **NUTS:** Incorporate NUTS updates into latest dataset ([2fb71ae](https://github.com/ideal-postcodes/postcodes.io/commit/2fb71ae9e877f05b5399ac2e81d0f5410f8c5eb7))
+
 ## [12.0.2](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.1...12.0.2) (2020-07-09)
 
 
