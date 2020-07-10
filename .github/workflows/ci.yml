@@ -9,7 +9,10 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version:
+          - 10.x
+          - 12.x
+          - 14.x
 
     steps:
       - uses: actions/checkout@v1
@@ -30,3 +33,8 @@ jobs:
 
       - name: Test
         run: make test
+
+      - name: Coverage
+        run: npm run coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
