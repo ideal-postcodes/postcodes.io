@@ -6,7 +6,7 @@ services:
     depends_on:
       - db
     environment:
-      - POSTGRES_DB=postcodesiodb
+      - POSTGRES_DATABASE=postcodesiodb
       - POSTGRES_PASSWORD=secret
       - POSTGRES_USER=postcodesio
       - POSTGRES_HOST=db
