@@ -3,8 +3,8 @@ import { Pool, PoolClient, QueryResult } from "pg";
 import { from } from "pg-copy-streams";
 // @ts-ignore
 import csv = require("csv");
-import config from "../../config/config";
-const defaults = config();
+import { getConfig } from "../../config/config";
+const defaults = getConfig();
 
 // Instantiate postgres client pool
 const pool = new Pool(defaults.postgres);

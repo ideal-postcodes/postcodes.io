@@ -1,12 +1,12 @@
-"use strict";
-
-const { logger } = require("../app/lib/logger");
-const filter = require("./filter");
-const {
+import { Express } from "express";
+import { logger } from "../app/lib/logger";
+import { filter } from "./filter";
+import { Handler, Response, Request, Next } from "../app/types/express";
+import {
   PostcodesioHttpError,
   InvalidJsonError,
   NotFoundError,
-} = require("../app/lib/errors");
+} from "../app/lib/errors";
 
 const genericError = new PostcodesioHttpError();
 const invalidJsonError = new InvalidJsonError();
@@ -18,7 +18,7 @@ const notFoundError = new NotFoundError();
  * CORS is enabled at this layer.
  * If JSONP is detected, a 200 response is returned regardless of success.
  */
-const renderer = (request, response, next) => {
+const renderer: Handler = (request, response, next) => {
   const jsonResponse = response.jsonApiResponse;
   if (!jsonResponse) return next();
   if (request.query.callback) return response.status(200).jsonp(jsonResponse);
@@ -27,23 +27,26 @@ const renderer = (request, response, next) => {
 
 /**
  * Applies an instance of PostcodesioHttpError to a response
- * @param {Express.Response} res - Express response object
- * @param {PostcodesioHttpError} err - PostcodesioHttpError instance
- * @returns {undefined}
  */
-const applyError = (res, err) => res.status(err.status).json(err.toJSON());
+const applyError = (res: Response, err: PostcodesioHttpError) =>
+  res.status(err.status).json(err.toJSON());
 
 /**
  * Handles Requests that have resulted in an error. Invoked by next(someError)
  */
-const errorRenderer = (error, request, response, next) => {
+const errorRenderer = (
+  error: Error,
+  request: Request,
+  response: Response,
+  next: Next
+) => {
   /*jshint unused: false */
   logger.error({ error: error.message });
 
   //check if bodyParser.json() fails to parse JSON request
   if (
     error instanceof SyntaxError &&
-    error.status === 400 &&
+    (error as any).status === 400 &&
     request.method === "POST"
   )
     return applyError(response, invalidJsonError);
@@ -57,9 +60,10 @@ const errorRenderer = (error, request, response, next) => {
 /**
  *	Handles requests that have fallen through middleware stack by returning a 404
  */
-const notFoundRenderer = (_, res) => applyError(res, notFoundError);
+const notFoundRenderer = (_: unknown, res: Response) =>
+  applyError(res, notFoundError);
 
-module.exports = (app) => {
+export const rendererConfig = (app: Express) => {
   app.use(filter);
   app.use(renderer);
   app.use(errorRenderer);

@@ -25,9 +25,9 @@ const {
   PLACESNEAREST_RADIUS_MAX,
 } = process.env;
 
-const { parseEnv } = require("../app/lib/env");
+import { parseEnv } from "../app/lib/env";
 
-module.exports = {
+export const defaults = {
   nearest: {
     radius: {
       DEFAULT: parseEnv(NEAREST_RADIUS_DEFAULT, 100),

@@ -1,4 +1,4 @@
-import { default as Pc } from "postcode";
+import { isValid, validOutcode } from "postcode";
 import { Outcode, OutcodeInterface, OutcodeTuple } from "./outcode";
 import { QueryResult } from "pg";
 import {
@@ -12,10 +12,10 @@ import {
   csvExtractor,
 } from "./base";
 import QueryStream from "pg-query-stream";
-import Config from "../../config/config";
+import { getConfig } from "../../config/config";
 import { InvalidGeolocationError } from "../lib/errors";
 
-const { defaults } = Config();
+const { defaults } = getConfig();
 const extractOnspdVal = csvExtractor(
   require("../../../data/onspd_schema.json")
 );
@@ -266,7 +266,7 @@ const findQuery = `
 const find = async (postcode: string): Promise<PostcodeTuple | null> => {
   if (postcode == null) postcode = "";
   postcode = postcode.trim().toUpperCase();
-  if (!new Pc(postcode).valid()) return null;
+  if (isValid(postcode)) return null;
   const result = await query<PostcodeTuple>(findQuery, [
     postcode.replace(/\s/g, ""),
   ]);
@@ -387,7 +387,7 @@ export const search = async (
     return matches;
   };
 
-  if (Pc.validOutcode(postcode)) {
+  if (validOutcode(postcode)) {
     const r = await searchPostcode({ ...options, query: `${postcode} ` });
     if (extractPartialMatches(r.rows).length > 0) return parse(r);
   }
@@ -694,7 +694,7 @@ interface OutcodeTupleOutput {
 const findOutcode = async (o: string): Promise<OutcodeInterface | null> => {
   const outcode = o.trim().toUpperCase();
 
-  if (!Pc.validOutcode(outcode) && outcode !== "GIR") return null;
+  if (validOutcode(outcode) && outcode !== "GIR") return null;
 
   const { rows } = await query<OutcodeTupleOutput>(outcodeQuery, [outcode]);
   if (rows.length === 0) return null;

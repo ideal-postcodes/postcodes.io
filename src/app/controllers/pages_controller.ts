@@ -1,29 +1,18 @@
-import appConfig from "../../config/config";
-import { Request, Response } from "../types/express";
+import { getConfig } from "../../config/config";
+import { Handler } from "../types/express";
 
-const config = appConfig();
+const config = getConfig();
+const ga = config.googleAnalyticsKey;
+const mapBoxKey = config.mapBoxKey;
 
-export const home = (request: Request, response: Response) => {
-  response.render("pages/home", {
-    ga: config.googleAnalyticsKey,
-  });
-};
+export const home: Handler = (request, response) =>
+  response.render("pages/home", { ga });
 
-export const documentation = (request: Request, response: Response) => {
-  response.render("pages/documentation", {
-    ga: config.googleAnalyticsKey,
-  });
-};
+export const documentation: Handler = (request, response) =>
+  response.render("pages/documentation", { ga });
 
-export const about = (request: Request, response: Response) => {
-  response.render("pages/about", {
-    ga: config.googleAnalyticsKey,
-  });
-};
+export const about: Handler = (request, response) =>
+  response.render("pages/about", { ga });
 
-export const explore = (request: Request, response: Response) => {
-  response.render("pages/explore", {
-    ga: config.googleAnalyticsKey,
-    mapBoxKey: config.mapBoxKey,
-  });
-};
+export const explore: Handler = (request, response) =>
+  response.render("pages/explore", { ga, mapBoxKey });

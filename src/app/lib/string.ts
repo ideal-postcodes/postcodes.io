@@ -9,3 +9,10 @@ export const isEmpty = (str: string): boolean => {
 };
 
 export const toString = (value: unknown): string => value.toString();
+
+const isString = (value: unknown): value is string => typeof value === "string";
+
+export const qToString = (value: unknown): string | null => {
+  if (isString(value)) return value;
+  return null;
+};

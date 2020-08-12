@@ -5,3 +5,7 @@ interface RouteResponse extends Response {
 }
 
 export { NextFunction as Next, Request, RouteResponse as Response };
+
+export interface Handler {
+  (request: Request, response: RouteResponse, next: NextFunction): void;
+}

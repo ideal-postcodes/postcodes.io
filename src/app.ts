@@ -1,18 +1,17 @@
 import express from "express";
+import { Config } from "./config/config";
 import logger from "./config/logger";
-import db from "./config/db";
-import expressConfig from "./config/express";
-import prometheus from "./config/prometheus";
-import routes from "./config/routes";
-import renderer from "./config/renderer";
+import { expressConfig } from "./config/express";
+import { prometheusConfig } from "./config/prometheus";
+import { routes } from "./config/routes";
+import { rendererConfig } from "./config/renderer";
 
-export = (config: any) => {
+export = (config: Config): express.Express => {
   const app = express();
   logger(app, config);
-  db();
   expressConfig(app, config);
-  prometheus(app, config);
+  prometheusConfig(app, config);
   routes(app);
-  renderer(app);
+  rendererConfig(app);
   return app;
 };

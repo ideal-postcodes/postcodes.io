@@ -14,7 +14,6 @@ your previous dataset
 Type 'YES' to continue
 `;
 
-//@ts-ignore
 import { query } from "../app/models/base";
 import { Postcode, TerminatedPostcode, Outcode } from "../app/models";
 import { setupSupportTables } from "../app/lib/setup";
@@ -26,42 +25,28 @@ if (!source) {
   process.exit(1);
 }
 
-const createPostgisExtension = async () => {
-  console.log("Enabling POSTGIS extension...");
-  await query("CREATE EXTENSION IF NOT EXISTS postgis");
-};
-
-const setupTerminatedPostcodesTable = async () => {
-  console.log("Building terminated postcodes table...");
-  await TerminatedPostcode.destroyRelation();
-  await TerminatedPostcode.setupTable(source);
-};
-
-const setupOutcodeTable = async () => {
-  console.log("Building outcodes table...");
-  await Outcode.destroyRelation();
-  await Outcode.setupTable();
-};
-
-const setupPostcodesTable = async () => {
-  console.log("Building postcodes table...");
-  await Postcode.destroyRelation();
-  await Postcode.setupTable(source);
-};
-
-const setupDataTables = async () => {
-  console.log("Setting up support tables...");
-  await setupSupportTables();
-};
-
 const run = async () => {
   try {
     const start = process.hrtime();
-    await createPostgisExtension();
-    await setupPostcodesTable();
-    await setupTerminatedPostcodesTable();
-    await setupDataTables();
-    await setupOutcodeTable();
+
+    console.log("Enabling POSTGIS extension...");
+    await query("CREATE EXTENSION IF NOT EXISTS postgis");
+
+    console.log("Building postcodes table...");
+    await Postcode.destroyRelation();
+    await Postcode.setupTable(source);
+
+    console.log("Building terminated postcodes table...");
+    await TerminatedPostcode.destroyRelation();
+    await TerminatedPostcode.setupTable(source);
+
+    console.log("Setting up support tables...");
+    await setupSupportTables();
+
+    console.log("Building outcodes table...");
+    await Outcode.destroyRelation();
+    await Outcode.setupTable();
+
     console.log(
       `Finished import process in ${process.hrtime(start)[0]} seconds`
     );

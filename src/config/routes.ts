@@ -1,14 +1,13 @@
-"use strict";
+import { Express } from "express";
+import * as pages from "../app/controllers/pages_controller";
+import * as utils from "../app/controllers/utils_controller";
+import * as places from "../app/controllers/places_controller";
+import * as outcodes from "../app/controllers/outcodes_controller";
+import * as postcodes from "../app/controllers/postcodes_controller";
+import * as scottishPostcodes from "../app/controllers/scottish_postcodes_controller";
+import * as terminatedPostcodes from "../app/controllers/terminated_postcodes_controller";
 
-const pages = require("../app/controllers/pages_controller");
-const utils = require("../app/controllers/utils_controller");
-const places = require("../app/controllers/places_controller");
-const outcodes = require("../app/controllers/outcodes_controller");
-const postcodes = require("../app/controllers/postcodes_controller");
-const scottishPostcodes = require("../app/controllers/scottish_postcodes_controller");
-const terminatedPostcodes = require("../app/controllers/terminated_postcodes_controller");
-
-module.exports = (app) => {
+export const routes = (app: Express): void => {
   app.get("/", pages.home);
   app.get("/ping", utils.ping);
   app.get("/about", pages.about);

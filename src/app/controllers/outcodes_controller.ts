@@ -1,6 +1,6 @@
 import { Outcode } from "../models/outcode";
-import { toString } from "../lib/string";
-import { Request, Response, Next } from "../types/express";
+import { qToString } from "../lib/string";
+import { Handler } from "../types/express";
 
 import {
   OutcodeNotFoundError,
@@ -9,21 +9,19 @@ import {
   InvalidGeolocationError,
 } from "../lib/errors";
 
-export const query = (
-  request: Request,
-  response: Response,
-  next: Next
-): void => {
-  if (request.query.latitude && request.query.longitude) {
-    request.params.latitude = <string>request.query.latitude;
-    request.params.longitude = <string>request.query.longitude;
+export const query: Handler = (request, response, next): void => {
+  const { lat, lon, longitude, latitude } = request.query;
+
+  if (latitude && longitude) {
+    request.params.latitude = qToString(latitude);
+    request.params.longitude = qToString(longitude);
     nearestOutcodes(request, response, next);
     return;
   }
 
-  if (request.query.lat && request.query.lon) {
-    request.params.latitude = <string>request.query.lat;
-    request.params.longitude = <string>request.query.lon;
+  if (lat && lon) {
+    request.params.latitude = qToString(lat);
+    request.params.longitude = qToString(lon);
     nearestOutcodes(request, response, next);
     return;
   }
@@ -31,11 +29,7 @@ export const query = (
   return next(new InvalidGeolocationError());
 };
 
-export const showOutcode = async (
-  request: Request,
-  response: Response,
-  next: Next
-) => {
+export const showOutcode: Handler = async (request, response, next) => {
   try {
     const { outcode } = request.params;
 
@@ -51,52 +45,29 @@ export const showOutcode = async (
   }
 };
 
-export const nearest = async (
-  request: Request,
-  response: Response,
-  next: Next
-) => {
+export const nearest: Handler = async (request, response, next) => {
   try {
     const { outcode } = request.params;
-    const outCode = await Outcode.find(outcode);
-    if (!outCode) return next(new OutcodeNotFoundError());
-    request.params.longitude = toString(outCode.longitude);
-    request.params.latitude = toString(outCode.latitude);
+    const result = await Outcode.find(outcode);
+    if (!result) return next(new OutcodeNotFoundError());
+    request.params.longitude = qToString(result.longitude);
+    request.params.latitude = qToString(result.latitude);
     nearestOutcodes(request, response, next);
   } catch (error) {
     next(error);
   }
 };
 
-const nearestOutcodes = async (
-  request: Request,
-  response: Response,
-  next: Next
-) => {
+const nearestOutcodes: Handler = async (request, response, next) => {
   try {
-    const longitude = request.params.longitude;
-    const latitude = request.params.latitude;
-    let limit, radius;
-    const params = {
+    const { longitude, latitude, limit, radius } = request.params;
+    const results = await Outcode.nearest({
       longitude,
       latitude,
-    };
+      limit,
+      radius,
+    });
 
-    if (isNaN(parseFloat(longitude)) || isNaN(parseFloat(latitude)))
-      return next(new InvalidGeolocationError());
-    if (request.query.limit) {
-      limit = parseInt(<string>request.query.limit, 10);
-      if (isNaN(limit)) return next(new InvalidLimitError());
-      Object.assign(params, { limit });
-    }
-
-    if (request.query.radius) {
-      radius = parseFloat(<string>request.query.radius);
-      if (isNaN(radius)) return next(new InvalidRadiusError());
-      Object.assign(params, { radius });
-    }
-
-    const results = await Outcode.nearest(params);
     response.jsonApiResponse = {
       status: 200,
       result: results

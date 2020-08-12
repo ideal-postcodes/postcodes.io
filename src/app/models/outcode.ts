@@ -1,7 +1,8 @@
 import { generateMethods, query } from "./base";
 import { Postcode } from "./postcode";
-import Config from "../../config/config";
-const { defaults } = Config();
+import { InvalidGeolocationError } from "../lib/errors";
+import { getConfig } from "../../config/config";
+const { defaults } = getConfig();
 
 export interface OutcodeTuple extends OutcodeInterface {
   id: number;
@@ -116,10 +117,10 @@ const nearest = async (params: NearestOptions) => {
   if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 
   const longitude = parseFloat(params.longitude);
-  if (isNaN(longitude)) throw new Error("Invalid longitude");
+  if (isNaN(longitude)) throw new InvalidGeolocationError();
 
   const latitude = parseFloat(params.latitude);
-  if (isNaN(latitude)) throw new Error("Invalid latitude");
+  if (isNaN(latitude)) throw new InvalidGeolocationError();
 
   let radius = parseFloat(params.radius) || DEFAULT_RADIUS;
   if (radius > MAX_RADIUS) radius = MAX_RADIUS;
@@ -146,7 +147,9 @@ const nearest = async (params: NearestOptions) => {
     radius,
     limit,
   ]);
+
   if (result.rows.length === 0) return null;
+
   return result.rows;
 };
 

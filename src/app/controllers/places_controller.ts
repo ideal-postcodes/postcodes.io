@@ -1,12 +1,9 @@
 import { Place } from "../models/place";
+import { qToString } from "../lib/string";
 import { PlaceNotFoundError, InvalidQueryError } from "../lib/errors";
-import { Request, Response, Next } from "../types/express";
+import { Handler, Response, Next } from "../types/express";
 
-export const show = async (
-  request: Request,
-  response: Response,
-  next: Next
-) => {
+export const show: Handler = async (request, response, next) => {
   try {
     const { id } = request.params;
     const place = await Place.findByCode(id.toLowerCase());
@@ -21,11 +18,7 @@ export const show = async (
   }
 };
 
-export const random = async (
-  request: Request,
-  response: Response,
-  next: Next
-) => {
+export const random: Handler = async (request, response, next) => {
   try {
     const place = await Place.random();
     response.jsonApiResponse = {
@@ -38,43 +31,23 @@ export const random = async (
   }
 };
 
-export const query = async (
-  request: Request,
-  response: Response,
-  next: Next
-): Promise<void> => {
-  try {
-    const query = request.query.query || request.query.q;
-    if (query) {
-      await searchPlace(request, response, next);
-    } else {
-      throw new InvalidQueryError();
-    }
-  } catch (error) {
-    next(error);
-  }
+export const query: Handler = (request, response, next) => {
+  const q = request.query.query || request.query.q;
+  if (!q) return next(new InvalidQueryError());
+  searchPlace(request, response, next);
 };
 
 const returnEmptyResponse = (response: Response, next: Next): void => {
-  response.jsonApiResponse = {
-    status: 200,
-    result: [],
-  };
+  response.jsonApiResponse = { status: 200, result: [] };
   next();
 };
 
-const searchPlace = async (
-  request: Request,
-  response: Response,
-  next: Next
-): Promise<void> => {
+const searchPlace: Handler = async (request, response, next) => {
   try {
-    const name: string = <string>request.query.query || <string>request.query.q;
+    const name = qToString(request.query.query || request.query.q) || "";
     if (name.trim().length === 0) return returnEmptyResponse(response, next);
 
-    let limit =
-      parseInt(<string>request.query.limit, 10) ||
-      parseInt(<string>request.query.l, 10);
+    let limit = parseInt(qToString(request.query.limit || request.query.l), 10);
     //if NAN make it undefined
     if (isNaN(limit)) limit = undefined;
 

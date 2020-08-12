@@ -1,8 +1,4 @@
-"use strict";
-
 /**
- * config.js
- *
  * This file exports default configurations across test, development and
  * production environments. If you wish to modify configuration, please use
  * environment variables or the .env file
@@ -15,13 +11,44 @@
  */
 
 // Load .env into environment variables
-require("dotenv").config();
 
-const { join } = require("path");
-const defaults = require("./defaults");
+import { config as dotenv } from "dotenv";
+dotenv();
+
+import { join } from "path";
+import { defaults } from "./defaults";
+
 const defaultEnv = process.env.NODE_ENV || "development";
 
-const config = {
+export type Env = "development" | "test" | "production";
+
+interface PostgresConfig {
+  user: string;
+  password: string;
+  database: string;
+  host: string;
+  port: number;
+}
+
+interface LogConfig {
+  name: string;
+  file: string;
+}
+
+export interface Config {
+  googleAnalyticsKey: string;
+  postgres: PostgresConfig;
+  log: LogConfig;
+  port: number;
+  serveStaticAssets: boolean;
+  defaults: any;
+  mapBoxKey?: string;
+  httpHeaders?: Record<string, string>;
+  prometheusUsername?: string;
+  prometheusPassword?: string;
+}
+
+const config: Record<Env, Config> = {
   development: {
     googleAnalyticsKey: "",
     postgres: {
@@ -37,6 +64,7 @@ const config = {
     },
     port: 8000,
     serveStaticAssets: true,
+    defaults,
   },
 
   test: {
@@ -54,6 +82,7 @@ const config = {
     },
     port: 8000,
     serveStaticAssets: true,
+    defaults,
   },
 
   production: {
@@ -71,15 +100,14 @@ const config = {
     },
     port: 8000,
     serveStaticAssets: false,
+    defaults,
   },
 };
 
-module.exports = (env) => {
+export const getConfig = (env?: Env): Config => {
   const environment = env || defaultEnv;
 
-  const cfg = config[environment];
-
-  cfg.defaults = defaults;
+  const cfg = config[environment as Env];
 
   const {
     PORT,
@@ -98,7 +126,7 @@ module.exports = (env) => {
     HTTP_HEADERS,
   } = process.env;
 
-  if (PORT !== undefined) cfg.port = PORT;
+  if (PORT !== undefined) cfg.port = parseInt(PORT, 10);
 
   if (MAPBOX_PUBLIC_KEY !== undefined || !cfg.mapBoxKey) {
     cfg.mapBoxKey = process.env.MAPBOX_PUBLIC_KEY || "";
@@ -110,7 +138,8 @@ module.exports = (env) => {
   if (POSTGRES_DATABASE !== undefined)
     cfg.postgres.database = POSTGRES_DATABASE;
   if (POSTGRES_HOST !== undefined) cfg.postgres.host = POSTGRES_HOST;
-  if (POSTGRES_PORT !== undefined) cfg.postgres.port = POSTGRES_PORT;
+  if (POSTGRES_PORT !== undefined)
+    cfg.postgres.port = parseInt(POSTGRES_PORT, 10);
 
   if (LOG_NAME !== undefined) cfg.log.name = LOG_NAME;
   if (LOG_DESTINATION !== undefined) cfg.log.file = LOG_DESTINATION;

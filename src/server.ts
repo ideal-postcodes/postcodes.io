@@ -1,13 +1,14 @@
-"use strict";
-
-const config = require("./config/config")();
-const app = require("./app")(config);
-const { logger } = require("./app/lib/logger");
+import { Express } from "express";
+import { getConfig } from "./config/config";
+const config = getConfig();
+import App from "./app";
+const app = App(config);
+import { logger } from "./app/lib/logger";
 const { port } = config;
 
 const server = app.listen(port);
 
-const closeSocket = (_, socket) => {
+const closeSocket = (_: unknown, socket: any) => {
   if (!socket.destroyed) socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
 };
 server.on("clientError", closeSocket);

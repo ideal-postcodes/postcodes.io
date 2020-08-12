@@ -1,5 +1,5 @@
-import config from "../../config/config";
-const { defaults } = config();
+import { getConfig } from "../../config/config";
+const { defaults } = getConfig();
 
 const DEFAULT_STATUS_CODE = 500;
 const DEFAULT_MESSAGE = `500 Server Error.

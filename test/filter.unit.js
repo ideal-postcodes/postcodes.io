@@ -1,7 +1,7 @@
 "use strict";
 
 const assert = require("chai").assert;
-const filter = require("../src/config/filter");
+const { filter } = require("../src/config/filter");
 const bulkPostcodeResult = require("./seed/bulk_postcode.json");
 const bulkGeocodingResult = require("./seed/bulk_geocoding.json");
 const cloneObject = (o) => JSON.parse(JSON.stringify(o));
