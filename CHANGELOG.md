@@ -1,3 +1,10 @@
+# [12.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.4...12.1.0) (2020-08-24)
+
+
+### Features
+
+* **ONSPD:** Bump to ONSP Aug 2020 ([64f9831](https://github.com/ideal-postcodes/postcodes.io/commit/64f9831a023b123ca9b98d407da0093a40e33ed8))
+
 ## [12.0.4](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.3...12.0.4) (2020-08-23)
 
 
