@@ -11,7 +11,7 @@ const { extract } = require("./index");
 const CODE_OFFSET = 0;
 const VALUE_OFFSET = 1;
 
-const transform = row => {
+const transform = (row) => {
   const code = row[CODE_OFFSET];
   const value = row[VALUE_OFFSET];
   if (code === "WD19CD") return []; // Escape if header

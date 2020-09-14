@@ -26,7 +26,7 @@ const CODE_OFFSET = 0;
 const NUTS_CODE_OFFSET = 4;
 const VALUE_OFFSET = 5;
 
-const transform = row => {
+const transform = (row) => {
   const code = row[CODE_OFFSET];
   const nutsCode = row[NUTS_CODE_OFFSET];
   const value = row[VALUE_OFFSET];
@@ -42,7 +42,7 @@ const transform = row => {
 
 const configs = [
   {
-    file: "LAU219_LAU119_NUTS18_MAY_2019_UK_LU.csv",
+    file: "LAU218_LAU118_NUTS318_NUTS218_NUTS118_UK_LU.csv",
     transform,
     parseOptions: {
       delimiter: ",",

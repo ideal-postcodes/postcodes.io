@@ -1,4 +1,8 @@
 {
+  "CCG20CD": {
+    "ccg19cdh": "CCG20CDH",
+    "name": "CCG20NM"
+  },
   "E38000001": {
     "ccg19cdh": "02N",
     "name": "NHS Airedale, Wharfedale and Craven"
@@ -762,6 +766,78 @@
   "E38000230": {
     "ccg19cdh": "15N",
     "name": "NHS Devon"
+  },
+  "E38000231": {
+    "ccg19cdh": "92G",
+    "name": "NHS Bath and North East Somerset, Swindon and Wiltshire"
+  },
+  "E38000232": {
+    "ccg19cdh": "36J",
+    "name": "NHS Bradford District and Craven"
+  },
+  "E38000233": {
+    "ccg19cdh": "27D",
+    "name": "NHS Cheshire"
+  },
+  "E38000234": {
+    "ccg19cdh": "84H",
+    "name": "NHS County Durham"
+  },
+  "E38000235": {
+    "ccg19cdh": "97R",
+    "name": "NHS East Sussex"
+  },
+  "E38000236": {
+    "ccg19cdh": "18C",
+    "name": "NHS Herefordshire and Worcestershire"
+  },
+  "E38000237": {
+    "ccg19cdh": "91Q",
+    "name": "NHS Kent and Medway"
+  },
+  "E38000238": {
+    "ccg19cdh": "71E",
+    "name": "NHS Lincolnshire"
+  },
+  "E38000239": {
+    "ccg19cdh": "26A",
+    "name": "NHS Norfolk and Waveney"
+  },
+  "E38000240": {
+    "ccg19cdh": "93C",
+    "name": "NHS North Central London"
+  },
+  "E38000241": {
+    "ccg19cdh": "42D",
+    "name": "NHS North Yorkshire"
+  },
+  "E38000242": {
+    "ccg19cdh": "78H",
+    "name": "NHS Northamptonshire"
+  },
+  "E38000243": {
+    "ccg19cdh": "52R",
+    "name": "NHS Nottingham and Nottinghamshire"
+  },
+  "E38000244": {
+    "ccg19cdh": "72Q",
+    "name": "NHS South East London"
+  },
+  "E38000245": {
+    "ccg19cdh": "36L",
+    "name": "NHS South West London"
+  },
+  "E38000246": {
+    "ccg19cdh": "92A",
+    "name": "NHS Surrey Heartlands"
+  },
+  "E38000247": {
+    "ccg19cdh": "16C",
+    "name": "NHS Tees Valley"
+  },
+  "E38000248": {
+    "ccg19cdh": "70F",
+    "name": "NHS West Sussex"
   },
   "M01000001": {
     "ccg19cdh": "YK1",

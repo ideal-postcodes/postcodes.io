@@ -1,8 +1,4 @@
 $( document ).ready(function() {
-	$(".rest-resource").focus(function () {
-		$(this).val("");
-	});
-
 	var displayJsonResult = function ($context, data) {
 		$context.html(JSON.stringify(data, null, 4)).slideDown();
 	}

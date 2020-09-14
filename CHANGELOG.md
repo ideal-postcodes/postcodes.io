@@ -1,6 +1,70 @@
+# [12.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.4...12.1.0) (2020-08-24)
+
+
+### Features
+
+* **ONSPD:** Bump to ONSP Aug 2020 ([64f9831](https://github.com/ideal-postcodes/postcodes.io/commit/64f9831a023b123ca9b98d407da0093a40e33ed8))
+
+## [12.0.4](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.3...12.0.4) (2020-08-23)
+
+
+### Bug Fixes
+
+* **SPD:** Correct and ingest invalid SPD postcodes ([954469c](https://github.com/ideal-postcodes/postcodes.io/commit/954469cd2c7f461182e931ba3c2550edbaedadf4))
+
+## [12.0.3](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.2...12.0.3) (2020-07-09)
+
+
+### Bug Fixes
+
+* **NUTS:** Incorporate NUTS updates into latest dataset ([2fb71ae](https://github.com/ideal-postcodes/postcodes.io/commit/2fb71ae9e877f05b5399ac2e81d0f5410f8c5eb7))
+
+## [12.0.2](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.1...12.0.2) (2020-07-09)
+
+
+### Bug Fixes
+
+* **NUTS:** Add missing NUTS from ONSPD May 2020 ([869e264](https://github.com/ideal-postcodes/postcodes.io/commit/869e2648447efc5803fdfa781bca868311b2377f))
+
+## [12.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.0...12.0.1) (2020-07-02)
+
+
+### Bug Fixes
+
+* **Demo:** Don't clear input on click ([8f70d0e](https://github.com/ideal-postcodes/postcodes.io/commit/8f70d0e9b8a844364047ce1baca47a8c332fef32)), closes [#541](https://github.com/ideal-postcodes/postcodes.io/issues/541)
+
+# [12.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/11.1.0...12.0.0) (2020-06-22)
+
+
+### Bug Fixes
+
+* **a11y:** add title attributes to iframe elements and structure headings on page ([65ca5a3](https://github.com/ideal-postcodes/postcodes.io/commit/65ca5a3efaa53db39bb8263ed5cb5f45685a88ee))
+
+
+### chore
+
+* **Node:** Deprecate node 8, switch to node 12 LTS ([e8d211c](https://github.com/ideal-postcodes/postcodes.io/commit/e8d211c98bbc583061cfb8200a5d75c460cca7a7))
+
+
+### Features
+
+* **Data:** Update ONSPD, Open Names, SPD ([a92a91a](https://github.com/ideal-postcodes/postcodes.io/commit/a92a91a5a0ba76886c10fbc7016c3044ca073b87))
+
+
+### BREAKING CHANGES
+
+* **Node:** Node 8 no longer supported
+
 # Changelog
 
 Any changes, including backwards incompatible changes will be listed here
+
+## 11.1.0 (6/3/2020)
+
+- Updated ONSPD to Feb 2020
+- Updated Open Names to Jan 2020
+- Updated GSS codes for missing parishes
+- Chore: Refactored static ejs templates
 
 ## 11.0.1 (6/1/2020)
 
