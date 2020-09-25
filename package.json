@@ -103,7 +103,7 @@
     "prettier": "~2.1.2",
     "random-string": "~0.2.0",
     "semantic-release": "~17.1.2",
-    "supertest": "~4.0.2"
+    "supertest": "~5.0.0"
   },
   "engines": {
     "node": ">=10.0.0"
