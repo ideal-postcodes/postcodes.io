@@ -467,11 +467,11 @@ const nearestPostcodeQuery = `
 	LIMIT $4
 `;
 
-interface NearestPostcodeTuple extends PostcodeTuple {
+export interface NearestPostcodeTuple extends PostcodeTuple {
   distance: number;
 }
 
-interface NearestPostcodesOptions {
+export interface NearestPostcodesOptions {
   longitude: string;
   latitude: string;
   limit?: string;

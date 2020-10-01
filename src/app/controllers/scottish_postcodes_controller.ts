@@ -1,4 +1,4 @@
-import { Request, Response, Next } from "../types/express";
+import { Handler } from "../types/express";
 import { ScottishPostcode } from "../models/scottish_postcode";
 import { Postcode } from "../models/postcode";
 import Pc from "postcode";
@@ -8,11 +8,7 @@ import {
   PostcodeNotInSpdError,
 } from "../lib/errors";
 
-export const show = async (
-  request: Request,
-  response: Response,
-  next: Next
-) => {
+export const show: Handler = async (request, response, next) => {
   try {
     const { postcode } = request.params;
     if (!Pc.isValid(postcode.trim())) throw new InvalidPostcodeError();

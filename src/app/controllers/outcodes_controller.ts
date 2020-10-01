@@ -2,12 +2,7 @@ import { Outcode } from "../models/outcode";
 import { qToString } from "../lib/string";
 import { Handler } from "../types/express";
 
-import {
-  OutcodeNotFoundError,
-  InvalidLimitError,
-  InvalidRadiusError,
-  InvalidGeolocationError,
-} from "../lib/errors";
+import { OutcodeNotFoundError, InvalidGeolocationError } from "../lib/errors";
 
 export const query: Handler = (request, response, next): void => {
   const { lat, lon, longitude, latitude } = request.query;

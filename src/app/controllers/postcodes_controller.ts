@@ -1,4 +1,3 @@
-import async from "async";
 import { isEmpty, qToString } from "../lib/string";
 import { Postcode } from "../models/postcode";
 import { isValid } from "postcode";
@@ -11,12 +10,14 @@ import {
   ExceedMaxGeolocationsError,
   ExceedMaxPostcodesError,
   PostcodeQueryRequiredError,
-  InvalidGeolocationError,
-  InvalidLimitError,
-  InvalidRadiusError,
 } from "../lib/errors";
 import { Handler } from "../types/express";
-import { Callback } from "../types/util";
+import {
+  PostcodeTuple,
+  PostcodeInterface,
+  NearestPostcodeTuple,
+  NearestPostcodesOptions,
+} from "../models/postcode";
 
 const { defaults } = getConfig();
 
@@ -71,6 +72,11 @@ const MAX_GEOLOCATIONS = defaults.bulkGeocode.geolocations.MAX;
 const GEO_ASYNC_LIMIT =
   defaults.bulkGeocode.geolocations.ASYNC_LIMIT || MAX_GEOLOCATIONS;
 
+interface LookupGeolocationResult {
+  query: { [index: string]: unknown };
+  result: null | (PostcodeInterface | NearestPostcodeTuple)[];
+}
+
 const bulkGeocode: Handler = async (request, response, next) => {
   try {
     const { geolocations } = request.body;
@@ -79,12 +85,16 @@ const bulkGeocode: Handler = async (request, response, next) => {
     if (geolocations.length > MAX_GEOLOCATIONS)
       return next(new ExceedMaxGeolocationsError());
 
-    const lookupGeolocation = async (location: any): Promise<any> => {
+    const lookupGeolocation = async (
+      location: NearestPostcodesOptions
+    ): Promise<LookupGeolocationResult> => {
       const postcodes = await Postcode.nearestPostcodes(location);
-      if (!postcodes) return { query: location, result: null };
+      let result = null;
+      if (postcodes)
+        result = postcodes.map((postcode) => Postcode.toJson(postcode));
       return {
         query: sanitizeQuery(location),
-        result: postcodes.map((postcode) => Postcode.toJson(postcode)),
+        result,
       };
     };
 
@@ -96,11 +106,11 @@ const bulkGeocode: Handler = async (request, response, next) => {
       "widesearch",
     ];
 
-    const sanitizeQuery = (q: Record<string, unknown>) => {
+    const sanitizeQuery = (q: NearestPostcodesOptions) => {
       const result: { [index: string]: unknown } = {};
-      for (const attr in q) {
-        if (whitelist.indexOf(attr.toLowerCase()) !== -1) {
-          result[attr] = q[attr];
+      for (const [key, value] of Object.entries(q)) {
+        if (whitelist.indexOf(key.toLowerCase()) !== -1) {
+          result[key] = value;
         }
       }
       return result;
@@ -202,7 +212,9 @@ export const autocomplete: Handler = async (request, response, next) => {
     });
     response.jsonApiResponse = {
       status: 200,
-      result: results ? results.map((elem: any) => elem.postcode) : null,
+      result: results
+        ? results.map((elem: PostcodeTuple) => elem.postcode)
+        : null,
     };
     next();
   } catch (error) {
