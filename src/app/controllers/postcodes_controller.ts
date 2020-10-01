@@ -79,7 +79,7 @@ const bulkGeocode: Handler = async (request, response, next) => {
     if (geolocations.length > MAX_GEOLOCATIONS)
       return next(new ExceedMaxGeolocationsError());
 
-    const lookupGeolocation = async (location: any) => {
+    const lookupGeolocation = async (location: any): Promise<any> => {
       const postcodes = await Postcode.nearestPostcodes(location);
       if (!postcodes) return { query: location, result: null };
       return {
