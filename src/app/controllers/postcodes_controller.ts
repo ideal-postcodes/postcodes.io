@@ -90,8 +90,12 @@ const bulkGeocode: Handler = async (request, response, next) => {
     ): Promise<LookupGeolocationResult> => {
       const postcodes = await Postcode.nearestPostcodes(location);
       let result = null;
-      if (postcodes)
+      //console.log("CHECK POSTCODES", postcodes);
+      if (postcodes.length > 0) {
+        //console.log("SHOULD MAP");
         result = postcodes.map((postcode) => Postcode.toJson(postcode));
+      }
+      //console.log("CHECK", result);
       return {
         query: sanitizeQuery(location),
         result,
@@ -136,15 +140,24 @@ const MAX_POSTCODES = defaults.bulkLookups.postcodes.MAX;
 const BULK_ASYNC_LIMIT =
   defaults.bulkLookups.postcodes.ASYNC_LIMIT || MAX_POSTCODES;
 
+interface BulkLookupPostcodesResult {
+  query: string;
+  result: null | PostcodeInterface | NearestPostcodeTuple;
+}
+
 const bulkLookupPostcodes: Handler = async (request, response, next) => {
   try {
     const { postcodes } = request.body;
+    console.log(postcodes);
     if (!Array.isArray(postcodes)) return next(new JsonArrayRequiredError());
     if (postcodes.length > MAX_POSTCODES)
       return next(new ExceedMaxPostcodesError());
 
-    const lookupPostcode = async (postcode: string) => {
+    const lookupPostcode = async (
+      postcode: string
+    ): Promise<BulkLookupPostcodesResult> => {
       const postcodeInfo = await Postcode.find(postcode);
+      console.log("POSTCODE INFO CHECK", postcodeInfo);
       if (!postcodeInfo) return { query: postcode, result: null };
       return {
         query: postcode,
