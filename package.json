@@ -82,7 +82,7 @@
     "morgan": "~1.10.0",
     "node.extend": "~2.0.2",
     "ospoint": "~0.2.1",
-    "pg": "~8.3.3",
+    "pg": "~8.4.0",
     "pg-copy-streams": "~3.0.0",
     "pg-query-stream": "~3.2.3",
     "pino": "~6.6.0",
