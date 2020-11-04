@@ -1,8 +1,9 @@
 /**
  * PG helper methods
  */
+import * as Base from "../../src/app/models/base";
 
-const { Base, query } = require("../../src/app/models/index");
+const query = Base.query;
 
 // Credit: https://www.peterbe.com/plog/select-all-relations-in-postgresql
 const databaseRelationsQuery = `
@@ -27,7 +28,7 @@ const databaseRelationsQuery = `
 /**
  * Lists all relations
  */
-const listDatabaseRelations = async () => query(databaseRelationsQuery);
+export const listDatabaseRelations = async () => query(databaseRelationsQuery);
 
 // Credit: https://stackoverflow.com/questions/6777456/list-all-index-names-column-names-and-its-table-name-of-a-postgresql-database
 const databaseIndexesQuery = `
@@ -54,9 +55,4 @@ const databaseIndexesQuery = `
 `;
 
 // Lists indexes in database
-const listDatabaseIndexes = async () => query(databaseIndexesQuery);
-
-module.exports = {
-  listDatabaseRelations,
-  listDatabaseIndexes,
-};
+export const listDatabaseIndexes = async () => query(databaseIndexesQuery);

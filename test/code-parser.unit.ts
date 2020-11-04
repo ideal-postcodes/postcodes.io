@@ -1,14 +1,13 @@
-"use strict";
-
-const path = require("path");
-const { assert } = require("chai");
-const { extract, toJson, isPseudoCode } = require("../data/scripts/index");
+import path from "path";
+import { assert } from "chai";
+import { extract, toJson, isPseudoCode } from "../data/scripts/index";
+import { Done } from "mocha";
 
 describe("ONS Code Extraction", () => {
-  it("returns an error if no data directory provided", (done) => {
+  it("returns an error if no data directory provided", (done: Done) => {
     extract({
       configs: [],
-      done: (error, result) => {
+      done: (error: Error) => {
         assert.match(error.message, /please specify a data path/i);
         done();
       },
@@ -32,7 +31,7 @@ describe("ONS Code Extraction", () => {
     });
 
     describe("extract", () => {
-      it("returns error if invalid file present", (done) => {
+      it("returns error if invalid file present", (done: Done) => {
         extract({
           configs: [
             {
@@ -42,15 +41,15 @@ describe("ONS Code Extraction", () => {
               file: "bar",
             },
           ],
-          done: (error, result) => {
+          done: (error: Error) => {
             assert.match(error.message, /files cannot be resolved/i);
             done();
           },
         });
       });
 
-      it("extracts data for given files", (done) => {
-        const transform = (row) => {
+      it("extracts data for given files", (done: Done) => {
+        const transform = (row: any) => {
           const keyIndex = 0;
           const valueIndex = 3;
           if (row[keyIndex] === "CTRY12CD") return []; // Escape if header
@@ -67,7 +66,7 @@ describe("ONS Code Extraction", () => {
               },
             },
           ],
-          done: (error, result) => {
+          done: (error: Error, result: any) => {
             assert.isNull(error);
             assert.equal(result.size, 6);
             assert.equal(result.get("E92000001"), "England");
@@ -76,8 +75,8 @@ describe("ONS Code Extraction", () => {
         });
       });
 
-      it("addends appendMissing to data file", (done) => {
-        const transform = (row) => {
+      it("addends appendMissing to data file", (done: Done) => {
+        const transform = (row: any) => {
           const keyIndex = 0;
           const valueIndex = 3;
           if (row[keyIndex] === "CTRY12CD") return []; // Escape if header
@@ -102,7 +101,7 @@ describe("ONS Code Extraction", () => {
               },
             },
           ],
-          done: (error, result) => {
+          done: (error: Error, result: any) => {
             assert.isNull(error);
             assert.equal(result.size, 8);
             assert.equal(result.get("foo"), "bar");
@@ -121,10 +120,10 @@ describe("ONS Code Extraction", () => {
           "N99999999",
           "L99999999",
           "M99999999",
-        ].forEach((code) => assert.isTrue(isPseudoCode(code)));
+        ].forEach((code: string) => assert.isTrue(isPseudoCode(code)));
       });
       it("returns false if not pseudocode", () => {
-        ["E12000001", "E12000002"].forEach((code) =>
+        ["E12000001", "E12000002"].forEach((code: string) =>
           assert.isFalse(isPseudoCode(code))
         );
       });
@@ -144,7 +143,9 @@ describe("ONS Code Extraction", () => {
         const result = JSON.parse(toJson(data));
         const keys = Object.keys(result);
         assert.equal(keys.length, data.size);
-        data.forEach((value, key) => assert.equal(result[key], value));
+        data.forEach((value: any, key: string) =>
+          assert.equal(result[key], value)
+        );
         keys.reduce((acc, key) => {
           if (acc === null) return key;
           assert.isTrue(key > acc);

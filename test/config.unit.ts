@@ -1,7 +1,5 @@
-"use strict";
-
-const { configFactory } = require("./helper");
-const { assert } = require("chai");
+import { configFactory } from "./helper";
+import { assert } from "chai";
 
 describe("Config", () => {
   describe("Environment variables", () => {

@@ -1,11 +1,9 @@
-"use strict";
-
-const helper = require("./helper");
-const { assert } = require("chai");
-const { query, csvExtractor } = require("../src/app/models/base");
-const spdSchemaLarge = require("../data/spd_large_schema.json");
-const spdSchemaSmall = require("../data/spd_small_schema.json");
-const onspdSchema = require("../data/onspd_schema.json");
+import * as helper from "./helper";
+import { assert } from "chai";
+import { query, csvExtractor } from "../src/app/models/base";
+import spdSchemaLarge from "../data/spd_large_schema.json";
+import spdSchemaSmall from "../data/spd_small_schema.json";
+import onspdSchema from "../data/onspd_schema.json";
 
 describe("Base model", function () {
   describe("Base model instance methods", function () {
@@ -43,7 +41,7 @@ describe("Base model", function () {
         }
       });
       it("should create a new record", async () => {
-        const some = await customRelation.create({
+        await customRelation.create({
           somefield: "unique",
         });
       });
@@ -156,7 +154,7 @@ describe("Base model", function () {
     });
 
     it("extracts correct SPD val from row when large specified", () => {
-      let row = new Array(15);
+      const row = new Array(15);
       row[14] = "yes";
       const extract = csvExtractor(spdSchemaLarge);
       assert.equal(

@@ -1,20 +1,25 @@
-"use strict";
+import { inherits } from "util";
+import { join } from "path";
+import { generateMethods, query } from "../../src/app/models/base";
+import { getConfig as configFactory } from "../../src/config/config";
+import * as AttributeBaseSuite from "./attribute_base.suite";
+import * as Base from "../../src/app/models/base";
+import { Postcode } from "../../src/app/models/postcode";
+import removeDiacritics from "./remove_diacritics";
 
-const { inherits } = require("util");
-const { join } = require("path");
-const { generateMethods, query } = require("../../src/app/models/base");
-const configFactory = require("../../src/config/config");
+import { unaccent } from "../../src/app/lib/unaccent";
+import * as errors from "../../src/app/lib/errors";
+import * as string from "../../src/app/lib/string";
+import * as timeout from "../../src/app/lib/timeout";
+
+import app from "../../src/app";
+
 const config = configFactory();
-const AttributeBaseSuite = require("./attribute_base.suite");
 
-const postcodesioApplication = (cfg) => require("../../src/app")(cfg || config);
-
-// Load models
-const { Base } = require("../../src/app/models/index");
-const { Postcode } = require("../../src/app/models/postcode");
+const postcodesioApplication = (cfg?: any) => app(cfg || config);
 
 // Infers columns schema from columnData
-const inferSchemaData = (columnData) => {
+const inferSchemaData = (columnData: any) => {
   const columnName = columnData.column_name;
   const collationName = columnData.collation_name;
 
@@ -44,7 +49,7 @@ const inferSchemaData = (columnData) => {
 
 // sort index definition objects by their collumn names
 // used to assert equality between infered index definitions and real index definitions
-const sortByIndexColumns = (a, b) => {
+const sortByIndexColumns = (a: any, b: any) => {
   if (a.column === b.column) {
     return Object.keys(b).length - Object.keys(a).length;
   } else {
@@ -52,10 +57,17 @@ const sortByIndexColumns = (a, b) => {
   }
 };
 
+interface ImpliedIndex {
+  unique?: boolean;
+  type?: string;
+  column?: string;
+  opClass?: string;
+}
+
 // infers expected definition of javascript object that defines creation of an index
 // for #createIndexes method
-const inferIndexInfo = (indexDef) => {
-  const impliedIndex = {};
+const inferIndexInfo = (indexDef: any) => {
+  const impliedIndex: ImpliedIndex = {};
 
   if (indexDef.search("UNIQUE") !== -1) {
     impliedIndex.unique = true; //not specified unless is unique
@@ -94,17 +106,17 @@ function getCustomRelation() {
     somefield: "varchar(255)",
   };
 
-  const relation = {
+  const relation: Base.Relation = {
     relation: `custom${Date.now()}`,
     schema,
-    index: [],
+    indexes: [],
   };
 
   return generateMethods(relation);
 }
 
 //Generates a random integer from 1 to max inclusive
-const getRandom = (max) => Math.ceil(Math.random() * max);
+const getRandom = (max: number) => Math.ceil(Math.random() * max);
 
 const QueryTerminatedPostcode = `
 	SELECT
@@ -114,7 +126,7 @@ const QueryTerminatedPostcode = `
 	OFFSET $1
 `;
 
-async function randomTerminatedPostcode(callback) {
+async function randomTerminatedPostcode() {
   const randomId = getRandom(8); // 9 terminated postcodes in the
   // testing database
   const result = await query(QueryTerminatedPostcode, [randomId]);
@@ -140,18 +152,26 @@ const lookupRandomPostcode = async () => {
   return Postcode.random();
 };
 
-module.exports = {
+const seedPaths = {
+  customRelation: join(__dirname, "../seed/customRelation.csv"),
+};
+
+// Methods
+export * from "./setup";
+// HTTP Helpers
+export * from "./http";
+// Type checking methods
+export * from "./type_checking";
+// PG helper methods
+export * from "./pg";
+//Models
+export * from "../../src/app/models/index";
+
+export {
   // Data
   configFactory,
   config,
-
-  // Methods
-  ...require("./setup"),
-
-  // HTTP Helpers
-  ...require("./http"),
-
-  removeDiacritics: require("./remove_diacritics"),
+  removeDiacritics,
   inferIndexInfo,
   inferSchemaData,
   sortByIndexColumns,
@@ -162,29 +182,14 @@ module.exports = {
   getCustomRelation,
   lookupRandomPostcode,
   locationWithNearbyPostcodes,
-
-  // Type checking methods
-  ...require("./type_checking"),
-
-  // PG helper methods
-  ...require("./pg"),
-
   // Test suites
   AttributeBaseSuite,
-
   // Libs
-  unaccent: require("../../src/app/lib/unaccent"),
-  errors: require("../../src/app/lib/errors"),
-  string: require("../../src/app/lib/string"),
-  timeout: require("../../src/app/lib/timeout"),
-
-  // Load in models
-  ...require("../../src/app/models/index"),
-
-  seedPaths: {
-    customRelation: join(__dirname, "../seed/customRelation.csv"),
-  },
-
+  unaccent,
+  errors,
+  string,
+  timeout,
+  seedPaths,
   // Export pcio application factory
   postcodesioApplication,
 };

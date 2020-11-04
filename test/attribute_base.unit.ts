@@ -1,10 +1,6 @@
-"use strict";
-
-const { assert } = require("chai");
-const {
-  generateAttributeMethods,
-} = require("../src/app/models/attribute_base");
-const { query, dollarise } = require("../src/app/models/index");
+import { assert } from "chai";
+import { generateAttributeMethods } from "../src/app/models/attribute_base";
+import { query, dollarise } from "../src/app/models/index";
 
 const relation = "customattribute";
 

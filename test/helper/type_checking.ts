@@ -94,7 +94,6 @@ export const isRawOutcodeObject = (o: any) => {
   outcodeType.private.forEach(checkProps(o));
 };
 
-//@ts-ignore
 const rawPostcodeAttributes = Object.keys(Postcode.relation.schema);
 const postcodeAttributes = [
   "nhs_ha",
@@ -195,7 +194,6 @@ const terminatedPostcodeAttributes = [
   "latitude",
 ];
 
-//@ts-ignore
 const rawTerminatedPostcodeAttributes = Object.keys(
   TerminatedPostcode.relation.schema
 );

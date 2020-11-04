@@ -12,7 +12,7 @@ export type EnvDefaultValue = string | number | boolean | undefined | null;
 
 export const parseEnv = (
   VAR: EnVar,
-  defaultValue: EnvDefaultValue
+  defaultValue?: EnvDefaultValue
 ): EnvDefaultValue => {
   if (VAR === undefined) return defaultValue;
   const n = parseInt(VAR, 10);

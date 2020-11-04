@@ -1,12 +1,10 @@
-"use strict";
+import { assert } from "chai";
 
-const { assert } = require("chai");
-
-const allowsCORS = (response) => {
+export const allowsCORS = (response: any): void => {
   assert.equal(response.headers["access-control-allow-origin"], "*");
 };
 
-const validCorsOptions = (response) => {
+export const validCorsOptions = (response: any): void => {
   allowsCORS(response);
   assert.equal(
     response.headers["access-control-allow-methods"],
@@ -19,13 +17,7 @@ const validCorsOptions = (response) => {
 };
 
 // Rough regex to extract json object
-const jsonpResponseBody = (text) => {
+export const jsonpResponseBody = (text: string): JSON => {
   const result = text.match(/\(.*\)/);
   return JSON.parse(result[0].slice(1, result[0].length - 1));
-};
-
-module.exports = {
-  allowsCORS,
-  validCorsOptions,
-  jsonpResponseBody,
 };

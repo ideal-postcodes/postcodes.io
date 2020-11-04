@@ -1,13 +1,5 @@
-"use strict";
-
-const async = require("async");
-const { join, resolve } = require("path");
-const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
-const seedPostcodePath = resolve(__dirname, "../seed/postcode.csv");
-const seedPlacesPath = join(__dirname, "../seed/places/");
-const seedScotlandPostcodePath = resolve(__dirname, "../seed/");
-
-const {
+import { join, resolve } from "path";
+import {
   Postcode,
   District,
   Parish,
@@ -22,7 +14,13 @@ const {
   Place,
   TerminatedPostcode,
   Ced,
-} = require("../../src/app/models/index");
+} from "../../src/app/models/index";
+import { QueryResult } from "pg";
+
+const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
+const seedPostcodePath = resolve(__dirname, "../seed/postcode.csv");
+const seedPlacesPath = join(__dirname, "../seed/places/");
+const seedScotlandPostcodePath = resolve(__dirname, "../seed/");
 
 /**
  * Clears the test database
@@ -30,7 +28,7 @@ const {
  * @param  {function} callback
  * @return {undefined}
  */
-const clearTestDb = async () => {
+const clearTestDb = async (): Promise<any[] | null> => {
   if (process.env.PRESERVE_DB !== undefined) return null;
   return Promise.all([
     (async () => await Postcode.destroyRelation())(),
@@ -50,12 +48,12 @@ const clearTestDb = async () => {
   ]);
 };
 
-const seedTerminatedPostcodeDb = (callback) => {
+const seedTerminatedPostcodeDb = async (): Promise<void | null> => {
   if (NO_RELOAD_DB) return null;
   return TerminatedPostcode.setupTable(seedPostcodePath);
 };
 
-const seedPostcodeDb = async () => {
+const seedPostcodeDb = async (): Promise<any[] | null> => {
   if (NO_RELOAD_DB) return null;
   return Promise.all([
     (async () => await Postcode.setupTable(seedPostcodePath))(),
@@ -76,31 +74,33 @@ const seedPostcodeDb = async () => {
 };
 
 // Clear terminated onspd table
-const clearTerminatedPostcodesDb = async () => {
+const clearTerminatedPostcodesDb = async (): Promise<QueryResult<
+  any
+> | null> => {
   if (NO_RELOAD_DB) return null;
   return TerminatedPostcode.destroyRelation();
 };
 
 // Clear ONSPD table
-const clearPostcodeDb = async () => {
+const clearPostcodeDb = async (): Promise<QueryResult<any> | null> => {
   if (NO_RELOAD_DB) return null;
   await Postcode.destroyRelation();
 };
 
 // Clear SPD Table
-const clearScottishPostcodeDb = async () => {
+const clearScottishPostcodeDb = async (): Promise<QueryResult<any> | null> => {
   if (NO_RELOAD_DB) return null;
   return ScottishPostcode.destroyRelation();
 };
 
-const seedScottishPostcodeDb = async () => {
+const seedScottishPostcodeDb = async (): Promise<any[] | null> => {
   if (NO_RELOAD_DB) return null;
   const postcode = await ScottishPostcode.setupTable(seedScotlandPostcodePath);
   const constituency = await ScottishConstituency.setupTable();
   return [postcode, constituency];
 };
 
-module.exports = {
+export {
   clearTestDb,
   seedPostcodePath,
   seedTerminatedPostcodeDb,

@@ -6,7 +6,7 @@ import { prometheusConfig } from "./config/prometheus";
 import { routes } from "./config/routes";
 import { rendererConfig } from "./config/renderer";
 
-export = (config: Config): express.Express => {
+export default (config: Config): express.Express => {
   const app = express();
   logger(app, config);
   expressConfig(app, config);

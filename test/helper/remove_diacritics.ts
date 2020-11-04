@@ -1,5 +1,3 @@
-"use strict";
-
 const defaultDiacriticsRemovalMap = [
   {
     base: "A",
@@ -212,7 +210,7 @@ const defaultDiacriticsRemovalMap = [
  * @param  {string} str - String to sanitize
  * @return {string}     - Sanitized string
  */
-module.exports = (str) => {
+export default (str: string): string => {
   for (let i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
     str = str.replace(
       defaultDiacriticsRemovalMap[i].letters,

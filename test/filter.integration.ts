@@ -1,8 +1,9 @@
 "use strict";
 
-const { assert, expect } = require("chai");
-const request = require("supertest");
-const helper = require("./helper/index");
+import { assert, expect } from "chai";
+import request from "supertest";
+import * as helper from "./helper/index";
+import { Done } from "mocha";
 const app = helper.postcodesioApplication();
 
 describe("Filter method", function () {
@@ -22,8 +23,8 @@ describe("Filter method", function () {
   after(async () => helper.clearPostcodeDb());
 
   describe("Bulk postcode lookup", () => {
-    it("filters by filter attributes", (done) => {
-      let filter = "postcode";
+    it("filters by filter attributes", (done: Done) => {
+      const filter = "postcode";
       request(app)
         .post("/postcodes")
         .query({
@@ -33,17 +34,17 @@ describe("Filter method", function () {
           postcodes: [testPostcode, testPostcode],
         })
         .expect(200)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
-          response.body.result.forEach((resultObj) => {
+          response.body.result.forEach((resultObj: any) => {
             assert.exists(resultObj.result["postcode"]);
             assert.isTrue(Object.keys(resultObj.result).length === 1);
           });
           done();
         });
     });
-    it("filters by attribute array", (done) => {
-      let filter = "postcode,country";
+    it("filters by attribute array", (done: Done) => {
+      const filter = "postcode,country";
       request(app)
         .post("/postcodes")
         .query({
@@ -53,9 +54,9 @@ describe("Filter method", function () {
           postcodes: [testPostcode, testPostcode],
         })
         .expect(200)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
-          response.body.result.forEach((resultObj) => {
+          response.body.result.forEach((resultObj: any) => {
             assert.exists(resultObj.result["postcode"]);
             assert.exists(resultObj.result["country"]);
             assert.isTrue(Object.keys(resultObj.result).length === 2);
@@ -63,8 +64,8 @@ describe("Filter method", function () {
           done();
         });
     });
-    it("returns empty object if no matching filters", (done) => {
-      let filter = "definitely,nota,matchingfilter";
+    it("returns empty object if no matching filters", (done: Done) => {
+      const filter = "definitely,nota,matchingfilter";
       request(app)
         .post("/postcodes")
         .query({
@@ -74,7 +75,7 @@ describe("Filter method", function () {
           postcodes: [testPostcode, testPostcode],
         })
         .expect(200)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
           response.body.result.forEach((resultObj) => {
             assert.isObject(resultObj.result);
@@ -83,8 +84,8 @@ describe("Filter method", function () {
           done();
         });
     });
-    it("returns null on postcode not found", (done) => {
-      let filter = "quaLity,postcode,Bar";
+    it("returns null on postcode not found", (done: Done) => {
+      const filter = "quaLity,postcode,Bar";
       request(app)
         .post("/postcodes")
         .query({
@@ -94,7 +95,7 @@ describe("Filter method", function () {
           postcodes: ["OX49 NU", testPostcode],
         })
         .expect(200)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
           assert.isTrue(response.body.result[0].result === null);
           assert.exists(response.body.result[1].result["postcode"]);
@@ -105,8 +106,8 @@ describe("Filter method", function () {
           done();
         });
     });
-    it("is case/whitespace insensitive", (done) => {
-      let filter = "   quALiTy,    PostcodE,   Bar";
+    it("is case/whitespace insensitive", (done: Done) => {
+      const filter = "   quALiTy,    PostcodE,   Bar";
       request(app)
         .post("/postcodes")
         .query({
@@ -116,7 +117,7 @@ describe("Filter method", function () {
           postcodes: [testPostcode, testPostcode],
         })
         .expect(200)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
           assert.exists(response.body.result[0].result["postcode"]);
           assert.exists(response.body.result[0].result["quality"]);
@@ -140,8 +141,8 @@ describe("Filter method", function () {
       location = await helper.randomLocation();
     });
 
-    it("filters by a single attribute", (done) => {
-      let filter = "country";
+    it("filters by a single attribute", (done: Done) => {
+      const filter = "country";
       request(app)
         .post("/postcodes")
         .query({
@@ -149,10 +150,10 @@ describe("Filter method", function () {
         })
         .send({ geolocations: [location, location] })
         .expect(200)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
-          response.body.result.forEach((obj) => {
-            obj.result.forEach((obj) => {
+          response.body.result.forEach((obj: any) => {
+            obj.result.forEach((obj: any) => {
               assert.isTrue(Object.keys(obj).length === 1);
               assert.exists(obj["country"]);
             });
@@ -160,8 +161,8 @@ describe("Filter method", function () {
           done();
         });
     });
-    it("filters by multiple attributes", (done) => {
-      let filter = "country,northings";
+    it("filters by multiple attributes", (done: Done) => {
+      const filter = "country,northings";
       request(app)
         .post("/postcodes")
         .query({
@@ -169,10 +170,10 @@ describe("Filter method", function () {
         })
         .send({ geolocations: [location, location] })
         .expect(200)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
-          response.body.result.forEach((obj) => {
-            obj.result.forEach((obj) => {
+          response.body.result.forEach((obj: any) => {
+            obj.result.forEach((obj: any) => {
               assert.isTrue(Object.keys(obj).length === 2);
               assert.exists(obj["country"]);
               assert.exists(obj["northings"]);
@@ -181,8 +182,8 @@ describe("Filter method", function () {
           done();
         });
     });
-    it("returns null on postcodes not found and is case/whitespace insensitive", (done) => {
-      let filter = "coUntRY, nOrThings   , B22ar";
+    it("returns null on postcodes not found and is case/whitespace insensitive", (done: Done) => {
+      const filter = "coUntRY, nOrThings   , B22ar";
       request(app)
         .post("/postcodes")
         .query({
@@ -190,18 +191,18 @@ describe("Filter method", function () {
         })
         .send({ geolocations: [{ longitude: 0, latitude: 0 }, location] })
         .expect(200)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
           const result = response.body.result;
 
           result
-            .filter((r) => r.query.longitude === 0)
-            .forEach((r) => assert.isNull(r.result));
+            .filter((r: any) => r.query.longitude === 0)
+            .forEach((r: any) => assert.isNull(r.result));
 
           result
-            .filter((r) => r.query.longitude !== 0)
-            .forEach((r) => {
-              r.result.forEach((obj) => {
+            .filter((r: any) => r.query.longitude !== 0)
+            .forEach((r: any) => {
+              r.result.forEach((obj: any) => {
                 assert.isTrue(Object.keys(obj).length === 2);
                 assert.exists(obj["country"]);
                 assert.exists(obj["northings"]);
