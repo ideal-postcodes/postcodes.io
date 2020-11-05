@@ -1,10 +1,7 @@
-"use strict";
-
-const request = require("supertest");
-const { config, postcodesioApplication } = require("./helper");
-const { defaults } = config;
-const { assert } = require("chai");
-const promClient = require("prom-client");
+import { assert } from "chai";
+import request from "supertest";
+import { config, postcodesioApplication } from "./helper";
+import promClient from "prom-client";
 
 describe("Prometheus /metrics endpoint", () => {
   afterEach(() => {
@@ -49,12 +46,14 @@ describe("Prometheus /metrics endpoint", () => {
     });
 
     const testMetric = (url, expectedMetric) => {
-      return new Promise(async (resolve) => {
-        const response = await generateMetric(url);
-        const { text } = await getMetrics();
-        assert.notInclude(text, url);
-        assert.include(text, expectedMetric);
-        return resolve();
+      return new Promise((resolve) => {
+        (async () => {
+          await generateMetric(url);
+          const { text } = await getMetrics();
+          assert.notInclude(text, url);
+          assert.include(text, expectedMetric);
+          return resolve();
+        })();
       });
     };
 
@@ -62,15 +61,17 @@ describe("Prometheus /metrics endpoint", () => {
      * Generates metric for URL, swallows any error
      */
     const generateMetric = (url) => {
-      return new Promise(async (resolve) => {
-        try {
-          const response = await request(app).get(url);
-          resolve(response);
-        } catch (error) {
-          // When database is not instantiated,
-          // requesting data will generally return errors like 404
-          resolve(error);
-        }
+      return new Promise((resolve) => {
+        (async () => {
+          try {
+            const response = await request(app).get(url);
+            resolve(response);
+          } catch (error) {
+            // When database is not instantiated,
+            // requesting data will generally return errors like 404
+            resolve(error);
+          }
+        })();
       });
     };
 

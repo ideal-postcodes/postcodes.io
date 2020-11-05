@@ -1,7 +1,5 @@
-"use strict";
-
-const assert = require("chai").assert;
-const helper = require("./helper/index");
+import { assert } from "chai";
+import * as helper from "./helper/index";
 const Postcode = helper.Postcode;
 
 describe("Postcode data regression testing", function () {
@@ -16,9 +14,9 @@ describe("Postcode data regression testing", function () {
   // Ordinary case
   it("contains correct data for AB123BS", async () => {
     const result = await Postcode.find("AB123BS");
-    delete result.id;
     assert.deepEqual(
       {
+        id: result.id,
         postcode: "AB12 3BS",
         pc_compact: "AB123BS",
         quality: 1,
@@ -38,7 +36,6 @@ describe("Postcode data regression testing", function () {
         parish_id: "S99999999",
         lsoa: "Cove North - 05",
         msoa: "Cove North",
-        nuts_id: "S31000944",
         incode: "3BS",
         outcode: "AB12",
         ccg_id: "S03000012",
@@ -61,9 +58,9 @@ describe("Postcode data regression testing", function () {
 
   it("returns correct data for SE1P5ZZ", async () => {
     const result = await Postcode.find("SE1P5ZZ");
-    delete result.id;
     assert.deepEqual(
       {
+        id: result.id,
         postcode: "SE1P 5ZZ",
         pc_compact: "SE1P5ZZ",
         quality: 1,
@@ -83,7 +80,6 @@ describe("Postcode data regression testing", function () {
         parish_id: "E43000218",
         lsoa: "Southwark 006E",
         msoa: "Southwark 006",
-        nuts_id: "E05011104",
         incode: "5ZZ",
         outcode: "SE1P",
         ccg_id: "E38000171",
@@ -108,9 +104,9 @@ describe("Postcode data regression testing", function () {
   // https://github.com/ideal-postcodes/postcodes.io/issues/197
   it("contains correct data for JE24WD", async () => {
     const result = await Postcode.find("JE24WD");
-    delete result.id;
     assert.deepEqual(
       {
+        id: result.id,
         postcode: "JE2 4WD",
         pc_compact: "JE24WD",
         quality: 9,
@@ -130,7 +126,6 @@ describe("Postcode data regression testing", function () {
         parish_id: "L99999999",
         lsoa: null,
         msoa: null,
-        nuts_id: "L99999999",
         incode: "4WD",
         outcode: "JE2",
         ccg_id: "L99999999",

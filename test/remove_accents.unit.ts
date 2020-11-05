@@ -1,7 +1,5 @@
-"use strict";
-
-const { assert } = require("chai");
-const { unaccent } = require("../src/app/lib/unaccent");
+import { assert } from "chai";
+import { unaccent } from "../src/app/lib/unaccent";
 const testData = require("./seed/accent_tests.json");
 
 describe("unaccent", () => {

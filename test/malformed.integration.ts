@@ -1,8 +1,5 @@
-"use strict";
-
-const net = require("net");
-const { assert } = require("chai");
-const app = require("../src/server");
+import net from "net";
+import { assert } from "chai";
 
 describe("Malformed request", () => {
   it("returns a 400 response in node 6 and greater", (done) => {

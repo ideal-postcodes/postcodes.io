@@ -172,8 +172,8 @@ const postcodeForeignColumns = [
 
 export const isRawPostcodeObjectWithFC = (
   o: any,
-  additionalAttr: string[],
-  blacklist: string[]
+  additionalAttr?: string[],
+  blacklist?: string[]
 ) => {
   isRawPostcodeObject(
     o,

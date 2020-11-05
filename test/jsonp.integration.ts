@@ -1,9 +1,7 @@
-"use strict";
-
-const path = require("path");
-const request = require("supertest");
-const { assert } = require("chai");
-const helper = require("./helper");
+import { assert } from "chai";
+import request from "supertest";
+import path from "path";
+import * as helper from "./helper";
 const jsonResponseTypeRegex = /text\/javascript/;
 const app = helper.postcodesioApplication();
 
@@ -14,7 +12,7 @@ describe("Utils with JSONP", () => {
         .get("/ping?callback=foo")
         .expect("Content-Type", /text\/javascript/)
         .expect(200);
-      const jsonBody = helper.jsonpResponseBody(text);
+      const jsonBody: any = helper.jsonpResponseBody(text);
       assert.equal(jsonBody.result, "pong");
     });
   });

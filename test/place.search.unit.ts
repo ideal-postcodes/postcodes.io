@@ -1,18 +1,11 @@
-"use strict";
-
-const fs = require("fs");
-const async = require("async");
-const { assert } = require("chai");
-const parse = require("csv-parse/lib/sync");
-const helper = require("./helper/index");
-const { getConfig } = require("../src/config/config")();
+import { assert } from "chai";
+import * as helper from "./helper/index";
+import { getConfig } from "../src/config/config";
 const { defaults } = getConfig();
 const searchDefaults = defaults.placesSearch;
 const { Place } = helper;
 
 describe("Place Model", () => {
-  let testPostcode, testOutcode;
-
   before(async function () {
     this.timeout(0);
     await helper.clearPostcodeDb();

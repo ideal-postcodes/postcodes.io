@@ -1,7 +1,5 @@
-"use strict";
-
-const { assert } = require("chai");
-const helper = require("./helper/index");
+import { assert } from "chai";
+import * as helper from "./helper/index";
 const { isEmpty } = helper.string;
 
 describe("isEmpty", () => {

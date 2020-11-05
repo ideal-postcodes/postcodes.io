@@ -344,7 +344,7 @@ const randomFromIds = async (ids: number[]): Promise<PostcodeTuple> => {
 };
 
 interface SearchOptions {
-  limit: string;
+  limit?: string;
   postcode: string;
 }
 

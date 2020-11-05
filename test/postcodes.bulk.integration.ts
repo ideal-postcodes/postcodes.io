@@ -1,14 +1,10 @@
-"use strict";
-
-const request = require("supertest");
-const { assert } = require("chai");
-const helper = require("./helper");
-const async = require("async");
+import * as request from "supertest";
+import { assert } from "chai";
+import * as helper from "./helper";
+import async from "async";
 const app = helper.postcodesioApplication();
 
 describe("Postcodes routes", () => {
-  let testPostcode, testOutcode;
-
   before(async function () {
     this.timeout(0);
     await helper.clearPostcodeDb();
@@ -16,15 +12,13 @@ describe("Postcodes routes", () => {
   });
 
   beforeEach(async () => {
-    const result = await helper.lookupRandomPostcode();
-    testPostcode = result.postcode;
-    testOutcode = result.outcode;
+    await helper.lookupRandomPostcode();
   });
 
   after(async () => helper.clearPostcodeDb);
 
   describe("POST /postcodes", () => {
-    let bulkLength = 10;
+    const bulkLength = 10;
     let testPostcodes, testLocations;
 
     describe("Invalid JSON submission", () => {
@@ -331,13 +325,14 @@ describe("Postcodes routes", () => {
           .end((error, response) => {
             if (error) return done(error);
             assert.equal(response.body.result.length, bulkLength + 1);
-            let hasNull = response.body.result.some((l) => l.result === null);
+            const hasNull = response.body.result.some((l) => l.result === null);
             assert.isTrue(hasNull);
             done();
           });
       });
 
       it("returns 400 if too many postcodes submitted", (done) => {
+        // @ts-ignore
         const postcodes = new Array(101).fill().map(() => "foo");
         request(app)
           .post("/postcodes")

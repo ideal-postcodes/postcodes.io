@@ -1,20 +1,11 @@
-"use strict";
-
-const fs = require("fs");
-const { assert } = require("chai");
-const parse = require("csv-parse/lib/sync");
-const helper = require(`./helper/index`);
+import fs from "fs";
+import { assert } from "chai";
+import parse from "csv-parse/lib/sync";
+import * as helper from "./helper/index";
+import { query } from "../src/app/models/base";
 const seedPathDirectory = `${__dirname}/seed/places/`;
 const seedFilePath = `${__dirname}/seed/places/HY20.csv`;
 const { Place } = helper;
-const { query } = require("../src/app/models/base");
-
-console.log("Seed Directory");
-console.log("Seed Directory");
-console.log("Seed Directory");
-console.log("Seed Directory");
-console.log(__dirname);
-console.log(seedPathDirectory);
 
 const TYPE_OFFSET = 6; // Specifies type column on place.csv files
 
@@ -27,8 +18,6 @@ const countPlacesTestSeedData = (seedFilePath) => {
 const placesEntriesCount = countPlacesTestSeedData(seedFilePath);
 
 describe("Place Model", () => {
-  let testPostcode, testOutcode;
-
   before(async function () {
     this.timeout(0);
     await helper.clearPostcodeDb();
@@ -170,7 +159,7 @@ describe("Place Model", () => {
       assert.isNull(result);
     });
     it("returns null if code not string", async () => {
-      const result = await Place.findByCode(12);
+      const result = await Place.findByCode("12");
       assert.isNull(result);
     });
   });
@@ -192,8 +181,8 @@ describe("Place Model", () => {
     });
     it("orders results by distance", async () => {
       const places = await Place.contains({
-        longitude: -3.2137291,
-        latitude: 58.96804,
+        longitude: "-3.2137291",
+        latitude: "58.96804",
       });
       places
         .map((p) => p.distance)
@@ -204,9 +193,9 @@ describe("Place Model", () => {
     });
     it("is sensitive to limit", async () => {
       const places = await Place.contains({
-        longitude: -3.2137291,
-        latitude: 58.96804,
-        limit: 1,
+        longitude: "-3.2137291",
+        latitude: "58.96804",
+        limit: "1",
       });
       assert.equal(places.length, 1);
       const result = places[0];
@@ -214,23 +203,23 @@ describe("Place Model", () => {
     });
     it("uses default limit if invalid", async () => {
       await Place.contains({
-        longitude: 0,
-        latitude: 0,
+        longitude: "0",
+        latitude: "0",
         limit: "Foo",
       });
     });
     it("uses default limit greater than 100", async () => {
       await Place.contains({
-        longitude: 0,
-        latitude: 0,
-        limit: 101,
+        longitude: "0",
+        latitude: "0",
+        limit: "101",
       });
     });
     it("returns an error if invalid longitude", async () => {
       try {
         await Place.contains({
           longitude: "foo",
-          latitude: 0,
+          latitude: "0",
         });
       } catch (error) {
         assert.match(error.message, /invalid\slongitude/i);
@@ -239,7 +228,7 @@ describe("Place Model", () => {
     it("returns an error if invalid latitude", async () => {
       try {
         await Place.contains({
-          longitude: 0,
+          longitude: "0",
           latitude: "foo",
         });
       } catch (error) {
@@ -266,8 +255,8 @@ describe("Place Model", () => {
     });
     it("orders results by distance", async () => {
       const places = await Place.nearest({
-        longitude: -3.2137291,
-        latitude: 58.96804,
+        longitude: "-3.2137291",
+        latitude: "58.96804",
       });
       places
         .map((p) => p.distance)
@@ -278,9 +267,9 @@ describe("Place Model", () => {
     });
     it("is sensitive to limit", async () => {
       const places = await Place.nearest({
-        longitude: -3.2137291,
-        latitude: 58.96804,
-        limit: 1,
+        longitude: "-3.2137291",
+        latitude: "58.96804",
+        limit: "1",
       });
       assert.equal(places.length, 1);
       const result = places[0];
@@ -288,37 +277,37 @@ describe("Place Model", () => {
     });
     it("uses default limit if invalid", async () => {
       await Place.nearest({
-        longitude: 0,
-        latitude: 0,
+        longitude: "0",
+        latitude: "0",
         limit: "Foo",
       });
     });
     it("uses default limit greater than 100", async () => {
       await Place.nearest({
-        longitude: 0,
-        latitude: 0,
-        limit: 101,
+        longitude: "0",
+        latitude: "0",
+        limit: "101",
       });
     });
     it("uses default radius if invalid", async () => {
       await Place.nearest({
-        longitude: 0,
-        latitude: 0,
+        longitude: "0",
+        latitude: "0",
         radius: "Foo",
       });
     });
     it("uses default limit greater than max default", async () => {
       await Place.nearest({
-        longitude: 0,
-        latitude: 0,
-        radius: 1000000,
+        longitude: "0",
+        latitude: "0",
+        radius: "1000000",
       });
     });
     it("returns an error if invalid longitude", async () => {
       try {
         await Place.nearest({
           longitude: "foo",
-          latitude: 0,
+          latitude: "0",
         });
       } catch (error) {
         assert.match(error.message, /invalid\slongitude/i);
@@ -327,7 +316,7 @@ describe("Place Model", () => {
     it("returns an error if invalid latitude", async () => {
       try {
         await Place.nearest({
-          longitude: 0,
+          longitude: "0",
           latitude: "foo",
         });
       } catch (error) {

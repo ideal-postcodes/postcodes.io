@@ -1,8 +1,6 @@
-"use strict";
-
-const { assert } = require("chai");
-const { postcodesioApplication, configFactory } = require("./helper");
-const { symbols } = require("pino");
+import { assert } from "chai";
+import { postcodesioApplication, configFactory } from "./helper";
+import { symbols } from "pino";
 
 const stream = symbols.streamSym;
 

@@ -1,10 +1,8 @@
-"use strict";
-
-const request = require("supertest");
-const assert = require("chai").assert;
-const helper = require("./helper/index");
+import request from "supertest";
+import { assert } from "chai";
+import * as helper from "./helper/index";
+import Pc from "postcode";
 const app = helper.postcodesioApplication();
-const Pc = require("postcode");
 
 const error404Message = "Terminated postcode not found";
 
@@ -98,7 +96,8 @@ describe("Terminated postcode route", () => {
       const thirdSlice = testTerminatedPostcode.slice(4);
       testTerminatedPostcode = ` ${firstSlice} ${secondSlice} ${thirdSlice}`;
       path = `"/terminated_postcodes/"${encodeURI(testTerminatedPostcode)}`;
-      assert.isTrue(!new Pc(testTerminatedPostcode).valid());
+      //TODO check if change is correct with result
+      assert.isTrue(!Pc.parse(testTerminatedPostcode).valid);
       request(app)
         .get(path)
         .expect("Content-Type", /json/)

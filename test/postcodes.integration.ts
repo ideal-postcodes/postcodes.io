@@ -1,13 +1,10 @@
-"use strict";
-
-const request = require("supertest");
-const { assert } = require("chai");
-const helper = require("./helper");
+import request from "supertest";
+import { assert } from "chai";
+import * as helper from "./helper";
 const app = helper.postcodesioApplication();
-const async = require("async");
 
 describe("Postcodes routes", function () {
-  let testPostcode, testOutcode;
+  let testPostcode;
 
   before(async function () {
     this.timeout(0);
@@ -18,7 +15,6 @@ describe("Postcodes routes", function () {
   beforeEach(async () => {
     const result = await helper.lookupRandomPostcode();
     testPostcode = result.postcode;
-    testOutcode = result.outcode;
   });
 
   after(async () => {
@@ -26,7 +22,7 @@ describe("Postcodes routes", function () {
   });
 
   describe("GET /postcodes", function () {
-    var uri, limit;
+    let uri, limit;
 
     it("should return a list of matching postcode objects", function (done) {
       uri = encodeURI(
@@ -179,7 +175,7 @@ describe("Postcodes routes", function () {
 
   describe("GET /postcodes/:postcode", function () {
     it("should return 200 if postcode found", function (done) {
-      var path = ["/postcodes/", encodeURI(testPostcode)].join("");
+      const path = ["/postcodes/", encodeURI(testPostcode)].join("");
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
@@ -194,7 +190,7 @@ describe("Postcodes routes", function () {
     });
     it("should return 404 if not found", function (done) {
       testPostcode = "ID11QE";
-      var path = ["/postcodes/", encodeURI(testPostcode)].join("");
+      const path = ["/postcodes/", encodeURI(testPostcode)].join("");
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
@@ -208,7 +204,7 @@ describe("Postcodes routes", function () {
     });
     it("returns invalid postcode if postcode doesn't match format", function (done) {
       testPostcode = "FOO";
-      var path = ["/postcodes/", encodeURI(testPostcode)].join("");
+      const path = ["/postcodes/", encodeURI(testPostcode)].join("");
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
@@ -221,7 +217,7 @@ describe("Postcodes routes", function () {
         });
     });
     it("should respond to options", function (done) {
-      var path = ["/postcodes/", encodeURI(testPostcode)].join("");
+      const path = ["/postcodes/", encodeURI(testPostcode)].join("");
       request(app)
         .options(path)
         .expect(204)
@@ -235,7 +231,9 @@ describe("Postcodes routes", function () {
 
   describe("GET /postcodes/:postcode/validate", function () {
     it("should return true if postcode found", function (done) {
-      var path = ["/postcodes/", encodeURI(testPostcode), "/validate"].join("");
+      const path = ["/postcodes/", encodeURI(testPostcode), "/validate"].join(
+        ""
+      );
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
@@ -249,7 +247,9 @@ describe("Postcodes routes", function () {
     });
     it("should return false if postcode not found", function (done) {
       testPostcode = "ID11QE";
-      var path = ["/postcodes/", encodeURI(testPostcode), "/validate"].join("");
+      const path = ["/postcodes/", encodeURI(testPostcode), "/validate"].join(
+        ""
+      );
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
@@ -262,7 +262,9 @@ describe("Postcodes routes", function () {
         });
     });
     it("should respond to options", function (done) {
-      var path = ["/postcodes/", encodeURI(testPostcode), "/validate"].join("");
+      const path = ["/postcodes/", encodeURI(testPostcode), "/validate"].join(
+        ""
+      );
       request(app)
         .options(path)
         .expect(204)
@@ -276,7 +278,7 @@ describe("Postcodes routes", function () {
 
   describe("GET /random/postcode", function () {
     it("should return a random postcode", function (done) {
-      var path = "/random/postcodes";
+      const path = "/random/postcodes";
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
@@ -289,7 +291,7 @@ describe("Postcodes routes", function () {
         });
     });
     it("should respond to options", function (done) {
-      var path = "/random/postcodes";
+      const path = "/random/postcodes";
       request(app)
         .options(path)
         .expect(204)
@@ -301,8 +303,8 @@ describe("Postcodes routes", function () {
     });
     describe("filtered by outcode", function () {
       it("returns a random postcode within an outcode", function (done) {
-        var path = "/random/postcodes";
-        var outcode = "AB10";
+        const path = "/random/postcodes";
+        const outcode = "AB10";
         request(app)
           .get(path)
           .query({ outcode: outcode })
@@ -317,8 +319,8 @@ describe("Postcodes routes", function () {
           });
       });
       it("returns a null for invalid outcode", function (done) {
-        var path = "/random/postcodes";
-        var outcode = "BOGUS";
+        const path = "/random/postcodes";
+        const outcode = "BOGUS";
         request(app)
           .get(path)
           .query({ outcode: outcode })
@@ -334,8 +336,8 @@ describe("Postcodes routes", function () {
   });
 
   describe("GET /postcodes/:postcode/autocomplete", function () {
-    var uri, limit;
-    let testPostcode = "AB101AL";
+    let uri, limit;
+    const testPostcode = "AB101AL";
 
     it("should return a list of matching postcodes only", function (done) {
       uri = encodeURI(

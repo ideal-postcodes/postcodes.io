@@ -1,15 +1,12 @@
-"use strict";
-
-const Pc = require("postcode");
-const path = require("path");
-const async = require("async");
-const assert = require("chai").assert;
-const helper = require(`${__dirname}/helper`);
+import Pc from "postcode";
+import path from "path";
+import { assert } from "chai";
+import * as helper from "./helper";
 
 const Postcode = helper.Postcode;
 
 describe("Postcode Model", function () {
-  let testPostcode, testOutcode;
+  let testPostcode: string, testOutcode: string;
 
   before(async function () {
     this.timeout(0);
@@ -169,7 +166,7 @@ describe("Postcode Model", function () {
           [2, 3].map(async (limit) => {
             const result = await Postcode.search({
               postcode: query,
-              limit: limit,
+              limit: `${limit}`,
             });
             assert.equal(result.length, limit);
             return result;
@@ -181,7 +178,10 @@ describe("Postcode Model", function () {
       });
       it("returns a default maximum number of results", async () => {
         const query = "A";
-        const result = await Postcode.search({ postcode: query, limit: 1000 });
+        const result = await Postcode.search({
+          postcode: query,
+          limit: "1000",
+        });
         assert.equal(result.length, helper.config.defaults.search.limit.MAX);
         result.forEach((p) => helper.isRawPostcodeObjectWithFC(p));
       });
@@ -196,7 +196,7 @@ describe("Postcode Model", function () {
       });
       it("uses default limit if limit < 1", async () => {
         const query = "A";
-        const result = await Postcode.search({ postcode: query, limit: 0 });
+        const result = await Postcode.search({ postcode: query, limit: "0" });
         assert.equal(
           result.length,
           helper.config.defaults.search.limit.DEFAULT

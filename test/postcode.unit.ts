@@ -1,14 +1,11 @@
-"use strict";
-
-const fs = require("fs");
-const path = require("path");
-const async = require("async");
-const assert = require("chai").assert;
-const parse = require("csv-parse/lib/sync");
-const helper = require("./helper/index");
+import fs from "fs";
+import path from "path";
+import { assert } from "chai";
+import parse from "csv-parse/lib/sync";
+import * as helper from "./helper/index";
 const seedFilePath = path.resolve(__dirname, "./seed/postcode.csv");
 const Postcode = helper.Postcode;
-const { query } = require("../src/app/models/base");
+import { query } from "../src/app/models/base";
 
 /**
  * Counts number of postcode records if
@@ -66,8 +63,7 @@ describe("Postcode Model", function () {
         const result = await query(q);
         const impliedSchema = {};
         result.rows.forEach((columnInfo) => {
-          let columnName, dataType;
-          [columnName, dataType] = helper.inferSchemaData(columnInfo);
+          const [columnName, dataType] = helper.inferSchemaData(columnInfo);
           impliedSchema[columnName] = dataType;
         });
         assert.deepEqual(impliedSchema, Postcode.relation.schema);
@@ -119,24 +115,24 @@ describe("Postcode Model", function () {
         parish_id: "parish_id",
         ccg_id: "ccg_id",
         nuts_code: "nuts_code",
-        id: "id",
+        id: 0,
         location: "location",
         pc_compact: "pc_compact",
-        admin_district_id: "admin_district_id",
-        admin_county_id: "admin_county_id",
-        admin_ward_id: "admin_ward_id",
-        parish_id: "parish_id",
-        ccg_id: "ccg_id",
-        nuts_id: "nuts_id",
-        nuts_code: "nuts_code",
       };
+      // @ts-ignore
       const formatted = Postcode.toJson(address);
       assert.property(formatted, "codes");
+      // @ts-ignore
       assert.equal(formatted.codes.admin_district, address.admin_district_id);
+      // @ts-ignore
       assert.equal(formatted.codes.admin_county, address.admin_county_id);
+      // @ts-ignore
       assert.equal(formatted.codes.admin_ward, address.admin_ward_id);
+      // @ts-ignore
       assert.equal(formatted.codes.parish, address.parish_id);
+      // @ts-ignore
       assert.equal(formatted.codes.ccg, address.ccg_id);
+      // @ts-ignore
       assert.equal(formatted.codes.nuts, address.nuts_code);
       assert.notProperty(formatted, "id");
       assert.notProperty(formatted, "location");
@@ -178,7 +174,9 @@ describe("Postcode Model", function () {
   describe("loadPostcodeIds", () => {
     it("loads a complete array of postcode IDs", async () => {
       await Postcode.loadPostcodeIds();
+      // @ts-ignore
       assert.isArray(Postcode.idCache[undefined]);
+      // @ts-ignore
       assert.isTrue(Postcode.idCache[undefined].length > 0);
     });
     it("loads IDs by outcode if specified", async () => {
@@ -196,25 +194,25 @@ describe("Postcode Model", function () {
     });
     describe("Outcode filter", () => {
       it("returns random postcode for within an outcode", async () => {
-        var outcode = "AB10";
+        const outcode = "AB10";
         const postcode = await Postcode.random(outcode);
         helper.isRawPostcodeObjectWithFC(postcode);
         assert.equal(postcode.outcode, outcode);
       });
       it("is case and space insensitive", async () => {
-        var outcode = "aB 10 ";
+        const outcode = "aB 10 ";
         const postcode = await Postcode.random(outcode);
         helper.isRawPostcodeObjectWithFC(postcode);
         assert.equal(postcode.outcode, "AB10");
       });
       it("caches requests", async () => {
-        var outcode = "AB12";
+        const outcode = "AB12";
         const postcode = await Postcode.random(outcode);
         helper.isRawPostcodeObjectWithFC(postcode);
         assert.isTrue(Postcode.idCache[outcode].length > 0);
       });
       it("returns null if invalid outcode", async () => {
-        var outcode = "BOGUS";
+        const outcode = "BOGUS";
         const postcode = await Postcode.random(outcode);
         assert.isNull(postcode);
       });
@@ -228,6 +226,7 @@ describe("Postcode Model", function () {
 
     it("should return a random postcode using an in memory ID store", async () => {
       const postcode = await Postcode.randomFromIds(
+        // @ts-ignore
         Postcode.idCache[undefined]
       );
       helper.isRawPostcodeObjectWithFC(postcode);
@@ -299,7 +298,7 @@ describe("Postcode Model", function () {
       const params = {
         longitude: location.longitude,
         latitude: location.latitude,
-        limit: 1,
+        limit: "1",
       };
       const postcodes = await Postcode.nearestPostcodes(params);
       assert.isArray(postcodes);
@@ -314,7 +313,7 @@ describe("Postcode Model", function () {
       const farAway = {
         longitude: location.longitude,
         latitude: location.latitude,
-        radius: 1000,
+        radius: "1000",
       };
       const postcodes = await Postcode.nearestPostcodes(nearby);
       const farawayPostcodes = await Postcode.nearestPostcodes(farAway);
@@ -338,7 +337,7 @@ describe("Postcode Model", function () {
       const farAway = {
         longitude: location.longitude,
         latitude: location.latitude,
-        radius: 1000,
+        radius: "1000",
       };
       const postcodes = await Postcode.nearestPostcodes(nearby);
       const farawayPostcodes = await Postcode.nearestPostcodes(farAway);

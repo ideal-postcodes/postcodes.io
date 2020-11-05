@@ -1,8 +1,5 @@
-"use strict";
-
-const { postcodesioApplication, configFactory } = require("./helper");
-const request = require("supertest");
-const { assert } = require("chai");
+import request from "supertest";
+import { postcodesioApplication, configFactory } from "./helper";
 const app = postcodesioApplication();
 
 describe("Pages routes", () => {

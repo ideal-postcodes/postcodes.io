@@ -1,10 +1,8 @@
-"use strict";
-
-const request = require("supertest");
-const { assert } = require("chai");
-const helper = require("./helper");
+import request from "supertest";
+import { assert } from "chai";
+import * as helper from "./helper";
+import { Done } from "mocha";
 const app = helper.postcodesioApplication();
-const async = require("async");
 
 describe("Outcodes routes", () => {
   let testOutcode, uri;
@@ -23,13 +21,13 @@ describe("Outcodes routes", () => {
   after(async () => helper.clearPostcodeDb);
 
   describe("GET /outcodes/:outcode/nearest", () => {
-    it("should return a list of nearby outcodes", (done) => {
+    it("should return a list of nearby outcodes", (done: Done) => {
       request(app)
         .get(uri)
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(200)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
@@ -37,11 +35,11 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("should be sensitive to distance query", (done) => {
+    it("should be sensitive to distance query", (done: Done) => {
       request(app)
         .get(uri)
         .expect(200)
-        .end((error, firstResponse) => {
+        .end((error: Error, firstResponse: any) => {
           if (error) return done(error);
           request(app)
             .get(uri)
@@ -49,7 +47,7 @@ describe("Outcodes routes", () => {
               radius: 25000,
             })
             .expect(200)
-            .end((error, secondResponse) => {
+            .end((error: Error, secondResponse: any) => {
               if (error) return done(error);
               assert.isTrue(
                 secondResponse.body.result.length >=
@@ -60,67 +58,67 @@ describe("Outcodes routes", () => {
         });
     });
 
-    it("should be sensitive to limit query", (done) => {
+    it("should be sensitive to limit query", (done: Done) => {
       request(app)
         .get(uri)
         .query({
           limit: 1,
         })
         .expect(200)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
           assert.equal(response.body.result.length, 1);
           done();
         });
     });
 
-    it("should throw a 400 error if invalid limit", (done) => {
+    it("should throw a 400 error if invalid limit", (done: Done) => {
       request(app)
         .get(uri)
         .query({
           limit: "bogus",
         })
         .expect(400)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
           assert.equal(response.body.error, "Invalid result limit submitted");
           done();
         });
     });
 
-    it("should throw a 400 error if invalid distance", (done) => {
+    it("should throw a 400 error if invalid distance", (done: Done) => {
       request(app)
         .get(uri)
         .query({
           radius: "bogus",
         })
         .expect(400)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
           assert.equal(response.body.error, "Invalid lookup radius submitted");
           done();
         });
     });
 
-    it("should respond to options", (done) => {
+    it("should respond to options", (done: Done) => {
       request(app)
         .options(uri)
         .expect(204)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) done(error);
           helper.validCorsOptions(response);
           done();
         });
     });
 
-    it("should return 404 if outcode not found", (done) => {
+    it("should return 404 if outcode not found", (done: Done) => {
       const testOutcode = "ZZ10";
       const path = ["/outcodes/", encodeURI(testOutcode), "/nearest"].join("");
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
         .expect(404)
-        .end((error, response) => {
+        .end((error: Error, response: any) => {
           if (error) return done(error);
           assert.equal(response.body.error, "Outcode not found");
           done();

@@ -1,18 +1,15 @@
-"use strict";
-
-const { assert } = require("chai");
-const {
+import { assert } from "chai";
+import {
   setupSupportTables,
   setupOutcodeTable,
   SUPPORT_TABLES,
-} = require("../src/app/lib/setup");
-const { series, parallel } = require("async");
-const {
+} from "../src/app/lib/setup";
+import {
   listDatabaseRelations,
   clearPostcodeDb,
   seedPostcodeDb,
   Outcode,
-} = require("./helper/index");
+} from "./helper/index";
 
 const clearSupportTables = () => {
   return Promise.all(SUPPORT_TABLES.map((m) => m.destroyRelation()));

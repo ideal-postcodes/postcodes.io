@@ -1,8 +1,7 @@
-"use strict";
-
-const request = require("supertest");
-const assert = require("chai").assert;
-const helper = require("./helper");
+import request from "supertest";
+import { assert } from "chai";
+import * as helper from "./helper";
+import { Done } from "mocha";
 const app = helper.postcodesioApplication();
 
 describe("Outcodes routes", () => {
@@ -14,10 +13,10 @@ describe("Outcodes routes", () => {
 
   after(async () => helper.clearPostcodeDb);
 
-  describe("GET /outcodes/:outcode", function (done) {
-    var testOutcode = "AB10";
-    it("should return correct geolocation data for a given outcode", function (done) {
-      var path = ["/outcodes/", encodeURI(testOutcode)].join("");
+  describe("GET /outcodes/:outcode", function () {
+    const testOutcode = "AB10";
+    it("should return correct geolocation data for a given outcode", function (done: Done) {
+      const path = ["/outcodes/", encodeURI(testOutcode)].join("");
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
@@ -33,8 +32,10 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("should be case insensitive", function (done) {
-      var path = ["/outcodes/", encodeURI(testOutcode.toLowerCase())].join("");
+    it("should be case insensitive", function (done: Done) {
+      const path = ["/outcodes/", encodeURI(testOutcode.toLowerCase())].join(
+        ""
+      );
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
@@ -48,8 +49,8 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("should be space insensitive", function (done) {
-      var path = ["/outcodes/", encodeURI(testOutcode + "   ")].join("");
+    it("should be space insensitive", function (done: Done) {
+      const path = ["/outcodes/", encodeURI(testOutcode + "   ")].join("");
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
@@ -63,8 +64,8 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("should return 404 for an outcode which does not exist", function (done) {
-      var path = ["/outcodes/", encodeURI("DEFINITELYBOGUS")].join("");
+    it("should return 404 for an outcode which does not exist", function (done: Done) {
+      const path = ["/outcodes/", encodeURI("DEFINITELYBOGUS")].join("");
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
@@ -78,8 +79,8 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("should respond to options", function (done) {
-      var path = ["/outcodes/", encodeURI(testOutcode)].join("");
+    it("should respond to options", function (done: Done) {
+      const path = ["/outcodes/", encodeURI(testOutcode)].join("");
       request(app)
         .options(path)
         .expect(204)
@@ -91,7 +92,7 @@ describe("Outcodes routes", () => {
     });
   });
   describe("GET /outcodes", function () {
-    var loc, uri;
+    let loc, uri;
 
     beforeEach(function () {
       uri = "/outcodes";
@@ -101,7 +102,7 @@ describe("Outcodes routes", () => {
       };
     });
 
-    it("returns a list of nearby postcodes", function (done) {
+    it("returns a list of nearby postcodes", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -121,7 +122,7 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("accepts full spelling of longitude and latitude", function (done) {
+    it("accepts full spelling of longitude and latitude", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -141,7 +142,7 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("returns 400 if longitude is missing", function (done) {
+    it("returns 400 if longitude is missing", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -156,7 +157,7 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("returns 400 if latitude is missing", function (done) {
+    it("returns 400 if latitude is missing", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -171,7 +172,7 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("is sensitive to distance query", function (done) {
+    it("is sensitive to distance query", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -199,7 +200,7 @@ describe("Outcodes routes", () => {
             });
         });
     });
-    it("is sensitive to limit query", function (done) {
+    it("is sensitive to limit query", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -214,7 +215,7 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("returns a 400 error if invalid longitude", function (done) {
+    it("returns a 400 error if invalid longitude", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -227,7 +228,7 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("returns a 400 error if invalid latitude", function (done) {
+    it("returns a 400 error if invalid latitude", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -240,7 +241,7 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("returns a 400 error if invalid limit", function (done) {
+    it("returns a 400 error if invalid limit", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -254,7 +255,7 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("returns a 400 error if invalid distance", function (done) {
+    it("returns a 400 error if invalid distance", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -268,7 +269,7 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("returns null if no outcodes nearby", function (done) {
+    it("returns null if no outcodes nearby", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -282,7 +283,7 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("responds to options", function (done) {
+    it("responds to options", function (done: Done) {
       request(app)
         .options(uri)
         .expect(204)

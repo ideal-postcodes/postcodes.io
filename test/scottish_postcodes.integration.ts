@@ -1,14 +1,12 @@
-"use strict";
-
-const request = require("supertest");
-const { assert } = require("chai");
-const {
+import request from "supertest";
+import { assert } from "chai";
+import {
   postcodesioApplication,
   clearScottishPostcodeDb,
   seedScottishPostcodeDb,
-} = require("./helper");
+} from "./helper";
+import Postcode from "postcode";
 const app = postcodesioApplication();
-const Postcode = require("postcode");
 
 const error404Message = "Postcode not found";
 

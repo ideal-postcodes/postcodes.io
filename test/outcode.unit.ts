@@ -1,9 +1,6 @@
-"use strict";
-
-const path = require("path");
-const async = require("async");
-const assert = require("chai").assert;
-const helper = require("./helper");
+import path from "path";
+import { assert } from "chai";
+import * as helper from "./helper";
 
 const Outcode = helper.Outcode;
 

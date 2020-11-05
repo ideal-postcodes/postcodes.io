@@ -1,9 +1,6 @@
-"use strict";
-
-const async = require("async");
-const assert = require("chai").assert;
-const helper = require("./helper/index");
-const { query } = require("../src/app/models/base");
+import { assert } from "chai";
+import * as helper from "./helper/index";
+import { query } from "../src/app/models/base";
 
 const TerminatedPostcode = helper.TerminatedPostcode;
 

@@ -1,13 +1,10 @@
-"use strict";
-
-const helper = require("./helper");
-const request = require("supertest");
+import { assert } from "chai";
+import * as helper from "./helper";
+import request from "supertest";
 const app = helper.postcodesioApplication();
-const { assert } = require("chai");
-const async = require("async");
 
 describe("Postcodes routes", function () {
-  let testPostcode, testOutcode;
+  let testPostcode;
 
   before(async () => {
     this.timeout(0);
@@ -18,7 +15,6 @@ describe("Postcodes routes", function () {
   beforeEach(async () => {
     const result = await helper.lookupRandomPostcode();
     testPostcode = result.postcode;
-    testOutcode = result.outcode;
   });
 
   after(async () => helper.clearPostcodeDb);

@@ -1,14 +1,9 @@
-"use strict";
-
-const request = require("supertest");
-const { assert } = require("chai");
-const helper = require("./helper");
+import request from "supertest";
+import { assert } from "chai";
+import * as helper from "./helper";
 const app = helper.postcodesioApplication();
-const async = require("async");
 
 describe("Postcodes routes", () => {
-  let testPostcode;
-
   before(async function () {
     this.timeout(0);
     await helper.clearPostcodeDb();
@@ -16,14 +11,13 @@ describe("Postcodes routes", () => {
   });
 
   beforeEach(async () => {
-    const result = await helper.lookupRandomPostcode();
-    testPostcode = result.postcode;
+    await helper.lookupRandomPostcode();
   });
 
   after(async () => helper.clearPostcodeDb);
 
   describe("GET /postcodes/lon/:longitude/lat/latitude", () => {
-    let loc;
+    let loc: any;
 
     beforeEach(async () => {
       loc = await helper.locationWithNearbyPostcodes();
@@ -55,7 +49,7 @@ describe("Postcodes routes", () => {
         });
     });
     it("should be sensitive to distance query", (done) => {
-      var uri = encodeURI(
+      const uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude
       );
       request(app)
@@ -80,7 +74,7 @@ describe("Postcodes routes", () => {
         });
     });
     it("should be sensitive to limit query", (done) => {
-      var uri = encodeURI(
+      const uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude
       );
       request(app)
@@ -96,7 +90,9 @@ describe("Postcodes routes", () => {
         });
     });
     it("should throw a 400 error if invalid longitude", (done) => {
-      var uri = encodeURI("/postcodes/lon/" + "BOGUS" + "/lat/" + loc.latitude);
+      const uri = encodeURI(
+        "/postcodes/lon/" + "BOGUS" + "/lat/" + loc.latitude
+      );
       request(app)
         .get(uri)
         .expect(400)
@@ -106,7 +102,7 @@ describe("Postcodes routes", () => {
         });
     });
     it("should throw a 400 error if invalid latitude", (done) => {
-      var uri = encodeURI(
+      const uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + "BOGUS"
       );
       request(app)
@@ -118,7 +114,7 @@ describe("Postcodes routes", () => {
         });
     });
     it("should throw a 400 error if invalid limit", (done) => {
-      var uri = encodeURI(
+      const uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude
       );
       request(app)
@@ -133,7 +129,7 @@ describe("Postcodes routes", () => {
         });
     });
     it("should throw a 400 error if invalid distance", (done) => {
-      var uri = encodeURI(
+      const uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude
       );
       request(app)
@@ -148,7 +144,7 @@ describe("Postcodes routes", () => {
         });
     });
     it("returns null if no postcodes nearby", (done) => {
-      var uri = encodeURI("/postcodes/lon/0/lat/0");
+      const uri = encodeURI("/postcodes/lon/0/lat/0");
       request(app)
         .get(uri)
         .expect(200)
@@ -159,7 +155,7 @@ describe("Postcodes routes", () => {
         });
     });
     it("should respond to options", (done) => {
-      var uri = encodeURI(
+      const uri = encodeURI(
         "/postcodes/lon/" + loc.longitude + "/lat/" + loc.latitude
       );
       request(app)
@@ -174,7 +170,7 @@ describe("Postcodes routes", () => {
   });
 
   describe("GET /postcodes?lon=:longitude&lat=:latitude", function () {
-    var loc, uri;
+    let loc, uri;
 
     beforeEach(async () => {
       uri = "/postcodes/";
@@ -359,7 +355,7 @@ describe("Postcodes routes", () => {
         });
     });
     it("returns null if no postcodes nearby", (done) => {
-      var uri = encodeURI("/postcodes");
+      const uri = encodeURI("/postcodes");
       request(app)
         .get(uri)
         .query({
@@ -384,7 +380,7 @@ describe("Postcodes routes", () => {
         });
     });
     describe("Wide Area Searches", function () {
-      var longitude, latitude;
+      let longitude, latitude;
       beforeEach(function () {
         longitude = -2.12659411941741;
         latitude = 57.2465923827836;

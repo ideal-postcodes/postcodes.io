@@ -1,19 +1,12 @@
-"use strict";
-
-const { readFileSync } = require("fs");
-const { series } = require("async");
-const { assert } = require("chai");
-const parse = require("csv-parse/lib/sync");
-const {
+import { assert } from "chai";
+import {
   ScottishPostcode,
-  ScottishConstituency,
-  clearScottishPostcodeDb,
   inferSchemaData,
   clearPostcodeDb,
   seedPostcodeDb,
-} = require(`./helper`);
+} from "./helper";
+import { query } from "../src/app/models/base";
 const seedFilePath = `${__dirname}/seed/`;
-const { query } = require("../src/app/models/base");
 
 describe("Scottish Postcode Model", () => {
   const testPostcodeLarge = "ML11 0GH";
@@ -51,8 +44,7 @@ describe("Scottish Postcode Model", () => {
         const result = await query(q);
         const impliedSchema = {};
         result.rows.forEach((columnInfo) => {
-          let columnName, dataType;
-          [columnName, dataType] = inferSchemaData(columnInfo);
+          const [columnName, dataType] = inferSchemaData(columnInfo);
           impliedSchema[columnName] = dataType;
         });
         assert.deepEqual(impliedSchema, ScottishPostcode.relation.schema);

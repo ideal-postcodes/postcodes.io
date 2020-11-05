@@ -1,8 +1,5 @@
-"use strict";
-
-const async = require("async");
-const assert = require("chai").assert;
-const helper = require("./helper/index");
+import { assert } from "chai";
+import * as helper from "./helper/index";
 const TerminatedPostcode = helper.TerminatedPostcode;
 
 const resetTerminatedPostcodeRelation = async () => {
@@ -20,9 +17,9 @@ describe("Terminated postcode data regression testing", function () {
 
   it("contains correct data for AB115TP", async () => {
     const result = await TerminatedPostcode.find("AB115TP");
-    delete result.id;
     assert.deepEqual(
       {
+        id: result.id,
         postcode: "AB11 5TP",
         pc_compact: "AB115TP",
         year_terminated: 1996,
@@ -41,9 +38,9 @@ describe("Terminated postcode data regression testing", function () {
   // https://github.com/ideal-postcodes/postcodes.io/issues/197
   it("contains correct data for AB113AG", async () => {
     const result = await TerminatedPostcode.find("AB113AG");
-    delete result.id;
     assert.deepEqual(
       {
+        id: result.id,
         postcode: "AB11 3AG",
         pc_compact: "AB113AG",
         year_terminated: 1997,

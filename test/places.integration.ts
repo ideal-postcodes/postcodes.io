@@ -1,8 +1,6 @@
-"use strict";
-
-const request = require("supertest");
-const { assert } = require("chai");
-const {
+import request from "supertest";
+import { assert } from "chai";
+import {
   config,
   clearPostcodeDb,
   postcodesioApplication,
@@ -10,7 +8,7 @@ const {
   allowsCORS,
   isPlaceObject,
   validCorsOptions,
-} = require("./helper/index");
+} from "./helper/index";
 const { defaults } = config;
 const app = postcodesioApplication();
 
