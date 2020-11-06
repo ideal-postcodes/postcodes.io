@@ -148,7 +148,6 @@ interface BulkLookupPostcodesResult {
 const bulkLookupPostcodes: Handler = async (request, response, next) => {
   try {
     const { postcodes } = request.body;
-    console.log(postcodes);
     if (!Array.isArray(postcodes)) return next(new JsonArrayRequiredError());
     if (postcodes.length > MAX_POSTCODES)
       return next(new ExceedMaxPostcodesError());
@@ -157,7 +156,6 @@ const bulkLookupPostcodes: Handler = async (request, response, next) => {
       postcode: string
     ): Promise<BulkLookupPostcodesResult> => {
       const postcodeInfo = await Postcode.find(postcode);
-      console.log("POSTCODE INFO CHECK", postcodeInfo);
       if (!postcodeInfo) return { query: postcode, result: null };
       return {
         query: postcode,

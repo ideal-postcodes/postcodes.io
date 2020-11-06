@@ -51,6 +51,11 @@ test-down:
 test-shell:
 	docker-compose -f docker/test/docker-compose.yml exec api /bin/bash
 
+## Tail test service logs
+.PHONY: test-logs
+test-logs:
+	docker-compose -f docker/test/docker-compose.yml logs -f
+
 ## -- Live Test Methods --
 
 ## Build local pg and api images using pg_dump from S3

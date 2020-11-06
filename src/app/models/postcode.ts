@@ -266,7 +266,7 @@ const findQuery = `
 const find = async (postcode: string): Promise<PostcodeTuple | null> => {
   if (postcode == null) postcode = "";
   postcode = postcode.trim().toUpperCase();
-  if (isValid(postcode)) return null;
+  if (!isValid(postcode)) return null;
   const result = await query<PostcodeTuple>(findQuery, [
     postcode.replace(/\s/g, ""),
   ]);

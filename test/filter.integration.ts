@@ -29,7 +29,7 @@ describe("Filter method", function () {
           filter: filter,
         })
         .send({
-          postcodes: [testPostcode, testPostcode],
+          postcodes: [testPostcode],
         })
         .expect(200)
         .end((error: Error, response: any) => {
