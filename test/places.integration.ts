@@ -95,7 +95,7 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.isTrue(places.length > 0);
-          places.forEach((p) => isPlaceObject(p));
+          places.forEach((p: any) => isPlaceObject(p));
           done();
         });
     });
@@ -111,7 +111,7 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.isTrue(places.length > 0);
-          places.forEach((p) => isPlaceObject(p));
+          places.forEach((p: any) => isPlaceObject(p));
           done();
         });
     });
@@ -165,7 +165,7 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.equal(places.length, 1);
-          places.forEach((p) => isPlaceObject(p));
+          places.forEach((p: any) => isPlaceObject(p));
           done();
         });
     });
@@ -181,7 +181,7 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.equal(places.length, DEFAULT_LIMIT);
-          places.forEach((p) => isPlaceObject(p));
+          places.forEach((p: any) => isPlaceObject(p));
           done();
         });
     });
@@ -197,7 +197,7 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.equal(places.length, 1);
-          places.forEach((p) => isPlaceObject(p));
+          places.forEach((p: any) => isPlaceObject(p));
           done();
         });
     });
@@ -224,7 +224,7 @@ describe("Places Routes", () => {
           assert.equal(response.status, 200);
           const places = response.body.result;
           assert.equal(places.length, DEFAULT_LIMIT);
-          places.forEach((p) => isPlaceObject(p));
+          places.forEach((p: any) => isPlaceObject(p));
           done();
         });
     });

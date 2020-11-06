@@ -5,7 +5,7 @@ import { Done } from "mocha";
 const app = helper.postcodesioApplication();
 
 describe("Outcodes routes", () => {
-  let testOutcode, uri;
+  let testOutcode: string, uri: string;
 
   before(async function () {
     this.timeout(0);
@@ -31,7 +31,7 @@ describe("Outcodes routes", () => {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach((o) => helper.isOutcodeObject(o));
+          response.body.result.forEach((o: any) => helper.isOutcodeObject(o));
           done();
         });
     });

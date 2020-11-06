@@ -7,8 +7,7 @@ const app = helper.postcodesioApplication();
 const error404Message = "Terminated postcode not found";
 
 describe("Terminated postcode route", () => {
-  let testTerminatedPostcode;
-  let path;
+  let testTerminatedPostcode: string, path: string;
 
   before(async function () {
     this.timeout(0);

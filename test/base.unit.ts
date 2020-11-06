@@ -16,7 +16,7 @@ describe("Base model", function () {
   });
 
   describe("CRUD methods", function () {
-    let customRelation;
+    let customRelation: any;
 
     before(async () => {
       customRelation = helper.getCustomRelation();
@@ -50,7 +50,7 @@ describe("Base model", function () {
     describe("#all", () => {
       it("should return list of all records", async () => {
         const result = await customRelation.all();
-        const containsUnique = result.rows.some(function (elem) {
+        const containsUnique = result.rows.some(function (elem: any) {
           return elem.somefield === "unique";
         });
         assert.isTrue(result.rows.length > 0);
@@ -60,7 +60,7 @@ describe("Base model", function () {
   });
 
   describe("#_createRelation", function () {
-    let customRelation;
+    let customRelation: any;
 
     before(function () {
       customRelation = helper.getCustomRelation();
@@ -76,7 +76,7 @@ describe("Base model", function () {
   });
 
   describe("#_destroyRelation", function () {
-    let customRelation;
+    let customRelation: any;
 
     before(async () => {
       customRelation = helper.getCustomRelation();
@@ -89,7 +89,7 @@ describe("Base model", function () {
   });
 
   describe("#csvSeed", function () {
-    let customRelation;
+    let customRelation: any;
 
     before(async () => {
       customRelation = helper.getCustomRelation();
@@ -106,7 +106,7 @@ describe("Base model", function () {
         columns: "someField",
       });
       const result = await customRelation.all();
-      const hasLorem = result.rows.some(function (elem) {
+      const hasLorem = result.rows.some(function (elem: any) {
         return elem.somefield === "Lorem";
       });
       assert.isTrue(hasLorem);
@@ -114,14 +114,14 @@ describe("Base model", function () {
   });
 
   describe("#clear", function () {
-    let customRelation;
+    let customRelation: any;
 
     before(async () => {
       customRelation = helper.getCustomRelation();
       await customRelation.createRelation();
       await customRelation.csvSeed({
         filepath: [helper.seedPaths.customRelation],
-        columns: "someField",
+        columns: ["someField"],
       });
       const data = await customRelation.all();
       assert.isTrue(data.rows.length > 0);
@@ -149,8 +149,8 @@ describe("Base model", function () {
       const row = ["foo", "bar", "baz", "date"];
 
       const extract = csvExtractor(spdSchemaSmall);
-      assert.equal(extract(row, "Postcode", "spd"), "foo");
-      assert.equal(extract(row, "DateOfIntroduction", "spd"), "date");
+      assert.equal(extract(row, "Postcode"), "foo");
+      assert.equal(extract(row, "DateOfIntroduction"), "date");
     });
 
     it("extracts correct SPD val from row when large specified", () => {

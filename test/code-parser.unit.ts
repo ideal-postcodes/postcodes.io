@@ -15,7 +15,7 @@ describe("ONS Code Extraction", () => {
   });
 
   describe("with valid data directory", () => {
-    let argv;
+    let argv: any;
 
     before(() => {
       // Overwrite argv to point to correct data directory
@@ -130,7 +130,7 @@ describe("ONS Code Extraction", () => {
     });
 
     describe("toJson", () => {
-      let data;
+      let data: any;
 
       beforeEach(() => {
         data = new Map();

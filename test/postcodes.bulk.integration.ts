@@ -1,4 +1,4 @@
-import * as request from "supertest";
+import request from "supertest";
 import { assert } from "chai";
 import * as helper from "./helper";
 import async from "async";
@@ -19,7 +19,7 @@ describe("Postcodes routes", () => {
 
   describe("POST /postcodes", () => {
     const bulkLength = 10;
-    let testPostcodes, testLocations;
+    let testPostcodes: any, testLocations: any;
 
     describe("Invalid JSON submission", () => {
       it("returns 400 on invalid JSON", (done) => {
@@ -42,7 +42,7 @@ describe("Postcodes routes", () => {
       beforeEach((done) => {
         async.times(
           bulkLength,
-          async (n, next) => {
+          async (_, next) => {
             const locations = await helper.randomLocation();
             next(null, locations);
           },
@@ -65,11 +65,11 @@ describe("Postcodes routes", () => {
             if (error) return done(error);
             assert.isArray(response.body.result);
             assert.equal(response.body.result.length, bulkLength);
-            response.body.result.forEach((lookup) => {
+            response.body.result.forEach((lookup: any) => {
               assert.property(lookup, "query");
               assert.property(lookup, "result");
               assert.isArray(lookup.result);
-              lookup.result.forEach((result) =>
+              lookup.result.forEach((result: any) =>
                 helper.isPostcodeWithDistanceObject(result)
               );
             });
@@ -222,7 +222,7 @@ describe("Postcodes routes", () => {
       });
 
       it("should return 400 if type of value associated with latitude key is invalid", (done) => {
-        const invalidTestLocation = {
+        const invalidTestLocation: any = {
           longitude: -2.12659411941741,
           latitude: null,
           widesearch: true,
@@ -245,7 +245,7 @@ describe("Postcodes routes", () => {
       });
 
       it("should return 400 if type of value associated with longitude key is invalid", (done) => {
-        const invalidTestLocation = {
+        const invalidTestLocation: any = {
           longitude: null,
           latitude: 53.5351312861402,
           widesearch: true,
@@ -272,7 +272,7 @@ describe("Postcodes routes", () => {
       beforeEach((done) => {
         async.times(
           bulkLength,
-          async (n, next) => {
+          async (_, next) => {
             const postcode = await helper.randomPostcode();
             next(null, postcode);
           },
@@ -294,7 +294,7 @@ describe("Postcodes routes", () => {
             if (error) return done(error);
             assert.isArray(response.body.result);
             assert.equal(response.body.result.length, bulkLength);
-            response.body.result.forEach((lookup) => {
+            response.body.result.forEach((lookup: any) => {
               assert.property(lookup, "query");
               assert.property(lookup, "result");
               helper.isPostcodeObject(lookup.result);
@@ -325,7 +325,9 @@ describe("Postcodes routes", () => {
           .end((error, response) => {
             if (error) return done(error);
             assert.equal(response.body.result.length, bulkLength + 1);
-            const hasNull = response.body.result.some((l) => l.result === null);
+            const hasNull = response.body.result.some(
+              (l: any) => l.result === null
+            );
             assert.isTrue(hasNull);
             done();
           });
@@ -371,7 +373,7 @@ describe("Postcodes routes", () => {
           .send(testPostcodes)
           .expect("Content-Type", /json/)
           .expect(400)
-          .end((error, response) => {
+          .end((error) => {
             if (error) return done(error);
             done();
           });

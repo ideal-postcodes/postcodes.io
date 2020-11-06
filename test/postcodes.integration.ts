@@ -4,7 +4,7 @@ import * as helper from "./helper";
 const app = helper.postcodesioApplication();
 
 describe("Postcodes routes", function () {
-  let testPostcode;
+  let testPostcode: string;
 
   before(async function () {
     this.timeout(0);
@@ -22,7 +22,7 @@ describe("Postcodes routes", function () {
   });
 
   describe("GET /postcodes", function () {
-    let uri, limit;
+    let uri: string, limit: string;
 
     it("should return a list of matching postcode objects", function (done) {
       uri = encodeURI(
@@ -37,7 +37,7 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 10);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             helper.isPostcodeObject(postcode);
           });
           done();
@@ -54,7 +54,7 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 10);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             helper.isPostcodeObject(postcode);
           });
           done();
@@ -73,14 +73,14 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 10);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             helper.isPostcodeObject(postcode);
           });
           done();
         });
     });
     it("should be sensitive to limit", function (done) {
-      limit = 11;
+      limit = "11";
       uri = encodeURI(
         "/postcodes?q=" +
           testPostcode.slice(0, 2).split("").join(" ") +
@@ -96,14 +96,14 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 11);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             helper.isPostcodeObject(postcode);
           });
           done();
         });
     });
     it("should max out limit at 100", function (done) {
-      limit = 101;
+      limit = "101";
       uri = encodeURI(
         "/postcodes?q=" +
           testPostcode.slice(0, 2).split("").join(" ") +
@@ -119,7 +119,7 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 100);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             helper.isPostcodeObject(postcode);
           });
           done();
@@ -142,7 +142,7 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 10);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             helper.isPostcodeObject(postcode);
           });
           done();
@@ -336,7 +336,7 @@ describe("Postcodes routes", function () {
   });
 
   describe("GET /postcodes/:postcode/autocomplete", function () {
-    let uri, limit;
+    let uri: string, limit: string;
     const testPostcode = "AB101AL";
 
     it("should return a list of matching postcodes only", function (done) {
@@ -353,7 +353,7 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 10);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             assert.isString(postcode);
           });
           done();
@@ -373,7 +373,7 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 10);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             assert.isString(postcode);
           });
           done();
@@ -395,14 +395,14 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 10);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             assert.isString(postcode);
           });
           done();
         });
     });
     it("should be sensitive to limit", function (done) {
-      limit = 11;
+      limit = "11";
       uri = encodeURI(
         "/postcodes/" +
           testPostcode.slice(0, 2).split("").join(" ") +
@@ -420,14 +420,14 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, limit);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             assert.isString(postcode);
           });
           done();
         });
     });
     it("should max limit out at 100", function (done) {
-      limit = 101;
+      limit = "101";
       uri = encodeURI(
         "/postcodes/" +
           testPostcode.slice(0, 2).split("").join(" ") +
@@ -445,7 +445,7 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 100);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             assert.isString(postcode);
           });
           done();
@@ -470,7 +470,7 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.equal(response.body.result.length, 10);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             assert.isString(postcode);
           });
           done();

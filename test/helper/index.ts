@@ -1,4 +1,3 @@
-import { inherits } from "util";
 import { join } from "path";
 import { generateMethods, query } from "../../src/app/models/base";
 import { getConfig as configFactory } from "../../src/config/config";

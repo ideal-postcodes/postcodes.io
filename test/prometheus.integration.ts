@@ -26,7 +26,7 @@ describe("Prometheus /metrics endpoint", () => {
   describe("when basic auth configuration provided", () => {
     const prometheusUsername = "foo";
     const prometheusPassword = "bar";
-    let app, getMetrics;
+    let app: any, getMetrics: any;
 
     beforeEach(() => {
       const cfg = Object.assign(
@@ -45,7 +45,7 @@ describe("Prometheus /metrics endpoint", () => {
       request(app).get("/metrics").expect(401).end(done);
     });
 
-    const testMetric = (url, expectedMetric) => {
+    const testMetric = (url: string, expectedMetric: any) => {
       return new Promise((resolve) => {
         (async () => {
           await generateMetric(url);
@@ -60,7 +60,7 @@ describe("Prometheus /metrics endpoint", () => {
     /**
      * Generates metric for URL, swallows any error
      */
-    const generateMetric = (url) => {
+    const generateMetric = (url: string) => {
       return new Promise((resolve) => {
         (async () => {
           try {

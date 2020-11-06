@@ -1,4 +1,3 @@
-import path from "path";
 import { assert } from "chai";
 import * as helper from "./helper";
 
@@ -24,7 +23,7 @@ describe("Outcode Model", () => {
 
     it("generates a location using longitude and latitude", async () => {
       const outcode = "AA10";
-      const record = {
+      const record: any = {
         outcode: outcode,
         longitude: -2.12002322052475,
         latitude: 57.135241767364,
@@ -42,7 +41,7 @@ describe("Outcode Model", () => {
     });
     it("does not generate a location when northings = 0, eastings = 0", async () => {
       const outcode = "AA11";
-      const record = {
+      const record: any = {
         outcode: outcode,
         longitude: -2.12002322052475,
         latitude: 57.135241767364,
@@ -123,7 +122,7 @@ describe("Outcode Model", () => {
   });
 
   describe("nearest", () => {
-    let params;
+    let params: any;
 
     beforeEach(() => {
       params = {

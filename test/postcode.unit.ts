@@ -14,16 +14,16 @@ import { query } from "../src/app/models/base";
  * @param  {string} seedFilePath - path to CSV file
  * @return {number}
  */
-const postcodeRecordCount = (seedFilePath) => {
+const postcodeRecordCount = (seedFilePath: any) => {
   return parse(fs.readFileSync(seedFilePath)).filter(
-    (row) => row[0] !== "pcd" && row[4].length === 0
+    (row: any) => row[0] !== "pcd" && row[4].length === 0
   ).length;
 };
 
 const postcodeEntriesCount = postcodeRecordCount(seedFilePath);
 
 describe("Postcode Model", function () {
-  let testPostcode, testOutcode;
+  let testPostcode: string, testOutcode: string;
 
   before(async function () {
     this.timeout(0);
@@ -61,7 +61,7 @@ describe("Postcode Model", function () {
 					WHERE table_name = '${Postcode.relation.relation}'
 				`;
         const result = await query(q);
-        const impliedSchema = {};
+        const impliedSchema: any = {};
         result.rows.forEach((columnInfo) => {
           const [columnName, dataType] = helper.inferSchemaData(columnInfo);
           impliedSchema[columnName] = dataType;
@@ -282,7 +282,7 @@ describe("Postcode Model", function () {
   });
 
   describe("#nearestPostcodes", function () {
-    let location;
+    let location: any;
 
     beforeEach(async () => {
       location = await helper.locationWithNearbyPostcodes();
@@ -368,7 +368,7 @@ describe("Postcode Model", function () {
       }
     });
     describe("Wide Search", () => {
-      let params;
+      let params: any;
       beforeEach(() => {
         params = {
           longitude: -2.12659411941741,

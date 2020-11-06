@@ -92,7 +92,7 @@ describe("Outcodes routes", () => {
     });
   });
   describe("GET /outcodes", function () {
-    let loc, uri;
+    let loc: any, uri: string;
 
     beforeEach(function () {
       uri = "/outcodes";
@@ -116,7 +116,7 @@ describe("Outcodes routes", () => {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach(function (outcode) {
+          response.body.result.forEach(function (outcode: any) {
             helper.isOutcodeObject(outcode);
           });
           done();
@@ -136,7 +136,7 @@ describe("Outcodes routes", () => {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach(function (outcode) {
+          response.body.result.forEach(function (outcode: any) {
             helper.isOutcodeObject(outcode);
           });
           done();

@@ -42,7 +42,7 @@ describe("Scottish Postcode Model", () => {
           WHERE table_name = '${ScottishPostcode.relation.relation}'
         `;
         const result = await query(q);
-        const impliedSchema = {};
+        const impliedSchema: any = {};
         result.rows.forEach((columnInfo) => {
           const [columnName, dataType] = inferSchemaData(columnInfo);
           impliedSchema[columnName] = dataType;

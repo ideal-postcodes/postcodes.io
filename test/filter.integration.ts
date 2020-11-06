@@ -1,5 +1,3 @@
-"use strict";
-
 import { assert, expect } from "chai";
 import request from "supertest";
 import * as helper from "./helper/index";
@@ -7,7 +5,7 @@ import { Done } from "mocha";
 const app = helper.postcodesioApplication();
 
 describe("Filter method", function () {
-  let testPostcode;
+  let testPostcode: string;
 
   before(async function () {
     this.timeout(0);
@@ -37,6 +35,7 @@ describe("Filter method", function () {
         .end((error: Error, response: any) => {
           if (error) return done(error);
           response.body.result.forEach((resultObj: any) => {
+            console.log(resultObj.result);
             assert.exists(resultObj.result["postcode"]);
             assert.isTrue(Object.keys(resultObj.result).length === 1);
           });
@@ -77,7 +76,7 @@ describe("Filter method", function () {
         .expect(200)
         .end((error: Error, response: any) => {
           if (error) return done(error);
-          response.body.result.forEach((resultObj) => {
+          response.body.result.forEach((resultObj: any) => {
             assert.isObject(resultObj.result);
             expect(resultObj.result).to.be.empty;
           });
@@ -135,7 +134,7 @@ describe("Filter method", function () {
   });
 
   describe("Bulk geolocation lookup", () => {
-    let location;
+    let location: any;
 
     beforeEach(async () => {
       location = await helper.randomLocation();

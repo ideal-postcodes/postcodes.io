@@ -4,7 +4,7 @@ import request from "supertest";
 const app = helper.postcodesioApplication();
 
 describe("Postcodes routes", function () {
-  let testPostcode;
+  let testPostcode: string;
 
   before(async () => {
     this.timeout(0);
@@ -32,7 +32,7 @@ describe("Postcodes routes", function () {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             helper.isPostcodeWithDistanceObject(postcode);
           });
           done();

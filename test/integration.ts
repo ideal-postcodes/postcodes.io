@@ -1,3 +1,4 @@
+import { assert } from "chai";
 import request from "supertest";
 import { postcodesioApplication, configFactory } from "./helper";
 const app = postcodesioApplication();
@@ -86,9 +87,6 @@ describe("httpHeaders", () => {
     const config = configFactory();
     config.httpHeaders = { foo: "bar" };
     const newApp = postcodesioApplication(config);
-    const response = await request(newApp)
-      .get("/ping")
-      .expect("foo", "bar")
-      .expect(200);
+    await request(newApp).get("/ping").expect("foo", "bar").expect(200);
   });
 });

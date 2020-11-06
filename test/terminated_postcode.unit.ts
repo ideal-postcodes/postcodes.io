@@ -10,7 +10,7 @@ const resetTerminatedPostcodeRelation = async () => {
 };
 
 describe("Terminated postcode model", () => {
-  let testTerminatedPostcode;
+  let testTerminatedPostcode: string;
   before(async function () {
     this.timeout(0);
     await resetTerminatedPostcodeRelation();
@@ -92,7 +92,7 @@ describe("Terminated postcode model", () => {
     it("creates relation", async () => {
       const result = await helper.listDatabaseRelations();
       const relationName = TerminatedPostcode.relation.relation;
-      const test = (r) => r.Name === relationName && r.Type === "table";
+      const test = (r: any) => r.Name === relationName && r.Type === "table";
       assert.isTrue(result.rows.some(test));
     });
     it("populates relation", assertRelationIsPopulated);

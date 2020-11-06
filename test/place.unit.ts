@@ -9,9 +9,9 @@ const { Place } = helper;
 
 const TYPE_OFFSET = 6; // Specifies type column on place.csv files
 
-const countPlacesTestSeedData = (seedFilePath) => {
+const countPlacesTestSeedData = (seedFilePath: any) => {
   return parse(fs.readFileSync(seedFilePath)).filter(
-    (row) => row[TYPE_OFFSET] === "populatedPlace"
+    (row: any) => row[TYPE_OFFSET] === "populatedPlace"
   ).length;
 };
 
@@ -76,7 +76,7 @@ describe("Place Model", () => {
 					FROM 
 						${Place.relation.relation}
 				`;
-        const sanitizeName = (name) => {
+        const sanitizeName = (name: string) => {
           const sanitizedName = name
             .replace(/-/g, " ")
             .replace("'", "")
@@ -85,7 +85,7 @@ describe("Place Model", () => {
         };
 
         const result = await query(q);
-        ["name_1", "name_2"].forEach((nameField) => {
+        ["name_1", "name_2"].forEach((nameField: any) => {
           for (let i = 0; i < placesEntriesCount; i++) {
             const name = result.rows[i][nameField];
             const searchName = result.rows[i][`${nameField}_search`];
@@ -120,7 +120,7 @@ describe("Place Model", () => {
 
     describe("#createIndexes", () => {
       it("generates indexes that matches to what's been specified", async () => {
-        const impliedIndexesArr = [];
+        const impliedIndexesArr: any[] = [];
         const result = await query(
           `select indexdef from pg_indexes where tablename = '${Place.relation.relation}'`
         );
@@ -165,7 +165,7 @@ describe("Place Model", () => {
   });
 
   describe("contains", () => {
-    let validPlace;
+    let validPlace: any;
     before(async () => {
       validPlace = await Place.random();
     });
@@ -238,7 +238,7 @@ describe("Place Model", () => {
   });
 
   describe("nearest", () => {
-    let validPlace;
+    let validPlace: any;
     before(async () => {
       validPlace = await Place.random();
     });

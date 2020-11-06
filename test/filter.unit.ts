@@ -2,10 +2,10 @@ import { assert } from "chai";
 import { filter } from "../src/config/filter";
 import bulkPostcodeResult = require("./seed/bulk_postcode.json");
 import bulkGeocodingResult = require("./seed/bulk_geocoding.json");
-const cloneObject = (o) => JSON.parse(JSON.stringify(o));
+const cloneObject = (o: any) => JSON.parse(JSON.stringify(o));
 
 describe("Filter middleware", () => {
-  let request, response;
+  let request: any, response: any;
 
   beforeEach(() => {
     request = {
@@ -58,14 +58,14 @@ describe("Filter middleware", () => {
   });
 
   it("ignores attributes which are not whitelisted", (done) => {
-    let result = response.jsonApiResponse.result;
+    let result: any = response.jsonApiResponse.result;
     request.query.filter += ",notallowed";
-    result = result.map((r) => {
+    result = result.map((r: any) => {
       r.result.notallowed = "bad";
       return r;
     });
     filter(request, response, () => {
-      response.jsonApiResponse.result.forEach((r) => {
+      response.jsonApiResponse.result.forEach((r: any) => {
         assert.isUndefined(r.result.notallowed);
       });
       done();
@@ -81,7 +81,7 @@ describe("Filter middleware", () => {
   });
 
   describe("Bulk postcode lookup", () => {
-    let request, response;
+    let request: any, response: any;
 
     beforeEach(() => {
       request = {
@@ -163,7 +163,7 @@ describe("Filter middleware", () => {
   });
 
   describe("Bulk reverse geocoding", () => {
-    let request, response;
+    let request: any, response: any;
 
     beforeEach(() => {
       request = {

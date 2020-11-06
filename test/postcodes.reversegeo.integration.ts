@@ -33,15 +33,15 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(200)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach((postcode) => {
+          response.body.result.forEach((postcode: any) => {
             helper.isPostcodeWithDistanceObject(postcode);
           });
           assert.isTrue(
-            response.body.result.some((elem) => {
+            response.body.result.some((elem: any) => {
               return elem.postcode === loc.postcode;
             })
           );
@@ -55,7 +55,7 @@ describe("Postcodes routes", () => {
       request(app)
         .get(uri)
         .expect(200)
-        .end(function (error, firstResponse) {
+        .end(function (error, firstResponse: any) {
           if (error) return done(error);
           request(app)
             .get(uri)
@@ -63,7 +63,7 @@ describe("Postcodes routes", () => {
               radius: 2000,
             })
             .expect(200)
-            .end(function (error, secondResponse) {
+            .end(function (error, secondResponse: any) {
               if (error) return done(error);
               assert.isTrue(
                 secondResponse.body.result.length >=
@@ -83,7 +83,7 @@ describe("Postcodes routes", () => {
           limit: 1,
         })
         .expect(200)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           assert.equal(response.body.result.length, 1);
           done();
@@ -96,7 +96,7 @@ describe("Postcodes routes", () => {
       request(app)
         .get(uri)
         .expect(400)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           done();
         });
@@ -108,7 +108,7 @@ describe("Postcodes routes", () => {
       request(app)
         .get(uri)
         .expect(400)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           done();
         });
@@ -123,7 +123,7 @@ describe("Postcodes routes", () => {
           limit: "BOGUS",
         })
         .expect(400)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           done();
         });
@@ -138,7 +138,7 @@ describe("Postcodes routes", () => {
           radius: "BOGUS",
         })
         .expect(400)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           done();
         });
@@ -148,7 +148,7 @@ describe("Postcodes routes", () => {
       request(app)
         .get(uri)
         .expect(200)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) done(error);
           assert.isNull(response.body.result);
           done();
@@ -161,7 +161,7 @@ describe("Postcodes routes", () => {
       request(app)
         .options(uri)
         .expect(204)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) done(error);
           helper.validCorsOptions(response);
           done();
@@ -170,7 +170,7 @@ describe("Postcodes routes", () => {
   });
 
   describe("GET /postcodes?lon=:longitude&lat=:latitude", function () {
-    let loc, uri;
+    let loc: any, uri: string;
 
     beforeEach(async () => {
       uri = "/postcodes/";
@@ -187,15 +187,15 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(200)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             helper.isPostcodeWithDistanceObject(postcode);
           });
           assert.isTrue(
-            response.body.result.some(function (elem) {
+            response.body.result.some(function (elem: any) {
               return elem.postcode === loc.postcode;
             })
           );
@@ -212,15 +212,15 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(200)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           assert.isArray(response.body.result);
           assert.isTrue(response.body.result.length > 0);
-          response.body.result.forEach(function (postcode) {
+          response.body.result.forEach(function (postcode: any) {
             helper.isPostcodeWithDistanceObject(postcode);
           });
           assert.isTrue(
-            response.body.result.some(function (elem) {
+            response.body.result.some(function (elem: any) {
               return elem.postcode === loc.postcode;
             })
           );
@@ -236,7 +236,7 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(400)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           assert.equal(response.body.status, 400);
           done();
@@ -251,7 +251,7 @@ describe("Postcodes routes", () => {
         .expect("Content-Type", /json/)
         .expect(helper.allowsCORS)
         .expect(400)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           assert.equal(response.body.status, 400);
           done();
@@ -265,7 +265,7 @@ describe("Postcodes routes", () => {
           lat: loc.latitude,
         })
         .expect(200)
-        .end(function (error, firstResponse) {
+        .end(function (error, firstResponse: any) {
           if (error) return done(error);
           request(app)
             .get(uri)
@@ -275,7 +275,7 @@ describe("Postcodes routes", () => {
               radius: 2000,
             })
             .expect(200)
-            .end(function (error, secondResponse) {
+            .end(function (error, secondResponse: any) {
               if (error) return done(error);
               assert.isTrue(
                 secondResponse.body.result.length >=
@@ -294,7 +294,7 @@ describe("Postcodes routes", () => {
           limit: 1,
         })
         .expect(200)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           assert.equal(response.body.result.length, 1);
           done();
@@ -308,7 +308,7 @@ describe("Postcodes routes", () => {
           lat: loc.latitude,
         })
         .expect(400)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           done();
         });
@@ -321,7 +321,7 @@ describe("Postcodes routes", () => {
           lat: "BOGUS",
         })
         .expect(400)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           done();
         });
@@ -335,7 +335,7 @@ describe("Postcodes routes", () => {
           limit: "BOGUS",
         })
         .expect(400)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           done();
         });
@@ -349,7 +349,7 @@ describe("Postcodes routes", () => {
           radius: "BOGUS",
         })
         .expect(400)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) return done(error);
           done();
         });
@@ -363,7 +363,7 @@ describe("Postcodes routes", () => {
           lon: 0,
         })
         .expect(200)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) done(error);
           assert.isNull(response.body.result);
           done();
@@ -373,14 +373,14 @@ describe("Postcodes routes", () => {
       request(app)
         .options(uri)
         .expect(204)
-        .end(function (error, response) {
+        .end(function (error, response: any) {
           if (error) done(error);
           helper.validCorsOptions(response);
           done();
         });
     });
     describe("Wide Area Searches", function () {
-      let longitude, latitude;
+      let longitude: any, latitude: any;
       beforeEach(function () {
         longitude = -2.12659411941741;
         latitude = 57.2465923827836;
@@ -396,7 +396,7 @@ describe("Postcodes routes", () => {
           .expect("Content-Type", /json/)
           .expect(helper.allowsCORS)
           .expect(200)
-          .end(function (error, response) {
+          .end(function (error, response: any) {
             if (error) return done(error);
             assert.equal(response.body.result.length, 10);
             done();
@@ -414,7 +414,7 @@ describe("Postcodes routes", () => {
           .expect("Content-Type", /json/)
           .expect(helper.allowsCORS)
           .expect(200)
-          .end(function (error, response) {
+          .end(function (error, response: any) {
             if (error) return done(error);
             assert.equal(response.body.result.length, 10);
             done();
@@ -433,7 +433,7 @@ describe("Postcodes routes", () => {
           .expect("Content-Type", /json/)
           .expect(helper.allowsCORS)
           .expect(200)
-          .end(function (error, response) {
+          .end(function (error, response: any) {
             if (error) return done(error);
             assert.equal(response.body.result.length, 10);
             done();
@@ -452,7 +452,7 @@ describe("Postcodes routes", () => {
           .expect("Content-Type", /json/)
           .expect(helper.allowsCORS)
           .expect(200)
-          .end(function (error, response) {
+          .end(function (error, response: any) {
             if (error) return done(error);
             assert.equal(response.body.result.length, 1);
             done();
