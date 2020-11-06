@@ -27,7 +27,7 @@ export const query: Handler = (request, response, next): void => {
 export const showOutcode: Handler = async (request, response, next) => {
   try {
     const { outcode } = request.params;
-
+    console.log(outcode);
     const result = await Outcode.find(outcode);
     if (!result) return next(new OutcodeNotFoundError());
     response.jsonApiResponse = {

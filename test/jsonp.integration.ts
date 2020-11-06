@@ -78,7 +78,7 @@ describe("Postcodes routes with JSONP", () => {
       );
       const { text } = await request(app)
         .get(path)
-        .expect("Content-Type", jsonResponseTypeRegex)
+        .expect("Content-Type", "application/json; charset=utf-8")
         .expect(200);
       const jsonBody: any = helper.jsonpResponseBody(text);
       assert.equal(jsonBody.status, 200);
@@ -112,12 +112,14 @@ describe("Postcodes routes with JSONP", () => {
     it("should return a list of nearby postcodes", async () => {
       const uri = encodeURI("/postcodes/" + testPostcode + "/nearest");
 
-      const { text } = await request(app)
+      const result = await request(app)
         .get(uri)
         .query({
           callback: "foo",
         })
         .expect(200);
+      console.log(result);
+      const { text } = result;
       const jsonBody: any = helper.jsonpResponseBody(text);
       assert.isArray(jsonBody.result);
       assert.isTrue(jsonBody.result.length > 0);
@@ -132,7 +134,7 @@ describe("Postcodes routes with JSONP", () => {
       const path = "/random/postcodes?callback=foo";
       const { text } = await request(app)
         .get(path)
-        .expect("Content-Type", jsonResponseTypeRegex)
+        .expect("Content-Type", "application/json; charset=utf-8")
         .expect(200);
       const jsonBody: any = helper.jsonpResponseBody(text);
       assert.property(jsonBody.result, "postcode");

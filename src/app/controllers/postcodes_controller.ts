@@ -25,7 +25,7 @@ export const show: Handler = async (request, response, next) => {
   try {
     const { postcode } = request.params;
 
-    if (isValid(postcode.trim())) throw new InvalidPostcodeError();
+    if (!isValid(postcode.trim())) throw new InvalidPostcodeError();
 
     const result = await Postcode.find(postcode);
     if (!result) throw new PostcodeNotFoundError();
@@ -64,7 +64,12 @@ export const random: Handler = async (request, response, next) => {
 export const bulk: Handler = (request, response, next) => {
   if (request.body.postcodes)
     return bulkLookupPostcodes(request, response, next);
-  if (request.body.geolocations) return bulkGeocode(request, response, next);
+  try {
+    if (request.body.geolocations) return bulkGeocode(request, response, next);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
   return next(new InvalidJsonQueryError());
 };
 
@@ -90,12 +95,9 @@ const bulkGeocode: Handler = async (request, response, next) => {
     ): Promise<LookupGeolocationResult> => {
       const postcodes = await Postcode.nearestPostcodes(location);
       let result = null;
-      //console.log("CHECK POSTCODES", postcodes);
-      if (postcodes.length > 0) {
-        //console.log("SHOULD MAP");
+      if (postcodes && postcodes.length > 0) {
         result = postcodes.map((postcode) => Postcode.toJson(postcode));
       }
-      //console.log("CHECK", result);
       return {
         query: sanitizeQuery(location),
         result,
@@ -132,6 +134,7 @@ const bulkGeocode: Handler = async (request, response, next) => {
     response.jsonApiResponse = { status: 200, result };
     next();
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
