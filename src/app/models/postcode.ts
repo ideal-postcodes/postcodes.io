@@ -694,7 +694,7 @@ interface OutcodeTupleOutput {
 const findOutcode = async (o: string): Promise<OutcodeInterface | null> => {
   const outcode = o.trim().toUpperCase();
 
-  if (validOutcode(outcode) && outcode !== "GIR") return null;
+  if (!validOutcode(outcode) && outcode !== "GIR") return null;
 
   const { rows } = await query<OutcodeTupleOutput>(outcodeQuery, [outcode]);
   if (rows.length === 0) return null;

@@ -6,7 +6,7 @@ import {
   query,
   _csvSeed,
 } from "./base";
-import Postcode from "postcode";
+import { isValid } from "postcode";
 
 const extractOnspdVal = csvExtractor(
   require("../../../data/onspd_schema.json")
@@ -62,7 +62,7 @@ export const find = async (
 ): Promise<TerminatedPostcodeTuple | null> => {
   if (postcode == null) postcode = "";
   postcode = postcode.trim().toUpperCase();
-  if (!Postcode.isValid(postcode)) return null;
+  if (!isValid(postcode)) return null;
   const result = await query<TerminatedPostcodeTuple>(findQuery, [
     postcode.replace(/\s/g, ""),
   ]);

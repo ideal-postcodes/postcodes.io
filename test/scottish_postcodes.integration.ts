@@ -5,7 +5,7 @@ import {
   clearScottishPostcodeDb,
   seedScottishPostcodeDb,
 } from "./helper";
-import Postcode from "postcode";
+import { isValid } from "postcode";
 const app = postcodesioApplication();
 
 const error404Message = "Postcode not found";
@@ -80,7 +80,7 @@ describe("Scottish postcode route", () => {
 
     it("404 if not a valid postcode according to the postcode module", (done) => {
       const path = `/scotland/postcodes/foo`;
-      assert.isFalse(Postcode.isValid("foo"));
+      assert.isFalse(isValid("foo"));
       request(app)
         .get(path)
         .expect("Content-Type", /json/)

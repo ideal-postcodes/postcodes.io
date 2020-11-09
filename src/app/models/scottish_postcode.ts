@@ -9,7 +9,7 @@ import {
   Relation,
 } from "./base";
 import { resolve } from "path";
-import Postcode from "postcode";
+import { isValid } from "postcode";
 
 const smallUserExtractor = csvExtractor(
   require("../../../data/spd_small_schema.json")
@@ -108,7 +108,7 @@ const find = async (
 ): Promise<ScottishPostcodeTuple | null> => {
   if (postcode == null) postcode = "";
   postcode = postcode.replace(/\s+/g, "").toUpperCase();
-  if (!Postcode.isValid(postcode)) return null;
+  if (!isValid(postcode)) return null;
   const result = await query<ScottishPostcodeTuple>(findQuery, [postcode]);
   if (result.rows.length === 0) return null;
   return result.rows[0];

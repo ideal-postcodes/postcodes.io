@@ -49,7 +49,6 @@ export const query = async <T = any>(
   }
 
   const options = { text, ...(values && { values }) };
-  console.log(options);
   try {
     const result = await client.query(options);
     return result;
@@ -177,7 +176,7 @@ export const getClient = () => pool.connect();
 export const dollarise = (values: unknown[]): string =>
   values.map((_, i) => `$${i + 1}`).join(", ");
 
-export const _populateLocation = ({ relation }: Relation) => () =>
+export const _populateLocation = ({ relation }: Relation) => async () =>
   query(`
 		UPDATE 
 			${relation} 

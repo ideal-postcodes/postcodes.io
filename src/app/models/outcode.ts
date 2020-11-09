@@ -70,23 +70,17 @@ const seedData = async () => {
 const setupTable = async () => {
   await methods.destroyRelation();
   await methods.createRelation();
-  console.log("Before seed");
   await seedData();
-  console.log("After seed");
   await methods.populateLocation();
   await methods.createIndexes();
 };
 
 const find = async (outcode?: string): Promise<OutcodeTuple | null> => {
   if (!outcode) return null;
-  console.log(`SELECT * FROM ${relation.relation} WHERE outcode=$1`, [
-    outcode.toUpperCase().replace(/\s/g, ""),
-  ]);
   const result = await query(
     `SELECT * FROM ${relation.relation} WHERE outcode=$1`,
     [outcode.toUpperCase().replace(/\s/g, "")]
   );
-  console.log(result);
   if (result.rows.length === 0) return null;
   return result.rows[0];
 };

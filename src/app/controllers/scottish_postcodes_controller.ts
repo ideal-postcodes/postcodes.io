@@ -1,7 +1,7 @@
 import { Handler } from "../types/express";
 import { ScottishPostcode } from "../models/scottish_postcode";
 import { Postcode } from "../models/postcode";
-import Pc from "postcode";
+import { isValid } from "postcode";
 import {
   InvalidPostcodeError,
   PostcodeNotFoundError,
@@ -11,7 +11,7 @@ import {
 export const show: Handler = async (request, response, next) => {
   try {
     const { postcode } = request.params;
-    if (!Pc.isValid(postcode.trim())) throw new InvalidPostcodeError();
+    if (!isValid(postcode.trim())) throw new InvalidPostcodeError();
 
     const result = await ScottishPostcode.find(postcode);
     if (!result) {

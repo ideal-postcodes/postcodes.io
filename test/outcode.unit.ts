@@ -10,7 +10,9 @@ describe("Outcode Model", () => {
     await helper.seedPostcodeDb();
   });
 
-  after(async () => helper.clearPostcodeDb());
+  after(async () => {
+    await helper.clearPostcodeDb();
+  });
 
   describe("populateLocation", () => {
     before(async () => {
@@ -19,12 +21,14 @@ describe("Outcode Model", () => {
       await Outcode.seedData();
     });
 
-    after(async () => Outcode.setupTable());
+    after(async () => {
+      await Outcode.setupTable();
+    });
 
     it("generates a location using longitude and latitude", async () => {
       const outcode = "AA10";
       const record: any = {
-        outcode: outcode,
+        outcode,
         longitude: -2.12002322052475,
         latitude: 57.135241767364,
         northings: 804931,
@@ -42,7 +46,7 @@ describe("Outcode Model", () => {
     it("does not generate a location when northings = 0, eastings = 0", async () => {
       const outcode = "AA11";
       const record: any = {
-        outcode: outcode,
+        outcode,
         longitude: -2.12002322052475,
         latitude: 57.135241767364,
         northings: 0,
@@ -78,9 +82,13 @@ describe("Outcode Model", () => {
   });
 
   describe("setupTable", () => {
-    before(async () => Outcode.destroyRelation);
+    before(async () => {
+      await Outcode.destroyRelation();
+    });
 
-    after(async () => Outcode.setupTable());
+    after(async () => {
+      await Outcode.setupTable();
+    });
 
     it("creates and populates outcode table", async () => {
       await Outcode.setupTable();
@@ -90,9 +98,14 @@ describe("Outcode Model", () => {
   });
 
   describe("find", () => {
-    before(async () => Outcode.setupTable());
+    before(async () => {
+      await Outcode.setupTable();
+      const result = await helper.query("Select count(*) from outcodes");
+    });
 
-    after(async () => Outcode.setupTable());
+    after(async () => {
+      await Outcode.setupTable();
+    });
 
     it("returns outcode", async () => {
       const term = "AB10";
@@ -100,8 +113,7 @@ describe("Outcode Model", () => {
       assert.equal(outcode.outcode, term);
     });
     it("returns null if not string", async () => {
-      let term;
-      const outcode = await Outcode.find(term);
+      const outcode = await Outcode.find(undefined);
       assert.isNull(outcode);
     });
     it("returns null if outcode does not exist", async () => {
@@ -164,7 +176,7 @@ describe("Outcode Model", () => {
         await Outcode.nearest(params);
       } catch (error) {
         assert.isNotNull(error);
-        assert.match(error.message, /invalid\slatitude/i);
+        assert.match(error.message, /invalid\slongitude/i);
       }
     });
   });

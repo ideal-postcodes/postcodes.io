@@ -1,7 +1,7 @@
 import request from "supertest";
 import { assert } from "chai";
 import * as helper from "./helper/index";
-import Pc from "postcode";
+import { parse } from "postcode";
 const app = helper.postcodesioApplication();
 
 const error404Message = "Terminated postcode not found";
@@ -96,7 +96,7 @@ describe("Terminated postcode route", () => {
       testTerminatedPostcode = ` ${firstSlice} ${secondSlice} ${thirdSlice}`;
       path = `"/terminated_postcodes/"${encodeURI(testTerminatedPostcode)}`;
       //TODO check if change is correct with result
-      assert.isTrue(!Pc.parse(testTerminatedPostcode).valid);
+      assert.isTrue(!parse(testTerminatedPostcode).valid);
       request(app)
         .get(path)
         .expect("Content-Type", /json/)
