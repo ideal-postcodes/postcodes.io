@@ -1,13 +1,13 @@
 import pino from "pino";
 
 // Pino extreme can lose data but operates at twice the speed. Caveats documented here (https://github.com/pinojs/pino/blob/master/docs/extreme.md)
-const { extreme, destination } = pino;
+const { destination } = pino;
 
 const selectTarget = (file?: string) => {
   if (file === undefined) return destination();
   const output = file.toLowerCase();
   if (output === "stdout") return destination();
-  if (output === "perf") return extreme();
+  if (output === "perf") return destination({ sync: false });
   return destination(file);
 };
 
