@@ -78,8 +78,9 @@ describe("Postcodes routes with JSONP", () => {
       );
       const { text } = await request(app)
         .get(path)
-        .expect("Content-Type", "application/json; charset=utf-8")
-        .expect(200);
+        .expect("Content-Type", "application/json; charset=utf-8");
+      //.expect(200);
+      console.log(text);
       const jsonBody: any = helper.jsonpResponseBody(text);
       assert.equal(jsonBody.status, 200);
       assert.equal(jsonBody.result.outcode, testOutcode);

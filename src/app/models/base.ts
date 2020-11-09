@@ -49,7 +49,7 @@ export const query = async <T = any>(
   }
 
   const options = { text, ...(values && { values }) };
-
+  console.log(options);
   try {
     const result = await client.query(options);
     return result;

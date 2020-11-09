@@ -64,8 +64,8 @@ const seed = async (): Promise<unknown> => {
   await ScottishConstituency.setupTable();
   await Ccg.setupTable();
   await Ward.setupTable();
-  console.log("Created outcode table");
   await Outcode.setupTable();
+  console.log("Created outcode table");
   await Ced.setupTable();
 };
 
