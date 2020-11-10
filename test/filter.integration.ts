@@ -35,7 +35,6 @@ describe("Filter method", function () {
         .end((error: Error, response: any) => {
           if (error) return done(error);
           response.body.result.forEach((resultObj: any) => {
-            console.log(resultObj.result);
             assert.exists(resultObj.result["postcode"]);
             assert.isTrue(Object.keys(resultObj.result).length === 1);
           });

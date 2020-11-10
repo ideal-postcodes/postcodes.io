@@ -9,7 +9,7 @@ describe("Utils with JSONP", () => {
     it("should pong", async () => {
       const { text } = await request(app)
         .get("/ping?callback=foo")
-        .expect("Content-Type", /text\/javascript/)
+        .expect("Content-Type", jsonResponseTypeRegex)
         .expect(200);
       const jsonBody: any = helper.jsonpResponseBody(text);
       assert.equal(jsonBody.result, "pong");
@@ -78,9 +78,8 @@ describe("Postcodes routes with JSONP", () => {
       );
       const { text } = await request(app)
         .get(path)
-        .expect("Content-Type", "application/json; charset=utf-8");
-      //.expect(200);
-      console.log(text);
+        .expect("Content-Type", jsonResponseTypeRegex)
+        .expect(200);
       const jsonBody: any = helper.jsonpResponseBody(text);
       assert.equal(jsonBody.status, 200);
       assert.equal(jsonBody.result.outcode, testOutcode);
@@ -119,7 +118,6 @@ describe("Postcodes routes with JSONP", () => {
           callback: "foo",
         })
         .expect(200);
-      console.log(result);
       const { text } = result;
       const jsonBody: any = helper.jsonpResponseBody(text);
       assert.isArray(jsonBody.result);
@@ -135,7 +133,7 @@ describe("Postcodes routes with JSONP", () => {
       const path = "/random/postcodes?callback=foo";
       const { text } = await request(app)
         .get(path)
-        .expect("Content-Type", "application/json; charset=utf-8")
+        .expect("Content-Type", jsonResponseTypeRegex)
         .expect(200);
       const jsonBody: any = helper.jsonpResponseBody(text);
       assert.property(jsonBody.result, "postcode");
@@ -162,7 +160,7 @@ describe("Postcodes routes with JSONP", () => {
     });
   });
 
-  describe("GET /postcodes/lon/:longitude/lat/latitude", () => {
+  describe("GET /postcodes/lon/:longitude/lat/:latitude", () => {
     let loc: any;
 
     beforeEach(async () => {
@@ -177,7 +175,6 @@ describe("Postcodes routes with JSONP", () => {
           loc.latitude +
           "?callback=foo"
       );
-
       const { text } = await request(app)
         .get(uri)
         .expect("Content-Type", jsonResponseTypeRegex)

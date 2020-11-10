@@ -280,8 +280,7 @@ const loadPostcodeIds = async (outcode?: string): Promise<any> => {
   const params: string[] = [];
   let countQuery = "SELECT count(id) FROM postcodes";
   let idQuery = "SELECT id FROM postcodes";
-
-  if (outcode !== undefined) {
+  if (outcode) {
     countQuery += " WHERE outcode = $1";
     idQuery += " WHERE outcode = $1";
     params.push(outcode.replace(/\s/g, "").toUpperCase());

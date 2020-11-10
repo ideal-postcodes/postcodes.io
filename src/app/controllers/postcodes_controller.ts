@@ -67,7 +67,6 @@ export const bulk: Handler = (request, response, next) => {
   try {
     if (request.body.geolocations) return bulkGeocode(request, response, next);
   } catch (err) {
-    console.log(err);
     return next(err);
   }
   return next(new InvalidJsonQueryError());
@@ -134,7 +133,6 @@ const bulkGeocode: Handler = async (request, response, next) => {
     response.jsonApiResponse = { status: 200, result };
     next();
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -239,7 +237,6 @@ export const autocomplete: Handler = async (request, response, next) => {
 const nearestPostcodes: Handler = async (request, response, next) => {
   try {
     const { longitude, latitude } = request.params;
-
     let limit, radius;
     if (request.query.limit) limit = qToString(request.query.limit);
     if (request.query.radius) radius = qToString(request.query.radius);

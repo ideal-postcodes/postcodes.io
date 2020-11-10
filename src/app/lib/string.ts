@@ -14,5 +14,6 @@ const isString = (value: unknown): value is string => typeof value === "string";
 
 export const qToString = (value: unknown): string | null => {
   if (isString(value)) return value;
+  if (value && value.toString) return value.toString();
   return null;
 };

@@ -31,6 +31,7 @@ describe("Log configuration", () => {
     const { pcioLogger } = postcodesioApplication(config);
     const output = pcioLogger[stream];
     assert.equal(output.fd, 1);
+    assert.isTrue(output.sync);
   });
 
   // https://github.com/pinojs/pino/blob/master/docs/extreme.md
@@ -41,6 +42,6 @@ describe("Log configuration", () => {
     const { pcioLogger } = postcodesioApplication(config);
     const output = pcioLogger[stream];
     assert.equal(output.fd, 1);
-    assert.isTrue(output.minLength > 0);
+    assert.isFalse(output.sync);
   });
 });
