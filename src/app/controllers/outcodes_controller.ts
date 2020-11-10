@@ -5,7 +5,11 @@ import { Handler } from "../types/express";
 import { OutcodeNotFoundError, InvalidGeolocationError } from "../lib/errors";
 
 export const query: Handler = (request, response, next): void => {
-  const { lat, lon, longitude, latitude } = request.query;
+  const { lat, lon, longitude, latitude, limit, radius } = request.query;
+
+  //set limit and radius
+  request.params.limit = qToString(limit);
+  request.params.radius = qToString(radius);
 
   if (latitude && longitude) {
     request.params.latitude = qToString(latitude);

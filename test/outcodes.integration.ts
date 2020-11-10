@@ -19,7 +19,7 @@ describe("Outcodes routes", () => {
       const path = ["/outcodes/", encodeURI(testOutcode)].join("");
       request(app)
         .get(path)
-        .expect("Content-Type", /json/)
+        .expect("Content-Type", "application/json; charset=utf-8")
         .expect(helper.allowsCORS)
         .expect(200)
         .end(function (error, response) {
@@ -241,7 +241,8 @@ describe("Outcodes routes", () => {
           done();
         });
     });
-    it("returns a 400 error if invalid limit", function (done: Done) {
+    it("returns default limit if invalid limit", function (done: Done) {
+      const defaultLimit = helper.config.defaults.nearestOutcodes.limit.DEFAULT;
       request(app)
         .get(uri)
         .query({
@@ -249,13 +250,16 @@ describe("Outcodes routes", () => {
           lat: loc.latitude,
           limit: "BOGUS",
         })
-        .expect(400)
+        .expect(200)
         .end(function (error, response) {
           if (error) return done(error);
+          assert.isArray(response.body.result);
+          assert.isTrue(response.body.result.length > 0);
+          assert.isBelow(response.body.result.length, defaultLimit + 1);
           done();
         });
     });
-    it("returns a 400 error if invalid distance", function (done: Done) {
+    it("sets default radius if invalid distance", function (done: Done) {
       request(app)
         .get(uri)
         .query({
@@ -263,9 +267,11 @@ describe("Outcodes routes", () => {
           lat: loc.latitude,
           radius: "BOGUS",
         })
-        .expect(400)
+        .expect(200)
         .end(function (error, response) {
           if (error) return done(error);
+          assert.isArray(response.body.result);
+          assert.isTrue(response.body.result.length > 0);
           done();
         });
     });
