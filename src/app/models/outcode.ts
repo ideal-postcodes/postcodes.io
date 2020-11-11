@@ -1,6 +1,10 @@
 import { generateMethods, query } from "./base";
 import { Postcode } from "./postcode";
-import { InvalidGeolocationError } from "../lib/errors";
+import {
+  InvalidGeolocationError,
+  InvalidLimitError,
+  InvalidRadiusError,
+} from "../lib/errors";
 import { getConfig } from "../../config/config";
 const { defaults } = getConfig();
 
@@ -113,7 +117,11 @@ const nearest = async (params: NearestOptions) => {
   const DEFAULT_LIMIT = defaults.nearestOutcodes.limit.DEFAULT;
   const MAX_LIMIT = defaults.nearestOutcodes.limit.MAX;
 
-  let limit = parseInt(params.limit, 10) || DEFAULT_LIMIT;
+  let limit = DEFAULT_LIMIT;
+  if (params.limit) {
+    limit = parseInt(params.limit, 10);
+    if (isNaN(limit)) throw new InvalidLimitError();
+  }
   if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 
   const longitude = parseFloat(params.longitude);
@@ -122,7 +130,11 @@ const nearest = async (params: NearestOptions) => {
   const latitude = parseFloat(params.latitude);
   if (isNaN(latitude)) throw new InvalidGeolocationError();
 
-  let radius = parseFloat(params.radius) || DEFAULT_RADIUS;
+  let radius = DEFAULT_RADIUS;
+  if (params.radius) {
+    radius = parseFloat(params.radius);
+    if (isNaN(radius)) throw new InvalidRadiusError();
+  }
   if (radius > MAX_RADIUS) radius = MAX_RADIUS;
 
   const nearestOutcodeQuery = `

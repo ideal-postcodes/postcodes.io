@@ -3,6 +3,7 @@ import path from "path";
 import { assert } from "chai";
 import parse from "csv-parse/lib/sync";
 import * as helper from "./helper/index";
+import { PostcodesioHttpError } from "../src/app/lib/errors";
 const seedFilePath = path.resolve(__dirname, "./seed/postcode.csv");
 const Postcode = helper.Postcode;
 import { query } from "../src/app/models/base";
@@ -319,29 +320,29 @@ describe("Postcode Model", function () {
       const farawayPostcodes = await Postcode.nearestPostcodes(farAway);
       assert.isTrue(farawayPostcodes.length >= postcodes.length);
     });
-    it("should default limit to 10 if invalid", async () => {
+    it("should throw error if limit is invalid", async () => {
       const params = {
         longitude: location.longitude,
         latitude: location.latitude,
         limit: "Bogus",
       };
-      const postcodes = await Postcode.nearestPostcodes(params);
-      assert.isTrue(postcodes.length <= 10);
+      try {
+        await Postcode.nearestPostcodes(params);
+      } catch (error) {
+        assert.instanceOf(error, PostcodesioHttpError);
+      }
     });
-    it("should default radius to 100 if invalid", async () => {
+    it("should throw error for invalid radius", async () => {
       const nearby = {
         longitude: location.longitude,
         latitude: location.latitude,
         radius: "BOGUS",
       };
-      const farAway = {
-        longitude: location.longitude,
-        latitude: location.latitude,
-        radius: "1000",
-      };
-      const postcodes = await Postcode.nearestPostcodes(nearby);
-      const farawayPostcodes = await Postcode.nearestPostcodes(farAway);
-      assert.isTrue(farawayPostcodes.length >= postcodes.length);
+      try {
+        await Postcode.nearestPostcodes(nearby);
+      } catch (error) {
+        assert.instanceOf(error, PostcodesioHttpError);
+      }
     });
     it("should raise an error if invalid longitude", async () => {
       const params = {

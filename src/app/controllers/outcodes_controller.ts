@@ -46,10 +46,13 @@ export const showOutcode: Handler = async (request, response, next) => {
 export const nearest: Handler = async (request, response, next) => {
   try {
     const { outcode } = request.params;
+    const { limit, radius } = request.query;
     const result = await Outcode.find(outcode);
     if (!result) return next(new OutcodeNotFoundError());
     request.params.longitude = qToString(result.longitude);
     request.params.latitude = qToString(result.latitude);
+    request.params.limit = qToString(limit);
+    request.params.radius = qToString(radius);
     nearestOutcodes(request, response, next);
   } catch (error) {
     next(error);

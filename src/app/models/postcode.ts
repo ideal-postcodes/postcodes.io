@@ -13,7 +13,11 @@ import {
 } from "./base";
 import QueryStream from "pg-query-stream";
 import { getConfig } from "../../config/config";
-import { InvalidGeolocationError } from "../lib/errors";
+import {
+  InvalidGeolocationError,
+  InvalidLimitError,
+  InvalidRadiusError,
+} from "../lib/errors";
 
 const { defaults } = getConfig();
 const extractOnspdVal = csvExtractor(
@@ -487,7 +491,12 @@ const nearestPostcodes = async (
   const DEFAULT_LIMIT = defaults.nearest.limit.DEFAULT;
   const MAX_LIMIT = defaults.nearest.limit.MAX;
 
-  let limit = parseInt(options.limit, 10) || DEFAULT_LIMIT;
+  let limit = DEFAULT_LIMIT;
+  if (options.limit) {
+    limit = parseInt(options.limit, 10);
+    if (isNaN(limit)) throw new InvalidLimitError();
+  }
+
   if (limit > MAX_LIMIT) limit = MAX_LIMIT;
 
   const longitude = parseFloat(options.longitude);
@@ -496,8 +505,11 @@ const nearestPostcodes = async (
   const latitude = parseFloat(options.latitude);
   if (isNaN(latitude)) throw new InvalidGeolocationError();
 
-  let radius = options.radius ? parseFloat(options.radius) : DEFAULT_RADIUS;
-  if (isNaN(radius)) radius = DEFAULT_RADIUS;
+  let radius = DEFAULT_RADIUS;
+  if (options.radius) {
+    radius = parseFloat(options.radius);
+    if (isNaN(radius)) throw new InvalidRadiusError();
+  }
   if (radius > MAX_RADIUS) radius = MAX_RADIUS;
   // If a wideSearch query is requested, derive a suitable range which
   // guarantees postcode results over a much wider area

@@ -7,7 +7,7 @@ export const show: Handler = async (request, response, next) => {
   try {
     const { postcode } = request.params;
 
-    if (isValid(postcode.trim())) throw new InvalidPostcodeError();
+    if (!isValid(postcode.trim())) throw new InvalidPostcodeError();
 
     const result = await TerminatedPostcode.find(postcode);
 
