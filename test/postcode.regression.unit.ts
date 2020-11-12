@@ -51,6 +51,7 @@ describe("Postcode data regression testing", function () {
         ccg_code: "012",
         nuts: "Aberdeen City and Aberdeenshire",
         nuts_code: "UKM50",
+        nuts_id: result.nuts_id,
       },
       result
     );
@@ -95,6 +96,7 @@ describe("Postcode data regression testing", function () {
         ccg_code: "08Q",
         nuts: "Lewisham and Southwark",
         nuts_code: "UKI44",
+        nuts_id: result.nuts_id,
       },
       result
     );
@@ -141,6 +143,7 @@ describe("Postcode data regression testing", function () {
         ccg_code: null,
         nuts: null,
         nuts_code: null,
+        nuts_id: result.nuts_id,
       },
       result
     );

@@ -58,6 +58,9 @@ export interface PostcodeInterface {
     ccg_id: string;
     ced: string;
     nuts: string;
+    lsoa: string | null;
+    msoa: string | null;
+    lau2: string | null;
   };
 }
 
@@ -82,6 +85,7 @@ export interface PostcodeTuple {
   parish_id: string;
   lsoa: string;
   msoa: string;
+  nuts_id: string;
   nuts_code: string;
   incode: string;
   outcode: string;
@@ -755,6 +759,9 @@ const toJson = function (
       ccg_id: p.ccg_code,
       ced: p.ced_id,
       nuts: p.nuts_code,
+      lsoa: p.lsoa,
+      msoa: p.msoa,
+      lau2: p.nuts_id,
     },
     // Insert distance if present
     //@ts-ignore
