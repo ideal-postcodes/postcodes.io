@@ -13,7 +13,7 @@
         <code>application/json</code>
       </p>
       <h3 id="Extraction">Data Extraction</h3>
-      <p>The Postcodes.io application and database are packaged as docker images for rapid local deployment and data extraction.</p>
+      <p>The Postcodes.io application and database are packaged as Docker images for rapid local deployment and data extraction.</p>
       <p>To perform one-time data extraction tasks using SQL, see our <a href="https://ideal-postcodes.co.uk/guides/postcodes-io-database">local data extraction guide</a>.</p>
       <h3 id="Responses">Responses</h3>
       <p>JSON(P) only. CORS is enabled.</p>
@@ -300,7 +300,7 @@
               <code>string|null</code>
             </td>
             <td>
-              <strong>Parish (England)/ community (Wales).</strong> The smallest
+              <strong>Parish (England)/community (Wales).</strong> The smallest
               type of administrative area in England is the parish (also known
               as 'civil parish'); the equivalent units in Wales are communities.
             </td>
@@ -565,7 +565,7 @@
               <code>string[]</code>
             </td>
             <td>
-              <strong>Parish (England)/ community (Wales).</strong> The parishes
+              <strong>Parish (England)/community (Wales).</strong> The parishes
               included in the outcode.
             </td>
           </tr>
@@ -1165,19 +1165,19 @@
       </p>
       <ol>
         <li>
-          <strong>Docker Installation.</strong> Use our docker application and
+          <strong>Docker Installation.</strong> Use our Docker application and
           database images.
         </li>
         <li>
           <strong>Install Script</strong>. Clone the repository, install
           dependencies and <code>npm run setup</code>. This will download the
           database and import the data from a <code>pg_dump</code> into a
-          locally running instance of PostreSQL.
+          locally running instance of PostgreSQL.
         </li>
         <li>
-          <strong>Manual Installation via pg_dump</strong>. You can download the
+          <strong>Manual Installation via</strong> <code>pg_dump</code>. You can download the
           <code>pg_dump</code> and attempt to import the database yourself with
-          <code>psql</code> or pg_restore.
+          <code>psql</code> or <code>pg_restore</code>.
         </li>
         <li>
           <strong>Manual Installation</strong>. Retrieve the raw CSV datasets
@@ -1190,7 +1190,7 @@
       </h3>
 
       <p>
-        Postcodes.io can be installed using two docker containers: the
+        Postcodes.io can be installed using two Docker containers: the
         postcodes.io application container and the postcodes.io database
         container.
       </p>
@@ -1199,8 +1199,7 @@
       <ul>
         <li>
           Local copy of
-          <a href="https://github.com/ideal-postcodes/postcodes.io"
-            >postcodes.io repository</a
+          <a href="https://github.com/ideal-postcodes/postcodes.io">postcodes.io repository</a
           >
         </li>
         <li><a href="https://docker.com">Docker</a></li>
@@ -1239,7 +1238,7 @@
       </p>
 
       <p>Example usage:</p>
-      <pre>docker run -d -p 8000 idealpostcodes/postcodes.io</pre>
+      <pre>$ docker run -d -p 8000 idealpostcodes/postcodes.io</pre>
 
       <p>Configuration available via Environment Variables:</p>
       <ul>
@@ -1265,18 +1264,18 @@
       <p>
         <strong>Take Note:</strong> Upon starting a container for the first
         time, PostGIS will be enabled and the <code>pg_dump</code> will take
-        15s-60s to restore depending on your system resources.
+        15-60s to restore depending on your system resources.
       </p>
 
       <p>Example usage:</p>
 
       <pre>
-docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e POSTGRES_PASSWORD=password idealpostcodes/postcodes.io.db</pre
+$ docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e POSTGRES_PASSWORD=password idealpostcodes/postcodes.io.db</pre
       >
 
       <p>
         As this contains the official PostreSQL base image, the available
-        configuration environment variables are documented here:
+        configuration environment variables are documented at:
         <a href="https://hub.docker.com/_/postgres/"
           >hub.docker.com/_/postgres/</a
         >
@@ -1295,7 +1294,7 @@ docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e 
         </li>
         <li><a href="https://nodejs.org">Node.js</a></li>
         <li>
-          <a href="https://postgis.net/install/">PostreSQL and PostGIS</a>
+          <a href="https://postgis.net/install/">PostgreSQL and PostGIS</a>
         </li>
       </ul>
       <p>
@@ -1310,7 +1309,7 @@ docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e 
           script</a
         >
         to provision PostgreSQL and download a dump of the dataset. The script
-        will,
+        will:
       </p>
       <ul>
         <li>
