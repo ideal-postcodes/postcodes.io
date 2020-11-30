@@ -1,3 +1,10 @@
+## [12.1.1](https://github.com/ideal-postcodes/postcodes.io/compare/12.1.0...12.1.1) (2020-11-30)
+
+
+### Bug Fixes
+
+* correct grammar on documentation page ([eea9056](https://github.com/ideal-postcodes/postcodes.io/commit/eea90564438d89b1f7772a1466cf119d9466ba90))
+
 # [12.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/12.0.4...12.1.0) (2020-08-24)
 
 
