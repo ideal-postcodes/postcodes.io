@@ -26,6 +26,17 @@ body {
   width: auto;
 }
 
+#map mapboxgl-popup-content table {
+    font-size: 11px;
+}
+
+#map mapboxgl-popup-content table tr td {
+    padding: 2px;
+}
+#map mapboxgl-popup-content table tr td:first-child {
+    font-weight: bold;
+}
+
 #instructions {
   text-align: center;
 }
