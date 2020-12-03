@@ -158,9 +158,9 @@ $(function () {
         properties[prop] !== ""
       ) {
         result.push(
-          "<tr><td>" +
+          "<tr><td><strong>" +
             markerProperties[prop] +
-            ":</td><td>" +
+            ":</strong></td><td>" +
             properties[prop] +
             "</td></tr>"
         );

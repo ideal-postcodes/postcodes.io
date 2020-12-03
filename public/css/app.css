@@ -20,21 +20,19 @@ body {
 
 #map {
   position: absolute;
-  min-height: 100%;
+  top: 45px;
+  bottom: 0;
   min-width: 100%;
   height: auto;
   width: auto;
 }
 
 #map mapboxgl-popup-content table {
-    font-size: 11px;
+  font-size: 11px;
 }
 
 #map mapboxgl-popup-content table tr td {
-    padding: 2px;
-}
-#map mapboxgl-popup-content table tr td:first-child {
-    font-weight: bold;
+  padding: 2px;
 }
 
 #instructions {
@@ -61,7 +59,7 @@ body {
   top: 60px;
   right: 10px;
   width: 240px;
-  background-color: rgba(240,240,240,0.9);
+  background-color: rgba(240, 240, 240, 0.9);
   padding: 10px;
   border-radius: 10px;
 }
@@ -105,7 +103,7 @@ body {
 .mast {
   padding: 8em 0 3em;
   background-color: #1c2533;
- background: -webkit-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+  background: -webkit-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -o-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -ms-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
   background: -moz-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
@@ -208,7 +206,7 @@ h2.api-header {
 }
 
 .api-method input:focus {
-  outline:none;
+  outline: none;
 }
 
 .api-method pre {
@@ -274,14 +272,14 @@ h4.method-title {
   resize: none;
   margin-top: 1em;
   border: 1px solid #aca;
-  outline:none;
+  outline: none;
 }
 
 #bulk-postcodes-input {
   height: 6em;
 }
 
-#bulk-reverse-input {
+#bulk-reverse-input, #bulk-reverse-query-limit-input {
   height: 18em;
 }
 
@@ -326,9 +324,11 @@ li.active a {
     font-size: 39px;
     text-align: center;
   }
+
   .text-with-logo {
     justify-content: center;
   }
+
   tbody tr#quality > td {
     vertical-align: middle;
   }

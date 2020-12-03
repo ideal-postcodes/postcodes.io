@@ -146,6 +146,24 @@ describe("Postcodes routes", () => {
             done();
           });
       });
+      it("is sensitive to query limit", (done) => {
+        const testLocation = testLocations[0];
+        request(app)
+          .post("/postcodes?limit=1")
+          .send({ geolocations: [testLocation] })
+          .expect("Content-Type", /json/)
+          .expect(helper.allowsCORS)
+          .expect(200)
+          .end((error, response) => {
+            if (error) return done(error);
+            assert.equal(response.body.result.length, 1);
+            assert.equal(response.body.result[0].result.length, 1);
+            helper.isPostcodeWithDistanceObject(
+              response.body.result[0].result[0]
+            );
+            done();
+          });
+      });
       it("is sensitive to radius", (done) => {
         const testLocation = testLocations[0];
         testLocation.limit = 100;

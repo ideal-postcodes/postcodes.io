@@ -488,14 +488,17 @@ export interface NearestPostcodesOptions {
 }
 
 const nearestPostcodes = async (
-  options: NearestPostcodesOptions
+  options: NearestPostcodesOptions,
+  queryLimit?: number
 ): Promise<NearestPostcodeTuple[]> => {
   const DEFAULT_RADIUS = defaults.nearest.radius.DEFAULT;
   const MAX_RADIUS = defaults.nearest.radius.MAX;
   const DEFAULT_LIMIT = defaults.nearest.limit.DEFAULT;
   const MAX_LIMIT = defaults.nearest.limit.MAX;
 
-  let limit = DEFAULT_LIMIT;
+  if (queryLimit && isNaN(queryLimit)) throw new InvalidLimitError();
+
+  let limit = isNaN(queryLimit) ? DEFAULT_LIMIT : queryLimit;
   if (options.limit) {
     limit = parseInt(options.limit, 10);
     if (isNaN(limit)) throw new InvalidLimitError();

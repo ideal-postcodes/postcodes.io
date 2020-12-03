@@ -306,6 +306,17 @@ describe("Postcode Model", function () {
       assert.equal(postcodes.length, 1);
       postcodes.forEach((p) => helper.isRawPostcodeObjectWithFCandDistance(p));
     });
+    it("should be sensitive to query limit", async () => {
+      const params = {
+        longitude: location.longitude,
+        latitude: location.latitude,
+      };
+      const limit = 2;
+      const postcodes = await Postcode.nearestPostcodes(params, limit);
+      assert.isArray(postcodes);
+      assert.equal(postcodes.length, 2);
+      postcodes.forEach((p) => helper.isRawPostcodeObjectWithFCandDistance(p));
+    });
     it("should be sensitive to distance param", async () => {
       const nearby = {
         longitude: location.longitude,
@@ -328,6 +339,18 @@ describe("Postcode Model", function () {
       };
       try {
         await Postcode.nearestPostcodes(params);
+      } catch (error) {
+        assert.instanceOf(error, PostcodesioHttpError);
+      }
+    });
+    it("should throw error if query limit is invalid", async () => {
+      const params = {
+        longitude: location.longitude,
+        latitude: location.latitude,
+      };
+      const limit = "Bogus";
+      try {
+        await Postcode.nearestPostcodes(params, parseInt(limit, 10));
       } catch (error) {
         assert.instanceOf(error, PostcodesioHttpError);
       }

@@ -84,15 +84,21 @@ interface LookupGeolocationResult {
 const bulkGeocode: Handler = async (request, response, next) => {
   try {
     const { geolocations } = request.body;
+    if (request.query.limit)
+      request.params.limit = qToString(request.query.limit);
 
     if (!Array.isArray(geolocations)) return next(new JsonArrayRequiredError());
     if (geolocations.length > MAX_GEOLOCATIONS)
       return next(new ExceedMaxGeolocationsError());
 
     const lookupGeolocation = async (
-      location: NearestPostcodesOptions
+      location: NearestPostcodesOptions,
+      limit?: string
     ): Promise<LookupGeolocationResult> => {
-      const postcodes = await Postcode.nearestPostcodes(location);
+      const postcodes = await Postcode.nearestPostcodes(
+        location,
+        parseInt(limit, 10)
+      );
       let result = null;
       if (postcodes && postcodes.length > 0) {
         result = postcodes.map((postcode) => Postcode.toJson(postcode));
@@ -124,7 +130,9 @@ const bulkGeocode: Handler = async (request, response, next) => {
     const result = [];
     for (let i = 0; i < GEO_ASYNC_LIMIT; i += 1) {
       if (geolocations[i]) {
-        result.push(await lookupGeolocation(geolocations[i]));
+        result.push(
+          await lookupGeolocation(geolocations[i], request.params.limit)
+        );
       } else {
         break;
       }
