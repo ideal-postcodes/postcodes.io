@@ -2,7 +2,10 @@
 version: '3'
 services:
   api:
-    image: idealpostcodes/postcodes.io:latest
+    #image: idealpostcodes/postcodes.io:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     depends_on:
       - db
     environment:
