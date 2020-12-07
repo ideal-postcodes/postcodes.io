@@ -189,12 +189,11 @@ $(document).ready(function () {
     event.preventDefault();
     var $result = $("#bulk-reverse-query-limit-result"),
       data = $bulkGeocodeInputLimit.val(),
-      limit = $("#limit-input").val(),
       locations;
 
     try {
       locations = JSON.parse(data);
-      $.post("/postcodes?limit=" + limit, locations)
+      $.post("/postcodes", locations)
         .done(function (data) {
           displayJsonResult($result, data);
         })
