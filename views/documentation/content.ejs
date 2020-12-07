@@ -958,7 +958,7 @@
         to return. Defaults to 100m. Needs to be less than 2,000m.
       </p>
       <p>
-        <code>wideSearch=</code> (not required) Search up to 20km radius, but
+        <code>widesearch=</code> (not required) Search up to 20km radius, but
         subject to a maximum of 10 results. Since lookups over a wide area can
         be very expensive, we've created this method to allow you choose to make
         the trade off between search radius and number of results. Defaults to
@@ -978,12 +978,22 @@
         geolocations.
       </p>
       <pre><h4><div class="http-method">POST</div>https://api.postcodes.io/postcodes</h4></pre>
+      <h4>Optional Query Parameters</h4>
+      <p>
+        <code>limit=</code> (not required) Applies a global limit parameter to all geolocation lookup objects. Defaults to 10. Needs to be less than 100.
+      </p>
+      <p>
+        <code>radius=</code> (not required) Applies a global search radius to all geolocation lookup objects. Defaults to 100m. Needs to be less than 2,000m.
+      </p>
+      <p>
+        <code>widesearch=</code> (not required) Applies a global widesearch parameter to all geolocation lookup objects. Defaults to `false`.
+      </p>
       <h4>Post Data</h4>
       <p>
         This method requires a JSON object containing an array of geolocation
         objects to be POSTed. Each geolocation object accepts an optional radius
-        (meters) and limit argument. Both default to 100m and 10 respectively.
-        It also accepts a wideSearch argument, e.g.
+        (metres) and limit argument. Both default to 100m and 10 respectively.
+        It also accepts a widesearch argument, e.g.
       </p>
       <pre>
 {
@@ -998,7 +1008,7 @@
   }]
 }</pre
       >
-      <h4>Optional Query Parameters</h4>
+      <h4>Optional Geolocation Object Parameters</h4>
       <p>
         <code>filter=</code> (not required) A comma separated whitelist of
         attributes to be returned in the result object(s). e.g.
@@ -1007,7 +1017,7 @@
         If no attributes match the result object, an empty object is returned
       </p>
       <p>
-        <code>wideSearch=</code> (not required) Search up to 20km radius, but
+        <code>widesearch=</code> (not required) Search up to 20km radius, but
         subject to a maximum of 10 results
       </p>
       <h4>Additional Response Attributes</h4>

@@ -128,8 +128,11 @@ describe("Postcodes routes", () => {
           });
       });
       it("is sensitive to limit", (done) => {
-        const testLocation = testLocations[0];
-        testLocation.limit = 1;
+        const testLocation = {
+          longitude: -2.084524,
+          latitude: 57.129475,
+          limit: 1,
+        };
         request(app)
           .post("/postcodes")
           .send({ geolocations: [testLocation] })
@@ -140,6 +143,49 @@ describe("Postcodes routes", () => {
             if (error) return done(error);
             assert.equal(response.body.result.length, 1);
             assert.equal(response.body.result[0].result.length, 1);
+            helper.isPostcodeWithDistanceObject(
+              response.body.result[0].result[0]
+            );
+            done();
+          });
+      });
+      it("is sensitive to limit set in query string", (done) => {
+        const testLocation = {
+          longitude: -2.084524,
+          latitude: 57.129475,
+        };
+        request(app)
+          .post("/postcodes?limit=1")
+          .send({ geolocations: [testLocation] })
+          .expect("Content-Type", /json/)
+          .expect(helper.allowsCORS)
+          .expect(200)
+          .end((error, response) => {
+            if (error) return done(error);
+            assert.equal(response.body.result.length, 1);
+            assert.equal(response.body.result[0].result.length, 1);
+            helper.isPostcodeWithDistanceObject(
+              response.body.result[0].result[0]
+            );
+            done();
+          });
+      });
+      it("overrides global limit with local", (done) => {
+        const testLocation = {
+          longitude: -2.084524,
+          latitude: 57.129475,
+          limit: 2,
+        };
+        request(app)
+          .post("/postcodes?limit=1")
+          .send({ geolocations: [testLocation] })
+          .expect("Content-Type", /json/)
+          .expect(helper.allowsCORS)
+          .expect(200)
+          .end((error, response) => {
+            if (error) return done(error);
+            assert.equal(response.body.result.length, 1);
+            assert.equal(response.body.result[0].result.length, 2);
             helper.isPostcodeWithDistanceObject(
               response.body.result[0].result[0]
             );

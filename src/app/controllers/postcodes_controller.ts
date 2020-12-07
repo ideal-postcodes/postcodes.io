@@ -85,6 +85,15 @@ const bulkGeocode: Handler = async (request, response, next) => {
   try {
     const { geolocations } = request.body;
 
+    let globalLimit;
+    if (request.query.limit) globalLimit = qToString(request.query.limit);
+
+    let globalRadius;
+    if (request.query.radius) globalRadius = qToString(request.query.radius);
+
+    let globalWidesearch;
+    if (request.query.widesearch) globalWidesearch = true;
+
     if (!Array.isArray(geolocations)) return next(new JsonArrayRequiredError());
     if (geolocations.length > MAX_GEOLOCATIONS)
       return next(new ExceedMaxGeolocationsError());
@@ -112,7 +121,7 @@ const bulkGeocode: Handler = async (request, response, next) => {
     ];
 
     const sanitizeQuery = (q: NearestPostcodesOptions) => {
-      const result: { [index: string]: unknown } = {};
+      const result: Record<string, unknown> = {};
       for (const [key, value] of Object.entries(q)) {
         if (whitelist.indexOf(key.toLowerCase()) !== -1) {
           result[key] = value;
@@ -124,7 +133,14 @@ const bulkGeocode: Handler = async (request, response, next) => {
     const result = [];
     for (let i = 0; i < GEO_ASYNC_LIMIT; i += 1) {
       if (geolocations[i]) {
-        result.push(await lookupGeolocation(geolocations[i]));
+        result.push(
+          await lookupGeolocation({
+            ...(globalLimit && { limit: globalLimit }),
+            ...(globalRadius && { radius: globalRadius }),
+            ...(globalWidesearch && { widesearch: true }),
+            ...geolocations[i],
+          })
+        );
       } else {
         break;
       }
