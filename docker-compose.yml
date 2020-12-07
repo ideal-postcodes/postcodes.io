@@ -1,8 +1,9 @@
 ---
-version: '3'
+version: "3"
 services:
   api:
-    #image: idealpostcodes/postcodes.io:latest
+    image: idealpostcodes/postcodes.io:latest
+    restart: unless-stopped
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -17,8 +18,8 @@ services:
       - 8000:8000
   db:
     image: idealpostcodes/postcodes.io.db:latest
+    restart: unless-stopped
     environment:
       - POSTGRES_DB=postcodesiodb
       - POSTGRES_PASSWORD=secret
       - POSTGRES_USER=postcodesio
-
