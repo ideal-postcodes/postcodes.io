@@ -1,6 +1,8 @@
 import {
   Ccg,
   Ced,
+  Lsoa,
+  Msoa,
   Constituency,
   County,
   District,
@@ -15,6 +17,8 @@ import {
 export const SUPPORT_TABLES = [
   Ccg,
   Ced,
+  Lsoa,
+  Msoa,
   Constituency,
   County,
   District,
