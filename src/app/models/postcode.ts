@@ -58,6 +58,8 @@ export interface PostcodeInterface {
     ccg_id: string;
     ced: string;
     nuts: string;
+    lsoa: string | null;
+    msoa: string | null;
     lau2: string | null;
   };
 }
@@ -82,7 +84,9 @@ export interface PostcodeTuple {
   region: string;
   parish_id: string;
   lsoa: string;
+  lsoa_id: string;
   msoa: string;
+  msoa_id: string;
   nuts_id: string;
   nuts_code: string;
   incode: string;
@@ -122,8 +126,8 @@ const relation: Relation = {
     primary_care_trust: "VARCHAR(255)",
     region: "VARCHAR(255)",
     parish_id: "VARCHAR(32)",
-    lsoa: "VARCHAR(255)",
-    msoa: "VARCHAR(255)",
+    lsoa_id: "VARCHAR(32)",
+    msoa_id: "VARCHAR(32)",
     nuts_id: "VARCHAR(32)",
     incode: "VARCHAR(5)",
     outcode: "VARCHAR(5)",
@@ -198,6 +202,16 @@ const relationships: Relationship[] = [
     key: "nuts_id",
     foreignKey: "code",
   },
+  {
+    table: "msoa",
+    key: "msoa_id",
+    foreignKey: "code",
+  },
+  {
+    table: "lsoa",
+    key: "lsoa_id",
+    foreignKey: "code",
+  },
 ];
 
 const joinString: string = Object.freeze(
@@ -227,6 +241,14 @@ const foreignColumns: ForeignColumn[] = [
   {
     field: "counties.name",
     as: "admin_county",
+  },
+  {
+    field: "lsoa.name",
+    as: "lsoa",
+  },
+  {
+    field: "msoa.name",
+    as: "msoa",
   },
   {
     field: "wards.name",
@@ -757,6 +779,8 @@ const toJson = function (
       ccg_id: p.ccg_code,
       ced: p.ced_id,
       nuts: p.nuts_code,
+      lsoa: p.lsoa_id,
+      msoa: p.msoa_id,
       lau2: p.nuts_id,
     },
     // Insert distance if present
@@ -775,8 +799,6 @@ const setupTable = async (filepath: string) => {
 
 const seedPostcodes = async (filepath: string) => {
   const pcts = require("../../../data/pcts.json");
-  const lsoa = require("../../../data/lsoa.json");
-  const msoa = require("../../../data/msoa.json");
   const nhsHa = require("../../../data/nhsHa.json");
   const regions = require("../../../data/regions.json");
   const countries = require("../../../data/countries.json");
@@ -818,8 +840,8 @@ const seedPostcodes = async (filepath: string) => {
     },
     { column: "region", method: (row) => regions[row.extract("rgn")] },
     { column: "primary_care_trust", method: (row) => pcts[row.extract("pct")] },
-    { column: "lsoa", method: (row) => lsoa[row.extract("lsoa11")] },
-    { column: "msoa", method: (row) => msoa[row.extract("msoa11")] },
+    { column: "lsoa_id", method: (row) => row.extract("lsoa11") },
+    { column: "msoa_id", method: (row) => row.extract("msoa11") },
     { column: "nuts_id", method: (row) => row.extract("nuts") },
     { column: "incode", method: (row) => row.extract("pcds").split(" ")[1] },
     { column: "outcode", method: (row) => row.extract("pcds").split(" ")[0] },

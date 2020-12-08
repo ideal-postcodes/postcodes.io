@@ -42,47 +42,47 @@ const clear = async (): Promise<unknown> => {
   await Parish.destroyRelation();
   await Nuts.destroyRelation();
   await County.destroyRelation();
+  await Lsoa.destroyRelation();
+  await Msoa.destroyRelation();
   await Constituency.destroyRelation();
   await ScottishConstituency.destroyRelation();
   await Ccg.destroyRelation();
   await Ward.destroyRelation();
   await Outcode.destroyRelation();
   await Ced.destroyRelation();
-  await Lsoa.destroyRelation();
-  await Msoa.destroyRelation();
 };
 
 const seed = async (): Promise<unknown> => {
   if (NO_RELOAD_DB) return null;
-  console.log("Creating postcode");
+  console.log("Creating postcodes relation");
   await Postcode.setupTable(seedPostcodePath);
   await TerminatedPostcode.setupTable(seedPostcodePath);
-  console.log("Creating place");
+  console.log("Creating places releation");
   await Place.setupTable(seedPlacesPath);
   await ScottishPostcode.setupTable(seedScotlandPostcodePath);
   await District.setupTable();
   await Parish.setupTable();
   await Nuts.setupTable();
   await County.setupTable();
+  await Lsoa.setupTable();
+  await Msoa.setupTable();
   await Constituency.setupTable();
   await ScottishConstituency.setupTable();
   await Ccg.setupTable();
   await Ward.setupTable();
   await Outcode.setupTable();
-  console.log("Created outcode table");
+  console.log("Created outcodes relation");
   await Ced.setupTable();
-  await Lsoa.setupTable();
-  await Msoa.setupTable();
 };
 
 export const run = async () => {
   try {
     console.log("Wiping test database...");
     await clear();
-    console.log("Done.");
+    console.log("Done");
     console.log("Recreating test database...");
     await seed();
-    console.log("Done Seed.");
+    console.log("Completed seeding");
     process.exit(0);
   } catch (error) {
     handleError(error);
