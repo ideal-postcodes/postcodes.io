@@ -25,7 +25,7 @@ if (!source) {
   process.exit(1);
 }
 
-const run = async () => {
+export const run = async () => {
   try {
     const start = process.hrtime();
 
