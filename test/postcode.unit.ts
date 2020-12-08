@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import * as fs from "fs";
+import * as path from "path";
 import { assert } from "chai";
 import parse from "csv-parse/lib/sync";
 import * as helper from "./helper/index";
@@ -12,8 +12,6 @@ import { query } from "../src/app/models/base";
  * Counts number of postcode records if
  * - not headers
  * - not terminated
- * @param  {string} seedFilePath - path to CSV file
- * @return {number}
  */
 const postcodeRecordCount = (seedFilePath: any) => {
   return parse(fs.readFileSync(seedFilePath)).filter(

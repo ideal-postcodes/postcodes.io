@@ -168,6 +168,10 @@ const postcodeForeignColumns = [
   "ccg",
   "nuts",
   "nuts_code",
+  "lsoa",
+  "lsoa_id",
+  "msoa",
+  "msoa_id",
 ];
 
 export const isRawPostcodeObjectWithFC = (

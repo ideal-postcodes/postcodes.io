@@ -14,6 +14,8 @@ import {
   Place,
   TerminatedPostcode,
   Ced,
+  Lsoa,
+  Msoa,
 } from "../../src/app/models/index";
 import { QueryResult } from "pg";
 
@@ -31,20 +33,22 @@ const seedScotlandPostcodePath = resolve(__dirname, "../seed/");
 const clearTestDb = async (): Promise<any[] | null> => {
   if (process.env.PRESERVE_DB !== undefined) return null;
   return Promise.all([
-    (async () => await Postcode.destroyRelation())(),
-    (async () => await TerminatedPostcode.destroyRelation())(),
-    (async () => await Place.destroyRelation())(),
-    (async () => await ScottishPostcode.destroyRelation())(),
-    (async () => await District.destroyRelation())(),
-    (async () => await Parish.destroyRelation())(),
-    (async () => await Nuts.destroyRelation())(),
-    (async () => await County.destroyRelation())(),
-    (async () => await Constituency.destroyRelation())(),
-    (async () => await ScottishConstituency.destroyRelation())(),
-    (async () => await Ccg.destroyRelation())(),
-    (async () => await Ward.destroyRelation())(),
-    (async () => await Outcode.destroyRelation())(),
-    (async () => await Ced.destroyRelation())(),
+    Postcode.destroyRelation(),
+    TerminatedPostcode.destroyRelation(),
+    Place.destroyRelation(),
+    ScottishPostcode.destroyRelation(),
+    District.destroyRelation(),
+    Parish.destroyRelation(),
+    Nuts.destroyRelation(),
+    County.destroyRelation(),
+    Constituency.destroyRelation(),
+    ScottishConstituency.destroyRelation(),
+    Ccg.destroyRelation(),
+    Ward.destroyRelation(),
+    Lsoa.destroyRelation(),
+    Msoa.destroyRelation(),
+    Outcode.destroyRelation(),
+    Ced.destroyRelation(),
   ]);
 };
 
@@ -56,20 +60,22 @@ const seedTerminatedPostcodeDb = async (): Promise<void | null> => {
 const seedPostcodeDb = async (): Promise<any[] | null> => {
   if (NO_RELOAD_DB) return null;
   return Promise.all([
-    (async () => await Postcode.setupTable(seedPostcodePath))(),
-    (async () => await TerminatedPostcode.setupTable(seedPostcodePath))(),
-    (async () => await Place.setupTable(seedPlacesPath))(),
-    (async () => await ScottishPostcode.setupTable(seedScotlandPostcodePath))(),
-    (async () => await District.setupTable())(),
-    (async () => await Parish.setupTable())(),
-    (async () => await Nuts.setupTable())(),
-    (async () => await County.setupTable())(),
-    (async () => await Constituency.setupTable())(),
-    (async () => await ScottishConstituency.setupTable())(),
-    (async () => await Ccg.setupTable())(),
-    (async () => await Ward.setupTable())(),
-    (async () => await Outcode.setupTable())(),
-    (async () => await Ced.setupTable())(),
+    Postcode.setupTable(seedPostcodePath),
+    TerminatedPostcode.setupTable(seedPostcodePath),
+    Place.setupTable(seedPlacesPath),
+    ScottishPostcode.setupTable(seedScotlandPostcodePath),
+    District.setupTable(),
+    Parish.setupTable(),
+    Nuts.setupTable(),
+    County.setupTable(),
+    Constituency.setupTable(),
+    ScottishConstituency.setupTable(),
+    Ccg.setupTable(),
+    Ward.setupTable(),
+    Lsoa.setupTable(),
+    Msoa.setupTable(),
+    Outcode.setupTable(),
+    Ced.setupTable(),
   ]);
 };
 
