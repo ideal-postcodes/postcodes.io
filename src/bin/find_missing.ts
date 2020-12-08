@@ -15,7 +15,7 @@ import minimist from "minimist";
 const argv = minimist(process.argv.slice(2));
 
 // Maps postcodes.io code types to ONSPD labels
-const onspdSchema = require("../../../data/onspd_schema.json");
+const onspdSchema = require("../../data/onspd_schema.json");
 
 type CodeType =
   | "nhsHa"
