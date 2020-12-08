@@ -14,3 +14,5 @@ export * from "./outcode";
 export * from "./place";
 export * from "./terminated_postcode";
 export * from "./ced";
+export * from "./lsoa";
+export * from "./msoa";

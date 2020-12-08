@@ -13,6 +13,8 @@ import {
   Place,
   TerminatedPostcode,
   Ced,
+  Lsoa,
+  Msoa,
 } from "../app/models/index";
 
 const handleError = (error?: any) => {
@@ -46,6 +48,8 @@ const clear = async (): Promise<unknown> => {
   await Ward.destroyRelation();
   await Outcode.destroyRelation();
   await Ced.destroyRelation();
+  await Lsoa.destroyRelation();
+  await Msoa.destroyRelation();
 };
 
 const seed = async (): Promise<unknown> => {
@@ -67,6 +71,8 @@ const seed = async (): Promise<unknown> => {
   await Outcode.setupTable();
   console.log("Created outcode table");
   await Ced.setupTable();
+  await Lsoa.setupTable();
+  await Msoa.setupTable();
 };
 
 export const run = async () => {

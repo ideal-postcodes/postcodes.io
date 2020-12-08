@@ -14,6 +14,8 @@ import {
   Place,
   TerminatedPostcode,
   Ced,
+  Msoa,
+  Lsoa,
 } from "../app/models/index";
 
 const clear = async () => {
@@ -31,6 +33,8 @@ const clear = async () => {
   await Ward.destroyRelation();
   await Outcode.destroyRelation();
   await Ced.destroyRelation();
+  await Lsoa.destroyRelation();
+  await Msoa.destroyRelation();
 };
 
 export const run = async (): Promise<void> => {

@@ -9,6 +9,8 @@ import {
   Nuts,
   Parish,
   Ward,
+  Msoa,
+  Lsoa,
 } from "../src/app/models/index";
 
 const { rigCoreSpecs } = AttributeBaseSuite;
@@ -22,3 +24,5 @@ rigCoreSpecs(ScottishConstituency);
 rigCoreSpecs(Nuts);
 rigCoreSpecs(Parish);
 rigCoreSpecs(Ward);
+rigCoreSpecs(Msoa);
+rigCoreSpecs(Lsoa);
