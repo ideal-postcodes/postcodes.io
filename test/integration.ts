@@ -56,6 +56,15 @@ describe("Misc", () => {
 });
 
 describe("Utils", () => {
+  describe("Health", () => {
+    it("should return 200 if DB available", async () => {
+      const { body } = await request(app)
+        .get("/ready")
+        .expect(200)
+        .expect("Content-Type", /json/);
+      assert.equal(body.result, "Ready");
+    });
+  });
   describe("Ping", () => {
     it("should pong", async () => {
       const { body } = await request(app)

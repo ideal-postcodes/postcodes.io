@@ -160,3 +160,9 @@ export class OutcodeNotFoundError extends PostcodesioHttpError {
     super(404, "Outcode not found");
   }
 }
+
+export class NotReadyError extends PostcodesioHttpError {
+  constructor() {
+    super(500, "Service not ready. Database is not available");
+  }
+}

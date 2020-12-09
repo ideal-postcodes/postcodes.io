@@ -10,6 +10,7 @@ import * as terminatedPostcodes from "../app/controllers/terminated_postcodes_co
 export const routes = (app: Express): void => {
   app.get("/", pages.home);
   app.get("/ping", utils.ping);
+  app.get("/ready", utils.ready);
   app.get("/about", pages.about);
   app.get("/docs", pages.documentation);
   app.get("/explore", pages.explore);
