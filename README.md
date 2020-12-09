@@ -32,8 +32,8 @@ Postcodes.io regularly ingests and serves the [ONS Postcode Directory](https://g
 - [Self Hosting: Docker containers](https://postcodes.io/docs#docker-install)
   - [Docker Hub Container Image: Postcodes.io Application](https://hub.docker.com/r/idealpostcodes/postcodes.io)
   - [Docker Hub Container Image: Postcodes.io Database](https://hub.docker.com/r/idealpostcodes/postcodes.io.db)
-- [Self Hosting: Node.js and Postgresql](https://postcodes.io/docs#install-requirements)
-- [Self Hosting: Database only - Download and import the raw dataset to Postgresql](https://postcodes.io/docs#import-from-pgdump)
+- [Self Hosting: Node.js and PostgreSQL](https://postcodes.io/docs#install-requirements)
+- [Self Hosting: Database only - Download and import the raw dataset to PostgreSQL](https://postcodes.io/docs#import-from-pgdump)
 - [Explore](https://postcodes.io/explore)
 - [Chat](https://chat.ideal-postcodes.co.uk)
 
