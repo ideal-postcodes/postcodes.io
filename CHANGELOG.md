@@ -1,3 +1,26 @@
+# [13.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/12.1.1...13.0.0) (2020-12-09)
+
+
+### Bug Fixes
+
+* **MapBox:** Update to latest MapBox lib ([1f68e3b](https://github.com/ideal-postcodes/postcodes.io/commit/1f68e3b7a140805556a65769aa5568e6eca29b1b))
+
+
+### Features
+
+* **Docker:** Add readiness check `/ready` ([890e33b](https://github.com/ideal-postcodes/postcodes.io/commit/890e33bdee103186e6b8c1fcf1669ca850caca8c))
+* **GSS Codes:** Add LSOA and MSOA data models ([4aac8a1](https://github.com/ideal-postcodes/postcodes.io/commit/4aac8a1d216f42487f85f63e8c491f2c05189099))
+* **GSS Codes:** Return MSOA and LSOA in codes ([3562e35](https://github.com/ideal-postcodes/postcodes.io/commit/3562e35581ca4e5d98a3e0ac921243d39038c406))
+* **LAU2:** Add LAU2 to codes block ([3af2938](https://github.com/ideal-postcodes/postcodes.io/commit/3af293805ff61807bdef56990150159424d6c308))
+* **ONSPD:** Update ONSPD and OS Open Names ([e820b73](https://github.com/ideal-postcodes/postcodes.io/commit/e820b73883343b6cb3f979adf1135c2cb9816620))
+* **Postcodes.io:** Port to Typescript ([144a566](https://github.com/ideal-postcodes/postcodes.io/commit/144a5664bc452d8c387ea4a57fe729f484e3cf60))
+
+
+### BREAKING CHANGES
+
+* **GSS Codes:** postcodes relation has been altered to store GSS Codes
+for MSOA and LSOA (as `msoa_id` and `lsoa_id`) rather than names
+
 ## [12.1.1](https://github.com/ideal-postcodes/postcodes.io/compare/12.1.0...12.1.1) (2020-11-30)
 
 
