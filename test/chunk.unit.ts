@@ -13,5 +13,6 @@ describe("chunk", () => {
       [2, 2, 2],
       [3, 3],
     ]);
+    assert.deepEqual(chunk([1, 1], 3), [[1, 1]]);
   });
 });

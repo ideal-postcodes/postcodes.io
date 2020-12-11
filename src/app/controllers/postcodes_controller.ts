@@ -1,6 +1,7 @@
 import { isEmpty, qToString } from "../lib/string";
 import { Postcode } from "../models/postcode";
 import { isValid } from "postcode";
+import { chunk } from "../lib/chunk";
 import { getConfig } from "../../config/config";
 import {
   InvalidPostcodeError,
@@ -85,31 +86,33 @@ const bulkGeocode: Handler = async (request, response, next) => {
   try {
     const { geolocations } = request.body;
 
-    let globalLimit;
+    let globalLimit: string | undefined;
     if (request.query.limit) globalLimit = qToString(request.query.limit);
 
-    let globalRadius;
+    let globalRadius: string | undefined;
     if (request.query.radius) globalRadius = qToString(request.query.radius);
 
-    let globalWidesearch;
+    let globalWidesearch: boolean | undefined;
     if (request.query.widesearch) globalWidesearch = true;
 
     if (!Array.isArray(geolocations)) return next(new JsonArrayRequiredError());
     if (geolocations.length > MAX_GEOLOCATIONS)
       return next(new ExceedMaxGeolocationsError());
 
+    const data: LookupGeolocationResult[] = [];
+
     const lookupGeolocation = async (
       location: NearestPostcodesOptions
-    ): Promise<LookupGeolocationResult> => {
+    ): Promise<void> => {
       const postcodes = await Postcode.nearestPostcodes(location);
       let result = null;
       if (postcodes && postcodes.length > 0) {
         result = postcodes.map((postcode) => Postcode.toJson(postcode));
       }
-      return {
+      data.push({
         query: sanitizeQuery(location),
         result,
-      };
+      });
     };
 
     const whitelist = [
@@ -130,23 +133,21 @@ const bulkGeocode: Handler = async (request, response, next) => {
       return result;
     };
 
-    const result = [];
-    for (let i = 0; i < GEO_ASYNC_LIMIT; i += 1) {
-      if (geolocations[i]) {
-        result.push(
-          await lookupGeolocation({
-            ...(globalLimit && { limit: globalLimit }),
-            ...(globalRadius && { radius: globalRadius }),
-            ...(globalWidesearch && { widesearch: true }),
-            ...geolocations[i],
-          })
-        );
-      } else {
-        break;
-      }
-    }
+    const queue = chunk(
+      geolocations.map((geolocation) => {
+        return lookupGeolocation({
+          ...(globalLimit && { limit: globalLimit }),
+          ...(globalRadius && { radius: globalRadius }),
+          ...(globalWidesearch && { widesearch: true }),
+          ...geolocation,
+        });
+      }),
+      GEO_ASYNC_LIMIT
+    );
 
-    response.jsonApiResponse = { status: 200, result };
+    for (const q of queue) await Promise.all(q);
+
+    response.jsonApiResponse = { status: 200, result: data };
     next();
   } catch (error) {
     next(error);
@@ -169,27 +170,33 @@ const bulkLookupPostcodes: Handler = async (request, response, next) => {
     if (postcodes.length > MAX_POSTCODES)
       return next(new ExceedMaxPostcodesError());
 
-    const lookupPostcode = async (
-      postcode: string
-    ): Promise<BulkLookupPostcodesResult> => {
+    const result: BulkLookupPostcodesResult[] = [];
+
+    const lookupPostcode = async (postcode: string): Promise<void> => {
       const postcodeInfo = await Postcode.find(postcode);
-      if (!postcodeInfo) return { query: postcode, result: null };
-      return {
+      if (!postcodeInfo) {
+        result.push({ query: postcode, result: null });
+        return;
+      }
+      result.push({
         query: postcode,
         result: Postcode.toJson(postcodeInfo),
-      };
+      });
     };
 
-    const data = [];
-    for (let i = 0; i < BULK_ASYNC_LIMIT; i += 1) {
-      if (postcodes[i] && postcodes[i] !== null) {
-        data.push(await lookupPostcode(postcodes[i]));
-      } else {
-        break;
-      }
-    }
+    const queue: Promise<void>[][] = chunk(
+      postcodes
+        .map((p) => {
+          if (typeof p === "string") return lookupPostcode(p);
+          return;
+        })
+        .filter((p) => p !== null),
+      BULK_ASYNC_LIMIT
+    );
 
-    response.jsonApiResponse = { status: 200, result: data };
+    for (const queries of queue) await Promise.all(queries);
+
+    response.jsonApiResponse = { status: 200, result };
     next();
   } catch (error) {
     next(error);
