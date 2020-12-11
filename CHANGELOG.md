@@ -1,3 +1,10 @@
+## [13.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/13.0.0...13.0.1) (2020-12-11)
+
+
+### Bug Fixes
+
+* **Async Limit:** Fix queuing for bulk requests ([e196a2c](https://github.com/ideal-postcodes/postcodes.io/commit/e196a2c38c1bd30b9b83da83603447bcd9ac6f40)), closes [#642](https://github.com/ideal-postcodes/postcodes.io/issues/642)
+
 # [13.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/12.1.1...13.0.0) (2020-12-09)
 
 
