@@ -18,7 +18,7 @@ describe("Postcodes routes", () => {
   after(async () => helper.clearPostcodeDb);
 
   describe("POST /postcodes", () => {
-    const bulkLength = 10;
+    const bulkLength = 12;
     let testPostcodes: any, testLocations: any;
 
     describe("Invalid JSON submission", () => {
