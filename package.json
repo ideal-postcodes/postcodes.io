@@ -122,7 +122,7 @@
     "@types/cors": "~2.8.9",
     "@types/express": "~4.17.9",
     "@types/minimist": "~1.2.1",
-    "@types/mocha": "~7.0.2",
+    "@types/mocha": "~8.2.0",
     "@types/morgan": "~1.9.2",
     "@types/node": "~14.14.13",
     "@types/pg": "~7.14.4",
