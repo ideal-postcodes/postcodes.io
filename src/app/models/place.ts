@@ -582,42 +582,44 @@ const generatePolygonQuery = (place: PlaceTuple): string => {
 };
 
 const createPolygons = () => {
-  return new Promise(async (resolve, reject) => {
-    const client = await getClient();
-    const updateBuffer: string[] = [];
-    const cleanup = (error: any) => {
-      client.release();
-      throw error;
-    };
-
-    const drainBuffer = async (done?: boolean) => {
-      stream.pause();
-      for (const update of updateBuffer) {
-        await query(update);
-      }
-      updateBuffer.length = 0;
-      if (stream.isPaused()) stream.resume();
-      if (done) {
+  return new Promise<void>((resolve) => {
+    (async () => {
+      const client = await getClient();
+      const updateBuffer: string[] = [];
+      const cleanup = (error: any) => {
         client.release();
-        resolve();
-      }
-    };
+        throw error;
+      };
 
-    const streamQuery = new QueryStream(`
+      const drainBuffer = async (done?: boolean) => {
+        stream.pause();
+        for (const update of updateBuffer) {
+          await query(update);
+        }
+        updateBuffer.length = 0;
+        if (stream.isPaused()) stream.resume();
+        if (done) {
+          client.release();
+          resolve();
+        }
+      };
+
+      const streamQuery = new QueryStream(`
       SELECT 
         id, min_eastings, min_northings, max_eastings, max_northings 
       FROM 
         ${relation.relation}
     `);
 
-    const stream = client.query(streamQuery);
-    stream
-      .on("data", (place: PlaceTuple) => {
-        updateBuffer.push(generatePolygonQuery(place));
-        if (updateBuffer.length > 1000) drainBuffer();
-      })
-      .on("error", cleanup)
-      .on("end", () => drainBuffer(true));
+      const stream = client.query(streamQuery);
+      stream
+        .on("data", (place: PlaceTuple) => {
+          updateBuffer.push(generatePolygonQuery(place));
+          if (updateBuffer.length > 1000) drainBuffer();
+        })
+        .on("error", cleanup)
+        .on("end", () => drainBuffer(true));
+    })();
   });
 };
 
