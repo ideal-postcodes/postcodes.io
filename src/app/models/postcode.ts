@@ -330,7 +330,7 @@ const loadPostcodeIds = async (outcode?: string): Promise<any> => {
     const idStore = new Array(count);
     client
       .query(new QueryStream(idQuery, params))
-      .on("end", () => {
+      .on("finish", () => {
         idCache[outcode] = idStore;
         client.release();
         resolve(idStore);
