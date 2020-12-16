@@ -8,7 +8,7 @@ describe("Filter method", function () {
   let testPostcode: string;
 
   before(async function () {
-    this.timeout(10000);
+    this.timeout(0);
     await helper.clearPostcodeDb();
     await helper.seedPostcodeDb();
   });
