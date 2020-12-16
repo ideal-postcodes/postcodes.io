@@ -46,7 +46,7 @@ describe("Prometheus /metrics endpoint", () => {
     });
 
     const testMetric = (url: string, expectedMetric: any) => {
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         (async () => {
           await generateMetric(url);
           const { text } = await getMetrics();
