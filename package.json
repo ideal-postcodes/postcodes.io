@@ -106,7 +106,7 @@
     "node.extend": "~2.0.2",
     "ospoint": "~0.2.1",
     "pg": "~8.4.2",
-    "pg-copy-streams": "~3.0.0",
+    "pg-copy-streams": "~5.1.1",
     "pg-query-stream": "~4.0.0",
     "pino": "~6.8.0",
     "serve-favicon": "~2.5.0",
