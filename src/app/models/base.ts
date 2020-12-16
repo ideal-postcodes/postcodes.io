@@ -41,19 +41,12 @@ export const query = async <T = any>(
   text: string,
   values?: (string | number)[]
 ): Promise<QueryResult<T>> => {
-  let client;
-  try {
-    client = await pool.connect();
-  } catch (error) {
-    throw error;
-  }
+  const client = await pool.connect();
 
   const options = { text, ...(values && { values }) };
   try {
     const result = await client.query(options);
     return result;
-  } catch (error) {
-    throw error;
   } finally {
     if (client && client.release) client.release();
   }
@@ -137,7 +130,7 @@ export const _csvSeed = ({ relation }: Relation) => async ({
   const q = `COPY ${relation} (${columns}) FROM STDIN DELIMITER ',' CSV`;
   const updates = filepath.map(
     (f) =>
-      new Promise((resolve, reject) => {
+      new Promise<void>((resolve, reject) => {
         pool.connect((error: Error, client: PoolClient, done: any) => {
           const pgStream = client
             .query(from(q))
@@ -194,10 +187,12 @@ interface CsvRowDefinition {
   description: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface EmptyRowDefinition {}
 
 const isCsvSchema = (
   elem: CsvRowDefinition | EmptyRowDefinition
+  // eslint-disable-next-line no-prototype-builtins
 ): elem is CsvRowDefinition => elem.hasOwnProperty("code");
 
 /**
