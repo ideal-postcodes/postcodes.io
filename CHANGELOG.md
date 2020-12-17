@@ -1,3 +1,11 @@
+## [13.0.2](https://github.com/ideal-postcodes/postcodes.io/compare/13.0.1...13.0.2) (2020-12-17)
+
+
+### Bug Fixes
+
+* **SPD:** Add back dual SPD entries ([80f2f90](https://github.com/ideal-postcodes/postcodes.io/commit/80f2f90f53242659f72014da5ee5df7b440c9776))
+* **SPD:** Correct and ingest invalid SPD postcodes ([8564f5a](https://github.com/ideal-postcodes/postcodes.io/commit/8564f5a8d5fe5e003b682933aeb4108a5acde31f)), closes [#578](https://github.com/ideal-postcodes/postcodes.io/issues/578)
+
 ## [13.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/13.0.0...13.0.1) (2020-12-11)
 
 
