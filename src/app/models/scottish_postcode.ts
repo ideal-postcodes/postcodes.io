@@ -73,6 +73,24 @@ const findQuery = `
   WHERE pc_compact=$1 
 `;
 
+const EXCEPTION_REGEX = /A$/;
+
+/**
+ * Validates and potentially mutates a CSV row for ingest
+ *
+ * Unfortunately SPD appends extra characters to some postcodes. This method returns null when these cases are met, unless the postcode ends in `A`.
+ *
+ * Postcodes suffixed with `A` are made valid and returned to the stream for ingest
+ */
+const clean = (row: string[]) => {
+  const postcode = row[0];
+  if (isValid(postcode)) return row;
+  // Reject if invalid postcide has a non-A suffix
+  if (postcode.match(EXCEPTION_REGEX) === null) return null;
+  row[0] = postcode.replace(EXCEPTION_REGEX, "");
+  return row;
+};
+
 const SPD_COL_MAPPINGS = Object.freeze([
   { column: "postcode", method: (row: RowExtract) => row.extract("Postcode") },
   {
@@ -137,6 +155,7 @@ const seedPostcodes = ({ extractor, filepath }: SeedPostcodesOptions) => {
   return methods.csvSeed({
     filepath: [filepath],
     transform: (row: RowExtract) => {
+      clean(row);
       row.extract = (code: string) => extractor(row, code);
       if (row.extract("Postcode") === "Postcode") return null; // Skip if header
       if (row.extract("DateOfDeletion").length !== 0) return null; // Skip row if terminated
