@@ -134,7 +134,7 @@ export const _csvSeed = ({ relation }: Relation) => async ({
         pool.connect((error: Error, client: PoolClient, done: any) => {
           const pgStream = client
             .query(from(q))
-            .on("end", () => {
+            .on("finish", () => {
               done();
               resolve();
             })
