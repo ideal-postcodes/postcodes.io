@@ -57,6 +57,11 @@ describe("Scottish Postcode Model", () => {
         const result = await query(q);
         assert.isTrue(result.rows[0].count > 0);
       });
+
+      it("loads postcodes suffixed with additional character", async () => {
+        const result = await ScottishPostcode.find("PA31 8UA");
+        assert.isNotNull(result);
+      });
     });
   });
 
