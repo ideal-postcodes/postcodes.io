@@ -7,6 +7,7 @@
 ![CI](https://github.com/ideal-postcodes/postcodes.io/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/ideal-postcodes/postcodes.io/branch/master/graph/badge.svg)](https://codecov.io/gh/ideal-postcodes/postcodes.io)
 [![Dependency Status](https://david-dm.org/ideal-postcodes/postcodes.io.svg)](https://david-dm.org/ideal-postcodes/postcodes.io)
+[![DOI](https://zenodo.org/badge/15987081.svg)](https://zenodo.org/badge/latestdoi/15987081)
 
 Query for UK postcodes and geolocations over HTTP.
 
@@ -64,5 +65,3 @@ $api-container> npm test
 ## License
 
 MIT
-
-Zenodo Badge
