@@ -1,3 +1,10 @@
+## [13.0.3](https://github.com/ideal-postcodes/postcodes.io/compare/13.0.2...13.0.3) (2020-12-21)
+
+
+### Bug Fixes
+
+* **Zenodo:** Trigger new release ([3d5f561](https://github.com/ideal-postcodes/postcodes.io/commit/3d5f56157ec9aea4c3f49668cad10744ce82a51f))
+
 ## [13.0.2](https://github.com/ideal-postcodes/postcodes.io/compare/13.0.1...13.0.2) (2020-12-17)
 
 
