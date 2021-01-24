@@ -1,3 +1,10 @@
+## [13.0.4](https://github.com/ideal-postcodes/postcodes.io/compare/13.0.3...13.0.4) (2021-01-24)
+
+
+### Bug Fixes
+
+* **Healthcheck:** Fixues docker healthcheck ([12ec633](https://github.com/ideal-postcodes/postcodes.io/commit/12ec633c489f906f11c4f99b81609d9ae25ea9c0)), closes [#699](https://github.com/ideal-postcodes/postcodes.io/issues/699)
+
 ## [13.0.3](https://github.com/ideal-postcodes/postcodes.io/compare/13.0.2...13.0.3) (2020-12-21)
 
 
