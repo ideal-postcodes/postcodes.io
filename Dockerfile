@@ -16,8 +16,6 @@ ARG PORT=8000
 ENV PORT $PORT
 EXPOSE $PORT
 
-HEALTHCHECK --interval=5s CMD node healthcheck.js
-
 RUN npm install --only=production --no-package-lock && \
     npm cache clean --force
 
@@ -26,5 +24,7 @@ USER node
 COPY ./public ./dist/public
 
 WORKDIR /app/dist
+
+HEALTHCHECK --interval=5s CMD node healthcheck.js
 
 CMD [ "node", "server.js" ]
