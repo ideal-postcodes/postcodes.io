@@ -146,7 +146,7 @@
     "nyc": "~15.1.0",
     "prettier": "~2.2.1",
     "semantic-release": "~17.3.6",
-    "supertest": "~6.1.1",
+    "supertest": "~6.1.2",
     "serve-favicon": "~2.5.0",
     "source-map-support": "~0.5.19",
     "ts-node": "~9.1.1",
