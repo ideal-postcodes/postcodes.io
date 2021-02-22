@@ -124,7 +124,7 @@
     "@types/minimist": "~1.2.1",
     "@types/mocha": "~8.2.0",
     "@types/morgan": "~1.9.2",
-    "@types/node": "~14.14.28",
+    "@types/node": "~14.14.31",
     "@types/pg": "~7.14.9",
     "@types/pg-copy-streams": "~1.2.1",
     "@types/pg-query-stream": "~1.0.3",
