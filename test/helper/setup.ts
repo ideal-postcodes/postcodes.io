@@ -16,6 +16,7 @@ import {
   Ced,
   Lsoa,
   Msoa,
+  CeremonialCountiesRegion,
 } from "../../src/app/models/index";
 import { QueryResult } from "pg";
 
@@ -23,6 +24,10 @@ const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
 const seedPostcodePath = resolve(__dirname, "../seed/postcode.csv");
 const seedPlacesPath = join(__dirname, "../seed/places/");
 const seedScotlandPostcodePath = resolve(__dirname, "../seed/");
+const ceremonialCountiesRegionPath = resolve(
+  __dirname,
+  "../seed/boundaries/boundary_line_ceremonial_counties_region.csv"
+);
 
 /**
  * Clears the test database
@@ -80,9 +85,7 @@ const seedPostcodeDb = async (): Promise<any[] | null> => {
 };
 
 // Clear terminated onspd table
-const clearTerminatedPostcodesDb = async (): Promise<QueryResult<
-  any
-> | null> => {
+const clearTerminatedPostcodesDb = async (): Promise<QueryResult<any> | null> => {
   if (NO_RELOAD_DB) return null;
   return TerminatedPostcode.destroyRelation();
 };
@@ -106,6 +109,16 @@ const seedScottishPostcodeDb = async (): Promise<any[] | null> => {
   return [postcode, constituency];
 };
 
+const seedBoundariesDb = async (): Promise<void> => {
+  if (NO_RELOAD_DB) return null;
+  await CeremonialCountiesRegion.setupTable(ceremonialCountiesRegionPath);
+};
+
+const clearBoundariesDb = async (): Promise<void> => {
+  if (NO_RELOAD_DB) return null;
+  await CeremonialCountiesRegion.clear();
+};
+
 export {
   clearTestDb,
   seedPostcodePath,
@@ -116,4 +129,6 @@ export {
   clearTerminatedPostcodesDb,
   clearPostcodeDb,
   clearScottishPostcodeDb,
+  seedBoundariesDb,
+  clearBoundariesDb,
 };

@@ -15,6 +15,7 @@ import {
   Ced,
   Lsoa,
   Msoa,
+  CeremonialCountiesRegion
 } from "../app/models/index";
 
 const handleError = (error?: any) => {
@@ -30,6 +31,10 @@ const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
 const seedPostcodePath = resolve(__dirname, "../../test/seed/postcode.csv");
 const seedPlacesPath = join(__dirname, "../../test/seed/places/");
 const seedScotlandPostcodePath = resolve(__dirname, "../../test/seed/");
+const ceremonialCountiesRegionPath = resolve(
+  __dirname,
+  "../../test/seed/boundaries/boundary_line_ceremonial_counties_region.csv"
+);
 
 // Clear ONSPD table
 const clear = async (): Promise<unknown> => {
@@ -50,6 +55,7 @@ const clear = async (): Promise<unknown> => {
   await Ward.destroyRelation();
   await Outcode.destroyRelation();
   await Ced.destroyRelation();
+  await CeremonialCountiesRegion.destroyRelation();
 };
 
 const seed = async (): Promise<unknown> => {
@@ -73,6 +79,9 @@ const seed = async (): Promise<unknown> => {
   await Outcode.setupTable();
   console.log("Created outcodes relation");
   await Ced.setupTable();
+  console.log("Creating Boundaries Relations");
+  await CeremonialCountiesRegion.setupTable(ceremonialCountiesRegionPath);
+  console.log("Boundaries Relations Created");
 };
 
 export const run = async () => {

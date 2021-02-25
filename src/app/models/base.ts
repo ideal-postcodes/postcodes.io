@@ -143,7 +143,12 @@ export const _csvSeed = ({ relation }: Relation) => async ({
               reject(pgError);
             });
           createReadStream(f, { encoding: "utf8" })
-            .pipe(csv.parse())
+            .pipe(
+              csv.parse({
+                //TODO change to max_record_size after update csv to latest version
+                max_limit_on_data_read: 3000000,
+              })
+            )
             .pipe(csv.transform(transform))
             .pipe(csv.stringify())
             .pipe(pgStream);
