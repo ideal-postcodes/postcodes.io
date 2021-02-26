@@ -31,7 +31,7 @@ export const routes = (app: Express): void => {
 
   app.get("/places", places.query);
   app.get("/places/:id", places.show);
-  // Todo: Query for geolocation contained in polygon (geolocation contained in polygon)
+  app.get("/locality", locality.boundaries);
   // Todo: Query for geolocation near polygon (radius intersects polygon)
 
   app.get("/random/places", places.random);
@@ -40,5 +40,4 @@ export const routes = (app: Express): void => {
   app.get("/terminated_postcodes/:postcode", terminatedPostcodes.show);
 
   app.get("/scotland/postcodes/:postcode", scottishPostcodes.show);
-  app.get("/locality", locality.boundaries);
 };
