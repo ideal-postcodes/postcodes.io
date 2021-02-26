@@ -6,6 +6,7 @@ import * as outcodes from "../app/controllers/outcodes_controller";
 import * as postcodes from "../app/controllers/postcodes_controller";
 import * as scottishPostcodes from "../app/controllers/scottish_postcodes_controller";
 import * as terminatedPostcodes from "../app/controllers/terminated_postcodes_controller";
+import * as locality from "../app/controllers/locality";
 
 export const routes = (app: Express): void => {
   app.get("/", pages.home);
@@ -39,4 +40,5 @@ export const routes = (app: Express): void => {
   app.get("/terminated_postcodes/:postcode", terminatedPostcodes.show);
 
   app.get("/scotland/postcodes/:postcode", scottishPostcodes.show);
+  app.get("/locality", locality.boundaries);
 };

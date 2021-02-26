@@ -1,5 +1,4 @@
-import { generateBoudariesMethods, Seed } from "../boundaries_base";
-import { Relation, query } from "../base";
+import { generateBoudariesMethods, Seed, Locality } from "../boundaries_base";
 
 const seedFile = "boundary_line_ceremonial_counties_region";
 const feed: Seed = {
@@ -27,26 +26,11 @@ const relation: Relation = {
   ],
 };
 
-export interface CeremonialCountiesRegions {
-  id: number;
-  name: string;
+export interface CeremonialCountiesRegions extends Locality {
   description: string;
-  geom: string; //TODO check if we have string or other data type in this case for queries return
 }
 
-const first = async (): Promise<CeremonialCountiesRegions> => {
-  console.log(
-    `SELECT name, description, ST_AsGeoJSON(ST_Transform(geom,4326))::json AS feature FROM ${relation.relation} LIMIT 1 OFFSET 0;`
-  );
-  const result = await query<CeremonialCountiesRegions>(
-    `SELECT name, description, ST_AsGeoJSON(ST_Transform(geom,4326))::json AS feature FROM ${relation.relation} LIMIT 1 OFFSET 0;`
-  );
-  return result.rows[0];
-};
-
-const methods = generateBoudariesMethods(relation, feed);
-
-export const CeremonialCountiesRegion = {
-  ...methods,
-  first,
-};
+export const CeremonialCountiesRegion = generateBoudariesMethods<CeremonialCountiesRegions>(
+  relation,
+  feed
+);

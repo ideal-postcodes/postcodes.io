@@ -16,11 +16,8 @@ export const run = (model: any, location: any) => {
       assert.isAbove(count, 0);
     });
     it("Should find boundaries where point intercescts with it", async () => {
-      console.log(await model.version());
-      const first = await model.first();
-      console.log(JSON.stringify(first.feature));
       const boundaries = await model.inBoundary(lng, lat);
-      console.log(boundaries);
+      console.log(JSON.stringify(boundaries, null, 2));
     });
   });
 };

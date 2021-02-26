@@ -1,22 +1,48 @@
 import { query, generateMethods, Relation } from "./base";
 
+const RETURN_GEOJSON = process.env.RETURN_GEOJSON || false;
+
 export interface Seed {
   seedFile: string;
   columns: string[];
 }
 
-const inBoundary = (relation: Relation) => (lng: string, lat: string) => {
+export interface Locality {
+  id: number;
+  name: string;
+  geom?: string;
+}
+
+export interface Location {
+  lng: string;
+  lat: string;
+}
+
+const inBoundary = <T>(relation: Relation) => ({
+  lng,
+  lat,
+}: Location): Promise<T[]> => {
+  let idx;
   const columns = Object.keys(relation.schema);
-  console.log(
-    `SELECT id, name, description, ST_AsGeoJSON(geom) FROM ${
-      relation.relation
-    } WHERE ST_Intersects(geom, ST_Point(${lng}, ${lat})) AS t(${columns.join(
-      ","
-    )});`
-  );
+  const geom = columns.filter((value, index) => {
+    if (value === "geom") {
+      idx = index;
+      return true;
+    }
+    return false;
+  });
+  if (RETURN_GEOJSON) {
+    if (idx) columns[idx] = `ST_AsGeoJSON(${geom[0]}) AS geom`;
+  } else {
+    columns.splice(idx, 1);
+  }
   return query(
-    `SELECT id, name, description, ST_AsGeoJSON(geom) FROM ${relation.relation} WHERE ST_Intersects(geom, ST_Point("${lng}", "${lat}"));`
-  );
+    `SELECT ${columns.join(", ")} FROM ${
+      relation.relation
+    } WHERE ST_Within(ST_GeomFromText('SRID=4326;POINT(${lng} ${lat})'), geom);`
+  ).then((result) => {
+    return result.rows;
+  });
 };
 
 interface Count {
@@ -28,10 +54,8 @@ const count = ({ relation }: Relation) => async (): Promise<number> => {
   return parseInt(result.rows[0].count, 10);
 };
 
-const version = async () => query("SELECT PostGIS_version();");
-
 //TODO come up with return interface to keep some consistency
-export const generateBoudariesMethods = (relation: Relation, feed: Seed) => {
+export const generateBoudariesMethods = <T>(relation: Relation, feed: Seed) => {
   const methods = generateMethods(relation);
   const seed = async (filePathOverride?: string) => {
     const { seedFile, columns } = feed;
@@ -53,8 +77,7 @@ export const generateBoudariesMethods = (relation: Relation, feed: Seed) => {
     ...methods,
     //add override methods
     setupTable,
-    inBoundary: inBoundary(relation),
+    inBoundary: inBoundary<T>(relation),
     count: count(relation),
-    version,
   };
 };
