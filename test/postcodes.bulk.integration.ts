@@ -114,6 +114,7 @@ describe("Postcodes routes", () => {
             done();
           });
       });
+
       it("should return 404 if invalid geolocations object", (done) => {
         request(app)
           .post("/postcodes")
@@ -149,6 +150,7 @@ describe("Postcodes routes", () => {
             done();
           });
       });
+
       it("is sensitive to limit set in query string", (done) => {
         const testLocation = {
           longitude: -2.084524,
@@ -224,6 +226,34 @@ describe("Postcodes routes", () => {
               });
           });
       });
+
+      it("returns searches in order", async () => {
+        const geolocations = [
+          {
+            longitude: -2.084524,
+            latitude: 57.129475,
+          },
+          {
+            longitude: -2.014524,
+            latitude: 57.129475,
+          },
+          {
+            longitude: -2.024524,
+            latitude: 57.129475,
+          },
+        ];
+        const response = await request(app)
+          .post("/postcodes")
+          .send({ geolocations })
+          .expect(200);
+        for (let i = 0; i < geolocations.length; i += 1) {
+          assert.equal(
+            geolocations[i].longitude,
+            response.body.result[i].query.longitude
+          );
+        }
+      });
+
       it("allows wide area searches", (done) => {
         const testLocation = {
           longitude: -2.12659411941741,
@@ -328,6 +358,24 @@ describe("Postcodes routes", () => {
             done();
           }
         );
+      });
+
+      it("returns results in order", async () => {
+        const postcodes = [
+          "YO31 6EG",
+          "HG3 3EX",
+          "CH65 6RW",
+          "CH6Z 6RW",
+          "N1 1SJ",
+          "BT36 5NS",
+        ];
+        const response = await request(app)
+          .post("/postcodes")
+          .send({ postcodes })
+          .expect(200);
+        for (let i = 0; i < postcodes.length; i += 1) {
+          assert.equal(response.body.result[i].query, postcodes[i]);
+        }
       });
 
       it("should return addresses for postcodes", (done) => {
