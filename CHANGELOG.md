@@ -1,3 +1,16 @@
+# [13.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/13.0.4...13.1.0) (2021-03-09)
+
+
+### Bug Fixes
+
+* **Parish:** Update Parish dataset ([52f74bb](https://github.com/ideal-postcodes/postcodes.io/commit/52f74bb3136d1211a53e93c197d0b683f8bafd57))
+
+
+### Features
+
+* **Bulk Search:** Guarantee results in same order ([816214b](https://github.com/ideal-postcodes/postcodes.io/commit/816214be1dfff0c45cf4721c3641a757c9c55c76)), closes [#675](https://github.com/ideal-postcodes/postcodes.io/issues/675)
+* **ONSPD:** Update ONSPD to Feb 2021 ([d567664](https://github.com/ideal-postcodes/postcodes.io/commit/d567664119b273e2765e04335efa0b8fe22e2553))
+
 ## [13.0.4](https://github.com/ideal-postcodes/postcodes.io/compare/13.0.3...13.0.4) (2021-01-24)
 
 
