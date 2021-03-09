@@ -99,20 +99,21 @@ const bulkGeocode: Handler = async (request, response, next) => {
     if (geolocations.length > MAX_GEOLOCATIONS)
       return next(new ExceedMaxGeolocationsError());
 
-    const data: LookupGeolocationResult[] = [];
+    const data: LookupGeolocationResult[] = new Array(geolocations.length);
 
     const lookupGeolocation = async (
-      location: NearestPostcodesOptions
+      location: NearestPostcodesOptions,
+      i: number
     ): Promise<void> => {
       const postcodes = await Postcode.nearestPostcodes(location);
       let result = null;
       if (postcodes && postcodes.length > 0) {
         result = postcodes.map((postcode) => Postcode.toJson(postcode));
       }
-      data.push({
+      data[i] = {
         query: sanitizeQuery(location),
         result,
-      });
+      };
     };
 
     const whitelist = [
@@ -134,13 +135,16 @@ const bulkGeocode: Handler = async (request, response, next) => {
     };
 
     const queue = chunk(
-      geolocations.map((geolocation) => {
-        return lookupGeolocation({
-          ...(globalLimit && { limit: globalLimit }),
-          ...(globalRadius && { radius: globalRadius }),
-          ...(globalWidesearch && { widesearch: true }),
-          ...geolocation,
-        });
+      geolocations.map((geolocation, i) => {
+        return lookupGeolocation(
+          {
+            ...(globalLimit && { limit: globalLimit }),
+            ...(globalRadius && { radius: globalRadius }),
+            ...(globalWidesearch && { widesearch: true }),
+            ...geolocation,
+          },
+          i
+        );
       }),
       GEO_ASYNC_LIMIT
     );
@@ -170,27 +174,27 @@ const bulkLookupPostcodes: Handler = async (request, response, next) => {
     if (postcodes.length > MAX_POSTCODES)
       return next(new ExceedMaxPostcodesError());
 
-    const result: BulkLookupPostcodesResult[] = [];
+    const p = postcodes.filter((pc) => typeof pc === "string");
 
-    const lookupPostcode = async (postcode: string): Promise<void> => {
+    const result: BulkLookupPostcodesResult[] = new Array(p.length);
+
+    const lookupPostcode = async (
+      postcode: string,
+      i: number
+    ): Promise<void> => {
       const postcodeInfo = await Postcode.find(postcode);
       if (!postcodeInfo) {
-        result.push({ query: postcode, result: null });
+        result[i] = { query: postcode, result: null };
         return;
       }
-      result.push({
+      result[i] = {
         query: postcode,
         result: Postcode.toJson(postcodeInfo),
-      });
+      };
     };
 
     const queue: Promise<void>[][] = chunk(
-      postcodes
-        .map((p) => {
-          if (typeof p === "string") return lookupPostcode(p);
-          return;
-        })
-        .filter((p) => p !== null),
+      p.map(lookupPostcode).filter((pc) => pc !== null),
       BULK_ASYNC_LIMIT
     );
 
