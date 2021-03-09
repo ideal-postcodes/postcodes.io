@@ -14,7 +14,7 @@ const { extract } = require("./index");
 const CODE_OFFSET = 0;
 const VALUE_OFFSET = 1;
 
-const transform = row => {
+const transform = (row) => {
   const code = row[CODE_OFFSET];
   const value = row[VALUE_OFFSET];
   if (value === "PARNCP18NM") return []; // Escape if header
@@ -32,7 +32,7 @@ const parseOptions = { delimiter: "," };
 
 const configs = [
   {
-    file: "Parish_NCP names and codes EW as at 12_19.csv",
+    file: "Parish_NCP names and codes EW as at 12_20.csv",
     transform,
     parseOptions,
   },
