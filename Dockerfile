@@ -1,4 +1,5 @@
-FROM node:14-alpine AS base
+ARG ARCH=
+FROM ${ARCH}node:14-alpine AS base
 
 RUN apk update && apk upgrade && apk add --no-cache bash
 
