@@ -133,7 +133,7 @@
     "@types/supertest": "~2.0.10",
     "@typescript-eslint/eslint-plugin": "~4.0.0",
     "@typescript-eslint/parser": "~3.10.1",
-    "chai": "~4.3.3",
+    "chai": "~4.3.4",
     "codecov": "~3.8.1",
     "ejs-cli": "~2.2.0",
     "es6-promise-pool": "~2.5.0",
