@@ -130,7 +130,7 @@
     "@types/pg-query-stream": "~1.0.3",
     "@types/pino": "~6.3.6",
     "@types/serve-favicon": "~2.5.2",
-    "@types/supertest": "~2.0.10",
+    "@types/supertest": "~2.0.11",
     "@typescript-eslint/eslint-plugin": "~4.0.0",
     "@typescript-eslint/parser": "~3.10.1",
     "chai": "~4.3.4",
