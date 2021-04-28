@@ -1,0 +1,55 @@
+version: 2
+registries:
+  npm-registry-registry-npmjs-org:
+    type: npm-registry
+    url: https://registry.npmjs.org
+    token: "${{secrets.NPM_REGISTRY_REGISTRY_NPMJS_ORG_TOKEN}}"
+
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: pino
+    versions:
+    - 6.11.2
+    - 6.11.3
+  - dependency-name: escape-string-regexp
+    versions:
+    - 5.0.0
+  - dependency-name: eslint-config-prettier
+    versions:
+    - 8.3.0
+  - dependency-name: "@types/pino"
+    versions:
+    - 6.3.7
+  - dependency-name: express-prom-bundle
+    versions:
+    - 6.3.6
+  - dependency-name: "@types/chai"
+    versions:
+    - 4.2.16
+  - dependency-name: csv
+    versions:
+    - 5.4.0
+    - 5.5.0
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.28
+    - 14.14.31
+    - 14.14.32
+    - 14.14.34
+  - dependency-name: eslint
+    versions:
+    - 7.21.0
+    - 7.22.0
+  - dependency-name: semantic-release
+    versions:
+    - 17.4.1
+  - dependency-name: "@types/pg"
+    versions:
+    - 7.14.10
+  registries:
+  - npm-registry-registry-npmjs-org
