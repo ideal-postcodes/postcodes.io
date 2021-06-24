@@ -42,7 +42,7 @@ const transform = (row) => {
 
 const configs = [
   {
-    file: "LAU218_LAU118_NUTS318_NUTS218_NUTS118_UK_LU.csv",
+    file: "LAU121_ITL321_ITL221_ITL121_UK_LU.csv",
     transform,
     parseOptions: {
       delimiter: ",",
