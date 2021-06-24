@@ -35,15 +35,7 @@ const transform = (row) => {
 
 const configs = [
   {
-    file: "CCG names and codes UK as at 04_19.csv",
-    transform,
-    parseOptions: {
-      delimiter: ",",
-    },
-    encoding: "utf8",
-  },
-  {
-    file: "CCG names and codes EN as at 04_20.csv",
+    file: "CCG names and codes UK as at 04_21.csv",
     transform,
     parseOptions: {
       delimiter: ",",

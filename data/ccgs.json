@@ -1,24 +1,4 @@
 {
-  "CCG20CD": {
-    "ccg19cdh": "CCG20CDH",
-    "name": "CCG20NM"
-  },
-  "E38000001": {
-    "ccg19cdh": "02N",
-    "name": "NHS Airedale, Wharfedale and Craven"
-  },
-  "E38000002": {
-    "ccg19cdh": "09C",
-    "name": "NHS Ashford"
-  },
-  "E38000004": {
-    "ccg19cdh": "07L",
-    "name": "NHS Barking and Dagenham"
-  },
-  "E38000005": {
-    "ccg19cdh": "07M",
-    "name": "NHS Barnet"
-  },
   "E38000006": {
     "ccg19cdh": "02P",
     "name": "NHS Barnsley"
@@ -30,18 +10,6 @@
   "E38000008": {
     "ccg19cdh": "02Q",
     "name": "NHS Bassetlaw"
-  },
-  "E38000009": {
-    "ccg19cdh": "11E",
-    "name": "NHS Bath and North East Somerset"
-  },
-  "E38000010": {
-    "ccg19cdh": "06F",
-    "name": "NHS Bedfordshire"
-  },
-  "E38000011": {
-    "ccg19cdh": "07N",
-    "name": "NHS Bexley"
   },
   "E38000014": {
     "ccg19cdh": "00Q",
@@ -55,25 +23,9 @@
     "ccg19cdh": "00T",
     "name": "NHS Bolton"
   },
-  "E38000018": {
-    "ccg19cdh": "02W",
-    "name": "NHS Bradford City"
-  },
-  "E38000019": {
-    "ccg19cdh": "02R",
-    "name": "NHS Bradford Districts"
-  },
-  "E38000020": {
-    "ccg19cdh": "07P",
-    "name": "NHS Brent"
-  },
   "E38000021": {
     "ccg19cdh": "09D",
     "name": "NHS Brighton and Hove"
-  },
-  "E38000023": {
-    "ccg19cdh": "07Q",
-    "name": "NHS Bromley"
   },
   "E38000024": {
     "ccg19cdh": "00V",
@@ -87,57 +39,17 @@
     "ccg19cdh": "06H",
     "name": "NHS Cambridgeshire and Peterborough"
   },
-  "E38000027": {
-    "ccg19cdh": "07R",
-    "name": "NHS Camden"
-  },
   "E38000028": {
     "ccg19cdh": "04Y",
     "name": "NHS Cannock Chase"
-  },
-  "E38000029": {
-    "ccg19cdh": "09E",
-    "name": "NHS Canterbury and Coastal"
   },
   "E38000030": {
     "ccg19cdh": "99F",
     "name": "NHS Castle Point and Rochford"
   },
-  "E38000031": {
-    "ccg19cdh": "09A",
-    "name": "NHS Central London (Westminster)"
-  },
   "E38000034": {
     "ccg19cdh": "00X",
     "name": "NHS Chorley and South Ribble"
-  },
-  "E38000035": {
-    "ccg19cdh": "07T",
-    "name": "NHS City and Hackney"
-  },
-  "E38000037": {
-    "ccg19cdh": "03V",
-    "name": "NHS Corby"
-  },
-  "E38000038": {
-    "ccg19cdh": "05A",
-    "name": "NHS Coventry and Rugby"
-  },
-  "E38000039": {
-    "ccg19cdh": "09H",
-    "name": "NHS Crawley"
-  },
-  "E38000040": {
-    "ccg19cdh": "07V",
-    "name": "NHS Croydon"
-  },
-  "E38000042": {
-    "ccg19cdh": "00C",
-    "name": "NHS Darlington"
-  },
-  "E38000043": {
-    "ccg19cdh": "09J",
-    "name": "NHS Dartford, Gravesham and Swanley"
   },
   "E38000044": {
     "ccg19cdh": "02X",
@@ -146,18 +58,6 @@
   "E38000045": {
     "ccg19cdh": "11J",
     "name": "NHS Dorset"
-  },
-  "E38000046": {
-    "ccg19cdh": "05C",
-    "name": "NHS Dudley"
-  },
-  "E38000047": {
-    "ccg19cdh": "00D",
-    "name": "NHS Durham Dales, Easington and Sedgefield"
-  },
-  "E38000048": {
-    "ccg19cdh": "07W",
-    "name": "NHS Ealing"
   },
   "E38000049": {
     "ccg19cdh": "06K",
@@ -179,81 +79,13 @@
     "ccg19cdh": "05D",
     "name": "NHS East Staffordshire"
   },
-  "E38000054": {
-    "ccg19cdh": "09L",
-    "name": "NHS East Surrey"
-  },
-  "E38000055": {
-    "ccg19cdh": "09F",
-    "name": "NHS Eastbourne, Hailsham and Seaford"
-  },
-  "E38000056": {
-    "ccg19cdh": "01C",
-    "name": "NHS Eastern Cheshire"
-  },
-  "E38000057": {
-    "ccg19cdh": "07X",
-    "name": "NHS Enfield"
-  },
-  "E38000059": {
-    "ccg19cdh": "10K",
-    "name": "NHS Fareham and Gosport"
-  },
   "E38000062": {
     "ccg19cdh": "11M",
     "name": "NHS Gloucestershire"
   },
-  "E38000063": {
-    "ccg19cdh": "06M",
-    "name": "NHS Great Yarmouth and Waveney"
-  },
-  "E38000064": {
-    "ccg19cdh": "03A",
-    "name": "NHS Greater Huddersfield"
-  },
-  "E38000066": {
-    "ccg19cdh": "08A",
-    "name": "NHS Greenwich"
-  },
   "E38000068": {
     "ccg19cdh": "01F",
     "name": "NHS Halton"
-  },
-  "E38000069": {
-    "ccg19cdh": "03D",
-    "name": "NHS Hambleton, Richmondshire and Whitby"
-  },
-  "E38000070": {
-    "ccg19cdh": "08C",
-    "name": "NHS Hammersmith and Fulham"
-  },
-  "E38000072": {
-    "ccg19cdh": "08D",
-    "name": "NHS Haringey"
-  },
-  "E38000073": {
-    "ccg19cdh": "03E",
-    "name": "NHS Harrogate and Rural District"
-  },
-  "E38000074": {
-    "ccg19cdh": "08E",
-    "name": "NHS Harrow"
-  },
-  "E38000075": {
-    "ccg19cdh": "00K",
-    "name": "NHS Hartlepool and Stockton-on-Tees"
-  },
-  "E38000076": {
-    "ccg19cdh": "09P",
-    "name": "NHS Hastings and Rother"
-  },
-  "E38000077": {
-    "ccg19cdh": "08F",
-    "name": "NHS Havering"
-  },
-  "E38000078": {
-    "ccg19cdh": "05F",
-    "name": "NHS Herefordshire"
   },
   "E38000079": {
     "ccg19cdh": "06N",
@@ -263,22 +95,6 @@
     "ccg19cdh": "01D",
     "name": "NHS Heywood, Middleton and Rochdale"
   },
-  "E38000081": {
-    "ccg19cdh": "99K",
-    "name": "NHS High Weald Lewes Havens"
-  },
-  "E38000082": {
-    "ccg19cdh": "08G",
-    "name": "NHS Hillingdon"
-  },
-  "E38000083": {
-    "ccg19cdh": "09X",
-    "name": "NHS Horsham and Mid Sussex"
-  },
-  "E38000084": {
-    "ccg19cdh": "07Y",
-    "name": "NHS Hounslow"
-  },
   "E38000085": {
     "ccg19cdh": "03F",
     "name": "NHS Hull"
@@ -287,117 +103,37 @@
     "ccg19cdh": "06L",
     "name": "NHS Ipswich and East Suffolk"
   },
-  "E38000087": {
-    "ccg19cdh": "10L",
-    "name": "NHS Isle of Wight"
-  },
-  "E38000088": {
-    "ccg19cdh": "08H",
-    "name": "NHS Islington"
-  },
   "E38000089": {
     "ccg19cdh": "11N",
     "name": "NHS Kernow"
-  },
-  "E38000090": {
-    "ccg19cdh": "08J",
-    "name": "NHS Kingston"
   },
   "E38000091": {
     "ccg19cdh": "01J",
     "name": "NHS Knowsley"
   },
-  "E38000092": {
-    "ccg19cdh": "08K",
-    "name": "NHS Lambeth"
-  },
   "E38000097": {
     "ccg19cdh": "04C",
     "name": "NHS Leicester City"
-  },
-  "E38000098": {
-    "ccg19cdh": "08L",
-    "name": "NHS Lewisham"
-  },
-  "E38000099": {
-    "ccg19cdh": "03T",
-    "name": "NHS Lincolnshire East"
-  },
-  "E38000100": {
-    "ccg19cdh": "04D",
-    "name": "NHS Lincolnshire West"
   },
   "E38000101": {
     "ccg19cdh": "99A",
     "name": "NHS Liverpool"
   },
-  "E38000102": {
-    "ccg19cdh": "06P",
-    "name": "NHS Luton"
-  },
-  "E38000103": {
-    "ccg19cdh": "04E",
-    "name": "NHS Mansfield and Ashfield"
-  },
-  "E38000104": {
-    "ccg19cdh": "09W",
-    "name": "NHS Medway"
-  },
-  "E38000105": {
-    "ccg19cdh": "08R",
-    "name": "NHS Merton"
-  },
   "E38000106": {
     "ccg19cdh": "06Q",
     "name": "NHS Mid Essex"
-  },
-  "E38000107": {
-    "ccg19cdh": "04F",
-    "name": "NHS Milton Keynes"
-  },
-  "E38000108": {
-    "ccg19cdh": "04G",
-    "name": "NHS Nene"
-  },
-  "E38000109": {
-    "ccg19cdh": "04H",
-    "name": "NHS Newark and Sherwood"
-  },
-  "E38000113": {
-    "ccg19cdh": "08M",
-    "name": "NHS Newham"
-  },
-  "E38000116": {
-    "ccg19cdh": "00J",
-    "name": "NHS North Durham"
   },
   "E38000117": {
     "ccg19cdh": "06T",
     "name": "NHS North East Essex"
   },
-  "E38000118": {
-    "ccg19cdh": "99M",
-    "name": "NHS North East Hampshire and Farnham"
-  },
   "E38000119": {
     "ccg19cdh": "03H",
     "name": "NHS North East Lincolnshire"
   },
-  "E38000120": {
-    "ccg19cdh": "10J",
-    "name": "NHS North Hampshire"
-  },
-  "E38000121": {
-    "ccg19cdh": "03J",
-    "name": "NHS North Kirklees"
-  },
   "E38000122": {
     "ccg19cdh": "03K",
     "name": "NHS North Lincolnshire"
-  },
-  "E38000124": {
-    "ccg19cdh": "06V",
-    "name": "NHS North Norfolk"
   },
   "E38000126": {
     "ccg19cdh": "05G",
@@ -407,25 +143,9 @@
     "ccg19cdh": "99C",
     "name": "NHS North Tyneside"
   },
-  "E38000128": {
-    "ccg19cdh": "09Y",
-    "name": "NHS North West Surrey"
-  },
   "E38000130": {
     "ccg19cdh": "00L",
     "name": "NHS Northumberland"
-  },
-  "E38000132": {
-    "ccg19cdh": "04K",
-    "name": "NHS Nottingham City"
-  },
-  "E38000133": {
-    "ccg19cdh": "04L",
-    "name": "NHS Nottingham North and East"
-  },
-  "E38000134": {
-    "ccg19cdh": "04M",
-    "name": "NHS Nottingham West"
   },
   "E38000135": {
     "ccg19cdh": "00Y",
@@ -439,97 +159,33 @@
     "ccg19cdh": "10R",
     "name": "NHS Portsmouth"
   },
-  "E38000138": {
-    "ccg19cdh": "08N",
-    "name": "NHS Redbridge"
-  },
-  "E38000139": {
-    "ccg19cdh": "05J",
-    "name": "NHS Redditch and Bromsgrove"
-  },
-  "E38000140": {
-    "ccg19cdh": "08P",
-    "name": "NHS Richmond"
-  },
   "E38000141": {
     "ccg19cdh": "03L",
     "name": "NHS Rotherham"
-  },
-  "E38000142": {
-    "ccg19cdh": "04N",
-    "name": "NHS Rushcliffe"
   },
   "E38000143": {
     "ccg19cdh": "01G",
     "name": "NHS Salford"
   },
-  "E38000144": {
-    "ccg19cdh": "05L",
-    "name": "NHS Sandwell and West Birmingham"
-  },
-  "E38000145": {
-    "ccg19cdh": "03M",
-    "name": "NHS Scarborough and Ryedale"
-  },
   "E38000146": {
     "ccg19cdh": "03N",
     "name": "NHS Sheffield"
-  },
-  "E38000147": {
-    "ccg19cdh": "05N",
-    "name": "NHS Shropshire"
   },
   "E38000150": {
     "ccg19cdh": "11X",
     "name": "NHS Somerset"
   },
-  "E38000151": {
-    "ccg19cdh": "01R",
-    "name": "NHS South Cheshire"
-  },
   "E38000153": {
     "ccg19cdh": "05Q",
     "name": "NHS South East Staffordshire and Seisdon Peninsula"
-  },
-  "E38000154": {
-    "ccg19cdh": "10V",
-    "name": "NHS South Eastern Hampshire"
-  },
-  "E38000156": {
-    "ccg19cdh": "10A",
-    "name": "NHS South Kent Coast"
-  },
-  "E38000157": {
-    "ccg19cdh": "99D",
-    "name": "NHS South Lincolnshire"
   },
   "E38000161": {
     "ccg19cdh": "01T",
     "name": "NHS South Sefton"
   },
-  "E38000162": {
-    "ccg19cdh": "00M",
-    "name": "NHS South Tees"
-  },
   "E38000163": {
     "ccg19cdh": "00N",
     "name": "NHS South Tyneside"
-  },
-  "E38000164": {
-    "ccg19cdh": "05R",
-    "name": "NHS South Warwickshire"
-  },
-  "E38000165": {
-    "ccg19cdh": "04Q",
-    "name": "NHS South West Lincolnshire"
-  },
-  "E38000166": {
-    "ccg19cdh": "05T",
-    "name": "NHS South Worcestershire"
-  },
-  "E38000167": {
-    "ccg19cdh": "10X",
-    "name": "NHS Southampton"
   },
   "E38000168": {
     "ccg19cdh": "99G",
@@ -538,10 +194,6 @@
   "E38000170": {
     "ccg19cdh": "01V",
     "name": "NHS Southport and Formby"
-  },
-  "E38000171": {
-    "ccg19cdh": "08Q",
-    "name": "NHS Southwark"
   },
   "E38000172": {
     "ccg19cdh": "01X",
@@ -563,45 +215,13 @@
     "ccg19cdh": "00P",
     "name": "NHS Sunderland"
   },
-  "E38000177": {
-    "ccg19cdh": "99H",
-    "name": "NHS Surrey Downs"
-  },
-  "E38000178": {
-    "ccg19cdh": "10C",
-    "name": "NHS Surrey Heath"
-  },
-  "E38000179": {
-    "ccg19cdh": "08T",
-    "name": "NHS Sutton"
-  },
-  "E38000180": {
-    "ccg19cdh": "10D",
-    "name": "NHS Swale"
-  },
-  "E38000181": {
-    "ccg19cdh": "12D",
-    "name": "NHS Swindon"
-  },
   "E38000182": {
     "ccg19cdh": "01Y",
     "name": "NHS Tameside and Glossop"
   },
-  "E38000183": {
-    "ccg19cdh": "05X",
-    "name": "NHS Telford and Wrekin"
-  },
-  "E38000184": {
-    "ccg19cdh": "10E",
-    "name": "NHS Thanet"
-  },
   "E38000185": {
     "ccg19cdh": "07G",
     "name": "NHS Thurrock"
-  },
-  "E38000186": {
-    "ccg19cdh": "08V",
-    "name": "NHS Tower Hamlets"
   },
   "E38000187": {
     "ccg19cdh": "02A",
@@ -611,49 +231,17 @@
     "ccg19cdh": "03Q",
     "name": "NHS Vale of York"
   },
-  "E38000189": {
-    "ccg19cdh": "02D",
-    "name": "NHS Vale Royal"
-  },
   "E38000190": {
     "ccg19cdh": "03R",
     "name": "NHS Wakefield"
-  },
-  "E38000191": {
-    "ccg19cdh": "05Y",
-    "name": "NHS Walsall"
-  },
-  "E38000192": {
-    "ccg19cdh": "08W",
-    "name": "NHS Waltham Forest"
-  },
-  "E38000193": {
-    "ccg19cdh": "08X",
-    "name": "NHS Wandsworth"
   },
   "E38000194": {
     "ccg19cdh": "02E",
     "name": "NHS Warrington"
   },
-  "E38000195": {
-    "ccg19cdh": "05H",
-    "name": "NHS Warwickshire North"
-  },
-  "E38000196": {
-    "ccg19cdh": "02F",
-    "name": "NHS West Cheshire"
-  },
   "E38000197": {
     "ccg19cdh": "07H",
     "name": "NHS West Essex"
-  },
-  "E38000198": {
-    "ccg19cdh": "11A",
-    "name": "NHS West Hampshire"
-  },
-  "E38000199": {
-    "ccg19cdh": "99J",
-    "name": "NHS West Kent"
   },
   "E38000200": {
     "ccg19cdh": "02G",
@@ -663,14 +251,6 @@
     "ccg19cdh": "04V",
     "name": "NHS West Leicestershire"
   },
-  "E38000202": {
-    "ccg19cdh": "08Y",
-    "name": "NHS West London"
-  },
-  "E38000203": {
-    "ccg19cdh": "07J",
-    "name": "NHS West Norfolk"
-  },
   "E38000204": {
     "ccg19cdh": "07K",
     "name": "NHS West Suffolk"
@@ -679,33 +259,13 @@
     "ccg19cdh": "02H",
     "name": "NHS Wigan Borough"
   },
-  "E38000206": {
-    "ccg19cdh": "99N",
-    "name": "NHS Wiltshire"
-  },
   "E38000208": {
     "ccg19cdh": "12F",
     "name": "NHS Wirral"
   },
-  "E38000210": {
-    "ccg19cdh": "06A",
-    "name": "NHS Wolverhampton"
-  },
-  "E38000211": {
-    "ccg19cdh": "06D",
-    "name": "NHS Wyre Forest"
-  },
   "E38000212": {
     "ccg19cdh": "13T",
     "name": "NHS Newcastle Gateshead"
-  },
-  "E38000213": {
-    "ccg19cdh": "09G",
-    "name": "NHS Coastal West Sussex"
-  },
-  "E38000214": {
-    "ccg19cdh": "09N",
-    "name": "NHS Guildford and Waverley"
   },
   "E38000215": {
     "ccg19cdh": "01H",
@@ -714,14 +274,6 @@
   "E38000217": {
     "ccg19cdh": "14L",
     "name": "NHS Manchester"
-  },
-  "E38000218": {
-    "ccg19cdh": "06W",
-    "name": "NHS Norwich"
-  },
-  "E38000219": {
-    "ccg19cdh": "06Y",
-    "name": "NHS South Norfolk"
   },
   "E38000220": {
     "ccg19cdh": "15E",
@@ -738,10 +290,6 @@
   "E38000223": {
     "ccg19cdh": "14Y",
     "name": "NHS Buckinghamshire"
-  },
-  "E38000224": {
-    "ccg19cdh": "15D",
-    "name": "NHS East Berkshire"
   },
   "E38000225": {
     "ccg19cdh": "15F",
@@ -838,6 +386,42 @@
   "E38000248": {
     "ccg19cdh": "70F",
     "name": "NHS West Sussex"
+  },
+  "E38000249": {
+    "ccg19cdh": "M1J4Y",
+    "name": "NHS Bedfordshire, Luton and Milton Keynes"
+  },
+  "E38000250": {
+    "ccg19cdh": "D2P2L",
+    "name": "NHS Black Country and West Birmingham"
+  },
+  "E38000251": {
+    "ccg19cdh": "B2M3M",
+    "name": "NHS Coventry and Warwickshire"
+  },
+  "E38000252": {
+    "ccg19cdh": "D4U1Y",
+    "name": "NHS Frimley"
+  },
+  "E38000253": {
+    "ccg19cdh": "D9Y0V",
+    "name": "NHS Hampshire, Southampton and Isle of Wight"
+  },
+  "E38000254": {
+    "ccg19cdh": "X2C4Y",
+    "name": "NHS Kirklees"
+  },
+  "E38000255": {
+    "ccg19cdh": "A3A8R",
+    "name": "NHS North East London"
+  },
+  "E38000256": {
+    "ccg19cdh": "W2U3Z",
+    "name": "NHS North West London"
+  },
+  "E38000257": {
+    "ccg19cdh": "M2L0M",
+    "name": "NHS Shropshire, Telford and Wrekin"
   },
   "M01000001": {
     "ccg19cdh": "YK1",
