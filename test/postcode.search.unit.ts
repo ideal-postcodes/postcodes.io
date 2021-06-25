@@ -57,66 +57,66 @@ describe("Postcode Model", function () {
     describe("ordering", () => {
       it("returns M1 < M11 for 'M1'", async () => {
         const postcode = "M1";
-        const result = await Postcode.search({ postcode: postcode });
+        const result = await Postcode.search({ postcode });
         assert.equal(result.length, 2);
         assert.equal(result[0].postcode, "M1 1AD");
         assert.equal(result[1].postcode, "M11 1AA");
       });
       it("returns M1 < M11 for 'M1 '", async () => {
         const postcode = "M1 ";
-        const result = await Postcode.search({ postcode: postcode });
+        const result = await Postcode.search({ postcode });
         assert.equal(result.length, 2);
         assert.equal(result[0].postcode, "M1 1AD");
         assert.equal(result[1].postcode, "M11 1AA");
       });
       it("returns M1 < M11 for 'M1 1'", async () => {
         const postcode = "M1 1";
-        const result = await Postcode.search({ postcode: postcode });
+        const result = await Postcode.search({ postcode });
         assert.equal(result.length, 2);
         assert.equal(result[0].postcode, "M1 1AD");
         assert.equal(result[1].postcode, "M11 1AA");
       });
       it("returns M11 for 'M11'", async () => {
         const postcode = "M11";
-        const result = await Postcode.search({ postcode: postcode });
+        const result = await Postcode.search({ postcode });
         assert.equal(result.length, 1);
         assert.equal(result[0].postcode, "M11 1AA");
       });
       it("returns M11 for 'M11 '", async () => {
         const postcode = "M11 ";
-        const result = await Postcode.search({ postcode: postcode });
+        const result = await Postcode.search({ postcode });
         assert.equal(result.length, 1);
         assert.equal(result[0].postcode, "M11 1AA");
       });
       it("returns SE1 < SE1P for 'SE1'", async () => {
         const postcode = "SE1";
-        const result = await Postcode.search({ postcode: postcode });
+        const result = await Postcode.search({ postcode });
         assert.equal(result.length, 2);
-        assert.equal(result[0].postcode, "SE1 9ZZ");
+        assert.equal(result[0].postcode, "SE1 2DL");
         assert.equal(result[1].postcode, "SE1P 5ZZ");
       });
       it("returns SE1 for 'SE1 '", async () => {
         const postcode = "SE1 ";
-        const result = await Postcode.search({ postcode: postcode });
+        const result = await Postcode.search({ postcode });
         assert.equal(result.length, 2);
-        assert.equal(result[0].postcode, "SE1 9ZZ");
+        assert.equal(result[0].postcode, "SE1 2DL");
         assert.equal(result[1].postcode, "SE1P 5ZZ");
       });
-      it("returns SE1 for 'SE1 9'", async () => {
-        const postcode = "SE1 9";
-        const result = await Postcode.search({ postcode: postcode });
+      it("returns SE1 for 'SE1 2'", async () => {
+        const postcode = "SE1 2";
+        const result = await Postcode.search({ postcode });
         assert.equal(result.length, 1);
-        assert.equal(result[0].postcode, "SE1 9ZZ");
+        assert.equal(result[0].postcode, "SE1 2DL");
       });
       it("returns SE1P for 'SE1P'", async () => {
         const postcode = "SE1P";
-        const result = await Postcode.search({ postcode: postcode });
+        const result = await Postcode.search({ postcode });
         assert.equal(result.length, 1);
         assert.equal(result[0].postcode, "SE1P 5ZZ");
       });
       it("returns SE1P for 'SE1P '", async () => {
         const postcode = "SE1P ";
-        const result = await Postcode.search({ postcode: postcode });
+        const result = await Postcode.search({ postcode });
         assert.equal(result.length, 1);
         assert.equal(result[0].postcode, "SE1P 5ZZ");
       });
@@ -124,7 +124,7 @@ describe("Postcode Model", function () {
 
     describe("sensible outcode matching", () => {
       it("returns strict outcode matches first", async () => {
-        testOutcode = "AB1";
+        testOutcode = "M1";
         const result = await Postcode.search({ postcode: testOutcode });
         assert.equal(result[0].outcode, testOutcode);
         result.forEach((pc) => assert.include(pc.outcode, testOutcode));
@@ -138,9 +138,9 @@ describe("Postcode Model", function () {
 
     describe("when space delineated", () => {
       it("is sensitive to space in postcode search", async () => {
-        testOutcode = "AB1 9";
+        testOutcode = "M1 1";
         const result = await Postcode.search({ postcode: testOutcode });
-        assert.equal(result[0].outcode, "AB1");
+        assert.equal(result[0].outcode, "M1");
       });
       it("returns next closest postcodes if invalid outcode", async () => {
         testOutcode = "AA1 9";
