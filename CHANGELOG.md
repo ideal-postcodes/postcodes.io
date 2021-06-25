@@ -1,3 +1,26 @@
+# [14.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/13.1.0...14.0.0) (2021-06-25)
+
+
+### Bug Fixes
+
+* **CCG:** Update CCGs for May 2021 ([21b2a7c](https://github.com/ideal-postcodes/postcodes.io/commit/21b2a7c1601171a13689d7476c05e8dc0eb74fc8))
+* **NUTS:** Transition NUTS to ITL ([4939eac](https://github.com/ideal-postcodes/postcodes.io/commit/4939eace5228de5369aeab3618cccc4a0899b6d4))
+* **Wards:** Update wards for ONSPD May 2021 ([ab7fcdb](https://github.com/ideal-postcodes/postcodes.io/commit/ab7fcdb30301663d0a35d4cb172bb54c0baecd40))
+
+
+### Features
+
+* **ONSPD:** Bump to ONSPD May 2021 ([02db17f](https://github.com/ideal-postcodes/postcodes.io/commit/02db17f4041873ea254607f901d5ac43ce402fa2))
+
+
+### BREAKING CHANGES
+
+* **NUTS:** ONSPD has removed NUTS in favour of ITL
+
+As of May 2021. NUTS has changed to International Territorial Levels (ITL). Postcodes.io will report ITL in nuts and codes.nuts to preserve backwards compatibility.
+
+Following the UK’s withdrawal from the EU, a new UK-managed international statistical geography - ITL (International Territorial Levels) - was introduced from 1st January 2021, replacing the former NUTS classification
+
 # [13.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/13.0.4...13.1.0) (2021-03-09)
 
 
