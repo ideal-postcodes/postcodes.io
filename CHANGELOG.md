@@ -1,3 +1,10 @@
+## [14.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/14.0.0...14.0.1) (2021-06-28)
+
+
+### Bug Fixes
+
+* **Rust:** Add reference to Rust crate ([bd7bb84](https://github.com/ideal-postcodes/postcodes.io/commit/bd7bb841fb400f987becba319eaebdd943b235ec))
+
 # [14.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/13.1.0...14.0.0) (2021-06-25)
 
 
