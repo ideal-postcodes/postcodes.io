@@ -1,3 +1,10 @@
+## [14.0.2](https://github.com/ideal-postcodes/postcodes.io/compare/14.0.1...14.0.2) (2021-07-05)
+
+
+### Bug Fixes
+
+* **ITL:** Use level 3 codes ([e633daa](https://github.com/ideal-postcodes/postcodes.io/commit/e633daa9de5469d6738a8264ba5902a388f377c0))
+
 ## [14.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/14.0.0...14.0.1) (2021-06-28)
 
 
