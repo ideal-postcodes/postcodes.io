@@ -23,8 +23,8 @@ const { extract } = require("./index");
  */
 
 const CODE_OFFSET = 0;
-const NUTS_CODE_OFFSET = 4;
-const VALUE_OFFSET = 5;
+const NUTS_CODE_OFFSET = 2;
+const VALUE_OFFSET = 3;
 
 const transform = (row) => {
   const code = row[CODE_OFFSET];
