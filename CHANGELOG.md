@@ -1,3 +1,10 @@
+## [14.0.3](https://github.com/ideal-postcodes/postcodes.io/compare/14.0.2...14.0.3) (2021-07-05)
+
+
+### Bug Fixes
+
+* **Database:** Point to latest pg_dump ([9df3bf5](https://github.com/ideal-postcodes/postcodes.io/commit/9df3bf5e60098588e2d6f086bdd6a245d9e3efbb))
+
 ## [14.0.2](https://github.com/ideal-postcodes/postcodes.io/compare/14.0.1...14.0.2) (2021-07-05)
 
 
