@@ -1,3 +1,10 @@
+## [14.0.4](https://github.com/ideal-postcodes/postcodes.io/compare/14.0.3...14.0.4) (2021-07-08)
+
+
+### Bug Fixes
+
+* **Districts:** Add missing codes for Northamptonshire ([1d8d4f8](https://github.com/ideal-postcodes/postcodes.io/commit/1d8d4f880170a900f9327a6fa208d876d5712a4b))
+
 ## [14.0.3](https://github.com/ideal-postcodes/postcodes.io/compare/14.0.2...14.0.3) (2021-07-05)
 
 
