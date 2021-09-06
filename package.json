@@ -108,7 +108,7 @@
     "pg": "~8.7.1",
     "pg-copy-streams": "~6.0.1",
     "pg-query-stream": "~4.2.1",
-    "pino": "~6.13.1",
+    "pino": "~6.13.2",
     "postcode": "~5.1.0",
     "prom-client": "~13.2.0",
     "serve-favicon": "~2.5.0"
