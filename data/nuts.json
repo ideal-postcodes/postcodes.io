@@ -1283,19 +1283,7 @@
     "code": "TLN09",
     "name": "Ards and North Down"
   },
-  "S30000001": {
-    "code": "TLM71",
-    "name": "Angus and Dundee City"
-  },
-  "S30000002": {
-    "code": "TLM71",
-    "name": "Angus and Dundee City"
-  },
   "S30000003": {
-    "code": "TLM72",
-    "name": "Clackmannanshire and Fife"
-  },
-  "S30000004": {
     "code": "TLM72",
     "name": "Clackmannanshire and Fife"
   },
@@ -1319,10 +1307,6 @@
     "code": "TLM76",
     "name": "Falkirk"
   },
-  "S30000010": {
-    "code": "TLM77",
-    "name": "Perth and Kinross, and Stirling"
-  },
   "S30000011": {
     "code": "TLM77",
     "name": "Perth and Kinross, and Stirling"
@@ -1339,10 +1323,6 @@
     "code": "TLM81",
     "name": "East Dunbartonshire, West Dunbartonshire, and Helensburgh and Lomond"
   },
-  "S30000015": {
-    "code": "TLM81",
-    "name": "East Dunbartonshire, West Dunbartonshire, and Helensburgh and Lomond"
-  },
   "S30000016": {
     "code": "TLM92",
     "name": "Dumfries and Galloway"
@@ -1355,10 +1335,6 @@
     "code": "TLM93",
     "name": "East Ayrshire and North Ayrshire mainland"
   },
-  "S30000019": {
-    "code": "TLM82",
-    "name": "Glasgow City"
-  },
   "S30000020": {
     "code": "TLM83",
     "name": "Inverclyde, East Renfrewshire, and Renfrewshire"
@@ -1370,10 +1346,6 @@
   "S30000022": {
     "code": "TLM83",
     "name": "Inverclyde, East Renfrewshire, and Renfrewshire"
-  },
-  "S30000023": {
-    "code": "TLM84",
-    "name": "North Lanarkshire"
   },
   "S30000024": {
     "code": "TLM94",
@@ -1446,6 +1418,34 @@
   "S30000041": {
     "code": "TLM66",
     "name": "Shetland Islands"
+  },
+  "S30000042": {
+    "code": "TLM72",
+    "name": "Clackmannanshire and Fife"
+  },
+  "S30000043": {
+    "code": "TLM77",
+    "name": "Perth and Kinross, and Stirling"
+  },
+  "S30000048": {
+    "code": "TLM71",
+    "name": "Angus and Dundee City"
+  },
+  "S30000049": {
+    "code": "TLM71",
+    "name": "Angus and Dundee City"
+  },
+  "S30000050": {
+    "code": "TLM81",
+    "name": "East Dunbartonshire, West Dunbartonshire, and Helensburgh and Lomond"
+  },
+  "S30000052": {
+    "code": "TLM82",
+    "name": "Glasgow City"
+  },
+  "S30000053": {
+    "code": "TLM84",
+    "name": "North Lanarkshire"
   },
   "W06000001": {
     "code": "TLL11",
