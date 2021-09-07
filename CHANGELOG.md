@@ -1,3 +1,16 @@
+# [14.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/14.0.4...14.1.0) (2021-09-07)
+
+
+### Bug Fixes
+
+* **ONSPD:** Update CED dataset ([6589312](https://github.com/ideal-postcodes/postcodes.io/commit/65893125092e17024e9123ac5a21b0c2d09e725c))
+* **ONSPD:** Update NUTS/ITL dataset ([257e8ab](https://github.com/ideal-postcodes/postcodes.io/commit/257e8ab3fe7307c789d81d770c338a4aafc85e06))
+
+
+### Features
+
+* **ONSPD:** Update for ONSPD August 2021 ([9aad316](https://github.com/ideal-postcodes/postcodes.io/commit/9aad316c96db6af1b943e19fd30ad1a91d4dc490))
+
 ## [14.0.4](https://github.com/ideal-postcodes/postcodes.io/compare/14.0.3...14.0.4) (2021-07-08)
 
 
