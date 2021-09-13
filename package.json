@@ -147,7 +147,7 @@
     "prettier": "~2.3.2",
     "semantic-release": "~17.4.7",
     "serve-favicon": "~2.5.0",
-    "source-map-support": "~0.5.19",
+    "source-map-support": "~0.5.20",
     "supertest": "~6.1.6",
     "ts-node": "~10.2.1",
     "tslint": "~6.1.3",
