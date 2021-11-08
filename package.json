@@ -110,7 +110,7 @@
     "pg-query-stream": "~4.2.1",
     "pino": "~6.13.3",
     "postcode": "~5.1.0",
-    "prom-client": "~14.0.0",
+    "prom-client": "~14.0.1",
     "serve-favicon": "~2.5.0"
   },
   "devDependencies": {
