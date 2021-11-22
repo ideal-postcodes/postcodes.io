@@ -135,7 +135,7 @@
     "@typescript-eslint/parser": "~3.10.1",
     "chai": "~4.3.4",
     "codecov": "~3.8.3",
-    "ejs-cli": "~2.2.1",
+    "ejs-cli": "~2.2.3",
     "es6-promise-pool": "~2.5.0",
     "eslint": "~7.32.0",
     "eslint-config-prettier": "~8.3.0",
