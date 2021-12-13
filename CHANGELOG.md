@@ -1,3 +1,15 @@
+# [14.2.0](https://github.com/ideal-postcodes/postcodes.io/compare/14.1.0...14.2.0) (2021-12-13)
+
+
+### Bug Fixes
+
+* **ONSPD:** Add missing wards for ONSPD 11/21 ([91a0d15](https://github.com/ideal-postcodes/postcodes.io/commit/91a0d154f386f549a7d013b6b03c3bbc03b2f095))
+
+
+### Features
+
+* **ONSPD:** Bump to Nov 2021 ([5fd8973](https://github.com/ideal-postcodes/postcodes.io/commit/5fd8973ac2558819bcaf6501e828ecaa484792be))
+
 # [14.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/14.0.4...14.1.0) (2021-09-07)
 
 
