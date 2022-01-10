@@ -90,7 +90,7 @@
     "extends": "@cablanchard/semantic-release"
   },
   "dependencies": {
-    "async": "~3.2.2",
+    "async": "~3.2.3",
     "body-parser": "~1.19.1",
     "cors": "~2.8.5",
     "csv": "~1.1.0",
