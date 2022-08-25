@@ -1,3 +1,10 @@
+## [14.4.1](https://github.com/ideal-postcodes/postcodes.io/compare/14.4.0...14.4.1) (2022-08-25)
+
+
+### Bug Fixes
+
+* **Dockerfile:** Fix npm install ([92deb67](https://github.com/ideal-postcodes/postcodes.io/commit/92deb6709452ee98a67ae8d73fa96169af1b1a60))
+
 # [14.4.0](https://github.com/ideal-postcodes/postcodes.io/compare/14.3.0...14.4.0) (2022-08-25)
 
 
