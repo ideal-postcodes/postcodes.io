@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install --no-package-lock && \
+RUN npm ci && \
     npm cache clean --force && \
     npm run build
 
@@ -15,9 +15,6 @@ FROM base AS install
 ARG PORT=8000
 ENV PORT $PORT
 EXPOSE $PORT
-
-RUN npm install --only=production --no-package-lock && \
-    npm cache clean --force
 
 USER node
 
