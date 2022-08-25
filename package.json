@@ -135,7 +135,7 @@
     "codecov": "~3.8.3",
     "ejs-cli": "~2.2.3",
     "es6-promise-pool": "~2.5.0",
-    "eslint": "~7.32.0",
+    "eslint": "~8.22.0",
     "eslint-config-prettier": "~8.5.0",
     "fast-csv": "~4.3.6",
     "mocha": "~10.0.0",
