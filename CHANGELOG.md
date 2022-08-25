@@ -1,3 +1,17 @@
+# [14.4.0](https://github.com/ideal-postcodes/postcodes.io/compare/14.3.0...14.4.0) (2022-08-25)
+
+
+### Bug Fixes
+
+* **Parish:** Add missing parish data ([2d4af13](https://github.com/ideal-postcodes/postcodes.io/commit/2d4af1322b4091b76b027384db74629163e6c4d3))
+* **Wards:** Update for missing wards ([556c960](https://github.com/ideal-postcodes/postcodes.io/commit/556c9607bad973e29dabffdb9aabede3b6b8e0bc))
+
+
+### Features
+
+* **Node:** Run on Node 16 ([2e6bcde](https://github.com/ideal-postcodes/postcodes.io/commit/2e6bcdec7442b82fdcc94631243595f9c3f5e534))
+* **ONSPD:** Update dataset for ONSPD Aug 2022 ([f3aecea](https://github.com/ideal-postcodes/postcodes.io/commit/f3aecea95bbb7e10ad0be0bb75b73d5a699fa39b))
+
 # [14.3.0](https://github.com/ideal-postcodes/postcodes.io/compare/14.2.0...14.3.0) (2022-02-23)
 
 
