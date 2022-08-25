@@ -18,6 +18,21 @@ const transform = (row) => {
   return [code, value];
 };
 
+const appendMissing = {
+  W05001616: "Bedlinog and Trelewis",
+  W05001617: "Cyfarthfa",
+  W05001618: "Dowlais and Pant",
+  W05001619: "Gurnos",
+  W05001620: "Merthyr Vale",
+  W05001621: "Park",
+  W05001622: "Penydarren",
+  W05001623: "Plymouth",
+  W05001624: "Town",
+  W05001625: "Treharris",
+  W05001626: "Vaynor",
+  S13002608: "An Taobh Siar agus Nis",
+};
+
 const configs = [
   {
     file: "Ward names and codes UK as at 05_22_onspd_v2.csv",
@@ -29,4 +44,4 @@ const configs = [
   },
 ];
 
-extract({ configs });
+extract({ configs, appendMissing });
