@@ -123,7 +123,7 @@
     "@types/minimist": "~1.2.2",
     "@types/mocha": "~9.1.0",
     "@types/morgan": "~1.9.3",
-    "@types/node": "~17.0.22",
+    "@types/node": "~18.7.16",
     "@types/pg": "~8.6.3",
     "@types/pg-copy-streams": "~1.2.1",
     "@types/pino": "~6.3.12",
