@@ -19,7 +19,7 @@ spec:
       containers:
         - name: postcodesio
           image:
-            gcr.io/inbestcloud/github-inbest-welfare:
+            gcr.io/inbestcloud/github-inbest-postcodesio:1.1
           ports:
             - containerPort: 8000
           readinessProbe:
@@ -29,8 +29,28 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
           env:
-            - name: POSTGRES_DB_URI
+            - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
                   name: postgres-env-file
-                  key: DB_URI
+                  key: POSTGRES_DB
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-env-file
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-env-file
+                  key: POSTGRES_USER
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-env-file
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-env-file
+                  key: POSTGRES_PORT
