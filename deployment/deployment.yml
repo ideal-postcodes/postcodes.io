@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: postcodesio
+  name: postcodesio
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: postcodesio
+  template:
+    metadata:
+      labels:
+        app: postcodesio
+    spec:
+      containers:
+        - name: postcodesio
+          image:
+            gcr.io/inbestcloud/github-inbest-welfare:
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            - name: POSTGRES_DB_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-env-file
+                  key: DB_URI
