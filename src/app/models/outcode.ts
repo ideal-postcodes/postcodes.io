@@ -42,7 +42,7 @@ const relation = {
     admin_county: "VARCHAR(255)[]",
     admin_ward: "VARCHAR(255)[]",
     country: "VARCHAR(255)[]",
-    parliamentary_constituency: "VARCHAR(255)[]"
+    parliamentary_constituency: "VARCHAR(255)[]",
   },
   indexes: [
     {
