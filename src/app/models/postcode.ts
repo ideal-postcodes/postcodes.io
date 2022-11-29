@@ -687,6 +687,19 @@ attributesQuery.push(`
 	) as country
 `);
 
+attributesQuery.push(`
+	array(
+		SELECT
+			DISTINCT constituencies.name
+		FROM
+			postcodes
+    LEFT OUTER JOIN
+      constituencies ON postcodes.constituency_id = constituencies.code
+		WHERE
+			outcode=$1 AND constituencies.name IS NOT NULL
+	) as parliamentary_constituency
+`);
+
 const outcodeQuery = `
 	SELECT
 		outcode, avg(northings) as northings, avg(eastings) as eastings,
@@ -706,6 +719,7 @@ const outcodeAttributes = [
   "parish",
   "admin_county",
   "admin_ward",
+  "parliamentary_constituency",
 ];
 
 const toArray = (i: string[] | [null]) => {
@@ -724,6 +738,7 @@ interface OutcodeTupleOutput {
   admin_county: string[] | [null];
   admin_ward: string[] | [null];
   country: string[] | [null];
+  parliamentary_constituency: string[] | [null];
 }
 
 const findOutcode = async (o: string): Promise<OutcodeInterface | null> => {
@@ -739,6 +754,7 @@ const findOutcode = async (o: string): Promise<OutcodeInterface | null> => {
   result.parish = toArray(result.parish);
   result.admin_ward = toArray(result.admin_ward);
   result.country = toArray(result.country);
+  result.parliamentary_constituency = toArray(result.parliamentary_constituency);
   return result;
 };
 
