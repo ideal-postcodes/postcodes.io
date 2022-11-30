@@ -245,6 +245,7 @@ describe("Postcode Model", function () {
       assert.isArray(result["admin_county"]);
       assert.isArray(result["parish"]);
       assert.isArray(result["country"]);
+      assert.isArray(result["parliamentary_constituency"]);
     });
     it("should return null if no matching outcode", async () => {
       const result = await Postcode.findOutcode("EZ12");
