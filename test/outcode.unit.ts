@@ -37,6 +37,7 @@ describe("Outcode Model", () => {
         parish: [],
         admin_county: [],
         admin_ward: ["Torry/Ferryhill"],
+        parliamentary_constituency: ["Aberdeen North"],
       };
       await Outcode.create(record);
       await Outcode.populateLocation();
@@ -55,6 +56,7 @@ describe("Outcode Model", () => {
         parish: [],
         admin_county: [],
         admin_ward: ["Torry/Ferryhill"],
+        parliamentary_constituency: ["Aberdeen North"],
       };
       await Outcode.create(record);
       await Outcode.populateLocation();
