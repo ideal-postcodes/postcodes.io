@@ -42,7 +42,6 @@ export interface Config {
   port: number;
   serveStaticAssets: boolean;
   defaults: any;
-  mapBoxKey?: string;
   httpHeaders?: Record<string, string>;
   prometheusUsername?: string;
   prometheusPassword?: string;
@@ -111,7 +110,6 @@ export const getConfig = (env?: Env): Config => {
 
   const {
     PORT,
-    MAPBOX_PUBLIC_KEY,
     POSTGRES_USER,
     POSTGRES_PASSWORD,
     POSTGRES_DATABASE,
@@ -127,10 +125,6 @@ export const getConfig = (env?: Env): Config => {
   } = process.env;
 
   if (PORT !== undefined) cfg.port = parseInt(PORT, 10);
-
-  if (MAPBOX_PUBLIC_KEY !== undefined || !cfg.mapBoxKey) {
-    cfg.mapBoxKey = process.env.MAPBOX_PUBLIC_KEY || "";
-  }
 
   if (POSTGRES_USER !== undefined) cfg.postgres.user = POSTGRES_USER;
   if (POSTGRES_PASSWORD !== undefined)

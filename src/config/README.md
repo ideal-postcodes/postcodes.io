@@ -33,9 +33,6 @@ LOG_DESTINATION # Log destination, can be set to file `LOG_DESTINATION=/var/logs
 # Google analytics key
 GA_KEY
 
-# Mapbox key if you wish to use `/explore` functionality
-MAPBOX_PUBLIC_KEY
-
 #Inserts optional prometheus monitoring middleware
 # Express-prom-bundle exposes a '/metrics' endpoint which can be queried by prometheus
 # This endpoint requires basic auth defined by:

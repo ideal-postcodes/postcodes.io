@@ -13,7 +13,6 @@ export const routes = (app: Express): void => {
   app.get("/ready", utils.ready);
   app.get("/about", pages.about);
   app.get("/docs", pages.documentation);
-  app.get("/explore", pages.explore);
 
   app.get("/postcodes", postcodes.query);
   app.post("/postcodes", postcodes.bulk);

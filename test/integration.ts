@@ -27,15 +27,6 @@ describe("Pages routes", () => {
         .expect(200);
     });
   });
-
-  describe("/explore", () => {
-    it("should return 200", async () => {
-      await request(app)
-        .get("/explore")
-        .expect("Content-Type", /html/)
-        .expect(200);
-    });
-  });
 });
 
 describe("Errors", () => {
