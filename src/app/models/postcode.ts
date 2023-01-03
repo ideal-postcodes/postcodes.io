@@ -31,6 +31,7 @@ export interface PostcodeInterface {
   northings: number | null;
   country: string;
   nhs_ha: string | null;
+  date_of_introduction: string;
   longitude: number | null;
   latitude: number | null;
   european_electoral_region: string | null;
@@ -84,6 +85,7 @@ export interface PostcodeTuple {
   region: string;
   parish_id: string;
   lsoa: string;
+  date_of_introduction: string;
   lsoa_id: string;
   msoa: string;
   msoa_id: string;
@@ -134,6 +136,7 @@ const relation: Relation = {
     ccg_id: "VARCHAR(32)",
     ced_id: "VARCHAR(32)",
     constituency_id: "VARCHAR(32)",
+    date_of_introduction: "VARCHAR(6)",
   },
   indexes: [
     {
@@ -781,6 +784,7 @@ const toJson = function (
     admin_district: p.admin_district,
     parish: p.parish,
     admin_county: p.admin_county,
+    date_of_introduction: p.date_of_introduction,
     admin_ward: p.admin_ward,
     ced: p.ced,
     ccg: p.ccg,
@@ -863,6 +867,7 @@ const seedPostcodes = async (filepath: string) => {
     { column: "outcode", method: (row) => row.extract("pcds").split(" ")[0] },
     { column: "ced_id", method: (row) => row.extract("ced") },
     { column: "ccg_id", method: (row) => row.extract("ccg") },
+    { column: "date_of_introduction", method: row => row.extract("dointr") },
   ]);
 
   await methods.csvSeed({
