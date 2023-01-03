@@ -105,6 +105,7 @@ const postcodeAttributes = [
   "northings",
   "longitude",
   "admin_ward",
+  "date_of_introduction",
   "admin_county",
   "admin_district",
   "region",
