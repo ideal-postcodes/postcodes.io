@@ -1046,7 +1046,6 @@ components:
             oneOf:
               - $ref: '#/components/schemas/Postcode'
               - $ref: '#/components/schemas/NearestPostcode'
-          description: Data for a given postcode
     TerminatedPostcode:
       required:
         - postcode

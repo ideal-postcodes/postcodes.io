@@ -998,8 +998,7 @@
                   "$ref": "#/components/schemas/NearestPostcode"
                 }
               ]
-            },
-            "description": "Data for a given postcode"
+            }
           }
         }
       },
