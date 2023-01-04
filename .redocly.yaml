@@ -1,0 +1,41 @@
+apiDefinitions:
+# a set of named keys and values of entrypoints to OpenAPI 3 definitions.
+# example
+  idealpostcodes: ./openapi/openapi.yaml
+
+registry:
+# the API registry options
+
+# future products may be configured by extending this file
+
+
+lint:
+  extends:
+    - recommended
+  rules:
+    no-unused-components: warning
+referenceDocs:
+  htmlTemplate: ./openapi/index.html
+  theme:
+    sidebar:
+      textColor: '#d5dae6'
+      activeBgColor: '#07489e'
+      backgroundColor: '#05326d'
+      activeTextColor: '#FFFFFF'
+    typography:
+      code:
+        fontFamily: 'Fira Code, monospace'
+        fontSize: '13px'
+        backgroundColor: "rgba(38, 50, 56, 0.05)"
+        color: "#e53935"
+      headings:
+        fontFamily: 'Lato, sans-serif'
+      fontFamily: 'Lato, sans-serif'
+    colors:
+      primary:
+        main: "#32329f"
+  # generateCodeSamples:
+    # languages:  # Array of language config objects; indicates in which languages to generate code samples.
+    #   - lang: curl # Can be one of the following supported languages: "curl", "Node.js", "JavaScript".
+    #   - lang: "Node.js"
+    #   - lang: "JavaScript"
