@@ -20,7 +20,8 @@
     "test:create": "npm run build && NODE_ENV=test bin/create_test_db",
     "test:clear": "NODE_ENV=test bin/clear_test_db",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "ejs": "ejs-cli"
+    "ejs": "ejs-cli",
+    "openapi:build": "openapi bundle -o public/openapi.json --ext json && openapi bundle -o public/openapi.yaml"
   },
   "mocha": {
     "extension": [
@@ -89,6 +90,7 @@
     "extends": "@cablanchard/semantic-release"
   },
   "dependencies": {
+    "@redocly/openapi-cli": "^1.0.0-beta.95",
     "async": "~3.2.4",
     "body-parser": "~1.20.0",
     "cors": "~2.8.5",

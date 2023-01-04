@@ -9,7 +9,7 @@ properties:
     type: array
     items:
       oneOf:
-        - $ref: '../schemas/Postcodeyaml'
+        - $ref: '../schemas/Postcode.yaml'
     description: 'Data for a given postcode'
   code:
     type: integer
