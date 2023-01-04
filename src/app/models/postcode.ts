@@ -62,6 +62,7 @@ export interface PostcodeInterface {
     lsoa: string | null;
     msoa: string | null;
     lau2: string | null;
+    pfa: string | null;
   };
 }
 
@@ -105,6 +106,7 @@ export interface PostcodeTuple {
   ced: string;
   ccg: string;
   nuts: string;
+  pfa_id: string;
 }
 
 const relation: Relation = {
@@ -137,6 +139,7 @@ const relation: Relation = {
     ced_id: "VARCHAR(32)",
     constituency_id: "VARCHAR(32)",
     date_of_introduction: "VARCHAR(6)",
+    pfa_id: "VARCHAR(32)",
   },
   indexes: [
     {
@@ -802,6 +805,7 @@ const toJson = function (
       lsoa: p.lsoa_id,
       msoa: p.msoa_id,
       lau2: p.nuts_id,
+      pfa: p.pfa_id,
     },
     // Insert distance if present
     //@ts-ignore
@@ -868,6 +872,7 @@ const seedPostcodes = async (filepath: string) => {
     { column: "ced_id", method: (row) => row.extract("ced") },
     { column: "ccg_id", method: (row) => row.extract("ccg") },
     { column: "date_of_introduction", method: row => row.extract("dointr") },
+    { column: "pfa_id", method: row => row.extract("pfa") },
   ]);
 
   await methods.csvSeed({

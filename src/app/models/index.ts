@@ -16,3 +16,4 @@ export * from "./terminated_postcode";
 export * from "./ced";
 export * from "./lsoa";
 export * from "./msoa";
+export * from "./police_force_area";

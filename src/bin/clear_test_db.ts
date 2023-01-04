@@ -10,6 +10,7 @@ import {
   ScottishPostcode,
   Nuts,
   Ward,
+  PoliceForceArea,
   Outcode,
   Place,
   TerminatedPostcode,
@@ -31,6 +32,7 @@ const clear = async () => {
   await ScottishConstituency.destroyRelation();
   await Ccg.destroyRelation();
   await Ward.destroyRelation();
+  await PoliceForceArea.destroyRelation();
   await Outcode.destroyRelation();
   await Ced.destroyRelation();
   await Lsoa.destroyRelation();
