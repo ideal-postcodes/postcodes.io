@@ -56,6 +56,7 @@ describe("Postcode data regression testing", function () {
         nuts_code: "TLM50",
         nuts_id: result.nuts_id,
         pfa_id: "S23000009",
+        pfa: "Scotland",
       },
       result
     );
@@ -105,6 +106,7 @@ describe("Postcode data regression testing", function () {
         nuts_code: "TLI44",
         nuts_id: result.nuts_id,
         pfa_id: "E23000001",
+        pfa: "Metropolitan Police",
       },
       result
     );
@@ -156,6 +158,7 @@ describe("Postcode data regression testing", function () {
         nuts_code: null,
         nuts_id: result.nuts_id,
         pfa_id: "L99999999",
+        pfa: "(pseudo) Channel Islands",
       },
       result
     );

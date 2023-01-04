@@ -121,6 +121,7 @@ const postcodeAttributes = [
   "outcode",
   "codes",
   "ced",
+  "pfa",
 ];
 
 //baseObject is the main template of an object
@@ -165,6 +166,7 @@ const postcodeForeignColumns = [
   "admin_county",
   "admin_ward",
   "ced",
+  "pfa",
   "ccg_code",
   "ccg",
   "nuts",

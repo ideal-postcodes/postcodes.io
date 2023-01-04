@@ -49,6 +49,7 @@ export interface PostcodeInterface {
   ced: string | null;
   ccg: string | null;
   nuts: string | null;
+  pfa: string | null;
   codes: {
     admin_district: string;
     admin_county: string;
@@ -107,6 +108,7 @@ export interface PostcodeTuple {
   ccg: string;
   nuts: string;
   pfa_id: string;
+  pfa: string;
 }
 
 const relation: Relation = {
@@ -218,6 +220,11 @@ const relationships: Relationship[] = [
     key: "lsoa_id",
     foreignKey: "code",
   },
+  {
+    table: "police_force_areas",
+    key: "pfa_id",
+    foreignKey: "code",
+  },
 ];
 
 const joinString: string = Object.freeze(
@@ -279,6 +286,10 @@ const foreignColumns: ForeignColumn[] = [
   {
     field: "nuts.nuts_code",
     as: "nuts_code",
+  },
+  {
+    field: "police_force_areas.name",
+    as: "pfa",
   },
 ];
 
@@ -792,6 +803,7 @@ const toJson = function (
     ced: p.ced,
     ccg: p.ccg,
     nuts: p.nuts,
+    pfa: p.pfa,
     codes: {
       admin_district: p.admin_district_id,
       admin_county: p.admin_county_id,
