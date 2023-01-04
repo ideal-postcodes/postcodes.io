@@ -1,3 +1,25 @@
+# [15.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/14.4.1...15.0.0) (2023-01-04)
+
+
+### Bug Fixes
+
+* **Wards:** Fix for ONSPD Nov ([3be07ad](https://github.com/ideal-postcodes/postcodes.io/commit/3be07adc16a729a53a5a3e4bc636bec359eeb3ef))
+
+
+### Features
+
+* **CCGs:** Migrate CCGs to Sub ICB Locations ([0dac18a](https://github.com/ideal-postcodes/postcodes.io/commit/0dac18a1bbef2b864de5e625a2a58bf62d4c388e))
+* **ONPSD:** Bump to Nov ([9d159ad](https://github.com/ideal-postcodes/postcodes.io/commit/9d159ada8f8643b5cbc6ccf0f1ff67a7153dc346))
+* **Police Force Area:** Add PFA model ([b3183b4](https://github.com/ideal-postcodes/postcodes.io/commit/b3183b4106b781fe4246b467904605a5f3854333))
+* **Police Force Areas:** Ingest PFA GSS codes ([ab37f8c](https://github.com/ideal-postcodes/postcodes.io/commit/ab37f8c6fd292aac0034101aae4cc9354142d14b))
+* **Police Force Areas:** Return PFA name on API ([64d43f4](https://github.com/ideal-postcodes/postcodes.io/commit/64d43f4023b0794641f8939713c68b71a01b3438))
+* **Postcodes:** Return date of creation in YYYYMM format ([df36589](https://github.com/ideal-postcodes/postcodes.io/commit/df365892bda113b6fdd6a3d16f2d6c0c4aef6c63))
+
+
+### BREAKING CHANGES
+
+* **CCGs:** From July 2022, CCGs were replaced by Sub-ICB locations.
+
 ## [14.4.1](https://github.com/ideal-postcodes/postcodes.io/compare/14.4.0...14.4.1) (2022-08-25)
 
 
