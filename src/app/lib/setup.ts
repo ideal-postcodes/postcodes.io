@@ -11,6 +11,7 @@ import {
   Ward,
   ScottishConstituency,
   Outcode,
+  PoliceForceArea,
 } from "../models/index";
 
 // List of support tables generated from data/ directory
@@ -26,6 +27,7 @@ export const SUPPORT_TABLES = [
   Parish,
   Ward,
   ScottishConstituency,
+  PoliceForceArea,
 ];
 
 /**

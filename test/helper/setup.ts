@@ -16,6 +16,7 @@ import {
   Ced,
   Lsoa,
   Msoa,
+  PoliceForceArea,
 } from "../../src/app/models/index";
 import { QueryResult } from "pg";
 
@@ -49,6 +50,7 @@ const clearTestDb = async (): Promise<any[] | null> => {
     Msoa.destroyRelation(),
     Outcode.destroyRelation(),
     Ced.destroyRelation(),
+    PoliceForceArea.destroyRelation(),
   ]);
 };
 
@@ -76,6 +78,7 @@ const seedPostcodeDb = async (): Promise<any[] | null> => {
     Msoa.setupTable(),
     Outcode.setupTable(),
     Ced.setupTable(),
+    PoliceForceArea.setupTable(),
   ]);
 };
 

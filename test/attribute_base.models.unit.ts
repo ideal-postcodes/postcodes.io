@@ -11,6 +11,7 @@ import {
   Ward,
   Msoa,
   Lsoa,
+  PoliceForceArea,
 } from "../src/app/models/index";
 
 const { rigCoreSpecs } = AttributeBaseSuite;
@@ -26,3 +27,4 @@ rigCoreSpecs(Parish);
 rigCoreSpecs(Ward);
 rigCoreSpecs(Msoa);
 rigCoreSpecs(Lsoa);
+rigCoreSpecs(PoliceForceArea);

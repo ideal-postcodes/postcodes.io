@@ -55,6 +55,7 @@ describe("Postcode data regression testing", function () {
         nuts: "Aberdeen City and Aberdeenshire",
         nuts_code: "TLM50",
         nuts_id: result.nuts_id,
+        pfa_id: "S23000009",
       },
       result
     );
@@ -103,6 +104,7 @@ describe("Postcode data regression testing", function () {
         nuts: "Lewisham and Southwark",
         nuts_code: "TLI44",
         nuts_id: result.nuts_id,
+        pfa_id: "E23000001",
       },
       result
     );
@@ -153,6 +155,7 @@ describe("Postcode data regression testing", function () {
         nuts: null,
         nuts_code: null,
         nuts_id: result.nuts_id,
+        pfa_id: "L99999999",
       },
       result
     );
