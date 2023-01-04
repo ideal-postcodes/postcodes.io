@@ -1,0 +1,8 @@
+required:
+  - postcode
+properties:
+  postcode:
+    title: Postcode
+    type: string
+    description: Postcode
+    example: "SW1A 2AA"
