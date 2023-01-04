@@ -1,0 +1,42 @@
+get:
+  tags:
+    - UK
+  summary: Lookup Postcode
+  operationId: Postcodes
+  description:
+    $ref: ../md/postcode.md
+  parameters:
+    - name: postcode
+      in: path
+      description: Postcode to retrieve
+      required: true
+      style: simple
+      explode: false
+      schema:
+        title: Postcode
+        description: Postcode to query
+        example: SW1A 2AA
+    - name: filter
+      in: query
+      style: form
+      required: false
+      explode: false
+      schema:
+        $ref: '../components/parameters/FilterParam.yaml'
+  responses:
+    '200':
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses/PostcodeResponse.yaml'
+  x-codeSamples:
+  - lang: 'http'
+    label: 'URL'
+    source: |
+      https://api.postcodes.io/postcodes/SW1A2AA
+  - lang: 'cURL'
+    label: 'CLI'
+    source: |
+      curl -G -k \
+      --url 'https://api.postcodes.io/postcodesSW1A2AA'

@@ -1,0 +1,22 @@
+title: Postcode Response
+type: object
+required:
+  - message
+  - code
+  - result
+properties:
+  result:
+    type: array
+    items:
+      oneOf:
+        - $ref: '../schemas/Postcodeyaml'
+    description: 'Data for a given postcode'
+  code:
+    type: integer
+    format: int32
+    enum:
+      - 2000
+  message:
+    type: string
+    enum:
+      - "Success"

@@ -1,0 +1,39 @@
+openapi: "3.0.3"
+info:
+  version: 3.5.1
+  license:
+    name: AGPLv3
+    url: "https://opensource.org/licenses/AGPL-3.0"
+  title: API Reference - Postcodes.io
+  termsOfService: "https://postcodes.io/about"
+  description: 
+    $ref: './description.md'
+  contact:
+    email: support@ideal-postcodes.co.uk
+    name: Support
+    url: https://ideal-postcodes.co.uk/support
+externalDocs:
+  description: More on our APIs, libraries with guides and examples
+  url: 'https://docs.ideal-postcodes.co.uk/postcodesio'
+servers:
+  - url: "https://api.postcodes.io"
+    description: "API Server"
+    variables: {}
+tags:
+  - name: Postcode Lookup
+    description: Search for UK postcodes
+  - name: Outward Postcodes
+    description: Search by UK outward codes
+  - name: Places Search
+    description: Search UK places
+x-tagGroups:
+  - name: Address Search
+    tags:
+    - Address Search
+    - UK
+  - name: Place Search
+    tags:
+    - Place Search
+paths:
+  '/postcodes/{postcode}':
+    $ref: 'paths/postcodes@{postcode}.yaml'
