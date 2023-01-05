@@ -1,27 +1,32 @@
-Returns the complete list of addresses for a postcode. Postcode searches are space and case insensitive.
+Postcodes.io is a free postcode lookup API and geocoder for the UK
 
-The Postcode Lookup API provides a JSON interface to search UK addresses from a postcode. It can be used to power Postcode Lookup driven address searches, like [Postcode Lookup](/postcode-lookup).
+## Endpoint
+All services can be accessed from the following HTTP[S] endpoint
 
-## Postcode Not Found
+https://api.postcodes.io
+The API accepts GET and POST requests. POST methods use content type application/json
 
-Lookup balance is unaffected by invalid postcodes. The API returns a `404` response with response body:
+## Data Extraction
+The Postcodes.io application and database are packaged as Docker images for rapid local deployment and data extraction.
 
-```json
-{
-  "code": 4040,
-  "message": "Postcode not found",
-  "suggestions": ["SW1A 0AA"]
-}
-```
+To perform one-time data extraction tasks using SQL, see our local data extraction guide.
 
-### Suggestions
+## Responses
+JSON(P) only. CORS is enabled.
 
-If a postcode cannot be found, the API will provide up to 5 closest matching postcodes. Common errors will be corrected first (e.g. mixing up `O` and `0` or `I` and `1`).
+Each response comes with an appropriate HTTP Status code (except for JSONP requests). These include 200 for success, 400 for a bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.
 
-If the suggestion list is small (fewer than 3), there is a high probability the correct postcode is there. You may notify the user or immediately trigger new searches.
+## Authentication
+Postcodes.io does not require any authentication.
 
-The suggestion list will be empty if the postcode has deviated too far from a valid postcode format.
+## Error Handling
+To check for errors, examine the HTTP response code. 200 response indicates success while any other code will provide important information about why an error occured.
 
-## Multiple Residence
+Alternatively, you can examine status code in the 'status' property in the result body.
 
-A small number of postcodes will return more than 100 premises. These may require pagination. Use `page` to paginate the result set.
+All JSONP requests return 200 responses because of silent errors. When using JSONP, be sure to use the latter method to check for errors.
+
+## Versioning
+The API currently does not use any form of versioning. Any changes to the API will be backwards-compatible, this includes: adding new properties to responses, adding new endpoints, adding new optional request parameters and changing the order of properties.
+
+If we make backwards-incompatible changes in the future, this will be released under a versioned endpoint.
