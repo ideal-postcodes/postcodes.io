@@ -21,6 +21,7 @@
     "test:clear": "NODE_ENV=test bin/clear_test_db",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "ejs": "ejs-cli",
+    "openapi:start": "openapi preview-docs",
     "openapi:build": "openapi bundle -o public/openapi.json --ext json && openapi bundle -o public/openapi.yaml"
   },
   "mocha": {
