@@ -23,16 +23,6 @@ required:
   - ccg
   - nuts
   - codes
-  - codes.admin_district
-  - codes.admin_county
-  - codes.admin_ward
-  - codes.parish
-  - codes.ccg
-  - codes.ccg_code
-  - codes.nuts
-  - codes.lau2
-  - codes.lsoa
-  - codes.msoa
 properties:
   postcode:
     title: Postcode
@@ -43,12 +33,12 @@ properties:
     title: Outward Code
     type: string
     description: The outward code is the part of the postcode before the single space in the middle. It is between two and four characters long. A few outward codes are non-geographic, not divulging where mail is to be sent.
-    example: "L1, W1A, RH1, RH10, SE1P"
+    example: "SW1A"
   incode:
     title: Inward Code
     type: string
     description: The inward part is the part of the postcode after the single space in the middle. It is three characters long. The inward code assists in the delivery of post within a postal district.
-    example: "0NY, 7GZ, 7HF, 8JQ"
+    example: "1AA"
   quality:
     title: Positional Quality
     type: integer
@@ -80,17 +70,20 @@ properties:
     example: "England, Wales, Scotland, Channel Islands, Isle of Man"
   nha_ha:
     title: Strategic Health Authority
-    type: string|null
+    type: string
+    x-nullable: true
     description: The health area code for the postcode.
     example: "London"
   admin_county:
     title: County
-    type: string|null
+    type: string
+    x-nullable: true
     description: The current county to which the postcode has been assigned.
     example: ""
   admin_district:
     title: District
-    type: string|null
+    type: string
+    x-nullable: true
     description: The current district/unitary authority to which the postcode has been assigned.
     example: "Westminster"
   admin_ward:
@@ -135,7 +128,8 @@ properties:
     example: "Westminster, unparished area"
   lsoa:
     title: 2011 Census lower layer super output area (LSOA)
-    type: string|null
+    type: string
+    x-nullable: true
     description: The 2011 Census lower layer SOA code for England and Wales, SOA code for Northern Ireland and data zone code for Scotland.
     example: "Westminster 018C"
   msoa:
@@ -173,54 +167,75 @@ properties:
     title: Returns an ID or Code associated with the postcode
     type: Object
     description: Typically, these are a 9 character code known as an ONS Code or GSS Code. This is currently only available for districts, parishes, counties, CCGs, NUTS and wards.
-    example: ""
-  codes.admin_district:
-    title: ""
-    type: string|null
-    description: See description of admin_district field.
-    example: ""
-  codes.admin_county:
-    title: ""
-    type: string|null
-    description: See description of admin_county field.
-    example: ""
-  codes.admin_ward:
-    title: ""
-    type: string|null
-    description: See description of admin_ward field.
-    example: ""
-  codes.parish:
-    title: ""
-    type: string|null
-    description: See description of parish field.
-    example: ""
-  codes.ccg:
-    title: ""
-    type: string|null
-    description: See description of ccg field.
-    example: ""
-  codes.ccg_code:
-    title: CCG Code
-    type: string|null
-    description: CCG Short Code
-    example: "07N"
-  codes.nuts:
-    title: ""
-    type: string|null
-    description: The ITL code associated with the postcode.
-    example: ""
-  codes.lau2:
-    title: LAU2
-    type: string|null
-    description: The LAU2 code associated with the postcode.
-    example: ""
-  codes.lsoa:
-    title: ""
-    type: string|null
-    description: See description of lsoa field.
-    example: ""
-  codes.msoa:
-    title: ""
-    type: string|null
-    description: See description of msoa field.
-    example: ""
+    required:
+      - admin_district
+      - admin_county
+      - admin_ward
+      - parish
+      - ccg
+      - ccg_code
+      - nuts
+      - lau2
+      - lsoa
+      - msoa
+    properties:
+      admin_district:
+        title: "GSS Code for Administrative County"
+        type: string
+        x-nullable: true
+        description: See description of admin_district field.
+        example: ""
+      admin_county:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of admin_county field.
+        example: ""
+      admin_ward:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of admin_ward field.
+        example: ""
+      parish:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of parish field.
+        example: ""
+      ccg:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of ccg field.
+        example: ""
+      ccg_code:
+        title: CCG Code
+        type: string
+        x-nullable: true
+        description: CCG Short Code
+        example: "07N"
+      nuts:
+        title: ""
+        type: string
+        x-nullable: true
+        description: The ITL code associated with the postcode.
+        example: ""
+      lau2:
+        title: LAU2
+        type: string
+        x-nullable: true
+        description: The LAU2 code associated with the postcode.
+        example: ""
+      lsoa:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of lsoa field.
+        example: ""
+      msoa:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of msoa field.
+        example: ""
