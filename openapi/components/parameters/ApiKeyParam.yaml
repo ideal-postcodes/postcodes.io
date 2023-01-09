@@ -1,6 +1,0 @@
-title: API Key
-type: string
-description: |
-  Your API Key. Typically beings `ak_`.
-  Available from your dashboard
-example: "ak_test"
