@@ -31,8 +31,11 @@ x-tagGroups:
     tags:
     - Postcode Lookup
     - Place Search
+    - Terminated Postcodes
 paths:
   '/postcodes/{postcode}':
     $ref: 'paths/postcodes@{postcode}.yaml'
   '/places':
     $ref: 'paths/places.yaml'
+  '/terminated-postcodes':
+    $ref: 'paths/terminated-postcodes.yaml'
