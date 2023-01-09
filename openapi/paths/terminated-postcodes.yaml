@@ -1,0 +1,32 @@
+get:
+  tags:
+    - Terminated Postcodes
+  summary: Terminated Postcodes
+  description:
+    $ref: ../md/terminated-postcodes.md
+  operationId: TerminatedPostcodes
+  parameters:
+    - name: query
+      in: query
+      description: Specifies the postcode you wish to query
+      style: form
+      explode: false
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses/TerminatedPostcodes.yaml'
+  x-codeSamples:
+  - lang: 'http'
+    label: 'URL'
+    source: |
+      api.postcodes.io/terminated_postcodes/E1W1UU
+  - lang: 'cURL'
+    label: 'CLI'
+    source: |
+      curl -k -G 'https://api.postcodes.io/terminated_postcodes' \
+        --data-urlencode 'query=E1W1UU'

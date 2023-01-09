@@ -13,5 +13,5 @@ properties:
     type: array
     items:
       oneOf:
-        - $ref: '../schemas/Postcode.yaml'
+        - $ref: '../schemas/TerminatedPostcode.yaml'
     description: 'Data for a given postcode'

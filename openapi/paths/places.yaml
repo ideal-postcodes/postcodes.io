@@ -13,15 +13,6 @@ get:
       explode: false
       schema:
         type: string
-    - name: limit
-      in: query
-      description: Limits number of places matches to return
-      style: form
-      explode: false
-      schema:
-        type: number
-        default: 10
-        maximum: 100
   responses:
     '200':
       description: Success
@@ -33,9 +24,9 @@ get:
   - lang: 'http'
     label: 'URL'
     source: |
-      https://api.postcodes.io/places?query=kent
+      https://api.postcodes.io/places?query=welshpool
   - lang: 'cURL'
     label: 'CLI'
     source: |
       curl -k -G 'https://api.postcodes.io/places' \
-        --data-urlencode 'query=kent'
+        --data-urlencode 'query=welshpool'
