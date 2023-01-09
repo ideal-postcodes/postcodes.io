@@ -1,10 +1,10 @@
 get:
   tags:
-    - Terminated Postcodes
-  summary: Terminated Postcodes
+    - Scottish Postcodes
+  summary: Scottish Postcodes
   description:
-    $ref: ../md/terminated-postcodes.md
-  operationId: TerminatedPostcodes
+    $ref: ../md/scottish-postcodes.md
+  operationId: Scottish Postcodes
   parameters:
     - name: query
       in: query

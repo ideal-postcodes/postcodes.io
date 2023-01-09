@@ -32,6 +32,8 @@ x-tagGroups:
     - Postcode Lookup
     - Place Search
     - Terminated Postcodes
+    - Scottish Postcodes
+    - Outward Code Lookup
 paths:
   '/postcodes/{postcode}':
     $ref: 'paths/postcodes@{postcode}.yaml'
@@ -39,3 +41,5 @@ paths:
     $ref: 'paths/places.yaml'
   '/terminated-postcodes':
     $ref: 'paths/terminated-postcodes.yaml'
+  '/outcodes':
+    $ref: 'paths/outcodes.yaml'

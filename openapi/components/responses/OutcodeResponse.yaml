@@ -1,0 +1,17 @@
+title: Places Response
+type: object
+required:
+  - status
+  - result
+properties:
+  status:
+    type: integer
+    format: int32
+    enum: 
+      - 200
+  result:
+    type: array
+    items:
+      oneOf:
+        - $ref: '../schemas/Outcode.yaml'
+    description: 'Data for a given place'

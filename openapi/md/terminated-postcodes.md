@@ -1,3 +1,3 @@
 ### Terminated Postcode Data (Ordnance Survey Postcode Directory Dataset)
 
-Data returned by the /terminated_postcodes/\* APIs
+Lookup a terminated postcode. Returns the postcode, year and month of termination. Returns 404 if postcode does not exist in our database of terminated postcodes or not valid.
