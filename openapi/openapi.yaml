@@ -41,5 +41,7 @@ paths:
     $ref: 'paths/places.yaml'
   '/terminated-postcodes':
     $ref: 'paths/terminated-postcodes.yaml'
+  '/scottish-postcodes':
+    $ref: 'paths/scottish-postcodes.yaml'
   '/outcodes':
     $ref: 'paths/outcodes.yaml'
