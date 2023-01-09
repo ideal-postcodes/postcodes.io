@@ -1,6 +1,6 @@
 get:
   tags:
-    - UK
+    - Postcode Lookup
   summary: Lookup Postcode
   operationId: Postcodes
   description:
@@ -16,13 +16,6 @@ get:
         title: Postcode
         description: Postcode to query
         example: SW1A 2AA
-    - name: filter
-      in: query
-      style: form
-      required: false
-      explode: false
-      schema:
-        $ref: '../components/parameters/FilterParam.yaml'
   responses:
     '200':
       description: "Success"
