@@ -1,14 +1,14 @@
 get:
   tags:
-    - Place Search
-  summary: Find Place
+    - Outward Code Lookup
+  summary: Find Outcode
   description:
-    $ref: ../md/places.md
+    $ref: ../md/outcode.md
   operationId: FindPlace
   parameters:
     - name: query
       in: query
-      description: Specifies the place you wish to query
+      description: Specifies the outward code you wish to query.
       required: true
       style: form
       explode: false
@@ -20,14 +20,14 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../components/responses/PlaceResponse.yaml'
+            $ref: '../components/responses/OutcodeResponse.yaml'
   x-codeSamples:
   - lang: 'http'
     label: 'URL'
     source: |
-      https://api.postcodes.io/places?query=welshpool
+      https://api.postcodes.io/outcodes/sw1a
   - lang: 'cURL'
     label: 'CLI'
     source: |
-      curl -k -G 'https://api.postcodes.io/places' \
-        --data-urlencode 'query=welshpool'
+      curl -G -k \
+        --url 'https://api.postcodes.io/outcodes/sw1a'
