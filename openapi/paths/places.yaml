@@ -6,44 +6,22 @@ get:
     $ref: ../md/places.md
   operationId: FindPlace
   parameters:
-    - name: api_key
-      in: query
-      style: form
-      required: true
-      explode: false
-      schema:
-        $ref: '../components/parameters/ApiKeyParam.yaml'
     - name: query
       in: query
-      description: Specifies the place you wish to query. Query can be shortened to `q=`
+      description: Specifies the place you wish to query
       style: form
       explode: false
       schema:
         type: string
-    - name: country_iso
+    - name: limit
       in: query
+      description: Limits number of places matches to return
       style: form
       explode: false
       schema:
-        $ref: '../components/parameters/CountryIsoParam.yaml'
-    - name: bias_country_iso
-      in: query
-      style: form
-      explode: false
-      schema:
-        $ref: '../components/parameters/BiasCountryIsoParam.yaml'
-    - name: bias_lonlat
-      in: query
-      style: form
-      explode: false
-      schema:
-        $ref: '../components/parameters/BiasLonLatParam.yaml'
-    - name: bias_ip
-      in: query
-      style: form
-      explode: false
-      schema:
-        $ref: '../components/parameters/BiasIpParam.yaml'
+        type: number
+        default: 10
+        maximum: 100
   responses:
     '200':
       description: Success
@@ -51,20 +29,13 @@ get:
         application/json:
           schema:
             $ref: '../components/responses/PlaceResponse.yaml'
-    '400':
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '../components/responses/BadRequestResponse.yaml'
   x-codeSamples:
   - lang: 'http'
     label: 'URL'
     source: |
-      https://api.ideal-postcodes.co.uk/v1/places?api_key=ak_test&query=london
+      https://api.postcodes.io/places?query=kent
   - lang: 'cURL'
     label: 'CLI'
     source: |
-      curl -k -G 'https://api.ideal-postcodes.co.uk/v1/places' \
-        -d 'api_key=ak_test' \
-        --data-urlencode 'query=london'
+      curl -k -G 'https://api.postcodes.io/places' \
+        --data-urlencode 'query=kent'
