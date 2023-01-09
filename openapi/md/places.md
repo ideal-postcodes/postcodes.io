@@ -23,8 +23,4 @@ You can make up to 3000 requests to the autocomplete API within a 5 minute span.
 | `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |
 | `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |
 
-## Pricing
-
-This API currently does not affect your balance. However, resolving a suggestion into a full place requires a paid request.
-
 Please note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an place may be disrupted via tightened rate limits.
