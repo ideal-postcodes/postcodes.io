@@ -1,6 +1,0 @@
-title: Country
-type: string
-description: >-
-  Filter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard.
-  Filter by multiple countries with a comma separated list. E.g. `GBR,IRL`
-example: "GBR"

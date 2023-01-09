@@ -1,7 +1,0 @@
-title: Bias Lon/Lat
-type: string
-description: >-
-  Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`. 
-  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres]
-  Only one geospatial bias may be provided
-example: "-2.095,57.15,100"

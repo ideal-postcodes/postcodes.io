@@ -1,5 +1,0 @@
-title: ID
-type: string
-description: |
-  Unique identifier for place
-example: "geonames_5324"
