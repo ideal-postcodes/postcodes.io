@@ -67,7 +67,7 @@ properties:
     title: Country
     type: string
     description: The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each postcode is assigned.
-    example: "England, Wales, Scotland, Channel Islands, Isle of Man"
+    example: "England"
   nha_ha:
     title: Strategic Health Authority
     type: string
