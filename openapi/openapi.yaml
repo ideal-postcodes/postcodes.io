@@ -27,12 +27,9 @@ tags:
   - name: Places Search
     description: Search UK places
 x-tagGroups:
-  - name: Address Search
+  - name: API
     tags:
-    - Address Search
-    - UK
-  - name: Place Search
-    tags:
+    - Postcode Lookup
     - Place Search
 paths:
   '/postcodes/{postcode}':

@@ -21,7 +21,3 @@ If a postcode cannot be found, the API will provide up to 5 closest matching pos
 If the suggestion list is small (fewer than 3), there is a high probability the correct postcode is there. You may notify the user or immediately trigger new searches.
 
 The suggestion list will be empty if the postcode has deviated too far from a valid postcode format.
-
-## Multiple Residence
-
-A small number of postcodes will return more than 100 premises. These may require pagination. Use `page` to paginate the result set.
