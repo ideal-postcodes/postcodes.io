@@ -1,0 +1,43 @@
+title: Place
+description: Represents a geographical place
+required:
+  - id
+  - dataset
+  - name
+  - descriptive_name
+  - country_iso
+  - language
+  - longitude
+  - latitude
+properties:
+  id:
+    title: ID
+    type: string
+    description: >-
+      Global unique internally generated identifier for a place
+    example: "geonames_5353"
+  dataset:
+    title: Dataset
+    type: string
+    description: >-
+      Indicates the provenance of a place.
+
+        - `geonames` GeoNames place
+    enum:
+      - 'geonames'
+  name:
+    $ref: './attrs/place/place_name.yaml'
+  descriptive_name:
+    $ref: './attrs/place/place_descriptive_name.yaml'
+  country_iso:
+    $ref: './attrs/place/place_country_iso.yaml'
+  language:
+    $ref: './attrs/Language.yaml'
+  longitude:
+    $ref: './attrs/Longitude.yaml'
+  latitude:
+    $ref: './attrs/Latitude.yaml'
+  native:
+    description: Native representation of a place
+    oneOf:
+      - $ref: "./GeonamesPlace.yaml"
