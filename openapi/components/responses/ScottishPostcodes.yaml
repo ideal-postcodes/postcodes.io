@@ -1,0 +1,17 @@
+title: Scottish Postcodes Response
+type: object
+required:
+  - status
+  - result
+properties:
+  status:
+    type: integer
+    format: int32
+    enum:
+      - 200
+  result:
+    type: array
+    items:
+      oneOf:
+        - $ref: '../schemas/ScottishPostcodes.yaml'
+    description: 'Data for a given postcode'

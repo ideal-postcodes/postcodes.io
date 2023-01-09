@@ -20,14 +20,14 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../components/responses/TerminatedPostcodes.yaml'
+            $ref: '../components/responses/ScottishPostcodes.yaml'
   x-codeSamples:
   - lang: 'http'
     label: 'URL'
     source: |
-      api.postcodes.io/terminated_postcodes/E1W1UU
+      https://api.postcodes.io/scotland/postcodes/IV27JB
   - lang: 'cURL'
     label: 'CLI'
     source: |
-      curl -k -G 'https://api.postcodes.io/terminated_postcodes' \
-        --data-urlencode 'query=E1W1UU'
+      curl -G -k \
+      --url 'https://api.postcodes.io/scotland/postcodes/IV27JB'
