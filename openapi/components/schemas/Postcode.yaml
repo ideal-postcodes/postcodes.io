@@ -55,12 +55,14 @@ properties:
     example: "1"
   eastings:
     title: Eastings
-    type: integer|null
+    type: integer
+    x-nullable: true
     description: The Ordnance Survey postcode grid reference Easting to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.
     example: "530047"
   northings:
     title: Northings
-    type: integer|null
+    type: integer
+    x-nullable: true
     description: The Ordnance Survey postcode grid reference Northing to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.
     example: "179951"
   country:
@@ -88,42 +90,50 @@ properties:
     example: "Westminster"
   admin_ward:
     title: Ward
-    type: string|null
+    type: string
+    x-nullable: true
     description: The current administrative/electoral area to which the postcode has been assigned.
     example: "St. James's"
   longitude:
     title: Longitude
-    type: double float|null
+    type: double float
+    x-nullable: true
     description: The WGS84 longitude given the Postcode's national grid reference. May be null if geolocation not available.
     example: "-0.12767"
   latitude:
     title: Latitude
-    type: double float|null
+    type: double float
+    x-nullable: true
     description: The WGS84 latitude given the Postcode's national grid reference. May be null if geolocation not available.
     example: "51.503541"
   parliamentary_constituency:
     title: Westminster Parliamentary Constituency
-    type: string|null
+    type: string
+    x-nullable: true
     description: The Westminster Parliamentary Constituency code for each postcode.
     example: "Cities of London and Westminster"
   european_electoral_region:
     title: European Electoral Region (EER)
-    type: string|null
+    type: string
+    x-nullable: true
     description: The European Electoral Region code for each postcode.
     example: "London"
   primary_care_trust:
     title: Primary Care Trust (PCT)
-    type: string|null
+    type: string
+    x-nullable: true
     description: The code for the Primary Care areas in England, LHBs in Wales, CHPs in Scotland, LCG in Northern Ireland and PHD in the Isle of Man; there are no equivalent areas in the Channel Islands. Care Trust/ Care Trust Plus (CT)/ local health board (LHB)/ community health partnership (CHP)/ local commissioning group (LCG)/ primary healthcare directorate (PHD).
     example: "Westminster"
   region:
     title: Region (formerly GOR)
-    type: string|null
+    type: string
+    x-nullable: true
     description: The Region code for each postcode. The nine GORs were abolished on 1 April 2011 and are now known as ‘Regions’. They were the primary statistical subdivisions of England and also the areas in which the Government Offices for the Regions fulfilled their role. Each GOR covered a number of local authorities.
     example: "London"
   parish:
     title: Parish (England)/community (Wales)
-    type: string|null
+    type: string
+    x-nullable: true
     description: The smallest type of administrative area in England is the parish (also known as 'civil parish'); the equivalent units in Wales are communities.
     example: "Westminster, unparished area"
   lsoa:
@@ -134,22 +144,26 @@ properties:
     example: "Westminster 018C"
   msoa:
     title: 2011 Census middle layer super output area (MSOA)
-    type: string|null
+    type: string
+    x-nullable: true
     description: The 2011 Census middle layer SOA (MSOA) code for England and Wales and intermediate zone for Scotland.
     example: "Westminster 018"
   ced:
     title: County Electoral District
-    type: string|null
+    type: string
+    x-nullable: true
     description: The county electoral division code for each English postcode. Pseudo codes are included for the remainder of the UK. The field will be null for English postcodes with no grid reference. English county councils use county electoral divisions (CED) to elect councillors. These CEDs must be confined within district boundaries, but need not be based on whole electoral wards. The only exceptions are the Isles of Scilly and the Greater London Authority (GLA). CEDs do not exist within UAs.
     example: ""
   ccg:
     title: Clinical Commissioning Group
-    type: string|null
+    type: string
+    x-nullable: true
     description: Clinical commissioning groups (CCGs) are NHS organisations set up by the Health and Social Care Act 2012 to organise the delivery of NHS services in England.
     example: "NHS North West London"
   nuts:
     title: International Terratorial Levels (ITL) (Former Nomenclature of Units for Territorial Statistics (NUTS)
-    type: string|null
+    type: string
+    x-nullable: true
     description: |-
       The national LAU1-equivalent code for each postcode. Pseudo codes are included for Channel Islands and Isle of Man. The field will otherwise be blank for postcodes with no grid reference.
 
