@@ -51,12 +51,12 @@ get:
         application/json:
           schema:
             $ref: '../components/responses/PlaceResponse.yaml'
-    # '400':
-    #   description: Bad Request
-    #   content:
-    #     application/json:
-    #       schema:
-    #         $ref: '../components/responses/BadRequestResponse.yaml'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses/BadRequestResponse.yaml'
   x-codeSamples:
   - lang: 'http'
     label: 'URL'

@@ -1,0 +1,5 @@
+title: Place Name
+type: string
+description: |
+  Place name
+example: "London"

@@ -1,0 +1,34 @@
+title: Bad Request Error Response
+allOf:
+  - $ref: "./ErrorResponse.yaml"
+  - type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        description: "`400X` type error response code"
+        format: int32
+      message:
+        type: string
+        description: Bad request error description
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - path
+            - message
+          properties:
+            message:
+              type: string
+              example: "should have required property 'type'"
+              description: Indicates location of error in request query or URL parameter
+            path:
+              type: string
+              example: ".query.type"
+              description: Indicates location of error in request query or URL parameter
+            errorCode: 
+              type: string
+              example: "required.openapi.validation"

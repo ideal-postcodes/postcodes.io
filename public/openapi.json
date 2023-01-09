@@ -114,6 +114,108 @@
           }
         ]
       }
+    },
+    "/places": {
+      "get": {
+        "tags": [
+          "Place Search"
+        ],
+        "summary": "Find Place",
+        "description": "Query for geographical places across countries. Each query will return a list of place suggestions, which consists of a place name, descriptive name and id.\n\nThis API returns geographical information such as countries, capitals, administrative areas and more. It is ideal for correctly identifying a place along with any other details like geolocation.\n\n## Implementing Place Autocomplete\n\nExtracting the full information of a place is a 2 step process:\n\n1. Retrieve place suggestions via /places\n2. Retrieve the entire place with the ID provided in the suggestion\n\n## Suggestion Format\n\nEach place suggestion contains a descriptive name which you can provide to users to uniquely idenfity a place.\n\n## Rate Limiting\n\nYou can make up to 3000 requests to the autocomplete API within a 5 minute span. The HTTP Header contains information on your current rate limit.\n\n| Header                  | Description                                                                            |\n| ----------------------- | -------------------------------------------------------------------------------------- |\n| `X-RateLimit-Limit`     | The maximum number of requests that can be made in 5 minutes                           |\n| `X-RateLimit-Remaining` | The remaining requests within the current rate limit window                            |\n| `X-RateLimit-Reset`     | The time when the rate limit window resets in Unix Time (seconds) or UTC Epoch seconds |\n\n## Pricing\n\nThis API currently does not affect your balance. However, resolving a suggestion into a full place requires a paid request.\n\nPlease note, this API is not intended as a standalone free resource. Integrations that consistently make autocomplete requests without a paid request to resolve an place may be disrupted via tightened rate limits.\n",
+        "operationId": "FindPlace",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "query",
+            "style": "form",
+            "required": true,
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/ApiKeyParam"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Specifies the place you wish to query. Query can be shortened to `q=`",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country_iso",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/CountryIsoParam"
+            }
+          },
+          {
+            "name": "bias_country_iso",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/BiasCountryIsoParam"
+            }
+          },
+          {
+            "name": "bias_lonlat",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/BiasLonLatParam"
+            }
+          },
+          {
+            "name": "bias_ip",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/BiasIpParam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "http",
+            "label": "URL",
+            "source": "https://api.ideal-postcodes.co.uk/v1/places?api_key=ak_test&query=london\n"
+          },
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl -k -G 'https://api.ideal-postcodes.co.uk/v1/places' \\\n  -d 'api_key=ak_test' \\\n  --data-urlencode 'query=london'\n"
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -149,17 +251,7 @@
           "ced",
           "ccg",
           "nuts",
-          "codes",
-          "codes.admin_district",
-          "codes.admin_county",
-          "codes.admin_ward",
-          "codes.parish",
-          "codes.ccg",
-          "codes.ccg_code",
-          "codes.nuts",
-          "codes.lau2",
-          "codes.lsoa",
-          "codes.msoa"
+          "codes"
         ],
         "properties": {
           "postcode": {
@@ -172,13 +264,13 @@
             "title": "Outward Code",
             "type": "string",
             "description": "The outward code is the part of the postcode before the single space in the middle. It is between two and four characters long. A few outward codes are non-geographic, not divulging where mail is to be sent.",
-            "example": "L1, W1A, RH1, RH10, SE1P"
+            "example": "SW1A"
           },
           "incode": {
             "title": "Inward Code",
             "type": "string",
             "description": "The inward part is the part of the postcode after the single space in the middle. It is three characters long. The inward code assists in the delivery of post within a postal district.",
-            "example": "0NY, 7GZ, 7HF, 8JQ"
+            "example": "1AA"
           },
           "quality": {
             "title": "Positional Quality",
@@ -206,19 +298,22 @@
           },
           "nha_ha": {
             "title": "Strategic Health Authority",
-            "type": "string|null",
+            "type": "string",
+            "x-nullable": true,
             "description": "The health area code for the postcode.",
             "example": "London"
           },
           "admin_county": {
             "title": "County",
-            "type": "string|null",
+            "type": "string",
+            "x-nullable": true,
             "description": "The current county to which the postcode has been assigned.",
             "example": ""
           },
           "admin_district": {
             "title": "District",
-            "type": "string|null",
+            "type": "string",
+            "x-nullable": true,
             "description": "The current district/unitary authority to which the postcode has been assigned.",
             "example": "Westminster"
           },
@@ -272,7 +367,8 @@
           },
           "lsoa": {
             "title": "2011 Census lower layer super output area (LSOA)",
-            "type": "string|null",
+            "type": "string",
+            "x-nullable": true,
             "description": "The 2011 Census lower layer SOA code for England and Wales, SOA code for Northern Ireland and data zone code for Scotland.",
             "example": "Westminster 018C"
           },
@@ -304,67 +400,90 @@
             "title": "Returns an ID or Code associated with the postcode",
             "type": "Object",
             "description": "Typically, these are a 9 character code known as an ONS Code or GSS Code. This is currently only available for districts, parishes, counties, CCGs, NUTS and wards.",
-            "example": ""
-          },
-          "codes.admin_district": {
-            "title": "",
-            "type": "string|null",
-            "description": "See description of admin_district field.",
-            "example": ""
-          },
-          "codes.admin_county": {
-            "title": "",
-            "type": "string|null",
-            "description": "See description of admin_county field.",
-            "example": ""
-          },
-          "codes.admin_ward": {
-            "title": "",
-            "type": "string|null",
-            "description": "See description of admin_ward field.",
-            "example": ""
-          },
-          "codes.parish": {
-            "title": "",
-            "type": "string|null",
-            "description": "See description of parish field.",
-            "example": ""
-          },
-          "codes.ccg": {
-            "title": "",
-            "type": "string|null",
-            "description": "See description of ccg field.",
-            "example": ""
-          },
-          "codes.ccg_code": {
-            "title": "CCG Code",
-            "type": "string|null",
-            "description": "CCG Short Code",
-            "example": "07N"
-          },
-          "codes.nuts": {
-            "title": "",
-            "type": "string|null",
-            "description": "The ITL code associated with the postcode.",
-            "example": ""
-          },
-          "codes.lau2": {
-            "title": "LAU2",
-            "type": "string|null",
-            "description": "The LAU2 code associated with the postcode.",
-            "example": ""
-          },
-          "codes.lsoa": {
-            "title": "",
-            "type": "string|null",
-            "description": "See description of lsoa field.",
-            "example": ""
-          },
-          "codes.msoa": {
-            "title": "",
-            "type": "string|null",
-            "description": "See description of msoa field.",
-            "example": ""
+            "required": [
+              "admin_district",
+              "admin_county",
+              "admin_ward",
+              "parish",
+              "ccg",
+              "ccg_code",
+              "nuts",
+              "lau2",
+              "lsoa",
+              "msoa"
+            ],
+            "properties": {
+              "admin_district": {
+                "title": "GSS Code for Administrative County",
+                "type": "string",
+                "x-nullable": true,
+                "description": "See description of admin_district field.",
+                "example": ""
+              },
+              "admin_county": {
+                "title": "",
+                "type": "string",
+                "x-nullable": true,
+                "description": "See description of admin_county field.",
+                "example": ""
+              },
+              "admin_ward": {
+                "title": "",
+                "type": "string",
+                "x-nullable": true,
+                "description": "See description of admin_ward field.",
+                "example": ""
+              },
+              "parish": {
+                "title": "",
+                "type": "string",
+                "x-nullable": true,
+                "description": "See description of parish field.",
+                "example": ""
+              },
+              "ccg": {
+                "title": "",
+                "type": "string",
+                "x-nullable": true,
+                "description": "See description of ccg field.",
+                "example": ""
+              },
+              "ccg_code": {
+                "title": "CCG Code",
+                "type": "string",
+                "x-nullable": true,
+                "description": "CCG Short Code",
+                "example": "07N"
+              },
+              "nuts": {
+                "title": "",
+                "type": "string",
+                "x-nullable": true,
+                "description": "The ITL code associated with the postcode.",
+                "example": ""
+              },
+              "lau2": {
+                "title": "LAU2",
+                "type": "string",
+                "x-nullable": true,
+                "description": "The LAU2 code associated with the postcode.",
+                "example": ""
+              },
+              "lsoa": {
+                "title": "",
+                "type": "string",
+                "x-nullable": true,
+                "description": "See description of lsoa field.",
+                "example": ""
+              },
+              "msoa": {
+                "title": "",
+                "type": "string",
+                "x-nullable": true,
+                "description": "See description of msoa field.",
+                "example": ""
+              }
+            }
           }
         }
       },
@@ -402,6 +521,201 @@
             ]
           }
         }
+      },
+      "ApiKeyParam": {
+        "title": "API Key",
+        "type": "string",
+        "description": "Your API Key. Typically beings `ak_`.\nAvailable from your dashboard\n",
+        "example": "ak_test"
+      },
+      "CountryIsoParam": {
+        "title": "Country",
+        "type": "string",
+        "description": "Filter by country ISO code. Uses 3 letter country code (ISO 3166-1) standard. Filter by multiple countries with a comma separated list. E.g. `GBR,IRL`",
+        "example": "GBR"
+      },
+      "BiasCountryIsoParam": {
+        "title": "Country",
+        "type": "string",
+        "description": "Bias by country ISO code. Uses 3 letter country code (ISO 3166-1) standard. Bias by multiple countries with a comma separated list. E.g. `GBR,IRL`",
+        "example": "GBR"
+      },
+      "BiasLonLatParam": {
+        "title": "Bias Lon/Lat",
+        "type": "string",
+        "description": "Bias search to a geospatial circle determined by an origin and radius in meters. Max radius is `50000`.  Uses the format bias_lonlat=[longitude],[latitude],[radius in metres] Only one geospatial bias may be provided",
+        "example": "-2.095,57.15,100"
+      },
+      "BiasIpParam": {
+        "title": "Bias query by Geolocation of IP",
+        "type": "string",
+        "enum": [
+          "true"
+        ],
+        "description": "Biases search based on approximate geolocation of IP address. Set `bias_ip=true` to enable.",
+        "example": "true"
+      },
+      "place_name": {
+        "title": "Place Name",
+        "type": "string",
+        "description": "Place name\n",
+        "example": "London"
+      },
+      "place_descriptive_name": {
+        "title": "Descriptive Place Name",
+        "type": "string",
+        "description": "Longer form description of the place.\n",
+        "example": "London, United Kingdom"
+      },
+      "place_country_iso": {
+        "title": "Country",
+        "type": "string",
+        "description": "3 letter country code (ISO 3166-1)",
+        "example": "GBR"
+      },
+      "place_id": {
+        "title": "ID",
+        "type": "string",
+        "description": "Unique identifier for place\n",
+        "example": "geonames_5324"
+      },
+      "PlaceSuggestion": {
+        "title": "Place Description",
+        "description": "Represents a possible place given an autocomplete query.\n",
+        "required": [
+          "name",
+          "descriptive_name",
+          "id",
+          "country_iso"
+        ],
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/place_name"
+          },
+          "descriptive_name": {
+            "$ref": "#/components/schemas/place_descriptive_name"
+          },
+          "country_iso": {
+            "$ref": "#/components/schemas/place_country_iso"
+          },
+          "id": {
+            "$ref": "#/components/schemas/place_id"
+          }
+        }
+      },
+      "PlaceResponse": {
+        "title": "Place Search Response",
+        "type": "object",
+        "required": [
+          "message",
+          "code",
+          "result"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              2000
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Success"
+            ]
+          },
+          "result": {
+            "type": "object",
+            "required": [
+              "hits"
+            ],
+            "properties": {
+              "hits": {
+                "type": "array",
+                "description": "List of up to 10 matching places\n",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PlaceSuggestion"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "title": "Basic Error Response",
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "API Response Code. Non `2xxx` code indicates a failure. This code will provide a more specific reason when a failure occurs and facilitates debugging.",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human readable error message supplied with every error response."
+          }
+        }
+      },
+      "BadRequestResponse": {
+        "title": "Bad Request Error Response",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "integer",
+                "description": "`400X` type error response code",
+                "format": "int32"
+              },
+              "message": {
+                "type": "string",
+                "description": "Bad request error description"
+              },
+              "errors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "path",
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "should have required property 'type'",
+                      "description": "Indicates location of error in request query or URL parameter"
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": ".query.type",
+                      "description": "Indicates location of error in request query or URL parameter"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "example": "required.openapi.validation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
       }
     }
   }

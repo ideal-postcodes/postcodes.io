@@ -1,0 +1,17 @@
+title: Place Description
+description: |
+  Represents a possible place given an autocomplete query.
+required:
+  - name
+  - descriptive_name
+  - id
+  - country_iso
+properties:
+  name:
+    $ref: './attrs/place/place_name.yaml'
+  descriptive_name:
+    $ref: './attrs/place/place_descriptive_name.yaml'
+  country_iso:
+    $ref: './attrs/place/place_country_iso.yaml'
+  id:
+    $ref: './attrs/place/place_id.yaml'
