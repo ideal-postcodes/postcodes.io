@@ -1,0 +1,70 @@
+get:
+  tags:
+    - Place Search
+  summary: Find Place
+  description:
+    $ref: ../md/places.md
+  operationId: FindPlace
+  parameters:
+    - name: api_key
+      in: query
+      style: form
+      required: true
+      explode: false
+      schema:
+        $ref: '../components/parameters/ApiKeyParam.yaml'
+    - name: query
+      in: query
+      description: Specifies the place you wish to query. Query can be shortened to `q=`
+      style: form
+      explode: false
+      schema:
+        type: string
+    - name: country_iso
+      in: query
+      style: form
+      explode: false
+      schema:
+        $ref: '../components/parameters/CountryIsoParam.yaml'
+    - name: bias_country_iso
+      in: query
+      style: form
+      explode: false
+      schema:
+        $ref: '../components/parameters/BiasCountryIsoParam.yaml'
+    - name: bias_lonlat
+      in: query
+      style: form
+      explode: false
+      schema:
+        $ref: '../components/parameters/BiasLonLatParam.yaml'
+    - name: bias_ip
+      in: query
+      style: form
+      explode: false
+      schema:
+        $ref: '../components/parameters/BiasIpParam.yaml'
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses/PlaceResponse.yaml'
+    # '400':
+    #   description: Bad Request
+    #   content:
+    #     application/json:
+    #       schema:
+    #         $ref: '../components/responses/BadRequestResponse.yaml'
+  x-codeSamples:
+  - lang: 'http'
+    label: 'URL'
+    source: |
+      https://api.ideal-postcodes.co.uk/v1/places?api_key=ak_test&query=london
+  - lang: 'cURL'
+    label: 'CLI'
+    source: |
+      curl -k -G 'https://api.ideal-postcodes.co.uk/v1/places' \
+        -d 'api_key=ak_test' \
+        --data-urlencode 'query=london'

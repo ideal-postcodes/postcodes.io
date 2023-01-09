@@ -37,3 +37,5 @@ x-tagGroups:
 paths:
   '/postcodes/{postcode}':
     $ref: 'paths/postcodes@{postcode}.yaml'
+  '/places':
+    $ref: 'paths/places.yaml'

@@ -1,0 +1,8 @@
+title: Bias query by Geolocation of IP
+type: string
+enum:
+  - "true"
+description: >-
+  Biases search based on approximate geolocation of IP address.
+  Set `bias_ip=true` to enable.
+example: "true"
