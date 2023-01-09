@@ -1,43 +1,139 @@
 title: Place
 description: Represents a geographical place
 required:
-  - id
-  - dataset
-  - name
-  - descriptive_name
-  - country_iso
-  - language
-  - longitude
-  - latitude
+  - code
+  - eastings
 properties:
-  id:
-    title: ID
+  code:
+    title: Code
     type: string
     description: >-
-      Global unique internally generated identifier for a place
-    example: "geonames_5353"
-  dataset:
-    title: Dataset
+      A unique identifier that enables records to be identified easily. The identifier will be persistent for all LocalTypes except Section of Named Road and Section of Numbered Road.
+    example: "osgb4000000074559833"
+  name_1:
+    title: Name
     type: string
     description: >-
-      Indicates the provenance of a place.
-
-        - `geonames` GeoNames place
-    enum:
-      - 'geonames'
-  name:
-    $ref: './attrs/place/place_name.yaml'
-  descriptive_name:
-    $ref: './attrs/place/place_descriptive_name.yaml'
-  country_iso:
-    $ref: './attrs/place/place_country_iso.yaml'
-  language:
-    $ref: './attrs/Language.yaml'
+      The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, 'The Pennines' not 'Pennines, The'.
+    example: "Y Trallwng"
+  name_1_lang:
+    title: Language of Name
+    type: string
+    x-nullable: true
+    description: >-
+      The language type is only set where more than one name exists, e.g. cym (Welsh), eng (English), gla (Scottish Gaelic).
+    example: "cym"
+  name_2:
+    title: Name (in case of multiple languages)
+    type: string
+    x-nullable: true
+    description: >-
+      The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, 'The Pennines' not 'Pennines, The'.
+    example: "Welshpool"
+  name_2_lang:
+    title: Language of Name
+    type: string
+    x-nullable: true
+    description: >-
+      The language type is only set where more than one name exists, e.g. cym (Welsh), eng (English), gla (Scottish Gaelic).
+    example: "eng"
+  local_type:
+    title: Local Type
+    type: string
+    description: >-
+      The Ordnance Survey classification for the named place being represented by the specific feature, e.g. City, Town, Village, Hamlet, Other Settlement, Suburban Area.
+    example: "Hamlet"
+  outcode:
+    title: Outcode
+    type: string
+    description: >-
+      The postcode district.
+    example: "BH24"
+  county_unitary:
+    title: Administrative Area
+    type: string
+    x-nullable: true
+    description: >-
+      The name of the County (non-metropolitan or Metropolitan), Unitary Authority or Greater London Authority administrative area that the point geometry for feature is within or nearest to.
+    example: "Powys - Powys"
+  county_unitary_type:
+    title: Administrative Area Type
+    type: string
+    x-nullable: true
+    description: >-
+      Classifies the type of administrative unit.
+    example: "UnitaryAuthority"
+  district_borough:
+    title: District or Borough
+    type: string
+    x-nullable: true
+    description: >-
+      The name of the District, Metropolitan District or London Borough administrative unit that the point geometry for the feature is within.
+    example: "null"
+  district_borough_type:
+    title: Borough Type
+    type: string
+    x-nullable: true
+    description: >-
+      Classifies the type of administrative unit.
+    example: "null"
+  region:
+    title: Region
+    type: string
+    description: >-
+      The name of the European Region (was Government O ice Region) that the point geometry for the feature is within or nearest to.
+    example: "Wales"
+  country:
+    title: Country
+    type: string
+    description: >-
+      OS Places relates to Great Britain only. i.e. England, Scotland, Wales.
+    example: "Wales"
   longitude:
-    $ref: './attrs/Longitude.yaml'
+    title: Longitude
+    type: double float
+    description: >-
+      The WGS84 longitude given the Place's national grid reference.
+    example: "-3.14971194307843"
   latitude:
-    $ref: './attrs/Latitude.yaml'
-  native:
-    description: Native representation of a place
-    oneOf:
-      - $ref: "./GeonamesPlace.yaml"
+    title: Latitude
+    type: double float
+    description: >-
+      The WGS84 latitude given the Place's national grid reference.
+    example: "52.6606391732959"
+  eastings:
+    title: Eastings
+    type: integer
+    description: >-
+      The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.
+    example: "322335"
+  northings:
+    title: Northings
+    type: integer
+    description: >-
+      The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.
+    example: "307611"
+  min_eastings:
+    title: Minimum Eastings
+    type: integer
+    description: >-
+      Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
+    example: "321623"
+  min_northings:
+    title: Minimum Northings
+    type: integer
+    description: >-
+      Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
+    example: "306458"
+  max_eastings:
+    title: Maximum Eastings
+    type: integer
+    description: >-
+      Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
+    example: "323592"
+  max_northings:
+    title: Maximum Northings
+    type: integer
+    description: >-
+      Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
+    example: "308740"

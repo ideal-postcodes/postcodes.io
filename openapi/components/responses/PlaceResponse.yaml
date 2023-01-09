@@ -1,10 +1,16 @@
-title: Place Search Response
+title: Postcode Response
 type: object
 required:
   - message
   - code
   - result
 properties:
+  result:
+    type: array
+    items:
+      oneOf:
+        - $ref: '../schemas/Place.yaml'
+    description: 'Data for a given place'
   code:
     type: integer
     format: int32
@@ -13,16 +19,4 @@ properties:
   message:
     type: string
     enum:
-      - Success
-  result:
-    type: object
-    required:
-      - hits
-    properties:
-      hits:
-        type: array
-        description: |
-          List of up to 10 matching places
-        items:
-          oneOf:
-            - $ref: '../schemas/PlaceSuggestion.yaml'
+      - "Success"

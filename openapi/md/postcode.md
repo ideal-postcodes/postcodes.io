@@ -4,7 +4,7 @@ The Postcode Lookup API provides a JSON interface to search UK addresses from a 
 
 ## Postcode Not Found
 
-Lookup balance is unaffected by invalid postcodes. The API returns a `404` response with response body:
+The API returns a `404` response with response body:
 
 ```json
 {
