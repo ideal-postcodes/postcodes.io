@@ -29,5 +29,5 @@ get:
   - lang: 'cURL'
     label: 'CLI'
     source: |
-      curl -k -G 'https://api.postcodes.io/terminated_postcodes' \
-        --data-urlencode 'query=E1W1UU'
+      curl -G -k \
+      --url 'https://api.postcodes.io/postcodes/E1W1UU'
