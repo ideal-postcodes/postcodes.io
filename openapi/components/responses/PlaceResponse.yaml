@@ -1,22 +1,17 @@
-title: Postcode Response
+title: Places Response
 type: object
 required:
-  - message
-  - code
+  - status
   - result
 properties:
+  status:
+    type: integer
+    format: int32
+    enum: 
+      - 200
   result:
     type: array
     items:
       oneOf:
         - $ref: '../schemas/Place.yaml'
     description: 'Data for a given place'
-  code:
-    type: integer
-    format: int32
-    enum:
-      - 2000
-  message:
-    type: string
-    enum:
-      - "Success"

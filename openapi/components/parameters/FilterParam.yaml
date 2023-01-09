@@ -1,7 +1,0 @@
-title: Filter
-type: string
-description: |
-  Comma separated whitelist of address elements to return. 
-
-  E.g. `filter=line_1,line_2,line_3` returns only `line_1`, `line_2` and `line_3` address elements in your response
-example: "line_1,line_2,line_3"

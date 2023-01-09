@@ -2,7 +2,25 @@ title: Place
 description: Represents a geographical place
 required:
   - code
+  - name_1
+  - name_1_lang
+  - name_2
+  - name_2_lang
+  - local_type
+  - outcode
+  - county_unitary
+  - county_unitary_type
+  - district_borough
+  - region
+  - country
+  - longitude
+  - latitude
   - eastings
+  - northings
+  - min_eastings
+  - min_northings
+  - max_eastings
+  - max_northings
 properties:
   code:
     title: Code

@@ -1,4 +1,0 @@
-title: Country
-type: string
-description: '3 letter country code (ISO 3166-1)'
-example: "GBR"
