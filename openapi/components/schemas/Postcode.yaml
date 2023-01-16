@@ -42,15 +42,23 @@ properties:
   quality:
     title: Positional Quality
     type: integer
-    description: |- 
+    description: |
       Shows the status of the assigned grid reference.
+
       1 = within the building of the matched address closest to the postcode mean
+
       2 = as for status value 1, except by visual inspection of Landline maps (Scotland only)
+
       3 = approximate to within 50m
+
       4 = postcode unit mean (mean of matched addresses with the same postcode, but not snapped to a building)
+
       5 = imputed by ONS, by reference to surrounding postcode grid references
+
       6 = postcode sector mean, (mainly | PO Boxes)
+
       8 = postcode terminated prior to Gridlink® initiative, last known ONS postcode grid reference1
+
       9 = no grid reference available
     example: "1"
   eastings:
