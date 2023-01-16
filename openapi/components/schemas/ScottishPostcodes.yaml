@@ -16,13 +16,10 @@ properties:
   codes:
     title: Returns an ID or Code associated with the postcode
     description: Typically, these are a 9 character code known as an ONS Code or GSS Code.
-    required:
-      - scottish_parliamentary_constituency
-    allOf:
-    - type: Object
-      properties:
-        scottish_parliamentary_constituency:
-          title: "Scottish Parliamentary Constituency GSS Code"
-          type: string
-          description: A code that identifies a 2014 Scottish Parliamentary Constituency.
-          example: "S16000125"
+    type: object
+    properties:
+      scottish_parliamentary_constituency:
+        title: "Scottish Parliamentary Constituency GSS Code"
+        type: string
+        description: A code that identifies a 2014 Scottish Parliamentary Constituency.
+        example: "S16000125"
