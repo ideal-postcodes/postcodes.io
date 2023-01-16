@@ -17,58 +17,61 @@ properties:
     example: "SW1A"
   eastings:
     title: Eastings
-    type: integer|null
+    type: number
+    format: int32
+    x-nullable: true
     description: The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates. Returns 0 if geolocation is not available.
-    example: "529740"
+    example: 529740
   northings:
     title: Northings
-    type: integer|null
+    type: number
+    format: int32
     description: The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates. Returns 0 if geolocation is not available.
-    example: "180066"
+    example: 180066
   admin_county:
     title: County
-    type: string[]
+    type: array
+    items: 
+      type: string
     description: The current counties under the outcode.
-    example: ""
+    example: []
   admin_district:
     title: District
-    type: string[]
+    type: array
+    items: 
+      type: string
     description: The current district/unitary authorites under the outcode.
-    example: |-
-        [
-            "Westminster",
-            "Wandsworth"
-        ]
+    example:  [ "Westminster", "Wandsworth" ]
   admin_ward:
     title: Ward
-    type: string[]
+    type: array
+    items: 
+      type: string
     description: The current administrative/electoral areas under the outcode.
-    example: |-
-        [
-            "Nine Elms",
-            "St. James's"
-        ]
+    example: [ "Nine Elms", "St. James's" ]
   longitude:
     title: Longitude
-    type: double float | null
+    type: number
+    format: double
     description: The WGS84 longitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates. May be null if geolocation not available.
-    example: "-0.132066678082192"
+    example: -0.132066
   latitude:
     title: Latitude
-    type: double float | null
+    type: number
+    format: double
     description: The WGS84 latitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates. May be null if geolocation not available.
-    example: "51.5046429726028"
+    example: 51.50464
   country:
     title: Country
-    type: string[]
+    type: array
+    items: 
+      type: string
     description: The countries included in the outcode.
     example: "England"
   parish:
     title: Parish (England)/community (Wales)
-    type: string[]
+    type: array
+    items: 
+      type: string
     description: The parishes included in the outcode.
-    example: |- 
-        [
-            "Wandsworth, unparished area",
-            "Westminster, unparished area"
-        ],
+    example: ["Wandsworth, unparished area", "Westminster, unparished area"]
