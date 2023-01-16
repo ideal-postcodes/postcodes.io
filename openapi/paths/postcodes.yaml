@@ -8,7 +8,6 @@ get:
   parameters:
     - name: query
       in: path
-      required: true
       style: simple
       explode: false
       schema:
@@ -21,8 +20,69 @@ get:
       explode: false
       schema:
         title: Query
+        default: 10
+        maximum: 100
+        minimum: 1
         description: PLimits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
-        example: 50
+        example: 3
+    - name: longitude
+      in: path
+      style: simple
+      explode: false
+      schema:
+        title: Longitude
+        type: number
+        format: double
+        description: Geographic coordinate that specifies the east-west position of a point
+        example: -0.127695
+        maximum: 180
+        minimum: -180
+    - name: latitude
+      in: path
+      style: simple
+      explode: false
+      schema:
+        title: Latitude
+        type: number
+        format: double
+        description: Geographic coordinate that specifies the north-south position of a point
+        example: 51.50354
+        maximum: 90
+        minimum: -90
+    - name: limit
+      in: path
+      style: simple
+      explode: false
+      schema:
+        title: Limit
+        type: integer
+        description: Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+        example: 20
+        maximum: 100
+        default: 10
+        minimum: 1
+    - name: radius
+      in: path
+      style: simple
+      explode: false
+      schema:
+        title: Radius
+        type: integer
+        description: Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.
+        example: 500
+        default: 100
+        maximum: 2000
+        minimum: 1
+    - name: widesearch
+      in: path
+      style: simple
+      explode: false
+      schema:
+        title: Widesearch
+        type: boolean
+        description: Search up to 20km radius, but subject to a maximum of 10 results. Since lookups over a wide area can be very expensive, we've created this method to allow you choose to make the trade off between search radius and number of results. Defaults to false. When enabled, radius and limits over 10 are ignored.
+        example: "true"
+        default: "false"
   responses:
     '200':
       description: "Success"
@@ -32,11 +92,20 @@ get:
             $ref: '../components/responses/PostcodeResponse.yaml'
   x-codeSamples:
   - lang: 'http'
-    label: 'URL'
+    label: 'Query URL'
     source: |
       https://api.postcodes.io/postcodes/SW1A2AA
   - lang: 'cURL'
-    label: 'CLI'
+    label: 'Query CLI'
     source: |
       curl -G -k \
       --url 'https://api.postcodes.io/postcodes/SW1A2AA'
+  - lang: 'http'
+    label: 'Nearest URL'
+    source: |
+      https://api.postcodes.io/postcodes?lon=-0.127695&lat=51.50354
+  - lang: 'cURL'
+    label: 'Nearest CLI'
+    source: |
+      curl -G -k \
+      --url 'https://api.postcodes.io/postcodes?lon=-0.127695&lat=51.50354'

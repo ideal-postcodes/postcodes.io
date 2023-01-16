@@ -50,5 +50,3 @@ paths:
     $ref: 'paths/scotland@postcodes@{postcode}.yaml'
   '/outcodes/{outcode}':
     $ref: 'paths/outcodes@{outcode}.yaml'
-  '/reverse-geocoding':
-    $ref: 'paths/reverse-geocoding.yaml'
