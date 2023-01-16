@@ -1,0 +1,42 @@
+get:
+  tags:
+    - Postcode Query
+  summary: Postcode Query
+  operationId: Postcode Query
+  description:
+    $ref: ../md/postcode-query.md
+  parameters:
+    - name: query
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        title: Query
+        description: Postcode to query. Aliases to q=
+        example: SW1A 2AA
+    - name: limit
+      in: path
+      style: simple
+      explode: false
+      schema:
+        title: Query
+        description: PLimits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+        example: 50
+  responses:
+    '200':
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses/PostcodeResponse.yaml'
+  x-codeSamples:
+  - lang: 'http'
+    label: 'URL'
+    source: |
+      https://api.postcodes.io/postcodes/SW1A2AA
+  - lang: 'cURL'
+    label: 'CLI'
+    source: |
+      curl -G -k \
+      --url 'https://api.postcodes.io/postcodes/SW1A2AA'
