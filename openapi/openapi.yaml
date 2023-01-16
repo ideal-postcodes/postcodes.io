@@ -2,8 +2,8 @@ openapi: "3.0.3"
 info:
   version: 3.5.1
   license:
-    name: AGPLv3
-    url: "https://opensource.org/licenses/AGPL-3.0"
+    name: MIT
+    url: "https://opensource.org/licenses/MIT"
   title: API Reference - Postcodes.io
   termsOfService: "https://postcodes.io/about"
   description: 
@@ -40,15 +40,15 @@ x-tagGroups:
 paths:
   '/postcodes/{postcode}':
     $ref: 'paths/postcodes@{postcode}.yaml'
-  '/postcode-query':
-    $ref: 'paths/postcode-query.yaml'
+  '/postcodes':
+    $ref: 'paths/postcodes.yaml'
   '/places':
     $ref: 'paths/places.yaml'
-  '/terminated-postcodes':
-    $ref: 'paths/terminated-postcodes.yaml'
-  '/scottish-postcodes':
-    $ref: 'paths/scottish-postcodes.yaml'
-  '/outcodes':
-    $ref: 'paths/outcodes.yaml'
+  '/terminated_postcodes/{postcode}':
+    $ref: 'paths/terminated_postcodes@{postcode}.yaml'
+  '/scotland/postcodes/{postcode}':
+    $ref: 'paths/scotland@postcodes@{postcode}.yaml'
+  '/outcodes/{outcode}':
+    $ref: 'paths/outcodes@{outcode}.yaml'
   '/reverse-geocoding':
     $ref: 'paths/reverse-geocoding.yaml'
