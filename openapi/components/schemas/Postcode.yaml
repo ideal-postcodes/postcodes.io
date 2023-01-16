@@ -56,21 +56,23 @@ properties:
   eastings:
     title: Eastings
     type: integer
+    format: int32
     x-nullable: true
     description: The Ordnance Survey postcode grid reference Easting to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.
-    example: "530047"
+    example: 530047
   northings:
     title: Northings
     type: integer
+    format: int32
     x-nullable: true
     description: The Ordnance Survey postcode grid reference Northing to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.
-    example: "179951"
+    example: 179951
   country:
     title: Country
     type: string
     description: The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each postcode is assigned.
     example: "England"
-  nha_ha:
+  nhs_ha:
     title: Strategic Health Authority
     type: string
     x-nullable: true
@@ -96,16 +98,18 @@ properties:
     example: "St. James's"
   longitude:
     title: Longitude
-    type: double float
+    type: number
+    format: double
     x-nullable: true
     description: The WGS84 longitude given the Postcode's national grid reference. May be null if geolocation not available.
-    example: "-0.12767"
+    example: -0.12767
   latitude:
     title: Latitude
-    type: double float
+    type: number
+    format: double
     x-nullable: true
     description: The WGS84 latitude given the Postcode's national grid reference. May be null if geolocation not available.
-    example: "51.503541"
+    example: 51.503541
   parliamentary_constituency:
     title: Westminster Parliamentary Constituency
     type: string
