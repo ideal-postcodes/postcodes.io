@@ -1,0 +1,78 @@
+get:
+  tags:
+    - Reverse Geocoding
+  summary: Reverse Geocoding
+  operationId: Reverse
+  description:
+    $ref: ../md/reverse-geocoding.md
+  parameters:
+    - name: longitude
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        title: Longitude
+        type: double float
+        description: Geographic coordinate that specifies the east-west position of a point
+        example: -0.127695
+    - name: latitude
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        title: Latitude
+        type: double float
+        description: Geographic coordinate that specifies the north-south position of a point
+        example: 51.50354
+    - name: limit
+      in: path
+      style: simple
+      explode: false
+      schema:
+        title: Limit
+        type: integer
+        description: Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+        example: 20
+    - name: radius
+      in: path
+      style: simple
+      explode: false
+      schema:
+        title: Radius
+        type: integer
+        description: Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.
+        example: 500
+    - name: widesearch
+      in: path
+      style: simple
+      explode: false
+      schema:
+        title: Widesearch
+        type: boolean
+        description: Search up to 20km radius, but subject to a maximum of 10 results. Since lookups over a wide area can be very expensive, we've created this method to allow you choose to make the trade off between search radius and number of results. Defaults to false. When enabled, radius and limits over 10 are ignored.
+        example: ""
+  responses:
+    '200':
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses/ReverseGeocoding.yaml'
+    # '400':
+    #   description: "Distance in metres from specified postode"
+    #   content:
+    #     application/json:
+    #       schema:
+    #         $ref: '../components/responses/PostcodeResponse.yaml'
+  x-codeSamples:
+  - lang: 'http'
+    label: 'URL'
+    source: |
+      https://api.postcodes.io/postcodes?lon=-0.127695&lat=51.50354
+  - lang: 'cURL'
+    label: 'CLI'
+    source: |
+      curl -G -k \
+      --url 'https://api.postcodes.io/postcodes?lon=-0.127695&lat=51.50354'

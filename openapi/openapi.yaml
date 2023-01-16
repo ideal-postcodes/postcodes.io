@@ -21,11 +21,11 @@ servers:
     variables: {}
 tags:
   - name: Postcode Lookup
-    description: Search for UK postcodes
+  - name: Place Search
+  - name: Terminated Postcodes
+  - name: Scottish Postcode Search
   - name: Outward Postcodes
-    description: Search by UK outward codes
-  - name: Places Search
-    description: Search UK places
+  - name: Reverse Geocoding
 x-tagGroups:
   - name: API
     tags:
@@ -34,6 +34,7 @@ x-tagGroups:
     - Terminated Postcodes
     - Scottish Postcodes
     - Outward Code Lookup
+    - Reverse Geocoding
 paths:
   '/postcodes/{postcode}':
     $ref: 'paths/postcodes@{postcode}.yaml'
@@ -45,3 +46,5 @@ paths:
     $ref: 'paths/scottish-postcodes.yaml'
   '/outcodes':
     $ref: 'paths/outcodes.yaml'
+  '/reverse-geocoding':
+    $ref: 'paths/reverse-geocoding.yaml'

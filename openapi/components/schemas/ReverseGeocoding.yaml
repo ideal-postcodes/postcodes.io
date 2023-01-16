@@ -1,0 +1,256 @@
+required:
+  - postcode
+  - outcode
+  - incode
+  - quality
+  - eastings
+  - northings
+  - country
+  - nhs_ha
+  - admin_county
+  - admin_district
+  - admin_ward
+  - longitude
+  - latitude
+  - parliamentary_constituency
+  - european_electoral_region
+  - primary_care_trust
+  - region
+  - parish
+  - lsoa
+  - msoa
+  - ced
+  - ccg
+  - nuts
+  - codes
+  - display
+properties:
+  postcode:
+    title: Postcode
+    type: string
+    description: All current ('live') postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received monthly from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code.
+    example: "SW1A 2AA"
+  outcode:
+    title: Outward Code
+    type: string
+    description: The outward code is the part of the postcode before the single space in the middle. It is between two and four characters long. A few outward codes are non-geographic, not divulging where mail is to be sent.
+    example: "SW1A"
+  incode:
+    title: Inward Code
+    type: string
+    description: The inward part is the part of the postcode after the single space in the middle. It is three characters long. The inward code assists in the delivery of post within a postal district.
+    example: "1AA"
+  quality:
+    title: Positional Quality
+    type: integer
+    description: |- 
+      Shows the status of the assigned grid reference.
+      1 = within the building of the matched address closest to the postcode mean
+      2 = as for status value 1, except by visual inspection of Landline maps (Scotland only)
+      3 = approximate to within 50m
+      4 = postcode unit mean (mean of matched addresses with the same postcode, but not snapped to a building)
+      5 = imputed by ONS, by reference to surrounding postcode grid references
+      6 = postcode sector mean, (mainly | PO Boxes)
+      8 = postcode terminated prior to Gridlink® initiative, last known ONS postcode grid reference1
+      9 = no grid reference available
+    example: "1"
+  eastings:
+    title: Eastings
+    type: integer
+    x-nullable: true
+    description: The Ordnance Survey postcode grid reference Easting to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.
+    example: "530047"
+  northings:
+    title: Northings
+    type: integer
+    x-nullable: true
+    description: The Ordnance Survey postcode grid reference Northing to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.
+    example: "179951"
+  country:
+    title: Country
+    type: string
+    description: The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each postcode is assigned.
+    example: "England"
+  nha_ha:
+    title: Strategic Health Authority
+    type: string
+    x-nullable: true
+    description: The health area code for the postcode.
+    example: "London"
+  admin_county:
+    title: County
+    type: string
+    x-nullable: true
+    description: The current county to which the postcode has been assigned.
+    example: ""
+  admin_district:
+    title: District
+    type: string
+    x-nullable: true
+    description: The current district/unitary authority to which the postcode has been assigned.
+    example: "Westminster"
+  admin_ward:
+    title: Ward
+    type: string
+    x-nullable: true
+    description: The current administrative/electoral area to which the postcode has been assigned.
+    example: "St. James's"
+  longitude:
+    title: Longitude
+    type: double float
+    x-nullable: true
+    description: The WGS84 longitude given the Postcode's national grid reference. May be null if geolocation not available.
+    example: "-0.12767"
+  latitude:
+    title: Latitude
+    type: double float
+    x-nullable: true
+    description: The WGS84 latitude given the Postcode's national grid reference. May be null if geolocation not available.
+    example: "51.503541"
+  parliamentary_constituency:
+    title: Westminster Parliamentary Constituency
+    type: string
+    x-nullable: true
+    description: The Westminster Parliamentary Constituency code for each postcode.
+    example: "Cities of London and Westminster"
+  european_electoral_region:
+    title: European Electoral Region (EER)
+    type: string
+    x-nullable: true
+    description: The European Electoral Region code for each postcode.
+    example: "London"
+  primary_care_trust:
+    title: Primary Care Trust (PCT)
+    type: string
+    x-nullable: true
+    description: The code for the Primary Care areas in England, LHBs in Wales, CHPs in Scotland, LCG in Northern Ireland and PHD in the Isle of Man; there are no equivalent areas in the Channel Islands. Care Trust/ Care Trust Plus (CT)/ local health board (LHB)/ community health partnership (CHP)/ local commissioning group (LCG)/ primary healthcare directorate (PHD).
+    example: "Westminster"
+  region:
+    title: Region (formerly GOR)
+    type: string
+    x-nullable: true
+    description: The Region code for each postcode. The nine GORs were abolished on 1 April 2011 and are now known as ‘Regions’. They were the primary statistical subdivisions of England and also the areas in which the Government Offices for the Regions fulfilled their role. Each GOR covered a number of local authorities.
+    example: "London"
+  parish:
+    title: Parish (England)/community (Wales)
+    type: string
+    x-nullable: true
+    description: The smallest type of administrative area in England is the parish (also known as 'civil parish'); the equivalent units in Wales are communities.
+    example: "Westminster, unparished area"
+  lsoa:
+    title: 2011 Census lower layer super output area (LSOA)
+    type: string
+    x-nullable: true
+    description: The 2011 Census lower layer SOA code for England and Wales, SOA code for Northern Ireland and data zone code for Scotland.
+    example: "Westminster 018C"
+  msoa:
+    title: 2011 Census middle layer super output area (MSOA)
+    type: string
+    x-nullable: true
+    description: The 2011 Census middle layer SOA (MSOA) code for England and Wales and intermediate zone for Scotland.
+    example: "Westminster 018"
+  ced:
+    title: County Electoral District
+    type: string
+    x-nullable: true
+    description: The county electoral division code for each English postcode. Pseudo codes are included for the remainder of the UK. The field will be null for English postcodes with no grid reference. English county councils use county electoral divisions (CED) to elect councillors. These CEDs must be confined within district boundaries, but need not be based on whole electoral wards. The only exceptions are the Isles of Scilly and the Greater London Authority (GLA). CEDs do not exist within UAs.
+    example: ""
+  ccg:
+    title: Clinical Commissioning Group
+    type: string
+    x-nullable: true
+    description: Clinical commissioning groups (CCGs) are NHS organisations set up by the Health and Social Care Act 2012 to organise the delivery of NHS services in England.
+    example: "NHS North West London"
+  nuts:
+    title: International Terratorial Levels (ITL) (Former Nomenclature of Units for Territorial Statistics (NUTS)
+    type: string
+    x-nullable: true
+    description: |-
+      The national LAU1-equivalent code for each postcode. Pseudo codes are included for Channel Islands and Isle of Man. The field will otherwise be blank for postcodes with no grid reference.
+
+      As of May 2021. NUTS has changed to International Territorial Levels (ITL). Postcodes.io will report ITL in nuts and codes.nuts to preserve backwards compatibility.
+
+      Following the UK's withdrawal from the EU, a new UK-managed international statistical geography - ITL (International Territorial Levels) - was introduced from 1st January 2021, replacing the former NUTS classification. They align with international standards, enabling comparability both over time and internationally. To ensure continued alignment, the ITLs mirror the NUTS system. They also follow a similar review timetable, every three years.
+
+      NUTS is a hierarchical classification of spatial units that provides a breakdown of the European Union's territory for producing regional statistics that are comparable across the Union.
+
+      The ITL area classification in the UK comprises current national administrative and electoral areas, except in Scotland where some ITL areas comprise whole and/or part Local Enterprise Regions.
+
+      The ONSPD contains the LAU1 code (9-character LAD/UA code for England, Wales and Northern Ireland and 'S30' code for Scotland). A comprehensive lookup of LAU and ITL codes is included with the accompanying metadata.
+    example: "Westminster"
+  codes:
+    title: Returns an ID or Code associated with the postcode
+    type: object
+    description: Typically, these are a 9 character code known as an ONS Code or GSS Code. This is currently only available for districts, parishes, counties, CCGs, NUTS and wards.
+    properties:
+      admin_district:
+        title: "GSS Code for Administrative County"
+        type: string
+        x-nullable: true
+        description: See description of admin_district field.
+        example: "E09000033"
+      admin_county:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of admin_county field.
+        example: "E99999999"
+      admin_ward:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of admin_ward field.
+        example: "E05013806"
+      parish:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of parish field.
+        example: "E43000236"
+      ccg:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of ccg field.
+        example: "E38000256"
+      ccg_id:
+        title: CCG ID
+        type: string
+        x-nullable: true
+        description: CCG Short Code
+        example: "W2U3Z"
+      ced:
+        title: CED
+        type: string
+        x-nullable: true
+        description: ""
+        example: "E99999999"
+      nuts:
+        title: ""
+        type: string
+        x-nullable: true
+        description: The ITL code associated with the postcode.
+        example: "TLI32"
+      lau2:
+        title: LAU2
+        type: string
+        x-nullable: true
+        description: The LAU2 code associated with the postcode.
+        example: "E09000033"
+      lsoa:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of lsoa field.
+        example: "E01004736"
+      msoa:
+        title: ""
+        type: string
+        x-nullable: true
+        description: See description of msoa field.
+        example: "E02000977"
+  distance:
+    title: Display
+    type: integer
+    description: Distance in metres from specified postode
+    example: "0"
