@@ -21,6 +21,7 @@ servers:
     variables: {}
 tags:
   - name: Postcode Lookup
+  - name: Postcode Query
   - name: Place Search
   - name: Terminated Postcodes
   - name: Scottish Postcode Search
@@ -30,6 +31,7 @@ x-tagGroups:
   - name: API
     tags:
     - Postcode Lookup
+    - Postcode Query
     - Place Search
     - Terminated Postcodes
     - Scottish Postcodes
@@ -38,6 +40,8 @@ x-tagGroups:
 paths:
   '/postcodes/{postcode}':
     $ref: 'paths/postcodes@{postcode}.yaml'
+  '/postcode-query':
+    $ref: 'paths/postcode-query.yaml'
   '/places':
     $ref: 'paths/places.yaml'
   '/terminated-postcodes':
