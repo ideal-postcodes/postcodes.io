@@ -6,11 +6,11 @@ get:
     $ref: ../md/terminated-postcodes.md
   operationId: TerminatedPostcodes
   parameters:
-    - name: query
-      in: query
+    - name: Terminated Postcode
+      in: path
       description: Specifies the postcode you wish to query
       required: true
-      style: form
+      style: simple
       explode: false
       schema:
         type: string

@@ -26,7 +26,6 @@ tags:
   - name: Terminated Postcodes
   - name: Scottish Postcode Search
   - name: Outward Postcodes
-  - name: Reverse Geocoding
 x-tagGroups:
   - name: API
     tags:
@@ -36,7 +35,6 @@ x-tagGroups:
     - Terminated Postcodes
     - Scottish Postcodes
     - Outward Code Lookup
-    - Reverse Geocoding
 paths:
   '/postcodes/{postcode}':
     $ref: 'paths/postcodes@{postcode}.yaml'

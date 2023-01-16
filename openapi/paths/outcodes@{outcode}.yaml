@@ -6,11 +6,11 @@ get:
     $ref: ../md/outcode.md
   operationId: FindPlace
   parameters:
-    - name: query
-      in: query
+    - name: Outcode
+      in: path
       description: Specifies the outward code you wish to query.
       required: true
-      style: form
+      style: simple
       explode: false
       schema:
         type: string
