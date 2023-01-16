@@ -179,77 +179,72 @@ properties:
     example: "Westminster"
   codes:
     title: Returns an ID or Code associated with the postcode
-    type: Object
+    type: object
     description: Typically, these are a 9 character code known as an ONS Code or GSS Code. This is currently only available for districts, parishes, counties, CCGs, NUTS and wards.
-    required:
-      - admin_district
-      - admin_county
-      - admin_ward
-      - parish
-      - ccg
-      - ccg_code
-      - nuts
-      - lau2
-      - lsoa
-      - msoa
     properties:
       admin_district:
         title: "GSS Code for Administrative County"
         type: string
         x-nullable: true
         description: See description of admin_district field.
-        example: ""
+        example: "E09000033"
       admin_county:
         title: ""
         type: string
         x-nullable: true
         description: See description of admin_county field.
-        example: ""
+        example: "E99999999"
       admin_ward:
         title: ""
         type: string
         x-nullable: true
         description: See description of admin_ward field.
-        example: ""
+        example: "E05013806"
       parish:
         title: ""
         type: string
         x-nullable: true
         description: See description of parish field.
-        example: ""
+        example: "E43000236"
       ccg:
         title: ""
         type: string
         x-nullable: true
         description: See description of ccg field.
-        example: ""
-      ccg_code:
-        title: CCG Code
+        example: "E38000256"
+      ccg_id:
+        title: CCG ID
         type: string
         x-nullable: true
         description: CCG Short Code
-        example: "07N"
+        example: "W2U3Z"
+      ced:
+        title: CED
+        type: string
+        x-nullable: true
+        description: ""
+        example: "E99999999"
       nuts:
         title: ""
         type: string
         x-nullable: true
         description: The ITL code associated with the postcode.
-        example: ""
+        example: "TLI32"
       lau2:
         title: LAU2
         type: string
         x-nullable: true
         description: The LAU2 code associated with the postcode.
-        example: ""
+        example: "E09000033"
       lsoa:
         title: ""
         type: string
         x-nullable: true
         description: See description of lsoa field.
-        example: ""
+        example: "E01004736"
       msoa:
         title: ""
         type: string
         x-nullable: true
         description: See description of msoa field.
-        example: ""
+        example: "E02000977"
