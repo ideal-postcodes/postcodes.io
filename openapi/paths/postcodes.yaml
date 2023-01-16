@@ -7,27 +7,25 @@ get:
     $ref: ../md/postcode-query.md
   parameters:
     - name: query
-      in: path
-      style: simple
+      in: query
+      style: form
       explode: false
       schema:
-        title: Query
-        description: Postcode to query. Aliases to q=
+        description: Postcode to query. Aliases to `q=`
         example: SW1A 2AA
     - name: limit
-      in: path
-      style: simple
+      in: query
+      style: form
       explode: false
       schema:
-        title: Query
         default: 10
         maximum: 100
         minimum: 1
         description: PLimits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
         example: 3
     - name: longitude
-      in: path
-      style: simple
+      in: query
+      style: form
       explode: false
       schema:
         title: Longitude
@@ -38,8 +36,8 @@ get:
         maximum: 180
         minimum: -180
     - name: latitude
-      in: path
-      style: simple
+      in: query
+      style: form
       explode: false
       schema:
         title: Latitude
@@ -50,8 +48,8 @@ get:
         maximum: 90
         minimum: -90
     - name: limit
-      in: path
-      style: simple
+      in: query
+      style: form
       explode: false
       schema:
         title: Limit
@@ -62,8 +60,8 @@ get:
         default: 10
         minimum: 1
     - name: radius
-      in: path
-      style: simple
+      in: query
+      style: form
       explode: false
       schema:
         title: Radius
@@ -74,8 +72,8 @@ get:
         maximum: 2000
         minimum: 1
     - name: widesearch
-      in: path
-      style: simple
+      in: query
+      style: form
       explode: false
       schema:
         title: Widesearch
@@ -109,3 +107,19 @@ get:
     source: |
       curl -G -k \
       --url 'https://api.postcodes.io/postcodes?lon=-0.127695&lat=51.50354'
+post:
+  tags:
+    - Postcode Query
+  summary: Bulk Postcode Lookup
+  operationId: Bulk Postcode Lookup
+  description:
+    $ref: ../md/postcode-query.md
+  parameters: []
+  responses:
+    '200':
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses/PostcodeResponse.yaml'
+  x-codeSamples:
