@@ -1,7 +1,7 @@
 get:
   tags:
     - Outward Code Lookup
-  summary: Find Outcode
+  summary: "Outcode Lookup"
   description:
     $ref: ../md/outcode.md
   operationId: FindPlace
@@ -31,3 +31,12 @@ get:
     source: |
       curl -G -k \
         --url 'https://api.postcodes.io/outcodes/sw1a'
+  - lang: 'http'
+    label: 'Nearest URL'
+    source: |
+      https://api.postcodes.io/outcodes?lon=-0.127695&lat=51.50354
+  - lang: 'cURL'
+    label: 'Nearest CLI'
+    source: |
+      curl -G -k \
+      --url 'https://api.postcodes.io/outcodes?lon=-0.127695&lat=51.50354'
