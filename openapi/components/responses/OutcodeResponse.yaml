@@ -14,4 +14,5 @@ properties:
     items:
       oneOf:
         - $ref: '../schemas/Outcode.yaml'
+        - $ref: '../schemas/NearestPostcode.yaml'
     description: 'Data for a given place'
