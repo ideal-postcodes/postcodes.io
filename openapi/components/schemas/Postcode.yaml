@@ -165,7 +165,7 @@ properties:
     type: string
     x-nullable: true
     description: The county electoral division code for each English postcode. Pseudo codes are included for the remainder of the UK. The field will be null for English postcodes with no grid reference. English county councils use county electoral divisions (CED) to elect councillors. These CEDs must be confined within district boundaries, but need not be based on whole electoral wards. The only exceptions are the Isles of Scilly and the Greater London Authority (GLA). CEDs do not exist within UAs.
-    example: ""
+    example: 
   ccg:
     title: Clinical Commissioning Group
     type: string
