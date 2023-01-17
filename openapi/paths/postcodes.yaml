@@ -81,6 +81,15 @@ get:
         description: Search up to 20km radius, but subject to a maximum of 10 results. Since lookups over a wide area can be very expensive, we've created this method to allow you choose to make the trade off between search radius and number of results. Defaults to false. When enabled, radius and limits over 10 are ignored.
         example: "true"
         default: "false"
+    - name: filter
+      in: query
+      style: form
+      explode: false
+      schema:
+        title: Filter
+        type: string
+        description: A comma separated whitelist of attributes to be returned in the result object(s), e.g. filter=postcode,longitude,latitude. null responses will continue to return null. If no attributes match the result object, an empty object is returned
+        example: "postcode"
   responses:
     '200':
       description: "Success"
@@ -113,7 +122,7 @@ post:
   summary: Bulk Postcode Lookup
   operationId: Bulk Postcode Lookup
   description:
-    $ref: ../md/postcode-query.md
+    $ref: ../md/bulk-postcode-lookup.md
   parameters: []
   responses:
     '200':
@@ -122,4 +131,22 @@ post:
         application/json:
           schema:
             $ref: '../components/responses/PostcodeResponse.yaml'
-  x-codeSamples:
+  x-codeSamples: 
+  - lang: 'http'
+    label: 'Query URL'
+    source: |
+      https://api.postcodes.io/postcodes/
+  - lang: 'cURL'
+    label: 'Query CLI'
+    source: |
+      curl -G -k \
+      --url 'https://api.postcodes.io/postcodes/'
+  - lang: 'http'
+    label: 'Nearest URL'
+    source: |
+      https://api.postcodes.io/postcodes?
+  - lang: 'cURL'
+    label: 'Nearest CLI'
+    source: |
+      curl -G -k \
+      --url 'https://api.postcodes.io/postcodes?'
