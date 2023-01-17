@@ -23,6 +23,7 @@ tags:
   - name: Postcode Lookup
   - name: Postcode Query
   - name: Nearest Postcode
+  - name: Random Postcode
   - name: Place Search
   - name: Terminated Postcodes
   - name: Scottish Postcode Search
@@ -33,6 +34,7 @@ x-tagGroups:
     - Postcode Lookup
     - Postcode Query
     - Nearest Postcode
+    - Random Postcode
     - Place Search
     - Terminated Postcodes
     - Scottish Postcodes
@@ -44,6 +46,8 @@ paths:
     $ref: 'paths/postcodes.yaml'
   '/postcodes/{postcode}/nearest':
     $ref: 'paths/postcodes@{postcode}@nearest.yaml'
+  '/random/postcodes':
+    $ref: 'paths/random@postcodes.yaml'
   '/places':
     $ref: 'paths/places.yaml'
   '/terminated_postcodes/{postcode}':
