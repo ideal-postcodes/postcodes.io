@@ -1,0 +1,34 @@
+get:
+  tags:
+    - Nearest Postcode
+  summary: Lookup Nearest Postcodes
+  operationId: Nearest Postcode
+  description: "Returns nearest postcodes for a given postcode."
+  parameters:
+    - name: postcode
+      in: path
+      description: Postcode to retrieve
+      required: true
+      style: simple
+      explode: false
+      schema:
+        title: Postcode
+        description: Postcode to query
+        example: SW1A 2AA
+  responses:
+    '200':
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses/PostcodeResponse.yaml'
+  x-codeSamples:
+  - lang: 'http'
+    label: 'URL'
+    source: |
+      https://api.postcodes.io/postcodes/SW1A2AA
+  - lang: 'cURL'
+    label: 'CLI'
+    source: |
+      curl -G -k \
+      --url 'https://api.postcodes.io/postcodes/SW1A2AA'

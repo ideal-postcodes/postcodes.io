@@ -1,0 +1,14 @@
+title: Geolocated Outcode
+description: Returns nearest outcodes for a given outcode.
+allOf:
+  - $ref: "./Outcode.yaml"
+  - type: object
+    required:
+      - display
+    properties:
+      distance:
+        title: Distance from supplied geolocation
+        type: number
+        format: double
+        description: Distance in metres from specified postcode
+        example: 0
