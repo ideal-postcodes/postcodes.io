@@ -24,10 +24,12 @@ tags:
   - name: Postcode Query
   - name: Nearest Postcode
   - name: Random Postcode
-  - name: Place Search
   - name: Terminated Postcodes
   - name: Scottish Postcode Search
   - name: Outward Postcodes
+  - name: Place Search
+  - name: Place Query
+  - name: Random Place
 x-tagGroups:
   - name: API
     tags:
@@ -35,10 +37,12 @@ x-tagGroups:
     - Postcode Query
     - Nearest Postcode
     - Random Postcode
-    - Place Search
     - Terminated Postcodes
     - Scottish Postcodes
     - Outward Code Lookup
+    - Place Search
+    - Place Query
+    - Random Place
 paths:
   '/postcodes/{postcode}':
     $ref: 'paths/postcodes@{postcode}.yaml'
@@ -48,11 +52,15 @@ paths:
     $ref: 'paths/postcodes@{postcode}@nearest.yaml'
   '/random/postcodes':
     $ref: 'paths/random@postcodes.yaml'
-  '/places':
-    $ref: 'paths/places.yaml'
   '/terminated_postcodes/{postcode}':
     $ref: 'paths/terminated_postcodes@{postcode}.yaml'
   '/scotland/postcodes/{postcode}':
     $ref: 'paths/scotland@postcodes@{postcode}.yaml'
   '/outcodes/{outcode}':
     $ref: 'paths/outcodes@{outcode}.yaml'
+  '/places/{code}':
+    $ref: 'paths/places@{code}.yaml'
+  '/places':
+    $ref: 'paths/places.yaml'
+  '/random/places':
+    $ref: 'paths/random@places.yaml'

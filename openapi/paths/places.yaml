@@ -1,19 +1,9 @@
 get:
   tags:
-    - Place Search
-  summary: Find Place
-  description:
-    $ref: ../md/places.md
-  operationId: FindPlace
-  parameters:
-    - name: query
-      in: query
-      description: Specifies the place you wish to query
-      required: true
-      style: form
-      explode: false
-      schema:
-        type: string
+    - Place Query
+  summary: Place Query
+  description: "Submit a place query and receive a complete list of places matches and associated data."
+  operationId: Place Query
   responses:
     '200':
       description: Success
