@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Random Place
+  summary: Random Place
+  description: "Returns a random place and all associated data"
+  operationId: Random Place
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses/PlaceResponse.yaml'
+  x-codeSamples:
+  - lang: 'http'
+    label: 'URL'
+    source: |
+      https://api.postcodes.io/random/places
+  - lang: 'cURL'
+    label: 'CLI'
+    source: |
+      curl -k -G 'https://api.postcodes.io/random/places/' 
