@@ -8,7 +8,7 @@ get:
   parameters:
     - name: Terminated Postcode
       in: path
-      description: Specifies the postcode you wish to query
+      description: Postcode to query
       required: true
       style: simple
       explode: false
