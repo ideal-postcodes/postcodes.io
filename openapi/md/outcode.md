@@ -1,5 +1,3 @@
-Geolocation data for the centroid of the outward code specified. The outward code represents the first half of any postcode (separated by a space).
+Returns aggregated information for postcodes grouped by their shared outward code.
 
-## Outcode Reverse Geocoding
-
-Returns nearest outcodes for a given longitude and latitude.
+The outward code is the first half of any postcode (3-4 characters and preceded by a space).

@@ -10,9 +10,6 @@ properties:
     enum: 
       - 200
   result:
-    type: array
-    items:
-      oneOf:
-        - $ref: '../schemas/Outcode.yaml'
-        - $ref: '../schemas/NearestPostcode.yaml'
+    oneOf:
+      - $ref: '../schemas/Outcode.yaml'
     description: 'Data for a given place'

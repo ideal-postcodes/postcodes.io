@@ -2,7 +2,7 @@ get:
   tags:
     - Random Postcode
   summary: Random Postcode
-  operationId: NRandom Postcode
+  operationId: Random Postcode
   description: "Returns a random postcode and all available data for that postcode."
   parameters:
     - name: outcode
@@ -11,9 +11,10 @@ get:
       style: form
       explode: false
       schema:
-        title: Postcode
-        description: Postcode to query
-        example: SW1A 2AA
+        title: Outward code
+        description: Restrict results to a specific outward code
+        type: string
+        example: SW1A
   responses:
     '200':
       description: "Success"
