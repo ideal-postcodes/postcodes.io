@@ -25,7 +25,7 @@ get:
   - lang: 'http'
     label: 'URL'
     source: |
-      https://api.postcodes.io/places?/osgb4000000074813508
+      https://api.postcodes.io/places/osgb4000000074813508
   - lang: 'cURL'
     label: 'CLI'
     source: |
