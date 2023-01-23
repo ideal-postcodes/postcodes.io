@@ -30,4 +30,4 @@ get:
     label: 'CLI'
     source: |
       curl -G -k \
-      --url 'https://api.postcodes.io/postcodes/E1W1UU'
+      --url 'https://api.postcodes.io/terminated_postcodes/E1W1UU'
