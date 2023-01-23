@@ -29,5 +29,4 @@ get:
   - lang: 'cURL'
     label: 'CLI'
     source: |
-      curl -k -G 'https://api.postcodes.io/places/' \
-        --data-urlencode 'osgb4000000074813508'
+      curl -k -G 'https://api.postcodes.io/places/osgb4000000074813508' 
