@@ -1,3 +1,10 @@
+# [15.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/15.0.0...15.1.0) (2023-03-10)
+
+
+### Features
+
+* **ONSPD:** Bump to ONSPD Feb 2023 ([2034e01](https://github.com/ideal-postcodes/postcodes.io/commit/2034e01970211be5ccab984b20b679f3250fa3a0))
+
 # [15.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/14.4.1...15.0.0) (2023-01-04)
 
 
