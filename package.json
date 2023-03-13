@@ -105,7 +105,7 @@
     "node.extend": "~2.0.2",
     "ospoint": "~0.2.1",
     "pg": "~8.9.0",
-    "pg-copy-streams": "~6.0.4",
+    "pg-copy-streams": "~6.0.5",
     "pg-query-stream": "~4.2.4",
     "pino": "~7.11.0",
     "postcode": "~5.1.0",
