@@ -92,7 +92,7 @@
     "async": "~3.2.4",
     "body-parser": "~1.20.0",
     "cors": "~2.8.5",
-    "csv": "~1.1.0",
+    "csv": "~6.3.0",
     "csv-parse": "~4.16.3",
     "dotenv": "~16.0.3",
     "ejs": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
