@@ -1,3 +1,4 @@
+import express from "express";
 import { Express } from "express";
 import * as pages from "../app/controllers/pages_controller";
 import * as utils from "../app/controllers/utils_controller";
@@ -6,36 +7,41 @@ import * as outcodes from "../app/controllers/outcodes_controller";
 import * as postcodes from "../app/controllers/postcodes_controller";
 import * as scottishPostcodes from "../app/controllers/scottish_postcodes_controller";
 import * as terminatedPostcodes from "../app/controllers/terminated_postcodes_controller";
+import { getConfig } from "./config";
 
 export const routes = (app: Express): void => {
-  app.get("/", pages.home);
-  app.get("/ping", utils.ping);
-  app.get("/ready", utils.ready);
-  app.get("/about", pages.about);
-  app.get("/docs", pages.documentation);
+  const router = express.Router();
+  router.get("/", pages.home);
+  router.get("/ping", utils.ping);
+  router.get("/ready", utils.ready);
+  router.get("/about", pages.about);
+  router.get("/docs", pages.documentation);
 
-  app.get("/postcodes", postcodes.query);
-  app.post("/postcodes", postcodes.bulk);
-  app.get("/postcodes/:postcode", postcodes.show);
-  app.get("/postcodes/:postcode/nearest", postcodes.nearest);
-  app.get("/postcodes/:postcode/validate", postcodes.valid);
-  app.get("/postcodes/:postcode/autocomplete", postcodes.autocomplete);
-  app.get("/postcodes/lon/:longitude/lat/:latitude", postcodes.lonlat);
-  app.get("/postcodes/lat/:latitude/lon/:longitude", postcodes.lonlat);
+  router.get("/postcodes", postcodes.query);
+  router.post("/postcodes", postcodes.bulk);
+  router.get("/postcodes/:postcode", postcodes.show);
+  router.get("/postcodes/:postcode/nearest", postcodes.nearest);
+  router.get("/postcodes/:postcode/validate", postcodes.valid);
+  router.get("/postcodes/:postcode/autocomplete", postcodes.autocomplete);
+  router.get("/postcodes/lon/:longitude/lat/:latitude", postcodes.lonlat);
+  router.get("/postcodes/lat/:latitude/lon/:longitude", postcodes.lonlat);
 
-  app.get("/outcodes", outcodes.query);
-  app.get("/outcodes/:outcode", outcodes.showOutcode);
-  app.get("/outcodes/:outcode/nearest", outcodes.nearest);
+  router.get("/outcodes", outcodes.query);
+  router.get("/outcodes/:outcode", outcodes.showOutcode);
+  router.get("/outcodes/:outcode/nearest", outcodes.nearest);
 
-  app.get("/places", places.query);
-  app.get("/places/:id", places.show);
+  router.get("/places", places.query);
+  router.get("/places/:id", places.show);
   // Todo: Query for geolocation contained in polygon (geolocation contained in polygon)
   // Todo: Query for geolocation near polygon (radius intersects polygon)
 
-  app.get("/random/places", places.random);
-  app.get("/random/postcodes", postcodes.random);
+  router.get("/random/places", places.random);
+  router.get("/random/postcodes", postcodes.random);
 
-  app.get("/terminated_postcodes/:postcode", terminatedPostcodes.show);
+  router.get("/terminated_postcodes/:postcode", terminatedPostcodes.show);
 
-  app.get("/scotland/postcodes/:postcode", scottishPostcodes.show);
+  router.get("/scotland/postcodes/:postcode", scottishPostcodes.show);
+
+  const config = getConfig();
+  app.use(config.urlPrefix, router);
 };
