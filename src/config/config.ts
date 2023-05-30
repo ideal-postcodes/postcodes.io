@@ -41,11 +41,11 @@ export interface Config {
   log: LogConfig;
   port: number;
   serveStaticAssets: boolean;
+  urlPrefix: string;
   defaults: any;
   httpHeaders?: Record<string, string>;
   prometheusUsername?: string;
   prometheusPassword?: string;
-  urlPrefix?: string;
 }
 
 const config: Record<Env, Config> = {
@@ -64,6 +64,7 @@ const config: Record<Env, Config> = {
     },
     port: 8000,
     serveStaticAssets: true,
+    urlPrefix: "",
     defaults,
   },
 
@@ -82,6 +83,7 @@ const config: Record<Env, Config> = {
     },
     port: 8000,
     serveStaticAssets: true,
+    urlPrefix: "",
     defaults,
   },
 
@@ -100,6 +102,7 @@ const config: Record<Env, Config> = {
     },
     port: 8000,
     serveStaticAssets: false,
+    urlPrefix: "",
     defaults,
   },
 };
