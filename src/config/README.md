@@ -14,6 +14,7 @@ Default configuration values can be found at `config/config.js` and `config/defa
 # HTTP
 PORT # Port to listen on
 SERVE_STATIC_ASSETS # Set to `false` to prevent `public/` from being served
+URL_PREFIX # Prefix to append to all routes in this app
 
 # JSON string to set arbitrary headers on all HTTP responses
 # String must be valid JSON object. E.g. HTTP_HEADERS='{"foo":"bar"}'
