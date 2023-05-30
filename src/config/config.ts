@@ -45,6 +45,7 @@ export interface Config {
   httpHeaders?: Record<string, string>;
   prometheusUsername?: string;
   prometheusPassword?: string;
+  urlPrefix?: string;
 }
 
 const config: Record<Env, Config> = {
@@ -122,6 +123,7 @@ export const getConfig = (env?: Env): Config => {
     PROMETHEUS_PASSWORD,
     SERVE_STATIC_ASSETS,
     HTTP_HEADERS,
+    URL_PREFIX,
   } = process.env;
 
   if (PORT !== undefined) cfg.port = parseInt(PORT, 10);
@@ -147,6 +149,9 @@ export const getConfig = (env?: Env): Config => {
 
   if (SERVE_STATIC_ASSETS !== undefined)
     cfg.serveStaticAssets = SERVE_STATIC_ASSETS.toLowerCase() !== "false";
+
+  if (URL_PREFIX !== undefined)
+    cfg.urlPrefix = URL_PREFIX
 
   try {
     if (HTTP_HEADERS !== undefined) cfg.httpHeaders = JSON.parse(HTTP_HEADERS);
