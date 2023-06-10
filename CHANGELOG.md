@@ -1,3 +1,15 @@
+# [15.2.0](https://github.com/ideal-postcodes/postcodes.io/compare/15.1.0...15.2.0) (2023-06-10)
+
+
+### Bug Fixes
+
+* **App:** Load router if URL Prefix not defined ([ff7a427](https://github.com/ideal-postcodes/postcodes.io/commit/ff7a427c918d8c706b41689e7c45387f3f5fe8ce))
+
+
+### Features
+
+* **URL Prefix:** Enable URL Prefixes with URL_PREFIX env flag ([c0ee972](https://github.com/ideal-postcodes/postcodes.io/commit/c0ee972ed5f62d58875df635e75bc4f3a98aa16b))
+
 # [15.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/15.0.0...15.1.0) (2023-03-10)
 
 
