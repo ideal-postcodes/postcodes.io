@@ -43,5 +43,5 @@ export const routes = (app: Express): void => {
   router.get("/scotland/postcodes/:postcode", scottishPostcodes.show);
 
   const { urlPrefix } = getConfig();
-  if (urlPrefix) app.use(urlPrefix, router);
+  app.use(urlPrefix, router);
 };
