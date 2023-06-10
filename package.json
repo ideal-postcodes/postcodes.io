@@ -143,7 +143,7 @@
     "nodemon": "~2.0.20",
     "nyc": "~15.1.0",
     "prettier": "~2.7.1",
-    "semantic-release": "~19.0.t",
+    "semantic-release": "~21.0.5",
     "serve-favicon": "~2.5.0",
     "source-map-support": "~0.5.21",
     "supertest": "~6.3.3",
