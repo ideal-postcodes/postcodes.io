@@ -1,11 +1,13 @@
 import http from "http";
 
+const prefix = process.env.URL_PREFIX === undefined ? "" : process.env.URL_PREFIX
+
 const options = {
   host: "localhost",
   port: process.env.PORT,
   method: "GET",
   timeout: 2000,
-  path: "/ping",
+  path: `${prefix}/ping`,
 };
 
 http
