@@ -11,7 +11,7 @@
 
 Query for UK postcodes and geolocations over HTTP.
 
-Postcodes.io regularly ingests and serves the [ONS Postcode Directory](https://geoportal.statistics.gov.uk/search?collection=Dataset&sort=-created&tags=onspd) and [Ordnance Survey Open Names](https://www.ordnancesurvey.co.uk/business-and-government/products/os-open-names.html) datasets.
+Postcodes.io regularly ingests and serves the [ONS Postcode Directory](https://geoportal.statistics.gov.uk/search?collection=Dataset&sort=-created&tags=onspd) and [Ordnance Survey Open Names](https://www.ordnancesurvey.co.uk/products/os-open-names) datasets.
 
 ## Features
 
