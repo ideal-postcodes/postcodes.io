@@ -24,7 +24,7 @@ const LA_UA_NAMES_transform = (row) => {
 
 const configs = [
   {
-    file: "LA_UA names and codes UK as at 04_21.csv",
+    file: "LA_UA names and codes UK as at 04_23.csv",
     transform: LA_UA_NAMES_transform,
     parseOptions: {
       delimiter: ",",
