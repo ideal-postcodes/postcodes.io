@@ -101,7 +101,7 @@
   },
   "E38000089": {
     "ccg19cdh": "11N",
-    "name": "NHS Cornwall and The Isles of Scilly"
+    "name": "NHS Cornwall and the Isles of Scilly"
   },
   "E38000091": {
     "ccg19cdh": "01J",
@@ -423,6 +423,14 @@
     "ccg19cdh": "01Y",
     "name": "NHS Greater Manchester"
   },
+  "E38000264": {
+    "ccg19cdh": "92A",
+    "name": "NHS Surrey Heartlands"
+  },
+  "E38000265": {
+    "ccg19cdh": "70F",
+    "name": "NHS Sussex"
+  },
   "LOC22CD": {
     "ccg19cdh": "LOC22CDH",
     "name": "LOC22NM"
@@ -566,6 +574,10 @@
   "S03000044": {
     "ccg19cdh": "044",
     "name": "Highland Health and Social Care Partnership"
+  },
+  "SICBL23CD": {
+    "ccg19cdh": "SICBL23CDH",
+    "name": "SICBL23NM"
   },
   "W11000023": {
     "ccg19cdh": "7A1",
