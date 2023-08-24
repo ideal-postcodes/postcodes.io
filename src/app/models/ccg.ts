@@ -28,7 +28,7 @@ export const Ccg = generateAttributeMethods(
   {
     relation,
     schema: {
-      ccg19cdh: "VARCHAR(32) NULL UNIQUE",
+      ccg19cdh: "VARCHAR(32) NULL",
     },
   },
   seed
