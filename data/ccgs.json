@@ -355,17 +355,9 @@
     "ccg19cdh": "36L",
     "name": "NHS South West London"
   },
-  "E38000246": {
-    "ccg19cdh": "92A",
-    "name": "NHS Surrey Heartlands"
-  },
   "E38000247": {
     "ccg19cdh": "16C",
     "name": "NHS North East and North Cumbria"
-  },
-  "E38000248": {
-    "ccg19cdh": "70F",
-    "name": "NHS Sussex"
   },
   "E38000249": {
     "ccg19cdh": "M1J4Y",
@@ -430,14 +422,6 @@
   "E38000265": {
     "ccg19cdh": "70F",
     "name": "NHS Sussex"
-  },
-  "LOC22CD": {
-    "ccg19cdh": "LOC22CDH",
-    "name": "LOC22NM"
-  },
-  "M01000001": {
-    "ccg19cdh": "YK1",
-    "name": "Isle Of Man"
   },
   "S03000001": {
     "ccg19cdh": "001",
