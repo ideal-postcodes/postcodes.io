@@ -1,6 +1,7 @@
 "use strict";
 
 const { extract, isPseudoCode } = require("./index");
+const base = require("../ccgs.json");
 
 /**
  * @module DataParser/ccgs
@@ -35,7 +36,7 @@ const transform = (row) => {
 
 const configs = [
   {
-    file: "LOC names and codes UK as at 07_22.csv",
+    file: "Sub_ICB Location and Local Health Board names and codes EW as at 04_23.csv",
     transform,
     parseOptions: {
       delimiter: ",",
@@ -44,4 +45,4 @@ const configs = [
   },
 ];
 
-extract({ configs });
+extract({ configs, appendMissing: base });
