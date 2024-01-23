@@ -1,4 +1,4 @@
-FROM node:16.15.0-alpine AS base
+FROM node:20-alpine AS base
 
 RUN apk update && \
   apk upgrade && \
@@ -6,8 +6,8 @@ RUN apk update && \
 
 ENV DOCKERIZE_VERSION v0.6.1
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+  && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+  && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 COPY docker/test/entrypoint.sh /usr/bin/
 ENTRYPOINT ["entrypoint.sh"]
