@@ -1,5 +1,5 @@
 import { isValid, validOutcode } from "postcode";
-import { Outcode, OutcodeInterface, OutcodeTuple } from "./outcode";
+import { OutcodeInterface } from "./outcode";
 import { QueryResult } from "pg";
 import {
   query,
@@ -169,142 +169,13 @@ const relation: Relation = {
 
 const methods = generateMethods(relation);
 
-const relationships: Relationship[] = [
-  {
-    table: "districts",
-    key: "admin_district_id",
-    foreignKey: "code",
-  },
-  {
-    table: "parishes",
-    key: "parish_id",
-    foreignKey: "code",
-  },
-  {
-    table: "counties",
-    key: "admin_county_id",
-    foreignKey: "code",
-  },
-  {
-    table: "wards",
-    key: "admin_ward_id",
-    foreignKey: "code",
-  },
-  {
-    table: "ceds",
-    key: "ced_id",
-    foreignKey: "code",
-  },
-  {
-    table: "ccgs",
-    key: "ccg_id",
-    foreignKey: "code",
-  },
-  {
-    table: "constituencies",
-    key: "constituency_id",
-    foreignKey: "code",
-  },
-  {
-    table: "nuts",
-    key: "nuts_id",
-    foreignKey: "code",
-  },
-  {
-    table: "msoa",
-    key: "msoa_id",
-    foreignKey: "code",
-  },
-  {
-    table: "lsoa",
-    key: "lsoa_id",
-    foreignKey: "code",
-  },
-  {
-    table: "police_force_areas",
-    key: "pfa_id",
-    foreignKey: "code",
-  },
-];
-
-const joinString: string = Object.freeze(
-  relationships
-    .map((r) => {
-      return `
-			LEFT OUTER JOIN ${r.table}
-				ON postcodes.${r.key}=${r.table}.${r.foreignKey}
-		`;
-    })
-    .join(" ")
-);
-
-const foreignColumns: ForeignColumn[] = [
-  {
-    field: "constituencies.name",
-    as: "parliamentary_constituency",
-  },
-  {
-    field: "districts.name",
-    as: "admin_district",
-  },
-  {
-    field: "parishes.name",
-    as: "parish",
-  },
-  {
-    field: "counties.name",
-    as: "admin_county",
-  },
-  {
-    field: "lsoa.name",
-    as: "lsoa",
-  },
-  {
-    field: "msoa.name",
-    as: "msoa",
-  },
-  {
-    field: "wards.name",
-    as: "admin_ward",
-  },
-  {
-    field: "ceds.name",
-    as: "ced",
-  },
-  {
-    field: "ccgs.ccg19cdh",
-    as: "ccg_code",
-  },
-  {
-    field: "ccgs.name",
-    as: "ccg",
-  },
-  {
-    field: "nuts.name",
-    as: "nuts",
-  },
-  {
-    field: "nuts.nuts_code",
-    as: "nuts_code",
-  },
-  {
-    field: "police_force_areas.name",
-    as: "pfa",
-  },
-];
-
-const columnString: string = foreignColumns
-  .map((elem) => `${elem.field} as ${elem.as}`)
-  .join(",");
-
 const idCache: Record<string, number[]> = {};
 
 const findQuery = `
 	SELECT
-		postcodes.*, ${columnString}
+		postcodes.*
 	FROM
 		postcodes
-	${joinString}
 	WHERE pc_compact=$1
 `;
 
@@ -369,14 +240,7 @@ const random = async (outcode?: string): Promise<PostcodeTuple | null> => {
   return randomFromIds(ids);
 };
 
-const findByIdQuery = `
-	SELECT
-		postcodes.*, ${columnString}
-	FROM
-		postcodes
-	${joinString}
-	WHERE id=$1
-`;
+const findByIdQuery = `SELECT postcodes.* FROM postcodes WHERE id=$1`;
 
 // Use an in memory array of IDs to retrieve random postcode
 const randomFromIds = async (ids: number[]): Promise<PostcodeTuple> => {
@@ -454,10 +318,9 @@ interface PrivateSearchOptions extends SearchOptions {
 
 const searchQuery = `
 	SELECT
-		postcodes.*, ${columnString}
+		postcodes.*
 	FROM
 		postcodes
-	${joinString}
 	WHERE
 		postcode >= $1
 	ORDER BY
@@ -771,7 +634,9 @@ const findOutcode = async (o: string): Promise<OutcodeInterface | null> => {
   result.parish = toArray(result.parish);
   result.admin_ward = toArray(result.admin_ward);
   result.country = toArray(result.country);
-  result.parliamentary_constituency = toArray(result.parliamentary_constituency);
+  result.parliamentary_constituency = toArray(
+    result.parliamentary_constituency
+  );
   return result;
 };
 
@@ -883,8 +748,8 @@ const seedPostcodes = async (filepath: string) => {
     { column: "outcode", method: (row) => row.extract("pcds").split(" ")[0] },
     { column: "ced_id", method: (row) => row.extract("ced") },
     { column: "ccg_id", method: (row) => row.extract("ccg") },
-    { column: "date_of_introduction", method: row => row.extract("dointr") },
-    { column: "pfa_id", method: row => row.extract("pfa") },
+    { column: "date_of_introduction", method: (row) => row.extract("dointr") },
+    { column: "pfa_id", method: (row) => row.extract("pfa") },
   ]);
 
   await methods.csvSeed({
