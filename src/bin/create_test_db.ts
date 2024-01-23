@@ -1,21 +1,10 @@
 import {
   Postcode,
-  District,
-  Parish,
-  County,
-  Ccg,
-  Constituency,
   ScottishConstituency,
   ScottishPostcode,
-  Nuts,
-  Ward,
-  PoliceForceArea,
   Outcode,
   Place,
   TerminatedPostcode,
-  Ced,
-  Lsoa,
-  Msoa,
 } from "../app/models/index";
 
 const handleError = (error?: any) => {
@@ -39,19 +28,8 @@ const clear = async (): Promise<unknown> => {
   await TerminatedPostcode.destroyRelation();
   await Place.destroyRelation();
   await ScottishPostcode.destroyRelation();
-  await District.destroyRelation();
-  await Parish.destroyRelation();
-  await Nuts.destroyRelation();
-  await County.destroyRelation();
-  await Lsoa.destroyRelation();
-  await Msoa.destroyRelation();
-  await Constituency.destroyRelation();
   await ScottishConstituency.destroyRelation();
-  await Ccg.destroyRelation();
-  await Ward.destroyRelation();
-  await PoliceForceArea.destroyRelation();
   await Outcode.destroyRelation();
-  await Ced.destroyRelation();
 };
 
 const seed = async (): Promise<unknown> => {
@@ -62,20 +40,9 @@ const seed = async (): Promise<unknown> => {
   console.log("Creating places releation");
   await Place.setupTable(seedPlacesPath);
   await ScottishPostcode.setupTable(seedScotlandPostcodePath);
-  await District.setupTable();
-  await Parish.setupTable();
-  await Nuts.setupTable();
-  await County.setupTable();
-  await Lsoa.setupTable();
-  await Msoa.setupTable();
-  await Constituency.setupTable();
   await ScottishConstituency.setupTable();
-  await Ccg.setupTable();
-  await Ward.setupTable();
-  await PoliceForceArea.setupTable();
   await Outcode.setupTable();
   console.log("Created outcodes relation");
-  await Ced.setupTable();
 };
 
 export const run = async () => {

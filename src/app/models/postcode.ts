@@ -3,9 +3,7 @@ import { OutcodeInterface } from "./outcode";
 import { QueryResult } from "pg";
 import {
   query,
-  ForeignColumn,
   RowExtract,
-  Relationship,
   getClient,
   generateMethods,
   Relation,
@@ -337,10 +335,9 @@ const searchPostcode = async (options: PrivateSearchOptions) => {
 
 const pccompactSearchQuery = `
 	SELECT
-		postcodes.*, ${columnString}
+		postcodes.*
 	FROM
 		postcodes
-	${joinString}
 	WHERE
 		pc_compact >= $1
 	ORDER BY
@@ -361,10 +358,8 @@ const nearestPostcodeQuery = `
 		ST_Distance(
 			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')
 		) AS distance,
-		${columnString}
 	FROM
 		postcodes
-	${joinString}
 	WHERE
 		ST_DWithin(
 			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3
@@ -593,14 +588,6 @@ const outcodeQuery = `
 	GROUP BY
 		outcode
 `;
-
-const outcodeAttributes = [
-  "admin_district",
-  "parish",
-  "admin_county",
-  "admin_ward",
-  "parliamentary_constituency",
-];
 
 const toArray = (i: string[] | [null]) => {
   if (i.length === 1 && i[0] === null) return [];

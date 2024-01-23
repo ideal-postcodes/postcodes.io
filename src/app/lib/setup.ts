@@ -1,34 +1,7 @@
-import {
-  Ccg,
-  Ced,
-  Lsoa,
-  Msoa,
-  Constituency,
-  County,
-  District,
-  Nuts,
-  Parish,
-  Ward,
-  ScottishConstituency,
-  Outcode,
-  PoliceForceArea,
-} from "../models/index";
+import { ScottishConstituency, Outcode } from "../models/index";
 
 // List of support tables generated from data/ directory
-export const SUPPORT_TABLES = [
-  Ccg,
-  Ced,
-  Lsoa,
-  Msoa,
-  Constituency,
-  County,
-  District,
-  Nuts,
-  Parish,
-  Ward,
-  ScottishConstituency,
-  PoliceForceArea,
-];
+export const SUPPORT_TABLES = [ScottishConstituency];
 
 /**
  * Generates support tables in DB
