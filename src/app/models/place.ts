@@ -129,11 +129,11 @@ const methods = generateMethods(relation);
 const returnAttributes = `*, ST_AsText(bounding_polygon) AS polygon`;
 
 const findByCodeQuery = `
-	SELECT 
-		${returnAttributes} 
-	FROM 
-		places 
-	WHERE 
+	SELECT
+		${returnAttributes}
+	FROM
+		places
+	WHERE
 		code=$1
 `;
 
@@ -182,10 +182,10 @@ const search = async ({
 // Replacing postgres unaccent due to indexing issues
 // https://stackoverflow.com/questions/28899042/unaccent-preventing-index-usage-in-postgres/28899610#28899610
 const searchQuery = `
-	SELECT 
-		${returnAttributes} 
+	SELECT
+		${returnAttributes}
 	FROM
-		places 
+		places
 	WHERE
 		name_1_search ~ $1
 		OR name_2_search ~ $1
@@ -211,15 +211,15 @@ const prefixSearch = async (
 };
 
 const termsSearchQuery = `
-	SELECT 
-		${returnAttributes} 
+	SELECT
+		${returnAttributes}
 	FROM
 		places
 	WHERE
 		name_1_search_ts @@ phraseto_tsquery('simple', $1)
 		OR name_2_search_ts @@ phraseto_tsquery('simple', $1)
 	ORDER BY GREATEST(
-		ts_rank_cd(name_1_search_ts, phraseto_tsquery('simple', $1), 1), 
+		ts_rank_cd(name_1_search_ts, phraseto_tsquery('simple', $1), 1),
 		coalesce(ts_rank_cd(name_2_search_ts, phraseto_tsquery('simple', $1), 1), 0)
 	) DESC
 	LIMIT $2
@@ -260,11 +260,11 @@ const loadPlaceIds = async (): Promise<number[]> => {
 };
 
 const findByIdQuery = `
-	SELECT 
-		${returnAttributes} 
-	FROM 
-		places 
-	WHERE 
+	SELECT
+		${returnAttributes}
+	FROM
+		places
+	WHERE
 		id=$1
 `;
 
@@ -282,22 +282,22 @@ interface PlaceDistanceTuple extends PlaceTuple {
 
 // Returns places that are contained by specified geolocation
 const containsQuery = `
-	SELECT 
-		${returnAttributes}, 
+	SELECT
+		${returnAttributes},
 		ST_Distance(
 			location, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')
-		) AS distance  
-	FROM 
-		places 
-	WHERE 
+		) AS distance
+	FROM
+		places
+	WHERE
 		ST_Intersects(
 			bounding_polygon,
 			ST_GeographyFromText('SRID=4326;POINT(' || $1 || ' ' || $2 || ')')
-		) 
-	ORDER BY 
+		)
+	ORDER BY
 		distance ASC
-	LIMIT 
-		$3 
+	LIMIT
+		$3
 `;
 
 interface ContainsOptions {
@@ -330,20 +330,20 @@ const contains = async (
 
 // Returns nearest places with polygons that intersect geolocation incl. radius
 const nearestQuery = `
-	SELECT 
-		${returnAttributes}, 
+	SELECT
+		${returnAttributes},
 		ST_Distance(
 			bounding_polygon, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')')
-		) AS distance 
-	FROM 
-		places 
-	WHERE 
+		) AS distance
+	FROM
+		places
+	WHERE
 		ST_DWithin(
 			bounding_polygon, ST_GeographyFromText('POINT(' || $1 || ' ' || $2 || ')'), $3
-		) 
-	ORDER BY 
-		distance ASC, name_1 ASC 
-	LIMIT $4 
+		)
+	ORDER BY
+		distance ASC, name_1 ASC
+	LIMIT $4
 `;
 
 interface NearestOptions extends ContainsOptions {
@@ -518,14 +518,14 @@ const seedData = async (directory: string) => {
 const generateSearchFields = async () => {
   const updates = ["name_1", "name_2"].map((field) =>
     query(`
-      UPDATE 
-        ${relation.relation} 
-      SET 
+      UPDATE
+        ${relation.relation}
+      SET
         ${field}_search=replace(
           replace(
             lower(
               unaccent(${field})
-            ), 
+            ),
           '-', ' ')
         , '''', '')
     `)
@@ -536,9 +536,9 @@ const generateSearchFields = async () => {
 const generateTsSearchFields = async () => {
   const updates = ["name_1", "name_2"].map((field) =>
     query(`
-      UPDATE 
-        ${relation.relation} 
-      SET 
+      UPDATE
+        ${relation.relation}
+      SET
         ${field}_search_ts=to_tsvector('simple', ${field})
     `)
   );
@@ -571,13 +571,13 @@ const generatePolygonQuery = (place: PlaceTuple): string => {
   );
   locations.push(initialLocation);
   return `
-						UPDATE 
-							${relation.relation} 
-						SET 
+						UPDATE
+							${relation.relation}
+						SET
 							bounding_polygon=ST_GeogFromText('SRID=4326;
-							POLYGON((${locations.map((l) => `${l.longitude} ${l.latitude}`).join(",")}))') 
-						WHERE 
-							id=${place.id} 
+							POLYGON((${locations.map((l) => `${l.longitude} ${l.latitude}`).join(",")}))')
+						WHERE
+							id=${place.id}
 					`;
 };
 
@@ -605,9 +605,9 @@ const createPolygons = () => {
       };
 
       const streamQuery = new QueryStream(`
-      SELECT 
-        id, min_eastings, min_northings, max_eastings, max_northings 
-      FROM 
+      SELECT
+        id, min_eastings, min_northings, max_eastings, max_northings
+      FROM
         ${relation.relation}
     `);
 
@@ -625,14 +625,14 @@ const createPolygons = () => {
 
 const createLocations = async () =>
   query(`
-    UPDATE 
-      ${relation.relation} 
-    SET 
+    UPDATE
+      ${relation.relation}
+    SET
       location=ST_GeogFromText(
         'SRID=4326;POINT(' || longitude || ' ' || latitude || ')'
-      ) 
-    WHERE 
-      northings!=0 
+      )
+    WHERE
+      northings!=0
       AND eastings!=0
   `);
 
