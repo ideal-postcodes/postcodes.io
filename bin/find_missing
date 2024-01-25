@@ -1,3 +1,0 @@
-#! /usr/bin/env node
-
-require("./exec")("../dist/bin/find_missing");
