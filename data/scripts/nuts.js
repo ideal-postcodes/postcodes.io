@@ -23,7 +23,7 @@ const { extract } = require("./index");
  */
 
 const CODE_OFFSET = 0;
-const NUTS_CODE_OFFSET = 2;
+const NUTS_CODE_OFFSET = 4;
 const VALUE_OFFSET = 3;
 
 const transform = (row) => {
@@ -42,7 +42,7 @@ const transform = (row) => {
 
 const configs = [
   {
-    file: "LAU121_ITL321_ITL221_ITL121_UK_LU.csv",
+    file: "LAD23_LAU121_ITL321_ITL221_ITL121_UK_LU.csv",
     transform,
     parseOptions: {
       delimiter: ",",
