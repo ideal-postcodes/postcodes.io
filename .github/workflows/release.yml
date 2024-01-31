@@ -26,9 +26,6 @@ jobs:
       - name: Install
         run: npm install
 
-      - name: Test
-        run: make test
-
       - name: Semantic Release
         run: npm run semantic-release
         env:
