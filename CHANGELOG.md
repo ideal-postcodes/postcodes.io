@@ -1,3 +1,19 @@
+# [15.4.0](https://github.com/ideal-postcodes/postcodes.io/compare/15.3.0...15.4.0) (2024-01-31)
+
+
+### Bug Fixes
+
+* **CI:** Drop test in release step ([9c0f2c8](https://github.com/ideal-postcodes/postcodes.io/commit/9c0f2c8a44623426d5b94afecf35a65c8ff5db7f))
+* **Node:** Bump to v20 ([46d5af2](https://github.com/ideal-postcodes/postcodes.io/commit/46d5af2a68ca1680c9c9ede67601edb4d91e0991))
+* **ONSPD Aug 2023:** Update CCGs ([3191842](https://github.com/ideal-postcodes/postcodes.io/commit/3191842431f8a1c2be32d05a05b82ca21ddf65af))
+
+
+### Features
+
+* **NUTS/ITL:** Update names ([837a951](https://github.com/ideal-postcodes/postcodes.io/commit/837a9518782b5920b590a7f65d567e9f86afbd57))
+* **ONSPD:** Update for Nov 2023 ([af1c922](https://github.com/ideal-postcodes/postcodes.io/commit/af1c922f4ed36ef2ba39052beef1a1062a49d5cc))
+* **Parish:** Update for 2023 ([c15a1c1](https://github.com/ideal-postcodes/postcodes.io/commit/c15a1c1ca0ec75d1e4082503db5ab9fb5b8a3a02))
+
 # [15.3.0](https://github.com/ideal-postcodes/postcodes.io/compare/15.2.0...15.3.0) (2023-08-24)
 
 
