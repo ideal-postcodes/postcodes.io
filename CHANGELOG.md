@@ -1,3 +1,11 @@
+## [15.4.1](https://github.com/ideal-postcodes/postcodes.io/compare/15.4.0...15.4.1) (2024-02-07)
+
+
+### Bug Fixes
+
+* **Nov 2023:** Rebuild release for NUTS/ITL ([ba78b97](https://github.com/ideal-postcodes/postcodes.io/commit/ba78b973ea5d06000649a88c1484b4c2fbd95b15))
+* **NUTS:** Update NUTS/ITL ([4cf64ea](https://github.com/ideal-postcodes/postcodes.io/commit/4cf64ea309422c23497a006473cd69ab4d57edfc))
+
 # [15.4.0](https://github.com/ideal-postcodes/postcodes.io/compare/15.3.0...15.4.0) (2024-01-31)
 
 
