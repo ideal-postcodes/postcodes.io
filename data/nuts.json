@@ -227,30 +227,6 @@
     "code": "TLJ13",
     "name": "Buckinghamshire"
   },
-  "E06000061": {
-    "code": "TLF25",
-    "name": "Wellingborough"
-  },
-  "E06000062": {
-    "code": "TLF24",
-    "name": "South Northamptonshire"
-  },
-  "E06000063": {
-    "code": "TLD11",
-    "name": "Copeland"
-  },
-  "E06000064": {
-    "code": "TLD12",
-    "name": "South Lakeland"
-  },
-  "E06000065": {
-    "code": "TLE22",
-    "name": "Selby"
-  },
-  "E06000066": {
-    "code": "TLK23",
-    "name": "Somerset West and Taunton"
-  },
   "E07000008": {
     "code": "TLH12",
     "name": "Cambridge"
@@ -270,6 +246,30 @@
   "E07000012": {
     "code": "TLH12",
     "name": "South Cambridgeshire"
+  },
+  "E07000026": {
+    "code": "TLD11",
+    "name": "Allerdale"
+  },
+  "E07000027": {
+    "code": "TLD11",
+    "name": "Barrow-in-Furness"
+  },
+  "E07000028": {
+    "code": "TLD12",
+    "name": "Carlisle"
+  },
+  "E07000029": {
+    "code": "TLD11",
+    "name": "Copeland"
+  },
+  "E07000030": {
+    "code": "TLD12",
+    "name": "Eden"
+  },
+  "E07000031": {
+    "code": "TLD12",
+    "name": "South Lakeland"
   },
   "E07000032": {
     "code": "TLF13",
@@ -675,6 +675,62 @@
     "code": "TLH17",
     "name": "South Norfolk"
   },
+  "E07000150": {
+    "code": "TLF25",
+    "name": "Corby"
+  },
+  "E07000151": {
+    "code": "TLF24",
+    "name": "Daventry"
+  },
+  "E07000152": {
+    "code": "TLF25",
+    "name": "East Northamptonshire"
+  },
+  "E07000153": {
+    "code": "TLF25",
+    "name": "Kettering"
+  },
+  "E07000154": {
+    "code": "TLF24",
+    "name": "Northampton"
+  },
+  "E07000155": {
+    "code": "TLF24",
+    "name": "South Northamptonshire"
+  },
+  "E07000156": {
+    "code": "TLF25",
+    "name": "Wellingborough"
+  },
+  "E07000163": {
+    "code": "TLE22",
+    "name": "Craven"
+  },
+  "E07000164": {
+    "code": "TLE22",
+    "name": "Hambleton"
+  },
+  "E07000165": {
+    "code": "TLE22",
+    "name": "Harrogate"
+  },
+  "E07000166": {
+    "code": "TLE22",
+    "name": "Richmondshire"
+  },
+  "E07000167": {
+    "code": "TLE22",
+    "name": "Ryedale"
+  },
+  "E07000168": {
+    "code": "TLE22",
+    "name": "Scarborough"
+  },
+  "E07000169": {
+    "code": "TLE22",
+    "name": "Selby"
+  },
   "E07000170": {
     "code": "TLF15",
     "name": "Ashfield"
@@ -722,6 +778,18 @@
   "E07000181": {
     "code": "TLJ14",
     "name": "West Oxfordshire"
+  },
+  "E07000187": {
+    "code": "TLK23",
+    "name": "Mendip"
+  },
+  "E07000188": {
+    "code": "TLK23",
+    "name": "Sedgemoor"
+  },
+  "E07000189": {
+    "code": "TLK23",
+    "name": "South Somerset"
   },
   "E07000192": {
     "code": "TLG24",
@@ -906,6 +974,10 @@
   "E07000245": {
     "code": "TLH14",
     "name": "West Suffolk"
+  },
+  "E07000246": {
+    "code": "TLK23",
+    "name": "Somerset West and Taunton"
   },
   "E08000001": {
     "code": "TLD36",
@@ -1183,7 +1255,7 @@
     "code": "TLI32",
     "name": "Westminster"
   },
-  "LAD23CD": {
+  "LAU121CD": {
     "code": "ITL321CD",
     "name": "LAU121NM"
   },
@@ -1231,131 +1303,167 @@
     "code": "TLN09",
     "name": "Ards and North Down"
   },
-  "S12000005": {
+  "S30000003": {
     "code": "TLM72",
     "name": "Clackmannanshire"
   },
-  "S12000006": {
-    "code": "TLM92",
-    "name": "Dumfries and Galloway"
-  },
-  "S12000008": {
-    "code": "TLM93",
-    "name": "East Ayrshire"
-  },
-  "S12000010": {
+  "S30000005": {
     "code": "TLM73",
     "name": "East Lothian"
   },
-  "S12000011": {
-    "code": "TLM83",
-    "name": "East Renfrewshire"
-  },
-  "S12000013": {
-    "code": "TLM64",
-    "name": "Na h-Eileanan Siar"
-  },
-  "S12000014": {
-    "code": "TLM76",
-    "name": "Falkirk"
-  },
-  "S12000017": {
-    "code": "TLM63",
-    "name": "Skye and Lochalsh"
-  },
-  "S12000018": {
-    "code": "TLM83",
-    "name": "Inverclyde"
-  },
-  "S12000019": {
+  "S30000006": {
     "code": "TLM73",
     "name": "Midlothian"
   },
-  "S12000020": {
-    "code": "TLM62",
-    "name": "North East Moray"
-  },
-  "S12000021": {
-    "code": "TLM63",
-    "name": "Arran and Cumbrae"
-  },
-  "S12000023": {
-    "code": "TLM65",
-    "name": "Orkney Islands"
-  },
-  "S12000026": {
+  "S30000007": {
     "code": "TLM91",
     "name": "Scottish Borders"
   },
-  "S12000027": {
-    "code": "TLM66",
-    "name": "Shetland Islands"
-  },
-  "S12000028": {
-    "code": "TLM94",
-    "name": "South Ayrshire"
-  },
-  "S12000029": {
-    "code": "TLM95",
-    "name": "South Lanarkshire"
-  },
-  "S12000030": {
-    "code": "TLM77",
-    "name": "Stirling"
-  },
-  "S12000033": {
-    "code": "TLM50",
-    "name": "Aberdeen City"
-  },
-  "S12000034": {
-    "code": "TLM50",
-    "name": "Aberdeenshire"
-  },
-  "S12000035": {
-    "code": "TLM63",
-    "name": "Argyll and Bute Mainland"
-  },
-  "S12000036": {
+  "S30000008": {
     "code": "TLM75",
     "name": "City of Edinburgh"
   },
-  "S12000038": {
-    "code": "TLM83",
-    "name": "Renfrewshire"
+  "S30000009": {
+    "code": "TLM76",
+    "name": "Falkirk"
   },
-  "S12000039": {
-    "code": "TLM81",
-    "name": "West Dunbartonshire"
+  "S30000011": {
+    "code": "TLM77",
+    "name": "Stirling"
   },
-  "S12000040": {
+  "S30000012": {
     "code": "TLM78",
     "name": "West Lothian"
   },
-  "S12000041": {
-    "code": "TLM71",
-    "name": "Angus"
-  },
-  "S12000042": {
-    "code": "TLM71",
-    "name": "Dundee City"
-  },
-  "S12000045": {
+  "S30000013": {
     "code": "TLM81",
-    "name": "East Dunbartonshire"
+    "name": "Helensburgh and Lomond"
   },
-  "S12000047": {
+  "S30000014": {
+    "code": "TLM81",
+    "name": "West Dunbartonshire"
+  },
+  "S30000016": {
+    "code": "TLM92",
+    "name": "Dumfries and Galloway"
+  },
+  "S30000017": {
+    "code": "TLM93",
+    "name": "East Ayrshire"
+  },
+  "S30000018": {
+    "code": "TLM93",
+    "name": "North Ayrshire mainland"
+  },
+  "S30000020": {
+    "code": "TLM83",
+    "name": "East Renfrewshire"
+  },
+  "S30000021": {
+    "code": "TLM83",
+    "name": "Renfrewshire"
+  },
+  "S30000022": {
+    "code": "TLM83",
+    "name": "Inverclyde"
+  },
+  "S30000024": {
+    "code": "TLM94",
+    "name": "South Ayrshire"
+  },
+  "S30000025": {
+    "code": "TLM95",
+    "name": "South Lanarkshire"
+  },
+  "S30000026": {
+    "code": "TLM50",
+    "name": "Aberdeen City"
+  },
+  "S30000027": {
+    "code": "TLM50",
+    "name": "Aberdeenshire"
+  },
+  "S30000028": {
+    "code": "TLM61",
+    "name": "Ross and Cromarty"
+  },
+  "S30000029": {
+    "code": "TLM61",
+    "name": "Caithness and Sutherland"
+  },
+  "S30000030": {
+    "code": "TLM62",
+    "name": "Inverness and Nairn"
+  },
+  "S30000031": {
+    "code": "TLM62",
+    "name": "Badenoch and Strathspey"
+  },
+  "S30000032": {
+    "code": "TLM62",
+    "name": "West Moray"
+  },
+  "S30000033": {
+    "code": "TLM62",
+    "name": "North East Moray"
+  },
+  "S30000034": {
+    "code": "TLM63",
+    "name": "Arran and Cumbrae"
+  },
+  "S30000035": {
+    "code": "TLM63",
+    "name": "Argyll and Bute Islands"
+  },
+  "S30000036": {
+    "code": "TLM63",
+    "name": "Argyll and Bute Mainland"
+  },
+  "S30000037": {
+    "code": "TLM63",
+    "name": "Lochaber"
+  },
+  "S30000038": {
+    "code": "TLM63",
+    "name": "Skye and Lochalsh"
+  },
+  "S30000039": {
+    "code": "TLM64",
+    "name": "Na h-Eileanan Siar"
+  },
+  "S30000040": {
+    "code": "TLM65",
+    "name": "Orkney Islands"
+  },
+  "S30000041": {
+    "code": "TLM66",
+    "name": "Shetland Islands"
+  },
+  "S30000042": {
     "code": "TLM72",
     "name": "Fife"
   },
-  "S12000048": {
+  "S30000043": {
     "code": "TLM77",
     "name": "Perth and Kinross"
   },
-  "S12000049": {
+  "S30000048": {
+    "code": "TLM71",
+    "name": "Angus"
+  },
+  "S30000049": {
+    "code": "TLM71",
+    "name": "Dundee City"
+  },
+  "S30000050": {
+    "code": "TLM81",
+    "name": "East Dunbartonshire"
+  },
+  "S30000052": {
     "code": "TLM82",
     "name": "Glasgow City"
   },
-  "S12000050": {
+  "S30000053": {
     "code": "TLM84",
     "name": "North Lanarkshire"
   },
