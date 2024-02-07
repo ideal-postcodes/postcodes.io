@@ -22,7 +22,7 @@ const { extract } = require("./index");
  * }
  */
 
-const CODE_OFFSET = 0;
+const CODE_OFFSET = 2;
 const NUTS_CODE_OFFSET = 4;
 const VALUE_OFFSET = 3;
 
