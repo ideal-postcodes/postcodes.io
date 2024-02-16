@@ -14,6 +14,7 @@ describe("Postcode data regression testing", function () {
   // Ordinary case
   it("contains correct data for AB123BS", async () => {
     const result = await Postcode.find("AB123BS");
+    if (result === null) throw new Error("Postcode not found");
     assert.deepEqual(
       {
         id: result.id,
@@ -64,6 +65,7 @@ describe("Postcode data regression testing", function () {
 
   it("returns correct data for SE1P5ZZ", async () => {
     const result = await Postcode.find("SE1P5ZZ");
+    if (result === null) throw new Error("Postcode not found");
     assert.deepEqual(
       {
         id: result.id,
