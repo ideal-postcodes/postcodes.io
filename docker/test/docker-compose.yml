@@ -2,7 +2,7 @@
 version: "3"
 services:
   pg:
-    image: postgis/postgis:15
+    image: postgis/postgis:15-master
     environment:
       POSTGRES_DB: postcodeio_testing
       POSTGRES_PASSWORD: password

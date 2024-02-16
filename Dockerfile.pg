@@ -1,4 +1,4 @@
-FROM postgis/postgis:15
+FROM postgis/postgis:15-master
 
 COPY latest /tmp/latest
 
