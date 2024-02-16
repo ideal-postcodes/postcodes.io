@@ -1,22 +1,11 @@
 import { join, resolve } from "path";
 import {
   Postcode,
-  District,
-  Parish,
-  County,
-  Ccg,
-  Constituency,
   ScottishConstituency,
   ScottishPostcode,
-  Nuts,
-  Ward,
   Outcode,
   Place,
   TerminatedPostcode,
-  Ced,
-  Lsoa,
-  Msoa,
-  PoliceForceArea,
 } from "../../src/app/models/index";
 import { QueryResult } from "pg";
 
@@ -28,8 +17,6 @@ const seedScotlandPostcodePath = resolve(__dirname, "../seed/");
 /**
  * Clears the test database
  * - Skips if PRESERVE_DB
- * @param  {function} callback
- * @return {undefined}
  */
 const clearTestDb = async (): Promise<any[] | null> => {
   if (process.env.PRESERVE_DB !== undefined) return null;
@@ -38,19 +25,8 @@ const clearTestDb = async (): Promise<any[] | null> => {
     TerminatedPostcode.destroyRelation(),
     Place.destroyRelation(),
     ScottishPostcode.destroyRelation(),
-    District.destroyRelation(),
-    Parish.destroyRelation(),
-    Nuts.destroyRelation(),
-    County.destroyRelation(),
-    Constituency.destroyRelation(),
     ScottishConstituency.destroyRelation(),
-    Ccg.destroyRelation(),
-    Ward.destroyRelation(),
-    Lsoa.destroyRelation(),
-    Msoa.destroyRelation(),
     Outcode.destroyRelation(),
-    Ced.destroyRelation(),
-    PoliceForceArea.destroyRelation(),
   ]);
 };
 
@@ -66,34 +42,22 @@ const seedPostcodeDb = async (): Promise<any[] | null> => {
     TerminatedPostcode.setupTable(seedPostcodePath),
     Place.setupTable(seedPlacesPath),
     ScottishPostcode.setupTable(seedScotlandPostcodePath),
-    District.setupTable(),
-    Parish.setupTable(),
-    Nuts.setupTable(),
-    County.setupTable(),
-    Constituency.setupTable(),
     ScottishConstituency.setupTable(),
-    Ccg.setupTable(),
-    Ward.setupTable(),
-    Lsoa.setupTable(),
-    Msoa.setupTable(),
     Outcode.setupTable(),
-    Ced.setupTable(),
-    PoliceForceArea.setupTable(),
   ]);
 };
 
 // Clear terminated onspd table
-const clearTerminatedPostcodesDb = async (): Promise<QueryResult<
-  any
-> | null> => {
-  if (NO_RELOAD_DB) return null;
-  return TerminatedPostcode.destroyRelation();
-};
+const clearTerminatedPostcodesDb =
+  async (): Promise<QueryResult<any> | null> => {
+    if (NO_RELOAD_DB) return null;
+    return TerminatedPostcode.destroyRelation();
+  };
 
 // Clear ONSPD table
 const clearPostcodeDb = async (): Promise<QueryResult<any> | null> => {
   if (NO_RELOAD_DB) return null;
-  await Postcode.destroyRelation();
+  return Postcode.destroyRelation();
 };
 
 // Clear SPD Table
