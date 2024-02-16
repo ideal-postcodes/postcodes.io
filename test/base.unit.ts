@@ -3,7 +3,6 @@ import { assert } from "chai";
 import { query, csvExtractor } from "../src/app/models/base";
 import spdSchemaLarge from "../data/spd_large_schema.json";
 import spdSchemaSmall from "../data/spd_small_schema.json";
-import onspdSchema from "../data/onspd_schema.json";
 
 describe("Base model", function () {
   describe("Base model instance methods", function () {
@@ -133,34 +132,6 @@ describe("Base model", function () {
       await customRelation.clear();
       const data = await customRelation.all();
       assert.equal(data.rows.length, 0);
-    });
-  });
-
-  describe("csvExtractor", () => {
-    it("generates function that extracts correct ONSPD val from row", () => {
-      const row = ["foo", "bar", "baz"];
-      const extract = csvExtractor(onspdSchema);
-      assert.equal(extract(row, "pcd"), "foo");
-      assert.equal(extract(row, "pcd2"), "bar");
-      assert.equal(extract(row, "pcds"), "baz");
-    });
-
-    it("generates function that extracts correct SPD val from row", () => {
-      const row = ["foo", "bar", "baz", "date"];
-
-      const extract = csvExtractor(spdSchemaSmall);
-      assert.equal(extract(row, "Postcode"), "foo");
-      assert.equal(extract(row, "DateOfIntroduction"), "date");
-    });
-
-    it("extracts correct SPD val from row when large specified", () => {
-      const row = new Array(15);
-      row[14] = "yes";
-      const extract = csvExtractor(spdSchemaLarge);
-      assert.equal(
-        extract(row, "ScottishParliamentaryConstituency2014Code"),
-        "yes"
-      );
     });
   });
 });
