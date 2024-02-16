@@ -1,13 +1,4 @@
-import {
-  ForeignColumn,
-  Relationship,
-  getClient,
-  _csvSeed,
-  csvExtractor,
-  generateMethods,
-  query,
-  Relation,
-} from "./base";
+import { getClient, _csvSeed, generateMethods, query, Relation } from "./base";
 
 import { readdirSync, statSync } from "fs";
 // @ts-ignore
