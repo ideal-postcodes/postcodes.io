@@ -7,7 +7,7 @@ import { getConfig } from "../../config/config";
 const defaults = getConfig();
 
 // Instantiate postgres client pool
-const pool = new Pool(defaults.postgres);
+export const pool = new Pool(defaults.postgres);
 
 export type Schema = Record<string, string>;
 
