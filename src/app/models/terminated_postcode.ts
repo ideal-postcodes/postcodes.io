@@ -1,46 +1,21 @@
+import { parse } from "@fast-csv/parse";
+import { createReadStream } from "fs";
+import { from } from "pg-copy-streams";
+import { format } from "@fast-csv/format";
+import { Relation, generateMethods, query, _csvSeed, pool } from "./base";
 import {
-  Relation,
-  RowExtract,
-  csvExtractor,
-  generateMethods,
-  query,
-  _csvSeed,
-} from "./base";
+  relation as postcodeRelation,
+  PostcodeTuple,
+  firstLine,
+} from "./postcode";
 import { isValid } from "postcode";
 
-const extractOnspdVal = csvExtractor(
-  require("../../../data/onspd_schema.json")
-);
-
 const relation: Relation = {
+  ...postcodeRelation,
   relation: "terminated_postcodes",
-  schema: {
-    id: "SERIAL PRIMARY KEY",
-    postcode: `VARCHAR(10) NOT NULL COLLATE "C"`,
-    pc_compact: `VARCHAR(9) COLLATE "C"`,
-    year_terminated: "INTEGER",
-    month_terminated: "INTEGER",
-    eastings: "INTEGER",
-    northings: "INTEGER",
-    longitude: "DOUBLE PRECISION",
-    latitude: "DOUBLE PRECISION",
-    location: "GEOGRAPHY(Point, 4326)",
-  },
-  indexes: [
-    {
-      unique: true,
-      column: "pc_compact",
-    },
-  ],
 };
 
-interface TerminatedPostcodeTuple extends TerminatedPostcodeInterface {
-  id: number;
-  pc_compact: string;
-  eastings: number;
-  northings: number;
-  location: string;
-}
+interface TerminatedPostcodeTuple extends PostcodeTuple {}
 
 interface TerminatedPostcodeInterface {
   postcode: string;
@@ -50,12 +25,7 @@ interface TerminatedPostcodeInterface {
   latitude: number;
 }
 
-const findQuery = `
-	SELECT *
-	FROM 
-		terminated_postcodes 
-	WHERE pc_compact=$1
-`;
+const findQuery = `SELECT * FROM terminated_postcodes WHERE pc_compact=$1`;
 
 export const find = async (
   postcode: string
@@ -78,55 +48,39 @@ export const toJson = (
 ): TerminatedPostcodeInterface => {
   return {
     postcode: t.postcode,
-    year_terminated: t.year_terminated,
-    month_terminated: t.month_terminated,
+    // Get first 4 characters
+    year_terminated: parseInt(t.date_of_termination.slice(0, 4), 10),
+    // Get last 2 characters
+    month_terminated: parseInt(t.date_of_termination.slice(-2), 10),
     longitude: t.longitude,
     latitude: t.latitude,
   };
 };
 
-export const seedPostcodes = async (filepath: string) => {
-  const ONSPD_COL_MAPPINGS = Object.freeze([
-    { column: "postcode", method: (row: RowExtract) => row.extract("pcds") },
-    {
-      column: "pc_compact",
-      method: (row) => row.extract("pcds").replace(/\s/g, ""),
-    },
-    {
-      column: "year_terminated",
-      method: (row) => row.extract("doterm").slice(0, 4),
-    },
-    {
-      column: "month_terminated",
-      method: (row) => row.extract("doterm").slice(-2),
-    },
-    { column: "eastings", method: (row) => row.extract("oseast1m") },
-    { column: "northings", method: (row) => row.extract("osnrth1m") },
-    {
-      column: "longitude",
-      method: (row) => {
-        const eastings = row.extract("oseast1m");
-        return eastings === "" ? null : row.extract("long");
-      },
-    },
-    {
-      column: "latitude",
-      method: (row: RowExtract) => {
-        const northings = row.extract("osnrth1m");
-        return northings === "" ? null : row.extract("lat");
-      },
-    },
-  ]);
+const seedPostcodes = async (filepath: string) => {
+  const headers = await firstLine(filepath);
+  const q = `COPY ${relation.relation} (${headers}) FROM STDIN DELIMITER ',' CSV HEADER`;
+  const client = await pool.connect();
+  const pgStream = client.query(from(q));
+  const parser = parse<PostcodeTuple, PostcodeTuple>({
+    headers: true,
+  });
 
-  return methods.csvSeed({
-    filepath: [filepath],
-    transform: (row: RowExtract) => {
-      if (row[0] === "pcd") return null; //ignore header
-      if (row[4].length === 0) return null; // Skip if not terminated
-      row.extract = (code: string) => extractOnspdVal(row, code); // Append extraction
-      return ONSPD_COL_MAPPINGS.map((elem) => elem.method(row));
-    },
-    columns: ONSPD_COL_MAPPINGS.map((elem) => elem.column),
+  return new Promise((resolve, reject) => {
+    createReadStream(filepath, { encoding: "utf8" })
+      .pipe(parser)
+      .pipe(format())
+      .transform((row: PostcodeTuple): PostcodeTuple | null => {
+        if (row.date_of_termination === "") return null;
+        if (row.eastings === null) {
+          row.longitude = null;
+          row.latitude = null;
+        }
+        return row;
+      })
+      .pipe(pgStream)
+      .on("finish", () => resolve(undefined))
+      .on("error", (err: any) => reject(err));
   });
 };
 

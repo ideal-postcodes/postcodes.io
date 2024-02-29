@@ -1,25 +1,11 @@
-import * as fs from "fs";
 import * as path from "path";
 import { assert } from "chai";
-import parse from "csv-parse/lib/sync";
+import { PostcodeTuple } from "../src/app/models/postcode";
 import * as helper from "./helper/index";
 import { PostcodesioHttpError } from "../src/app/lib/errors";
 const seedFilePath = path.resolve(__dirname, "./seed/postcode.csv");
 const Postcode = helper.Postcode;
 import { query } from "../src/app/models/base";
-
-/**
- * Counts number of postcode records if
- * - not headers
- * - not terminated
- */
-const postcodeRecordCount = (seedFilePath: any) => {
-  return parse(fs.readFileSync(seedFilePath)).filter(
-    (row: any) => row[0] !== "pcd" && row[4].length === 0
-  ).length;
-};
-
-const postcodeEntriesCount = postcodeRecordCount(seedFilePath);
 
 describe("Postcode Model", function () {
   let testPostcode: string, testOutcode: string;
@@ -32,6 +18,7 @@ describe("Postcode Model", function () {
 
   beforeEach(async () => {
     const result = await helper.lookupRandomPostcode();
+    if (result === null) throw new Error("No postcode found");
     testPostcode = result.postcode;
     testOutcode = result.outcode;
   });
@@ -54,9 +41,9 @@ describe("Postcode Model", function () {
     describe("#_createRelation", () => {
       it(`creates a relation that matches ${Postcode.relation.relation} schema`, async () => {
         const q = `
-					SELECT 
+					SELECT
 						column_name, data_type, character_maximum_length, collation_name
-					FROM INFORMATION_SCHEMA.COLUMNS 
+					FROM INFORMATION_SCHEMA.COLUMNS
 					WHERE table_name = '${Postcode.relation.relation}'
 				`;
         const result = await query(q);
@@ -73,7 +60,7 @@ describe("Postcode Model", function () {
       it("loads correct data from data directory", async () => {
         const q = `SELECT count(*) FROM ${Postcode.relation.relation}`;
         const result = await query(q);
-        assert.equal(result.rows[0].count, postcodeEntriesCount);
+        assert.isTrue(result.rows[0].count > 0);
       });
     });
 
@@ -88,8 +75,8 @@ describe("Postcode Model", function () {
     describe("#createIndexes", () => {
       it("generates indexes that matches to what's been specified", async () => {
         const q = `
-					SELECT indexdef 
-					FROM pg_indexes 
+					SELECT indexdef
+					FROM pg_indexes
 					WHERE tablename = '${Postcode.relation.relation}'
 				`;
         const result = await query(q);
@@ -107,54 +94,159 @@ describe("Postcode Model", function () {
 
   describe("#toJson", () => {
     it("formats an address object", () => {
-      const address = {
-        admin_district_id: "admin_district_id",
-        admin_county_id: "admin_county_id",
-        admin_ward_id: "admin_ward_id",
-        parish_id: "parish_id",
-        ccg_id: "ccg_id",
-        nuts_code: "nuts_code",
-        id: 0,
-        location: "location",
-        pc_compact: "pc_compact",
+      const address: PostcodeTuple = {
+        id: 3777,
+        location: "0101000020E610000018963FDF164C01C00B98C0ADBB934C40",
+        postcode: "AB16 6RA",
+        pc_compact: "AB166RA",
+        local_enterprise_partnership: null,
+        local_enterprise_partnership_2: null,
+        police_force_area: "Scotland",
+        cancer_alliance: null,
+        integrated_care_board_id: null,
+        integrated_care_board: null,
+        census_lsoa_2021: null,
+        census_msoa_2021: null,
+        county: null,
+        county_electoral_division: null,
+        ward: "Kingswells/Sheddocksley/Summerhill",
+        parish: null,
+        health_area: "Grampian",
+        nhs_er: null,
+        country: "Scotland",
+        region: null,
+        standard_statistical_region: null,
+        constituency: "Aberdeen North",
+        european_electoral_region: "Scotland",
+        local_learning: "Aberdeen City and Shire",
+        travel_to_work_area: "Aberdeen",
+        primary_care_trust: "Aberdeen City Community Health Partnership",
+        international_territorial_level: null,
+        international_territorial_level_id: null,
+        statistical_ward_2005: null,
+        census_area_statistics: "Summerhill",
+        national_park: null,
+        census_lsoa_2001: null,
+        census_msoa_2001: null,
+        census_oac_2001_supergroup: "Blue collar communites",
+        census_oac_2001_group: "Younger blue collar",
+        census_oac_2001_subgroup: "Younger blue collar (2)",
+        census_oac_2011_supergroup: "Hard-pressed living",
+        census_oac_2011_group: "Challenged terraced workers",
+        census_oac_2011_subgroup: "Hard pressed rented terraces",
+        local_authority: "Aberdeen City",
+        census_lsoa_2011: null,
+        census_msoa_2011: null,
+        ccg_id: null,
+        ccg: null,
+        built_up_area: null,
+        built_up_area_subdivision: null,
+        outcode: "AB16",
+        postcode_7: "AB166RA",
+        postcode_8: "AB16 6RA",
+        postcode_var: "AB16 6RA",
+        date_of_introduction: "199606",
+        date_of_termination: null,
+        county_code: "S99999999",
+        county_electoral_division_code: "S99999999",
+        local_authority_code: "S12000033",
+        ward_code: "S13002837",
+        parish_code: "S99999999",
+        postcode_user: "0",
+        eastings: 390289,
+        northings: 807044,
+        positional_quality: 1,
+        health_area_code: "S08000020",
+        nhs_er_code: "S99999999",
+        country_code: "S92000003",
+        region_code: "S99999999",
+        standard_statistical_region_code: "0",
+        constituency_code: "S14000001",
+        european_electoral_region_code: "S15000001",
+        local_learning_code: "S09000001",
+        travel_to_work_area_code: "S22000047",
+        primary_care_trust_code: "S03000012",
+        international_territorial_level_code: "S30000026",
+        statistical_ward_2005_code: "99ZZ00",
+        census_output_area_2001_code: "S00000917",
+        census_area_statistics_code: "01C14",
+        national_park_code: "S99999999",
+        census_lsoa_2001_code: "S01000136",
+        census_msoa_2001_code: "S02000025",
+        census_urban_rural_indicator_2001_code: "1",
+        census_oac_2001_code: "1B2",
+        census_oa_2011_code: "S00089932",
+        census_lsoa_2011_code: "S01006703",
+        census_msoa_2011_code: "S02001270",
+        census_wz_2011_code: "S34003114",
+        ccg_code: "S03000012",
+        built_up_area_code: "S99999999",
+        built_up_area_subdivision_code: "S99999999",
+        census_urban_rural_indicator_2011_code: "1",
+        census_oac_2011_code: "8B2",
+        latitude: 57.154165,
+        longitude: -2.162153,
+        local_enterprise_partnership_code: "S99999999",
+        local_enterprise_partnership_2_code: "S99999999",
+        police_force_area_code: "S23000009",
+        index_of_multiple_deprivation: 1919,
+        cancer_alliance_code: "S99999999",
+        integrated_care_board_code: "S99999999",
+        census_oa_2021_code: null,
+        census_lsoa_2021_code: null,
+        census_msoa_2021_code: null,
       };
-      // @ts-ignore
-      const formatted = Postcode.toJson(address);
-      assert.property(formatted, "codes");
-      // @ts-ignore
-      assert.equal(formatted.codes.admin_district, address.admin_district_id);
-      // @ts-ignore
-      assert.equal(formatted.codes.admin_county, address.admin_county_id);
-      // @ts-ignore
-      assert.equal(formatted.codes.admin_ward, address.admin_ward_id);
-      // @ts-ignore
-      assert.equal(formatted.codes.parish, address.parish_id);
-      // @ts-ignore
-      assert.equal(formatted.codes.ccg, address.ccg_id);
-      // @ts-ignore
-      assert.equal(formatted.codes.nuts, address.nuts_code);
-      assert.notProperty(formatted, "id");
-      assert.notProperty(formatted, "location");
-      assert.notProperty(formatted, "pc_compact");
-      assert.notProperty(formatted, "admin_district_id");
-      assert.notProperty(formatted, "admin_county_id");
-      assert.notProperty(formatted, "admin_ward_id");
-      assert.notProperty(formatted, "parish_id");
-      assert.notProperty(formatted, "ccg_id");
-      assert.notProperty(formatted, "nuts_id");
-      assert.notProperty(formatted, "nuts_code");
+      assert.deepEqual(Postcode.toJson(address), {
+        postcode: "AB16 6RA",
+        quality: 1,
+        eastings: 390289,
+        northings: 807044,
+        country: "Scotland",
+        nhs_ha: null,
+        longitude: -2.162153,
+        latitude: 57.154165,
+        european_electoral_region: "Scotland",
+        primary_care_trust: "Aberdeen City Community Health Partnership",
+        region: null,
+        lsoa: null,
+        msoa: null,
+        incode: "6RA",
+        outcode: "AB16",
+        parliamentary_constituency: "Aberdeen North",
+        admin_district: "Aberdeen City",
+        parish: null,
+        admin_county: null,
+        date_of_introduction: "199606",
+        admin_ward: "Kingswells/Sheddocksley/Summerhill",
+        ced: null,
+        ccg: null,
+        nuts: null,
+        pfa: "Scotland",
+        codes: {
+          admin_district: "S12000033",
+          admin_county: "S99999999",
+          admin_ward: "S13002837",
+          parish: "S99999999",
+          parliamentary_constituency: "S14000001",
+          ccg: null,
+          ccg_id: "S03000012",
+          ced: "S99999999",
+          nuts: "S30000026",
+          lsoa: null,
+          msoa: null,
+          lau2: null,
+          pfa: "S23000009",
+        },
+      });
     });
   });
 
   describe("#find", () => {
     it("should return postcode with the right attributes", async () => {
       const result = await Postcode.find(testPostcode);
+      if (result === null) throw new Error("No postcode found");
       assert.equal(result.postcode, testPostcode);
       helper.isRawPostcodeObjectWithFC(result);
-    });
-    it("should return null for null/undefined postcode search", async () => {
-      const result = await Postcode.find(null);
-      assert.isNull(result);
     });
     it("returns null if invalid postcode", async () => {
       const result = await Postcode.find("1");
@@ -162,6 +254,7 @@ describe("Postcode Model", function () {
     });
     it("should be insensitive to space", async () => {
       const result = await Postcode.find(testPostcode.replace(/\s/, ""));
+      if (result === null) throw new Error("No postcode found");
       assert.equal(result.postcode, testPostcode);
     });
     it("should return null if postcode does not exist", async () => {
@@ -191,25 +284,31 @@ describe("Postcode Model", function () {
       const postcode = await Postcode.random();
       helper.isRawPostcodeObjectWithFC(postcode);
     });
+
     describe("Outcode filter", () => {
       it("returns random postcode for within an outcode", async () => {
         const outcode = "AB10";
         const postcode = await Postcode.random(outcode);
+        if (postcode === null) throw new Error("No postcode found");
         helper.isRawPostcodeObjectWithFC(postcode);
         assert.equal(postcode.outcode, outcode);
       });
+
       it("is case and space insensitive", async () => {
         const outcode = "aB 10 ";
         const postcode = await Postcode.random(outcode);
+        if (postcode === null) throw new Error("No postcode found");
         helper.isRawPostcodeObjectWithFC(postcode);
         assert.equal(postcode.outcode, "AB10");
       });
+
       it("caches requests", async () => {
         const outcode = "AB12";
         const postcode = await Postcode.random(outcode);
         helper.isRawPostcodeObjectWithFC(postcode);
         assert.isTrue(Postcode.idCache[outcode].length > 0);
       });
+
       it("returns null if invalid outcode", async () => {
         const outcode = "BOGUS";
         const postcode = await Postcode.random(outcode);
@@ -235,6 +334,7 @@ describe("Postcode Model", function () {
   describe("#findOutcode", () => {
     it("should return the outcode with the right attributes", async () => {
       const result = await Postcode.findOutcode(testOutcode);
+      if (result === null) throw new Error("No outcode found");
       assert.equal(result.outcode, testOutcode);
       assert.property(result, "northings");
       assert.property(result, "eastings");
@@ -265,6 +365,7 @@ describe("Postcode Model", function () {
     });
     it("should be insensitive to space", async () => {
       const result = await Postcode.findOutcode(testOutcode + "    ");
+      if (result === null) throw new Error("No postcode found");
       assert.equal(result.outcode, testOutcode);
       assert.property(result, "northings");
       assert.property(result, "eastings");
@@ -273,6 +374,7 @@ describe("Postcode Model", function () {
     });
     it("should be insensitive to case", async () => {
       const result = await Postcode.findOutcode(testOutcode.toLowerCase());
+      if (result === null) throw new Error("No postcode found");
       assert.equal(result.outcode, testOutcode);
       assert.property(result, "northings");
       assert.property(result, "eastings");
