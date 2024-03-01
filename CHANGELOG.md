@@ -1,3 +1,11 @@
+# [15.5.0](https://github.com/ideal-postcodes/postcodes.io/compare/15.4.1...15.5.0) (2024-03-01)
+
+
+### Features
+
+* **2024 Constituencies:** Apply expected 2024 Westminster ([20ad61a](https://github.com/ideal-postcodes/postcodes.io/commit/20ad61a527b4af32f35c5de2943e17ae91f7c5db))
+* **ONSPD:** Bump to Feb 2024 ([00eec21](https://github.com/ideal-postcodes/postcodes.io/commit/00eec21f36360fbafab67186311eb845bb106161))
+
 ## [15.4.1](https://github.com/ideal-postcodes/postcodes.io/compare/15.4.0...15.4.1) (2024-02-07)
 
 
