@@ -38,8 +38,8 @@ export const routes = (app: Express): void => {
 
   router.get("/scotland/postcodes/:postcode", scottishPostcodes.show);
 
+  router.use(express.static("docs/build"));
+
   const { urlPrefix } = getConfig();
   app.use(urlPrefix, router);
-
-  router.use(express.static("../../docs/build"));
 };
