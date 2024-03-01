@@ -67,21 +67,6 @@ describe("Utils", () => {
   });
 });
 
-describe("Serve static assets", () => {
-  it("serves public/ when enabled", async () => {
-    const config = configFactory();
-    config.serveStaticAssets = true;
-    const newApp = postcodesioApplication(config);
-    await request(newApp).get("/js/app.js").expect(200);
-  });
-  it("does not serve public/ when disabled", async () => {
-    const config = configFactory();
-    config.serveStaticAssets = false;
-    const newApp = postcodesioApplication(config);
-    const response = await request(newApp).get("/js/app.ts").expect(404);
-  });
-});
-
 describe("httpHeaders", () => {
   it("sets arbitrary headers on all HTTP responses", async () => {
     const config = configFactory();

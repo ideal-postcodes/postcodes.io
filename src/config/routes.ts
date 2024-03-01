@@ -1,6 +1,5 @@
 import express from "express";
 import { Express } from "express";
-import * as pages from "../app/controllers/pages_controller";
 import * as utils from "../app/controllers/utils_controller";
 import * as places from "../app/controllers/places_controller";
 import * as outcodes from "../app/controllers/outcodes_controller";
@@ -11,11 +10,8 @@ import { getConfig } from "./config";
 
 export const routes = (app: Express): void => {
   const router = express.Router();
-  router.get("/", pages.home);
   router.get("/ping", utils.ping);
   router.get("/ready", utils.ready);
-  router.get("/about", pages.about);
-  router.get("/docs", pages.documentation);
 
   router.get("/postcodes", postcodes.query);
   router.post("/postcodes", postcodes.bulk);
@@ -44,4 +40,6 @@ export const routes = (app: Express): void => {
 
   const { urlPrefix } = getConfig();
   app.use(urlPrefix, router);
+
+  router.use(express.static("../../docs/build"));
 };
