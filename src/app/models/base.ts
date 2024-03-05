@@ -28,6 +28,7 @@ export interface Relation {
 
 export interface Relationship {
   table: string;
+  alt?: string; // Alternate name for relation
   key: string;
   foreignKey: string;
 }
@@ -52,31 +53,35 @@ export const query = async <T = any>(
   }
 };
 
-export const _create = ({ relation }: Relation) => <
-  T = Record<string, string | number>
->(
-  newRecord: T
-) => {
-  return query(
-    `
+export const _create =
+  ({ relation }: Relation) =>
+  <T = Record<string, string | number>>(newRecord: T) => {
+    return query(
+      `
     INSERT INTO ${relation}
       (${Object.keys(newRecord).join(", ")})
     VALUES
       (${dollarise(Object.values(newRecord))})
   `,
-    Object.values(newRecord)
-  );
-};
+      Object.values(newRecord)
+    );
+  };
 
-export const _all = ({ relation }: Relation) => () =>
-  query(`SELECT * FROM ${relation}`);
+export const _all =
+  ({ relation }: Relation) =>
+  () =>
+    query(`SELECT * FROM ${relation}`);
 
-export const _clear = ({ relation }: Relation) => () =>
-  query(`DELETE FROM ${relation}`);
+export const _clear =
+  ({ relation }: Relation) =>
+  () =>
+    query(`DELETE FROM ${relation}`);
 
-export const _createRelation = ({ relation, schema }: Relation) => () =>
-  query(`CREATE TABLE IF NOT EXISTS
-    ${relation} 
+export const _createRelation =
+  ({ relation, schema }: Relation) =>
+  () =>
+    query(`CREATE TABLE IF NOT EXISTS
+    ${relation}
     (
       ${Object.entries(schema)
         .map(([column, dataType]) => `${column} ${dataType}`)
@@ -84,8 +89,10 @@ export const _createRelation = ({ relation, schema }: Relation) => () =>
     )
   `);
 
-export const _destroyRelation = ({ relation }: Relation) => () =>
-  query(`DROP TABLE IF EXISTS ${relation} CASCADE`);
+export const _destroyRelation =
+  ({ relation }: Relation) =>
+  () =>
+    query(`DROP TABLE IF EXISTS ${relation} CASCADE`);
 
 /**
  * Build SQL string to generate index
@@ -93,9 +100,9 @@ export const _destroyRelation = ({ relation }: Relation) => () =>
 const generateInstruction = (index: Index, relation: string) => {
   const { unique, type, column, opClass } = index;
   return `
-    CREATE ${unique ? "UNIQUE INDEX" : "INDEX"} 
-    ON ${relation} 
-    USING ${type || "BTREE"} 
+    CREATE ${unique ? "UNIQUE INDEX" : "INDEX"}
+    ON ${relation}
+    USING ${type || "BTREE"}
     (${column} ${opClass ? opClass : ""})
   `;
 };
@@ -103,14 +110,13 @@ const generateInstruction = (index: Index, relation: string) => {
 /**
  * Generate index given instances internal array of IndexConfigurationObjects
  */
-export const _createIndexes = ({
-  relation,
-  indexes,
-}: Relation) => async (): Promise<void> => {
-  for (const index of indexes) {
-    await query(generateInstruction(index, relation));
-  }
-};
+export const _createIndexes =
+  ({ relation, indexes }: Relation) =>
+  async (): Promise<void> => {
+    for (const index of indexes) {
+      await query(generateInstruction(index, relation));
+    }
+  };
 
 type Transform = (row: string[]) => string[];
 
@@ -122,38 +128,40 @@ interface CsvSeedOptions {
 
 const DEFAULT_TRANSFORM = (row: string[]) => row;
 
-export const _csvSeed = ({ relation }: Relation) => async ({
-  filepath,
-  columns,
-  transform = DEFAULT_TRANSFORM,
-}: CsvSeedOptions) => {
-  const q = `COPY ${relation} (${columns}) FROM STDIN DELIMITER ',' CSV`;
-  const updates = filepath.map(
-    (f) =>
-      new Promise<void>((resolve, reject) => {
-        pool.connect((error: Error, client: PoolClient, done: any) => {
-          const pgStream = client
-            .query(from(q))
-            .on("finish", () => {
-              done();
-              resolve();
-            })
-            .on("error", (pgError) => {
-              done();
-              reject(pgError);
-            });
-          createReadStream(f, { encoding: "utf8" })
-            .pipe(csv.parse())
-            .pipe(csv.transform(transform))
-            .pipe(csv.stringify())
-            .pipe(pgStream);
-        });
-      })
-  );
-  for (const update of updates) {
-    await update;
-  }
-};
+export const _csvSeed =
+  ({ relation }: Relation) =>
+  async ({
+    filepath,
+    columns,
+    transform = DEFAULT_TRANSFORM,
+  }: CsvSeedOptions) => {
+    const q = `COPY ${relation} (${columns}) FROM STDIN DELIMITER ',' CSV`;
+    const updates = filepath.map(
+      (f) =>
+        new Promise<void>((resolve, reject) => {
+          pool.connect((_: Error, client: PoolClient, done: any) => {
+            const pgStream = client
+              .query(from(q))
+              .on("finish", () => {
+                done();
+                resolve();
+              })
+              .on("error", (pgError) => {
+                done();
+                reject(pgError);
+              });
+            createReadStream(f, { encoding: "utf8" })
+              .pipe(csv.parse())
+              .pipe(csv.transform(transform))
+              .pipe(csv.stringify())
+              .pipe(pgStream);
+          });
+        })
+    );
+    for (const update of updates) {
+      await update;
+    }
+  };
 
 export const destroyAll = async () => {
   if (process.env.NODE_ENV !== "test") {
@@ -169,16 +177,18 @@ export const getClient = () => pool.connect();
 export const dollarise = (values: unknown[]): string =>
   values.map((_, i) => `$${i + 1}`).join(", ");
 
-export const _populateLocation = ({ relation }: Relation) => async () =>
-  query(`
-		UPDATE 
-			${relation} 
-		SET 
+export const _populateLocation =
+  ({ relation }: Relation) =>
+  async () =>
+    query(`
+		UPDATE
+			${relation}
+		SET
 			location=ST_GeogFromText(
 				'SRID=4326;POINT(' || longitude || ' ' || latitude || ')'
-			) 
-		WHERE 
-			northings!=0 
+			)
+		WHERE
+			northings!=0
 			AND EASTINGS!=0
 	`);
 
