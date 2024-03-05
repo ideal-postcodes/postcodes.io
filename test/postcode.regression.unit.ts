@@ -14,6 +14,7 @@ describe("Postcode data regression testing", function () {
   // Ordinary case
   it("contains correct data for AB123BS", async () => {
     const result = await Postcode.find("AB123BS");
+    if (result === null) throw new Error("Postcode not found");
     assert.deepEqual(
       {
         id: result.id,
@@ -45,7 +46,9 @@ describe("Postcode data regression testing", function () {
         ced: null,
         ced_id: "S99999999",
         constituency_id: "S14000002",
+        constituency_2024_id: null,
         parliamentary_constituency: "Aberdeen South",
+        parliamentary_constituency_2024: null,
         admin_district: "Aberdeen City",
         parish: null,
         admin_county: null,
@@ -64,6 +67,7 @@ describe("Postcode data regression testing", function () {
 
   it("returns correct data for SE1P5ZZ", async () => {
     const result = await Postcode.find("SE1P5ZZ");
+    if (result === null) throw new Error("Postcode not found");
     assert.deepEqual(
       {
         id: result.id,
@@ -95,7 +99,9 @@ describe("Postcode data regression testing", function () {
         ced: null,
         ced_id: "E99999999",
         constituency_id: "E14000553",
+        constituency_2024_id: null,
         parliamentary_constituency: "Bermondsey and Old Southwark",
+        parliamentary_constituency_2024: null,
         admin_district: "Southwark",
         parish: "Southwark, unparished area",
         admin_county: null,
@@ -116,6 +122,7 @@ describe("Postcode data regression testing", function () {
   // https://github.com/ideal-postcodes/postcodes.io/issues/197
   it("contains correct data for JE24WD", async () => {
     const result = await Postcode.find("JE24WD");
+    if (result === null) throw new Error("Postcode not found");
     assert.deepEqual(
       {
         id: result.id,
@@ -147,7 +154,9 @@ describe("Postcode data regression testing", function () {
         date_of_introduction: "199507",
         ced_id: "L99999999",
         constituency_id: "L99999999",
+        constituency_2024_id: null,
         parliamentary_constituency: null,
+        parliamentary_constituency_2024: null,
         admin_district: "Channel Islands",
         parish: null,
         admin_county: null,

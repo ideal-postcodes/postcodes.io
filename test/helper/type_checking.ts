@@ -110,6 +110,7 @@ const postcodeAttributes = [
   "admin_district",
   "region",
   "parliamentary_constituency",
+  "parliamentary_constituency_2024",
   "european_electoral_region",
   "parish",
   "lsoa",
@@ -161,6 +162,7 @@ export const isRawPostcodeObject = (
 
 const postcodeForeignColumns = [
   "parliamentary_constituency",
+  "parliamentary_constituency_2024",
   "admin_district",
   "parish",
   "admin_county",
