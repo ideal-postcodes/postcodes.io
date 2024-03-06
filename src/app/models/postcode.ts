@@ -243,7 +243,7 @@ const joinString: string = Object.freeze(
     .map((r) => {
       return `
 			LEFT OUTER JOIN ${r.table} ${r.alt ? r.alt : ""}
-				ON postcodes.${r.key}=${r.table}.${r.foreignKey}
+				ON postcodes.${r.key}=${r.alt ? r.alt : r.table}.${r.foreignKey}
 		`;
     })
     .join(" ")
