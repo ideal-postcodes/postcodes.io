@@ -1,3 +1,11 @@
+## [15.5.1](https://github.com/ideal-postcodes/postcodes.io/compare/15.5.0...15.5.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* **2024 Constituency:** Apply IDs to 2024 field ([52fa74e](https://github.com/ideal-postcodes/postcodes.io/commit/52fa74e57e90d4e9e3a008acd2fc04faef9a7624))
+* **Constituencies:** Put 2024 Cons in separate field ([871b189](https://github.com/ideal-postcodes/postcodes.io/commit/871b189d722e04c89d455b9bffc798e69c33aeb0))
+
 # [15.5.0](https://github.com/ideal-postcodes/postcodes.io/compare/15.4.1...15.5.0) (2024-03-01)
 
 
