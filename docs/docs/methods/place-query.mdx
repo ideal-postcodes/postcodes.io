@@ -1,0 +1,16 @@
+---
+sidebar_label: "Place Query"
+title: "Place Query"
+---
+
+Submit a place query and receive a complete list of places matches and associated data.
+
+```get
+GET https://api.postcodes.io/places?q=[query]
+```
+
+## Optional Query Parameters
+
+`query=` (not required) aliases `toq=`
+
+`limit=` (not required) Limits number of places matches to return. Defaults to 10. Needs to be less than 100.
