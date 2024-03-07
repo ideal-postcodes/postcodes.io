@@ -1,0 +1,29 @@
+---
+sidebar_label: "Script"
+title: "Script Installation"
+---
+
+## Requirements
+
+- Local copy of [postcodes.io repository](https://github.com/ideal-postcodes/postcodes.io)
+- [Node.js](https://nodejs.org/en)
+- [PostgreSQL and PostGIS](https://postgis.net/documentation/getting_started/)
+
+### Operating System Compatibility
+
+Currently, the install process targets Linux and macOS systems. Please let us know if you have issues on those or any other operating systems.
+
+## Installation Steps
+
+Postcodes.io is packaged with a script to provision PostgreSQL and download a dump of the dataset. The script will perform the following tasks:
+
+- Prompt you for your PostgreSQL superuser credentials (most of the setup steps require this level of privilege)
+- Create a new database
+- Create a new readonly user for the new database
+- Download, unzip and stream the `pg_dump` into the new database
+
+To run,
+
+```bash
+$ npm run setup
+```

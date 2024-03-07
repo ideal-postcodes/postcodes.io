@@ -20,6 +20,17 @@ const sidebars: SidebarsConfig = {
     "overview",
     {
       type: "category",
+      label: "How to Install",
+      collapsed: false,
+      items: [
+        "install/docker",
+        "install/script",
+        "install/pg-dump",
+        "install/manual-installation",
+      ],
+    },
+    {
+      type: "category",
       label: "Available Data Fields",
       collapsed: false,
       items: [
