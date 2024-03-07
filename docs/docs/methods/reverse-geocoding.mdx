@@ -1,0 +1,30 @@
+---
+sidebar_label: "Reverse Geocoding"
+title: "Reverse Geocoding"
+---
+
+Returns nearest postcodes for a given longitude and latitude.
+
+```get
+GET https://api.postcodes.io/postcodes?lon=:longitude&lat=:latitude
+```
+
+## Optional Query Parameters
+
+`limit=` (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+
+`radius=` (not required) Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.
+
+`widesearch=` (not required) Search up to 20km radius, but subject to a maximum of 10 results. Since lookups over a wide area can be very expensive, we've created this method to allow you choose to make the trade off between search radius and number of results. Defaults to false. When enabled, radius and limits over 10 are ignored.
+
+## Additional Response Attributes
+
+`distance` Distance in metres from specified postode
+
+## Legacy
+
+Note that the old style of reverse geocoding (including optional headers above) will still be supported. Namely,
+
+```get
+GET https://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
+```
