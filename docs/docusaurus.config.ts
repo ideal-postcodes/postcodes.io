@@ -34,7 +34,7 @@ const config: Config = {
       'classic',
       {
         docs: {
-          sidebarPath: './sidebars.ts',
+          sidebarPath: require.resolve('./sidebars'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
