@@ -1,0 +1,30 @@
+---
+sidebar_label: "Places Data"
+title: "Places Data (Ordnance Survey Open Names Dataset)"
+---
+
+Data Returned by the `/places` API
+
+Note: Some fields may be null if not applicable or populated. These fields' return type is specified as `type|null`.
+
+| Field                            | Type         | Description                                                                                                                                                                                                        |
+| -------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `code`                           | string       | A unique identifier that enables records to be identified easily. The identifier will be persistent for all LocalTypes except Section of Named Road and Section of Numbered Road.                                  |
+| `eastings`                       | integer      | Eastings. The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.                                                               |
+| `northings`                      | integer      | Northings. The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.                                                             |
+| `max_northings`, `min_northings` | integer      | Maximum & Minimum Northings. Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements.                                                                                                           |
+| `max_eastings`, `min_eastings`   | integer      | Maximum & Minimum Eastings. Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements.                                                                                                            |
+| `country`                        | string       | Country. OS Places relates to Great Britain only, i.e., England, Scotland, Wales.                                                                                                                                  |
+| `longitude`                      | double float | Longitude. The WGS84 longitude given the Place's national grid reference.                                                                                                                                          |
+| `latitude`                       | double float | Latitude. The WGS84 latitude given the Place's national grid reference.                                                                                                                                            |
+| `local_type`                     | string       | Local Type. The Ordnance Survey classification for the named place being represented by the specific feature, e.g., City, Town, Village, Hamlet, Other Settlement, Suburban Area.                                  |
+| `outcode`                        | string       | Outcode. The postcode district, for example, SO15.                                                                                                                                                                 |
+| `name_1`                         | string       | Name. The proper noun that applies to the real world entity.                                                                                                                                                       |
+| `name_1_lang`                    | string\|null | Language of Name. The language type is only set where more than one name exists, e.g., cym (Welsh), eng (English), gla (Scottish Gaelic).                                                                          |
+| `name_2`                         | string\|null | Name (in case of multiple languages). The proper noun that applies to the real world entity.                                                                                                                       |
+| `name_2_lang`                    | string\|null | Language of Name. The language type is only set where more than one name exists, e.g., cym (Welsh), eng (English), gla (Scottish Gaelic).                                                                          |
+| `county_unitary`                 | string\|null | Administrative Area. The name of the County (non-metropolitan or Metropolitan), Unitary Authority or Greater London Authority administrative area that the point geometry for the feature is within or nearest to. |
+| `county_unitary_type`            | string\|null | Administrative Area Type. Classifies the type of administrative unit.                                                                                                                                              |
+| `district_borough`               | string\|null | District or Borough. The name of the District, Metropolitan District or London Borough administrative unit that the point geometry for the feature is within.                                                      |
+| `district_borough_type`          | string\|null | Borough Type. Classifies the type of administrative unit.                                                                                                                                                          |
+| `region`                         | string       | Region. The name of the European Region (was Government Office Region) that the point geometry for the feature is within or nearest to.                                                                            |
