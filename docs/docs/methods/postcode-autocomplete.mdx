@@ -1,0 +1,14 @@
+---
+sidebar_label: "Postcode Autocomplete"
+title: "Postcode Autocomplete"
+---
+
+Convenience method to return an list of matching postcodes.
+
+```get
+GET https://api.postcodes.io/postcodes/:postcode/autocomplete
+```
+
+## Optional Query Parameters
+
+`limit=` (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
