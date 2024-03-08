@@ -16,19 +16,9 @@ const sidebars: SidebarsConfig = {
 
   // But you can create a sidebar manually
 
-  tutorialSidebar: [
+  docsSidebar: [
     "overview",
-    {
-      type: "category",
-      label: "How to Install",
-      collapsed: false,
-      items: [
-        "install/docker",
-        "install/script",
-        "install/pg-dump",
-        "install/manual-installation",
-      ],
-    },
+    "self-host",
     {
       type: "category",
       label: "Available Data Fields",
