@@ -5,17 +5,17 @@ title: "Overview"
 
 # Overview
 
-Postcodes.io is a free postcode lookup API and geocoder for the UK
+Postcodes.io is a free postcode lookup API and geocoder for the United Kingdom.
 
 ## Endpoint
 
-All services can be accessed from the following HTTP[S] endpoint
+All services can be accessed from the following subdomain:
 
 ```javascript
 https://api.postcodes.io
 ```
 
-The API accepts GET and POST requests. POST methods use content type `application/json`
+The API accepts GET and POST requests. POST methods use content type `application/json`.
 
 ## Data Extraction
 
@@ -23,31 +23,15 @@ The Postcodes.io application and database are packaged as Docker images for rapi
 
 To perform one-time data extraction tasks using SQL, see our [local data extraction guide](https://ideal-postcodes.co.uk/guides/postcodes-io-database).
 
-## Responses
-
-JSON(P) only. CORS is enabled.
-
-Each response comes with an appropriate HTTP Status code (except for JSONP requests). These include 200 for success, 400 for a bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.
-
 ## Authentication
 
-Postcodes.io does not require any authentication.
+Postcodes.io does not require authentication.
 
 ## Error Handling
 
 To check for errors, examine the HTTP response code. 200 response indicates success while any other code will provide important information about why an error occured.
 
 Alternatively, you can examine status code in the 'status' property in the result body.
-
-All JSONP requests return 200 responses because of silent errors. When using JSONP, be sure to use the latter method to check for errors.
-
-## JSONP
-
-JSONP requests are supported. Simply appended the URI with a callback name. e.g.
-
-```javascript
-https://api.postcodes.io/postcodes/GU50BD?callback=foo
-```
 
 ## Versioning
 
