@@ -1,40 +1,22 @@
 import React, { useState } from "react";
 import styles from "./styles.module.css";
 
-interface PostcodeData {
-  status: number;
-  result: {
-    postcode: string;
-    country: string;
-    region: string;
-    // Add more fields from the API response as needed
-  };
-}
-
 const PostcodeLookup: React.FC = () => {
   const [postcode, setPostcode] = useState("");
-  const [data, setData] = useState<PostcodeData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [apiResult, setApiResult] = useState<string>("");
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handlePostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostcode(e.target.value);
   };
 
   const fetchPostcodeData = async () => {
-    try {
-      const response = await fetch(
-        `https://api.postcodes.io/postcodes/${encodeURIComponent(postcode)}`
-      );
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-      const data: PostcodeData = await response.json();
-      setData(data);
-      setError(null);
-    } catch (error: any) {
-      setError(error.message);
-      setData(null);
-    }
+    const response = await fetch(
+      `https://api.postcodes.io/postcodes/${encodeURIComponent(postcode)}`
+    );
+    const data = await response.json();
+    setApiResult(JSON.stringify(data, null, 2));
+    setHasSearched(true);
   };
 
   return (
@@ -52,10 +34,9 @@ const PostcodeLookup: React.FC = () => {
           />
           <button onClick={fetchPostcodeData}>Request</button>
         </div>
-        {error && <div>Error: {error}</div>}
-        {data && (
+        {hasSearched && (
           <div className={styles.result}>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
+            <pre>{apiResult}</pre>
           </div>
         )}
       </div>
