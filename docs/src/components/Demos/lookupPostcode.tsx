@@ -5,12 +5,14 @@ interface PostcodeLookupProps {
   endpointTemplate: string;
   linkEnd: string;
   headingText: string;
+  placeholder: string;
 }
 
 const PostcodeLookup: React.FC<PostcodeLookupProps> = ({
   endpointTemplate,
   linkEnd,
   headingText,
+  placeholder,
 }) => {
   const [postcode, setPostcode] = useState<string>("");
   const [apiResult, setApiResult] = useState<string>("");
@@ -23,18 +25,14 @@ const PostcodeLookup: React.FC<PostcodeLookupProps> = ({
 
   const fetchPostcodeData = async () => {
     const encodedPostcode = encodeURIComponent(postcode);
-    const endpoint = `${endpointTemplate}${encodedPostcode}${linkEnd}`;
+    const endpoint = `https://${endpointTemplate}${encodedPostcode}${linkEnd}`;
     setFullEndpoint(endpoint);
     try {
       const response = await fetch(endpoint);
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
       const data = await response.json();
       setApiResult(JSON.stringify(data, null, 2));
       setHasSearched(true);
     } catch (error) {
-      setApiResult(`Error: ${error}`);
       setHasSearched(true);
     }
   };
@@ -50,7 +48,7 @@ const PostcodeLookup: React.FC<PostcodeLookupProps> = ({
             type="text"
             value={postcode}
             onChange={handlePostcodeChange}
-            placeholder=":postcode"
+            placeholder={placeholder}
           />
           <p className={styles.request}>{linkEnd}</p>
           <button onClick={fetchPostcodeData}>Request</button>
