@@ -49,6 +49,7 @@
   width: 110px;
   background-color: transparent;
   color: #888;
+  margin-left: -10px;
 }
 
 button {
