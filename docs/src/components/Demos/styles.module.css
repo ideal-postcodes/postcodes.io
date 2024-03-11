@@ -19,6 +19,8 @@
   justify-content: center;
   align-items: center;
   margin: 50px 0 50px 0;
+  padding-bottom: 50px;
+  border-bottom: 1px solid #888;
 }
 
 .endpointContainer {
@@ -33,6 +35,16 @@
 .requestContainer {
   display: flex;
   margin-bottom: 20px;
+}
+
+.httpMethod {
+  margin-right: 1em;
+  text-decoration: none;
+  background-color: #435e67;
+  border-radius: 5px;
+  padding: 10px 15px;
+  color: #eee;
+  display: inline-block;
 }
 
 .request {

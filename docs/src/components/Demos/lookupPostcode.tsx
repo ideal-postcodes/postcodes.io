@@ -42,6 +42,7 @@ const PostcodeLookup: React.FC<PostcodeLookupProps> = ({
       <div className={styles.endpointContainer}>
         <h3 className={styles.endpointLabel}>{headingText}</h3>
         <div className={styles.requestContainer}>
+          <span className={styles.httpMethod}>GET</span>
           <p className={styles.request}>{endpointTemplate}</p>
           <input
             className={styles.postcodeInput}

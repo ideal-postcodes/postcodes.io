@@ -52,6 +52,20 @@ export default function HomepageDemos(): JSX.Element {
             headingText="Lookup terminated postcode"
             placeholder=":postcode"
           />
+
+          <PostcodeLookup
+            endpointTemplate="api.postcodes.io/outcodes/"
+            linkEnd=""
+            headingText="Lookup Outward Code"
+            placeholder=":outcode"
+          />
+
+          <PostcodeLookup
+            endpointTemplate="api.postcodes.io/outcodes/"
+            linkEnd="/nearest"
+            headingText="Nearest outward code for outward code"
+            placeholder=":outcode"
+          />
         </div>
       </div>
     </section>
