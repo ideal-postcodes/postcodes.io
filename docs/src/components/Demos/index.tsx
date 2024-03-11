@@ -14,13 +14,19 @@ export default function HomepageDemos(): JSX.Element {
           <PostcodeLookup
             endpointTemplate="https://api.postcodes.io/postcodes/"
             linkEnd=""
-            headingText="Lookup a Postcode"
+            headingText="Lookup a postcode"
           />
 
           <PostcodeLookup
             endpointTemplate="https://api.postcodes.io/postcodes/"
             linkEnd="/validate"
-            headingText="Validate a Postcode"
+            headingText="Validate a postcode"
+          />
+
+          <PostcodeLookup
+            endpointTemplate="https://api.postcodes.io/postcodes/"
+            linkEnd="/nearest"
+            headingText="Nearest postcodes for postcode"
           />
         </div>
       </div>
