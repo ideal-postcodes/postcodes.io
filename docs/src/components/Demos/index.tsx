@@ -11,7 +11,17 @@ export default function HomepageDemos(): JSX.Element {
           <h2>API Endpoint & Methods</h2>
         </div>
         <div>
-          <PostcodeLookup />
+          <PostcodeLookup
+            endpointTemplate="https://api.postcodes.io/postcodes/"
+            linkEnd=""
+            headingText="Lookup a Postcode"
+          />
+
+          <PostcodeLookup
+            endpointTemplate="https://api.postcodes.io/postcodes/"
+            linkEnd="/validate"
+            headingText="Validate a Postcode"
+          />
         </div>
       </div>
     </section>

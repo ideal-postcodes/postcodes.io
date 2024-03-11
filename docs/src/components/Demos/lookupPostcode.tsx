@@ -1,30 +1,50 @@
 import React, { useState } from "react";
 import styles from "./styles.module.css";
 
-const PostcodeLookup: React.FC = () => {
-  const [postcode, setPostcode] = useState("");
+interface PostcodeLookupProps {
+  endpointTemplate: string;
+  linkEnd: string;
+  headingText: string;
+}
+
+const PostcodeLookup: React.FC<PostcodeLookupProps> = ({
+  endpointTemplate,
+  linkEnd,
+  headingText,
+}) => {
+  const [postcode, setPostcode] = useState<string>("");
   const [apiResult, setApiResult] = useState<string>("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [fullEndpoint, setFullEndpoint] = useState<string>("");
 
   const handlePostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostcode(e.target.value);
   };
 
   const fetchPostcodeData = async () => {
-    const response = await fetch(
-      `https://api.postcodes.io/postcodes/${encodeURIComponent(postcode)}`
-    );
-    const data = await response.json();
-    setApiResult(JSON.stringify(data, null, 2));
-    setHasSearched(true);
+    const encodedPostcode = encodeURIComponent(postcode);
+    const endpoint = `${endpointTemplate}${encodedPostcode}${linkEnd}`;
+    setFullEndpoint(endpoint);
+    try {
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json();
+      setApiResult(JSON.stringify(data, null, 2));
+      setHasSearched(true);
+    } catch (error) {
+      setApiResult(`Error: ${error}`);
+      setHasSearched(true);
+    }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.endpointContainer}>
-        <h3 className={styles.endpointLabel}>Lookup a Postcode</h3>
+        <h3 className={styles.endpointLabel}>{headingText}</h3>
         <div className={styles.requestContainer}>
-          <p className={styles.request}>api.postcodes.io/postcodes/</p>
+          <p className={styles.request}>{endpointTemplate}</p>
           <input
             className={styles.postcodeInput}
             type="text"
@@ -32,6 +52,7 @@ const PostcodeLookup: React.FC = () => {
             onChange={handlePostcodeChange}
             placeholder=":postcode"
           />
+          <p className={styles.request}>{linkEnd}</p>
           <button onClick={fetchPostcodeData}>Request</button>
         </div>
         {hasSearched && (
