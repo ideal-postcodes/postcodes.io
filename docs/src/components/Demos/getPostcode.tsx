@@ -8,7 +8,7 @@ interface PostcodeLookupProps {
   placeholder: string;
 }
 
-const PostcodeLookup: React.FC<PostcodeLookupProps> = ({
+const GetPostcode: React.FC<PostcodeLookupProps> = ({
   endpointTemplate,
   linkEnd,
   headingText,
@@ -64,4 +64,4 @@ const PostcodeLookup: React.FC<PostcodeLookupProps> = ({
   );
 };
 
-export default PostcodeLookup;
+export default GetPostcode;
