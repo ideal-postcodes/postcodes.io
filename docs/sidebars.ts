@@ -49,30 +49,30 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Places",
       collapsed: false,
-      items: [
-        "place/schema",
-        "place/lookup",
-        "place/query",
-        "place/random",
-      ],
+      items: ["place/schema", "place/lookup", "place/query", "place/random"],
     },
     {
       type: "category",
       label: "Terminated Postcodes",
       collapsed: false,
-      items: [
-        "terminated-postcode/schema",
-        "terminated-postcode/lookup",
-      ],
+      items: ["terminated-postcode/schema", "terminated-postcode/lookup"],
     },
     {
       type: "category",
       label: "Scottish Postcodes",
       collapsed: false,
-      items: [
-        "scottish-postcode/schema",
-        "scottish-postcode/lookup",
-      ],
+      items: ["scottish-postcode/schema", "scottish-postcode/lookup"],
+    },
+  ],
+
+  aboutSidebar: [
+    {
+      type: "doc",
+      id: "about/index",
+    },
+    {
+      type: "doc",
+      id: "about/libraries",
     },
   ],
 };
