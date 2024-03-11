@@ -26,6 +26,7 @@
 }
 
 .endpointLabel {
+  font-size: 1.5em;
   text-align: left;
 }
 
@@ -64,8 +65,8 @@ button {
 }
 
 .result {
-  margin-top: 30px;
-  height: 500px;
+  max-height: 500px;
+  margin-bottom: 0;
   overflow: auto;
   border: 1px solid #ccc;
 }
