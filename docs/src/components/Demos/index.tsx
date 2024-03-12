@@ -3,6 +3,7 @@ import Heading from "@theme/Heading";
 import styles from "./styles.module.css";
 import GetPostcode from "./getPostcode";
 import PostMethod from "./postMethod";
+import GetGeocode from "./getGeocode";
 
 export default function HomepageDemos(): JSX.Element {
   return (
@@ -23,6 +24,13 @@ export default function HomepageDemos(): JSX.Element {
             headerText="Bulk Postcode Lookup"
             payload={{ postcodes: ["OX49 5NU", "M32 0JG", "NE30 1DP"] }}
             endpoint="api.postcodes.io/postcodes"
+          />
+
+          <GetGeocode
+            endpointTemplate="api.postcodes.io/postcodes"
+            headingText="Get nearest postcodes for a given longitude & latitude"
+            longPlaceholder=":longitude"
+            latPlaceholder=":latitude"
           />
 
           <PostMethod
@@ -91,6 +99,13 @@ export default function HomepageDemos(): JSX.Element {
             linkEnd="/nearest"
             headingText="Nearest outward code for outward code"
             placeholder=":outcode"
+          />
+
+          <GetGeocode
+            endpointTemplate="api.postcodes.io/outcodes"
+            headingText="Get nearest outward codes for a given longitude & latitude"
+            longPlaceholder=":longitude"
+            latPlaceholder=":latitude"
           />
         </div>
       </div>
