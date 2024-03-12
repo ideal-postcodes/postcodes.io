@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import styles from "./styles.module.css";
 
-const PostMethod: React.FC = () => {
+interface PostMethodProps {
+  headerText: string;
+  payload: any;
+  endpoint: string;
+}
+
+const PostMethod: React.FC<PostMethodProps> = ({
+  headerText,
+  payload,
+  endpoint,
+}) => {
   const [apiResult, setApiResult] = useState<string>("");
   const [hasSearched, setHasSearched] = useState(false);
 
-  const postcodesPayload = {
-    postcodes: ["OX49 5NU", "M32 0JG", "NE30 1DP"],
-  };
-  const endpoint = "api.postcodes.io/postcodes";
-
   const fetchPostcodeData = async () => {
-    const fullEndpoint = "https://api.postcodes.io/postcodes";
+    const fullEndpoint = `https://${endpoint}`;
 
     try {
       const response = await fetch(fullEndpoint, {
@@ -19,7 +24,7 @@ const PostMethod: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(postcodesPayload),
+        body: JSON.stringify(payload),
       });
       const data = await response.json();
       setApiResult(JSON.stringify(data, null, 2));
@@ -32,15 +37,13 @@ const PostMethod: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.endpointContainer}>
-        <h3 className={styles.endpointLabel}>Bulk Postcode Lookup</h3>
+        <h3 className={styles.endpointLabel}>{headerText}</h3>
         <div className={styles.requestContainer}>
           <span className={styles.httpMethod}>POST</span>
           <p className={styles.request}>{endpoint}</p>
           <button onClick={fetchPostcodeData}>Request</button>
         </div>
-        <pre className={styles.payload}>
-          {JSON.stringify(postcodesPayload, null, 2)}
-        </pre>
+        <pre className={styles.payload}>{JSON.stringify(payload, null, 2)}</pre>
         {hasSearched && (
           <div className={styles.result}>
             <pre>{apiResult}</pre>

@@ -19,7 +19,30 @@ export default function HomepageDemos(): JSX.Element {
             placeholder=":postcode"
           />
 
-          <PostMethod />
+          <PostMethod
+            headerText="Bulk Postcode Lookup"
+            payload={{ postcodes: ["OX49 5NU", "M32 0JG", "NE30 1DP"] }}
+            endpoint="api.postcodes.io/postcodes"
+          />
+
+          <PostMethod
+            headerText="Bulk Reverse Geocoding"
+            payload={{
+              geolocations: [
+                {
+                  longitude: 0.629834723775309,
+                  latitude: 51.7923246977375,
+                },
+                {
+                  longitude: -2.49690382054704,
+                  latitude: 53.5351312861402,
+                  radius: 1000,
+                  limit: 5,
+                },
+              ],
+            }}
+            endpoint="api.postcodes.io/postcodes"
+          />
 
           <GetPostcode
             endpointTemplate="api.postcodes.io/postcodes/"
