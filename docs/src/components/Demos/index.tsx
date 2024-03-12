@@ -2,6 +2,7 @@ import clsx from "clsx";
 import Heading from "@theme/Heading";
 import styles from "./styles.module.css";
 import GetPostcode from "./getPostcode";
+import PostMethod from "./postMethod";
 
 export default function HomepageDemos(): JSX.Element {
   return (
@@ -17,6 +18,8 @@ export default function HomepageDemos(): JSX.Element {
             headingText="Lookup a postcode"
             placeholder=":postcode"
           />
+
+          <PostMethod />
 
           <GetPostcode
             endpointTemplate="api.postcodes.io/postcodes/"
