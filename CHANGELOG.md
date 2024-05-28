@@ -1,3 +1,22 @@
+# [16.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/15.5.1...16.0.0) (2024-05-28)
+
+
+### Bug Fixes
+
+* **Westminster:** Add missing Scottish Westminster constituencies ([b7b39a3](https://github.com/ideal-postcodes/postcodes.io/commit/b7b39a341c4b2c25de83167c8cf11f121f3cac17))
+
+
+### Features
+
+* **ONSPD May:** Update for May 2024 ([3d8f66d](https://github.com/ideal-postcodes/postcodes.io/commit/3d8f66d2f33e27a4b73eac92174122773e339692))
+* **Postgres:** Upgrade to Postgresql 16 ([c770882](https://github.com/ideal-postcodes/postcodes.io/commit/c7708823943c5e183671daeadbcb90c78f554a1a))
+
+
+### BREAKING CHANGES
+
+* **Postgres:** Migrates Postgresql from 10 to 16
+(postgis/postgis:16-3.4)
+
 ## [15.5.1](https://github.com/ideal-postcodes/postcodes.io/compare/15.5.0...15.5.1) (2024-03-06)
 
 
