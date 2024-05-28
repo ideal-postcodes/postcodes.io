@@ -1,8 +1,8 @@
-FROM mdillon/postgis:10-alpine
+FROM postgis/postgis:16-3.4
 
 COPY latest /tmp/latest
 
 RUN mkdir -p /docker-entrypoint-initdb.d/ && \
-    apk add --no-cache curl && \
-    curl -o /docker-entrypoint-initdb.d/_postcodesiodata.sql.gz $(cat /tmp/latest) 
+    apt-get update && apt-get install -y curl && \
+    curl -o /docker-entrypoint-initdb.d/_postcodesiodata.sql.gz $(cat /tmp/latest)
 
