@@ -1,7 +1,5 @@
 FROM node:20-alpine AS base
 
-USER node
-
 RUN apk update && \
   apk upgrade && \
   apk add --no-cache openssl bash git
@@ -13,6 +11,11 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 
 COPY docker/test/entrypoint.sh /usr/bin/
 ENTRYPOINT ["entrypoint.sh"]
+
+RUN mkdir -p /home/node/app/.npm \
+  && chown -R node:node /home/node/app/.npm
+
+ENV npm_config_cache /home/node/app/.npm
 
 WORKDIR /app
 
