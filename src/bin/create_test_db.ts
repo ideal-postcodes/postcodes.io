@@ -59,7 +59,7 @@ const seed = async (): Promise<unknown> => {
   console.log("Creating postcodes relation");
   await Postcode.setupTable(seedPostcodePath);
   await TerminatedPostcode.setupTable(seedPostcodePath);
-  console.log("Creating places releation");
+  console.log("Creating places relation");
   await Place.setupTable(seedPlacesPath);
   await ScottishPostcode.setupTable(seedScotlandPostcodePath);
   await District.setupTable();
