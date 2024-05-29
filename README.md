@@ -5,8 +5,6 @@
 > UK postcode & geolocation API, serving up open data
 
 ![CI](https://github.com/ideal-postcodes/postcodes.io/workflows/CI/badge.svg)
-[![codecov](https://codecov.io/gh/ideal-postcodes/postcodes.io/branch/master/graph/badge.svg)](https://codecov.io/gh/ideal-postcodes/postcodes.io)
-[![Dependency Status](https://david-dm.org/ideal-postcodes/postcodes.io.svg)](https://david-dm.org/ideal-postcodes/postcodes.io)
 [![DOI](https://zenodo.org/badge/15987081.svg)](https://zenodo.org/badge/latestdoi/15987081)
 
 Query for UK postcodes and geolocations over HTTP.
@@ -29,13 +27,9 @@ Postcodes.io regularly ingests and serves the [ONS Postcode Directory](https://g
 - [API Documentation](https://postcodes.io/docs)
 - [3rd Party API Clients](https://postcodes.io/about)
 - [Public API Service Status](https://status.ideal-postcodes.co.uk)
-- [Self Hosting](https://postcodes.io/docs#Install-notes)
 - [Self Hosting: Docker containers](https://postcodes.io/docs#docker-install)
   - [Docker Hub Container Image: Postcodes.io Application](https://hub.docker.com/r/idealpostcodes/postcodes.io)
   - [Docker Hub Container Image: Postcodes.io Database](https://hub.docker.com/r/idealpostcodes/postcodes.io.db)
-- [Self Hosting: Node.js and PostgreSQL](https://postcodes.io/docs#install-requirements)
-- [Self Hosting: Database only - Download and import the raw dataset to PostgreSQL](https://postcodes.io/docs#import-from-pgdump)
-- [Chat](https://chat.ideal-postcodes.co.uk)
 
 ## Quick Start
 
