@@ -1,3 +1,10 @@
+## [16.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/16.0.0...16.0.1) (2024-05-31)
+
+
+### Bug Fixes
+
+* **Support Tables:** Rebuild constituency table ([ebcfc19](https://github.com/ideal-postcodes/postcodes.io/commit/ebcfc1990c340b7b2caeecd6322ec653a319f06b))
+
 # [16.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/15.5.1...16.0.0) (2024-05-28)
 
 
