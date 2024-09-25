@@ -6,9 +6,9 @@ const {extract, isPseudoCode} = require("./index");
  * @module DataParser/constituencies
  *
  * Writes constituencies.json to stdout
- * 
+ *
  * Notes:
- * - Pseudocodes are dropped 
+ * - Pseudocodes are dropped
  * - Values need to be trimmed as some contain superfluous padding
  */
 
@@ -21,13 +21,14 @@ const transform = row => {
 	const value = row[VALUE_OFFSET];
 	if (code === "PCON14CD") return []; // Escape if header
 	if (isPseudoCode(code)) return [];
-	return [code, value.trim()]; 
+	return [code, value.trim()];
 };
 
 const configs = [
 	{
-		file: "Westminster Parliamentary Constituency names and codes UK as at 12_14.txt",
-		transform
+		file: "Westminster Parliamentary Constituency names and codes UK as at 12_24.csv",
+    parseOptions: { delimiter: "," },
+		transform,
 	}
 ];
 
