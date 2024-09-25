@@ -5,24 +5,24 @@
 ## Launch application and database
 .PHONY: init
 init:
-	docker-compose up
+	docker compose up
 
 ## -- Development Methods --
 
 ## Launch services to support development environment
 .PHONY: up
 up:
-	docker-compose -f docker/dev/docker-compose.yml up -d
+	docker compose -f docker/dev/docker-compose.yml up -d
 
 ## Terminate development environment
 .PHONY: down
 down:
-	docker-compose -f docker/dev/docker-compose.yml down
+	docker compose -f docker/dev/docker-compose.yml down
 
 ## Tail development service logs
 .PHONY: logs
 logs:
-	docker-compose -f docker/dev/docker-compose.yml logs -f
+	docker compose -f docker/dev/docker-compose.yml logs -f
 
 ## Open psql shell to development pg instance
 .PHONY: psql
@@ -34,39 +34,39 @@ psql:
 ## Launches test and pg containers with tests running
 .PHONY: test
 test:
-	docker-compose -f docker/test/docker-compose.yml -f docker/test/test.yml up --exit-code-from api --build
+	docker compose -f docker/test/docker-compose.yml -f docker/test/test.yml up --exit-code-from api --build
 
 ## Launch test application and database
 .PHONY: test-up
 test-up:
-	docker-compose -f docker/test/docker-compose.yml up -d --build
+	docker compose -f docker/test/docker-compose.yml up -d --build
 
 ## Shut down test services
 .PHONY: test-down
 test-down:
-	docker-compose -f docker/test/docker-compose.yml down
+	docker compose -f docker/test/docker-compose.yml down
 
 ## Shell into test container
 .PHONY: test-shell
 test-shell:
-	docker-compose -f docker/test/docker-compose.yml exec api /bin/bash
+	docker compose -f docker/test/docker-compose.yml exec api /bin/bash
 
 ## Tail test service logs
 .PHONY: test-logs
 test-logs:
-	docker-compose -f docker/test/docker-compose.yml logs -f
+	docker compose -f docker/test/docker-compose.yml logs -f
 
 ## -- Live Test Methods --
 
 ## Build local pg and api images using pg_dump from S3
 .PHONY: live-up
 live-up:
-	docker-compose -f docker/live-test/docker-compose.yml up -d --build
+	docker compose -f docker/live-test/docker-compose.yml up -d --build
 
 ## Shut down live test services
 .PHONY: live-down
 live-down:
-	docker-compose -f docker/live-test/docker-compose.yml down -v
+	docker compose -f docker/live-test/docker-compose.yml down -v
 
 ## -- Misc --
 
