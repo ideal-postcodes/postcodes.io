@@ -35,7 +35,7 @@ const appendMissing = {
 
 const configs = [
   {
-    file: "Ward names and codes UK as at 05_23.csv",
+    file: "Ward names and codes UK as at 05_24.csv",
     transform,
     parseOptions: {
       delimiter: ",",
