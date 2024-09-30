@@ -162,7 +162,6 @@ export const isRawPostcodeObject = (
 
 const postcodeForeignColumns = [
   "parliamentary_constituency",
-  "parliamentary_constituency_2024",
   "admin_district",
   "parish",
   "admin_county",
@@ -187,7 +186,7 @@ export const isRawPostcodeObjectWithFC = (
   isRawPostcodeObject(
     o,
     postcodeForeignColumns.concat(additionalAttr || []),
-    blacklist
+    blacklist || []
   );
 };
 
