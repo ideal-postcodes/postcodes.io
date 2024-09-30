@@ -101,9 +101,7 @@ export interface PostcodeTuple {
   ced_id: string | null;
   ccg_id: string | null;
   constituency_id: string | null;
-  constituency_2024_id: string | null;
   parliamentary_constituency: string | null;
-  parliamentary_constituency_2024: string | null;
   admin_district: string | null;
   parish: string | null;
   admin_county: string | null;
@@ -144,7 +142,6 @@ const relation: Relation = {
     ccg_id: "VARCHAR(32)",
     ced_id: "VARCHAR(32)",
     constituency_id: "VARCHAR(32)",
-    constituency_2024_id: "VARCHAR(32)",
     date_of_introduction: "VARCHAR(6)",
     pfa_id: "VARCHAR(32)",
   },
@@ -211,12 +208,6 @@ const relationships: Relationship[] = [
     foreignKey: "code",
   },
   {
-    table: "constituencies",
-    alt: "constituencies_2024",
-    key: "constituency_2024_id",
-    foreignKey: "code",
-  },
-  {
     table: "nuts",
     key: "nuts_id",
     foreignKey: "code",
@@ -253,10 +244,6 @@ const foreignColumns: ForeignColumn[] = [
   {
     field: "constituencies.name",
     as: "parliamentary_constituency",
-  },
-  {
-    field: "constituencies_2024.name",
-    as: "parliamentary_constituency_2024",
   },
   {
     field: "districts.name",
@@ -804,7 +791,7 @@ const toJson = function (
     incode: p.incode,
     outcode: p.outcode,
     parliamentary_constituency: p.parliamentary_constituency,
-    parliamentary_constituency_2024: p.parliamentary_constituency_2024,
+    parliamentary_constituency_2024: p.parliamentary_constituency,
     admin_district: p.admin_district,
     parish: p.parish,
     admin_county: p.admin_county,
@@ -820,7 +807,7 @@ const toJson = function (
       admin_ward: p.admin_ward_id,
       parish: p.parish_id,
       parliamentary_constituency: p.constituency_id,
-      parliamentary_constituency_2024: p.constituency_2024_id,
+      parliamentary_constituency_2024: p.constituency_id,
       ccg: p.ccg_id,
       ccg_id: p.ccg_code,
       ced: p.ced_id,
