@@ -1,3 +1,23 @@
+# [17.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/16.0.1...17.0.0) (2024-09-30)
+
+
+### Bug Fixes
+
+* **Constituencies:** Update Westminster Constituencies ([a1d3c1e](https://github.com/ideal-postcodes/postcodes.io/commit/a1d3c1e164d603bbe5d07cbdf558d71e0d5f276f))
+
+
+### Features
+
+* **ONSPD Aug 2024:** Update pg_dump ([fabc7ee](https://github.com/ideal-postcodes/postcodes.io/commit/fabc7ee2b95d0e43292e29bd8a7f9c238dd98610))
+
+
+### BREAKING CHANGES
+
+* **Constituencies:** - ONSPD now reports 2024 Westminster Constituencies. 2014 data is no
+  longer available
+- Both `parliamentary_constituency` and
+  `parliamentary_constituency_2024` will now reference the 2024 constituencies
+
 ## [16.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/16.0.0...16.0.1) (2024-05-31)
 
 
