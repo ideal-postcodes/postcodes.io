@@ -45,10 +45,8 @@ describe("Postcode data regression testing", function () {
         ccg_id: "S03000012",
         ced: null,
         ced_id: "S99999999",
-        constituency_id: "S14000002",
-        constituency_2024_id: null,
+        constituency_id: "S14000061",
         parliamentary_constituency: "Aberdeen South",
-        parliamentary_constituency_2024: null,
         admin_district: "Aberdeen City",
         parish: null,
         admin_county: null,
@@ -68,6 +66,7 @@ describe("Postcode data regression testing", function () {
   it("returns correct data for SE1P5ZZ", async () => {
     const result = await Postcode.find("SE1P5ZZ");
     if (result === null) throw new Error("Postcode not found");
+    console.log(result);
     assert.deepEqual(
       {
         id: result.id,
@@ -98,10 +97,8 @@ describe("Postcode data regression testing", function () {
         ccg_id: "E38000244",
         ced: null,
         ced_id: "E99999999",
-        constituency_id: "E14000553",
-        constituency_2024_id: null,
+        constituency_id: "E14001085",
         parliamentary_constituency: "Bermondsey and Old Southwark",
-        parliamentary_constituency_2024: null,
         admin_district: "Southwark",
         parish: "Southwark, unparished area",
         admin_county: null,
@@ -154,13 +151,11 @@ describe("Postcode data regression testing", function () {
         date_of_introduction: "199507",
         ced_id: "L99999999",
         constituency_id: "L99999999",
-        constituency_2024_id: null,
         parliamentary_constituency: null,
-        parliamentary_constituency_2024: null,
         admin_district: "Channel Islands",
         parish: null,
         admin_county: null,
-        admin_ward: "Channel Islands",
+        admin_ward: null,
         ccg: null,
         ccg_code: null,
         nuts: null,
