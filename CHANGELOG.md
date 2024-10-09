@@ -1,3 +1,11 @@
+## [17.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.0.0...17.0.1) (2024-10-09)
+
+
+### Bug Fixes
+
+* **ONSPD:** Aug 2024 v2 release drops BUASD ([71ed982](https://github.com/ideal-postcodes/postcodes.io/commit/71ed982126268e6e1b53b82f6ac9fd95cf10917f))
+* **ONSPD:** Bump for updated Aug 2024 ONSPD ([46210f6](https://github.com/ideal-postcodes/postcodes.io/commit/46210f638d6c333545c50884794051724557eecc))
+
 # [17.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/16.0.1...17.0.0) (2024-09-30)
 
 
