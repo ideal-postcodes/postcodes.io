@@ -38,7 +38,6 @@
   { "code": "wz11", "description": "Census Workplace Zone" },
   { "code": "ccg", "description": "Clinical Commissioning Group" },
   { "code": "bua11", "description": "Built-up Area" },
-  { "code": "buasd11", "description": "Built-up Area Sub-division" },
   { "code": "ru11ind", "description": "Census Rural Urban Classification" },
   { "code": "oac11", "description": "2011 Census Output Area (OAC)" },
   { "code": "lat", "description": "Decimal degrees latitude" },
