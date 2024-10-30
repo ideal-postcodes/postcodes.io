@@ -6,7 +6,7 @@ get:
     $ref: ../md/terminated-postcodes.md
   operationId: TerminatedPostcodes
   parameters:
-    - name: Terminated Postcode
+    - name: postcode
       in: path
       description: Postcode to query
       required: true

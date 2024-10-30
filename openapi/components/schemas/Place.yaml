@@ -109,13 +109,15 @@ properties:
     example: "Wales"
   longitude:
     title: Longitude
-    type: double float
+    type: number
+    format: double
     description: >-
       The WGS84 longitude given the Place's national grid reference.
     example: "-3.14971194307843"
   latitude:
     title: Latitude
-    type: double float
+    type: number
+    format: double
     description: >-
       The WGS84 latitude given the Place's national grid reference.
     example: "52.6606391732959"

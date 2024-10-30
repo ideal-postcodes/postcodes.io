@@ -6,11 +6,11 @@ get:
     $ref: ../md/places.md
   operationId: FindPlace
   parameters:
-    - name: query
-      in: query
+    - name: code
+      in: path
       description: Specifies the place you wish to query
       required: true
-      style: form
+      style: simple
       explode: false
       schema:
         type: string
