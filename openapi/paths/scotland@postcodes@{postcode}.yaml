@@ -6,7 +6,7 @@ get:
     $ref: ../md/scottish-postcodes.md
   operationId: Scottish Postcodes
   parameters:
-    - name: Scottish Postcode
+    - name: postcode
       in: path
       description: Specifies the postcode you wish to query
       required: true

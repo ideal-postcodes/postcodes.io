@@ -47,18 +47,6 @@ get:
         example: 51.50354
         maximum: 90
         minimum: -90
-    - name: limit
-      in: query
-      style: form
-      explode: false
-      schema:
-        title: Limit
-        type: integer
-        description: Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
-        example: 20
-        maximum: 100
-        default: 10
-        minimum: 1
     - name: radius
       in: query
       style: form
