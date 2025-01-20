@@ -1,3 +1,10 @@
+## [17.1.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.1.0...17.1.1) (2025-01-20)
+
+
+### Bug Fixes
+
+* **Constituencies:** Fix encoding for Ynys Môn ([d9e48ca](https://github.com/ideal-postcodes/postcodes.io/commit/d9e48cab88475c53479c5d14e5ec7e14a39f6994))
+
 # [17.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.0.1...17.1.0) (2025-01-06)
 
 
