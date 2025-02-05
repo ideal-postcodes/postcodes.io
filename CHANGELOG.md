@@ -1,3 +1,10 @@
+## [17.1.2](https://github.com/ideal-postcodes/postcodes.io/compare/17.1.1...17.1.2) (2025-02-05)
+
+
+### Bug Fixes
+
+* **Constituency:** Fix encoding issues ([dbb5ced](https://github.com/ideal-postcodes/postcodes.io/commit/dbb5cedeaa17bc36a241b24be4b123d02ea0f5d8))
+
 ## [17.1.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.1.0...17.1.1) (2025-01-20)
 
 
