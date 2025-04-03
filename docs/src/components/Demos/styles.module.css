@@ -11,7 +11,31 @@
 
 .header {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.demoSelect {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #435e67;
+  border-radius: 5px;
+  background-color: white;
+  color: #435e67;
+  cursor: pointer;
+  min-width: 200px;
+}
+
+.demoSelect:hover {
+  border-color: #2c3e44;
+  color: #2c3e44;
+}
+
+.demoSelect:focus {
+  outline: none;
+  border-color: #2c3e44;
+  box-shadow: 0 0 0 2px rgba(67, 94, 103, 0.2);
 }
 
 .container {
