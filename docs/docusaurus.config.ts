@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Postcodes.io',
-  tagline: 'Postcode & geolocation API for the UK',
+  tagline: 'Free, Open Source and based solely on Open Data',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here

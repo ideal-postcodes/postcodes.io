@@ -50,7 +50,66 @@ export default function Home(): JSX.Element {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
-        <HomepageDemos />
+        <section className={styles.section}>
+          <div className="container">
+            <div className="row">
+              <div className="col">
+                <h2 className="text--center">How to use Postcodes.io</h2>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <h3 className="text--center">Use Our Endpoints </h3>
+                <p className="text--center">
+                  Easiest and quickest way to get started is to use our public,
+                  hosted endpoints to query data directly. No installation
+                  required
+                </p>
+              </div>
+              <div className="col">
+                <h3 className="text--center">Self-host the Service </h3>
+                <p className="text--center">
+                  For complete control over the data and environment, just clone
+                  the repository and run it on your own servers. SQL?
+                </p>
+              </div>
+              <div className="col">
+                <h3 className="text--center">Contribute or Fork </h3>
+                <p className="text--center">
+                  We love community input! Tailor Postcodes.io to your needs by
+                  adding features or modify the functionality.
+                </p>
+              </div>
+            </div>
+            <div className="row" style={{ marginTop: "3rem" }}>
+              <div className="col text--center">
+                <HomepageDemos />
+                <Link
+                  className="button button--primary button--lg"
+                  to="/docs/overview"
+                >
+                  View the Documentation
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className={styles.sectionAlt}>
+          <div className="container">
+            <div className="row">
+              <div className="col col--6 col--offset-3">
+                <h3 className="text--center">
+                  When You Need More Than Open Data
+                </h3>
+                <p className="text--center">
+                  Postcodes.io is a free, open source API for postcode data.
+                  It's a great way to get started with postcode data, but if you
+                  need more, we recommend using a commercial postcode service.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </Layout>
   );

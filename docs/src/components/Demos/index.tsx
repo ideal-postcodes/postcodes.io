@@ -135,7 +135,7 @@ export default function HomepageDemos(): JSX.Element {
     <section className={styles.features}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h2>API Endpoint & Methods</h2>
+          <h3>API Endpoint & Methods</h3>
           <select
             value={selectedDemo}
             onChange={(e) => setSelectedDemo(e.target.value)}

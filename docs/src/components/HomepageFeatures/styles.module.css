@@ -1,9 +1,15 @@
+.intro {
+  padding: 0 100px 0 100px;
+  margin-bottom: 80px;
+  text-align: center;
+}
+
 .features {
   display: flex;
   align-items: center;
   padding: 2rem 0;
   width: 100%;
-  margin-top: 100px;
+  margin: 180px 0;
 }
 
 .featureSvg {

@@ -10,6 +10,30 @@
   overflow: hidden;
 }
 
+.section {
+  margin: 180px 0;
+  text-align: center;
+}
+
+.sectionAlt {
+  margin: 180px 0;
+  text-align: center;
+  background-color: var(--ifm-color-emphasis-100);
+  padding: 80px 100px;
+}
+
+.section h2,
+.sectionAlt h2 {
+  font-size: 2.5rem;
+  margin-bottom: 5rem;
+}
+
+.section h3,
+.sectionAlt h3 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;

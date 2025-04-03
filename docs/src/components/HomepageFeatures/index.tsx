@@ -65,6 +65,14 @@ export default function HomepageFeatures(): JSX.Element {
   return (
     <section className={styles.features}>
       <div className="container">
+        <div className={clsx(styles.intro, "row")}>
+          <p>
+            A short paragraph about postcodes.io and something like built by
+            developers for developers. e.g Postcodes.io is an open-source
+            project maintained by Ideal Postcodes, offering a free resource for
+            developers to query UK postcode data via a JSON HTTP API.{" "}
+          </p>
+        </div>
         <div className="row">
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />

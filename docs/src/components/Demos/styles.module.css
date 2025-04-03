@@ -1,7 +1,6 @@
 .features {
   padding: 2rem 0;
   width: 100%;
-  margin-top: 100px;
 }
 
 .container {
@@ -43,8 +42,6 @@
   justify-content: center;
   align-items: center;
   margin: 50px 0 50px 0;
-  padding-bottom: 50px;
-  border-bottom: 1px solid #888;
 }
 
 .endpointContainer {
@@ -86,6 +83,11 @@
   background-color: transparent;
   color: #888;
   margin-left: -10px;
+}
+
+.payload,
+.result {
+  text-align: left;
 }
 
 button {
