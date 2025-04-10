@@ -9,9 +9,8 @@
   "scripts": {
     "semantic-release": "semantic-release",
     "build": "tsc",
-    "test": "npm run test:create && npm run nyc_mocha",
-    "nyc_mocha": "NODE_ENV=test NO_RELOAD_DB=true nyc mocha",
-    "coverage": "codecov",
+    "test": "npm run test:create && npm run mocha",
+    "mocha": "NODE_ENV=test NO_RELOAD_DB=true mocha",
     "start": "node dist/server.js",
     "setup": "bin/setup",
     "rebuild_support_tables": "bin/rebuild_support_tables",
@@ -62,31 +61,6 @@
   "bugs": {
     "url": "https://github.com/ideal-postcodes/postcodes.io/issues"
   },
-  "nyc": {
-    "cache": false,
-    "include": [
-      "src/**/*.ts",
-      "src/**/*.js"
-    ],
-    "exclude": [
-      "dist/*",
-      "src/bin/**/*",
-      "**/*.d.ts"
-    ],
-    "extension": [
-      ".js",
-      ".ts",
-      ".tsx"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "reporter": [
-      "text-summary",
-      "html"
-    ],
-    "all": true
-  },
   "release": {
     "extends": "@cablanchard/semantic-release"
   },
@@ -135,7 +109,6 @@
     "@typescript-eslint/eslint-plugin": "~4.0.0",
     "@typescript-eslint/parser": "~3.10.1",
     "chai": "~4.3.4",
-    "codecov": "~3.8.3",
     "ejs-cli": "~2.2.3",
     "es6-promise-pool": "~2.5.0",
     "eslint": "~7.32.0",
@@ -144,7 +117,6 @@
     "mocha": "~10.2.0",
     "mocha-lcov-reporter": "~1.3.0",
     "nodemon": "~2.0.20",
-    "nyc": "~15.1.0",
     "prettier": "~2.7.1",
     "semantic-release": "~19.0.0",
     "serve-favicon": "~2.5.0",
