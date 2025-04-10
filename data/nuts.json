@@ -1,22 +1,22 @@
 {
   "E06000001": {
-    "code": "TLC11",
+    "code": "TLC31",
     "name": "Hartlepool"
   },
   "E06000002": {
-    "code": "TLC12",
+    "code": "TLC32",
     "name": "Middlesbrough"
   },
   "E06000003": {
-    "code": "TLC12",
+    "code": "TLC32",
     "name": "Redcar and Cleveland"
   },
   "E06000004": {
-    "code": "TLC11",
+    "code": "TLC31",
     "name": "Stockton-on-Tees"
   },
   "E06000005": {
-    "code": "TLC13",
+    "code": "TLC33",
     "name": "Darlington"
   },
   "E06000006": {
@@ -84,19 +84,19 @@
     "name": "Stoke-on-Trent"
   },
   "E06000022": {
-    "code": "TLK12",
+    "code": "TLK52",
     "name": "Bath and North East Somerset"
   },
   "E06000023": {
-    "code": "TLK11",
+    "code": "TLK51",
     "name": "Bristol, City of"
   },
   "E06000024": {
-    "code": "TLK12",
+    "code": "TLK61",
     "name": "North Somerset"
   },
   "E06000025": {
-    "code": "TLK12",
+    "code": "TLK52",
     "name": "South Gloucestershire"
   },
   "E06000026": {
@@ -108,11 +108,11 @@
     "name": "Torbay"
   },
   "E06000030": {
-    "code": "TLK14",
+    "code": "TLK71",
     "name": "Swindon"
   },
   "E06000031": {
-    "code": "TLH11",
+    "code": "TLH41",
     "name": "Peterborough"
   },
   "E06000032": {
@@ -132,27 +132,27 @@
     "name": "Medway"
   },
   "E06000036": {
-    "code": "TLJ11",
+    "code": "TLJ15",
     "name": "Bracknell Forest"
   },
   "E06000037": {
-    "code": "TLJ11",
+    "code": "TLJ16",
     "name": "West Berkshire"
   },
   "E06000038": {
-    "code": "TLJ11",
+    "code": "TLJ16",
     "name": "Reading"
   },
   "E06000039": {
-    "code": "TLJ11",
+    "code": "TLJ15",
     "name": "Slough"
   },
   "E06000040": {
-    "code": "TLJ11",
+    "code": "TLJ15",
     "name": "Windsor and Maidenhead"
   },
   "E06000041": {
-    "code": "TLJ11",
+    "code": "TLJ16",
     "name": "Wokingham"
   },
   "E06000042": {
@@ -176,7 +176,7 @@
     "name": "Isle of Wight"
   },
   "E06000047": {
-    "code": "TLC14",
+    "code": "TLC41",
     "name": "County Durham"
   },
   "E06000049": {
@@ -200,7 +200,7 @@
     "name": "Isles of Scilly"
   },
   "E06000054": {
-    "code": "TLK15",
+    "code": "TLK72",
     "name": "Wiltshire"
   },
   "E06000055": {
@@ -212,64 +212,64 @@
     "name": "Central Bedfordshire"
   },
   "E06000057": {
-    "code": "TLC21",
+    "code": "TLC42",
     "name": "Northumberland"
   },
   "E06000058": {
-    "code": "TLK24",
+    "code": "TLK63",
     "name": "Bournemouth, Christchurch and Poole"
   },
   "E06000059": {
-    "code": "TLK25",
+    "code": "TLK64",
     "name": "Dorset"
   },
   "E06000060": {
     "code": "TLJ13",
     "name": "Buckinghamshire"
   },
+  "E06000061": {
+    "code": "TLF25",
+    "name": "North Northamptonshire"
+  },
+  "E06000062": {
+    "code": "TLF24",
+    "name": "West Northamptonshire"
+  },
+  "E06000063": {
+    "code": "TLD13",
+    "name": "Cumberland"
+  },
+  "E06000064": {
+    "code": "TLD14",
+    "name": "Westmorland and Furness"
+  },
+  "E06000065": {
+    "code": "TLE22",
+    "name": "North Yorkshire"
+  },
+  "E06000066": {
+    "code": "TLK62",
+    "name": "Somerset"
+  },
   "E07000008": {
-    "code": "TLH12",
+    "code": "TLH42",
     "name": "Cambridge"
   },
   "E07000009": {
-    "code": "TLH12",
+    "code": "TLH42",
     "name": "East Cambridgeshire"
   },
   "E07000010": {
-    "code": "TLH12",
+    "code": "TLH42",
     "name": "Fenland"
   },
   "E07000011": {
-    "code": "TLH12",
+    "code": "TLH42",
     "name": "Huntingdonshire"
   },
   "E07000012": {
-    "code": "TLH12",
+    "code": "TLH42",
     "name": "South Cambridgeshire"
-  },
-  "E07000026": {
-    "code": "TLD11",
-    "name": "Allerdale"
-  },
-  "E07000027": {
-    "code": "TLD11",
-    "name": "Barrow-in-Furness"
-  },
-  "E07000028": {
-    "code": "TLD12",
-    "name": "Carlisle"
-  },
-  "E07000029": {
-    "code": "TLD11",
-    "name": "Copeland"
-  },
-  "E07000030": {
-    "code": "TLD12",
-    "name": "Eden"
-  },
-  "E07000031": {
-    "code": "TLD12",
-    "name": "South Lakeland"
   },
   "E07000032": {
     "code": "TLF13",
@@ -404,27 +404,27 @@
     "name": "Uttlesford"
   },
   "E07000078": {
-    "code": "TLK13",
+    "code": "TLK73",
     "name": "Cheltenham"
   },
   "E07000079": {
-    "code": "TLK13",
+    "code": "TLK73",
     "name": "Cotswold"
   },
   "E07000080": {
-    "code": "TLK13",
+    "code": "TLK73",
     "name": "Forest of Dean"
   },
   "E07000081": {
-    "code": "TLK13",
+    "code": "TLK73",
     "name": "Gloucester"
   },
   "E07000082": {
-    "code": "TLK13",
+    "code": "TLK73",
     "name": "Stroud"
   },
   "E07000083": {
-    "code": "TLK13",
+    "code": "TLK73",
     "name": "Tewkesbury"
   },
   "E07000084": {
@@ -472,27 +472,27 @@
     "name": "Winchester"
   },
   "E07000095": {
-    "code": "TLH23",
+    "code": "TLH26",
     "name": "Broxbourne"
   },
   "E07000096": {
-    "code": "TLH23",
+    "code": "TLH27",
     "name": "Dacorum"
   },
   "E07000098": {
-    "code": "TLH23",
+    "code": "TLH27",
     "name": "Hertsmere"
   },
   "E07000099": {
-    "code": "TLH23",
+    "code": "TLH26",
     "name": "North Hertfordshire"
   },
   "E07000102": {
-    "code": "TLH23",
+    "code": "TLH27",
     "name": "Three Rivers"
   },
   "E07000103": {
-    "code": "TLH23",
+    "code": "TLH27",
     "name": "Watford"
   },
   "E07000105": {
@@ -648,88 +648,32 @@
     "name": "West Lindsey"
   },
   "E07000143": {
-    "code": "TLH17",
+    "code": "TLH53",
     "name": "Breckland"
   },
   "E07000144": {
-    "code": "TLH15",
+    "code": "TLH51",
     "name": "Broadland"
   },
   "E07000145": {
-    "code": "TLH15",
+    "code": "TLH51",
     "name": "Great Yarmouth"
   },
   "E07000146": {
-    "code": "TLH16",
+    "code": "TLH52",
     "name": "King's Lynn and West Norfolk"
   },
   "E07000147": {
-    "code": "TLH16",
+    "code": "TLH52",
     "name": "North Norfolk"
   },
   "E07000148": {
-    "code": "TLH15",
+    "code": "TLH51",
     "name": "Norwich"
   },
   "E07000149": {
-    "code": "TLH17",
+    "code": "TLH53",
     "name": "South Norfolk"
-  },
-  "E07000150": {
-    "code": "TLF25",
-    "name": "Corby"
-  },
-  "E07000151": {
-    "code": "TLF24",
-    "name": "Daventry"
-  },
-  "E07000152": {
-    "code": "TLF25",
-    "name": "East Northamptonshire"
-  },
-  "E07000153": {
-    "code": "TLF25",
-    "name": "Kettering"
-  },
-  "E07000154": {
-    "code": "TLF24",
-    "name": "Northampton"
-  },
-  "E07000155": {
-    "code": "TLF24",
-    "name": "South Northamptonshire"
-  },
-  "E07000156": {
-    "code": "TLF25",
-    "name": "Wellingborough"
-  },
-  "E07000163": {
-    "code": "TLE22",
-    "name": "Craven"
-  },
-  "E07000164": {
-    "code": "TLE22",
-    "name": "Hambleton"
-  },
-  "E07000165": {
-    "code": "TLE22",
-    "name": "Harrogate"
-  },
-  "E07000166": {
-    "code": "TLE22",
-    "name": "Richmondshire"
-  },
-  "E07000167": {
-    "code": "TLE22",
-    "name": "Ryedale"
-  },
-  "E07000168": {
-    "code": "TLE22",
-    "name": "Scarborough"
-  },
-  "E07000169": {
-    "code": "TLE22",
-    "name": "Selby"
   },
   "E07000170": {
     "code": "TLF15",
@@ -779,18 +723,6 @@
     "code": "TLJ14",
     "name": "West Oxfordshire"
   },
-  "E07000187": {
-    "code": "TLK23",
-    "name": "Mendip"
-  },
-  "E07000188": {
-    "code": "TLK23",
-    "name": "Sedgemoor"
-  },
-  "E07000189": {
-    "code": "TLK23",
-    "name": "South Somerset"
-  },
   "E07000192": {
     "code": "TLG24",
     "name": "Cannock Chase"
@@ -824,15 +756,15 @@
     "name": "Tamworth"
   },
   "E07000200": {
-    "code": "TLH14",
+    "code": "TLH61",
     "name": "Babergh"
   },
   "E07000202": {
-    "code": "TLH14",
+    "code": "TLH62",
     "name": "Ipswich"
   },
   "E07000203": {
-    "code": "TLH14",
+    "code": "TLH61",
     "name": "Mid Suffolk"
   },
   "E07000207": {
@@ -952,32 +884,28 @@
     "name": "Wyre Forest"
   },
   "E07000240": {
-    "code": "TLH23",
+    "code": "TLH27",
     "name": "St Albans"
   },
   "E07000241": {
-    "code": "TLH23",
+    "code": "TLH26",
     "name": "Welwyn Hatfield"
   },
   "E07000242": {
-    "code": "TLH23",
+    "code": "TLH26",
     "name": "East Hertfordshire"
   },
   "E07000243": {
-    "code": "TLH23",
+    "code": "TLH26",
     "name": "Stevenage"
   },
   "E07000244": {
-    "code": "TLH14",
+    "code": "TLH63",
     "name": "East Suffolk"
   },
   "E07000245": {
-    "code": "TLH14",
+    "code": "TLH64",
     "name": "West Suffolk"
-  },
-  "E07000246": {
-    "code": "TLK23",
-    "name": "Somerset West and Taunton"
   },
   "E08000001": {
     "code": "TLD36",
@@ -1040,15 +968,15 @@
     "name": "Wirral"
   },
   "E08000016": {
-    "code": "TLE31",
+    "code": "TLE33",
     "name": "Barnsley"
   },
   "E08000017": {
-    "code": "TLE31",
+    "code": "TLE35",
     "name": "Doncaster"
   },
   "E08000018": {
-    "code": "TLE31",
+    "code": "TLE34",
     "name": "Rotherham"
   },
   "E08000019": {
@@ -1056,19 +984,19 @@
     "name": "Sheffield"
   },
   "E08000021": {
-    "code": "TLC22",
+    "code": "TLC43",
     "name": "Newcastle upon Tyne"
   },
   "E08000022": {
-    "code": "TLC22",
+    "code": "TLC43",
     "name": "North Tyneside"
   },
   "E08000023": {
-    "code": "TLC22",
+    "code": "TLC43",
     "name": "South Tyneside"
   },
   "E08000024": {
-    "code": "TLC23",
+    "code": "TLC44",
     "name": "Sunderland"
   },
   "E08000025": {
@@ -1120,11 +1048,11 @@
     "name": "Wakefield"
   },
   "E08000037": {
-    "code": "TLC22",
+    "code": "TLC43",
     "name": "Gateshead"
   },
   "E09000001": {
-    "code": "TLI31",
+    "code": "TLI35",
     "name": "City of London"
   },
   "E09000002": {
@@ -1148,7 +1076,7 @@
     "name": "Bromley"
   },
   "E09000007": {
-    "code": "TLI31",
+    "code": "TLI36",
     "name": "Camden"
   },
   "E09000008": {
@@ -1252,12 +1180,8 @@
     "name": "Wandsworth"
   },
   "E09000033": {
-    "code": "TLI32",
+    "code": "TLI35",
     "name": "Westminster"
-  },
-  "LAU121CD": {
-    "code": "ITL321CD",
-    "name": "LAU121NM"
   },
   "N09000001": {
     "code": "TLN0D",
@@ -1304,15 +1228,15 @@
     "name": "Ards and North Down"
   },
   "S30000003": {
-    "code": "TLM72",
+    "code": "TLM01",
     "name": "Clackmannanshire"
   },
   "S30000005": {
-    "code": "TLM73",
+    "code": "TLM11",
     "name": "East Lothian"
   },
   "S30000006": {
-    "code": "TLM73",
+    "code": "TLM11",
     "name": "Midlothian"
   },
   "S30000007": {
@@ -1320,27 +1244,23 @@
     "name": "Scottish Borders"
   },
   "S30000008": {
-    "code": "TLM75",
+    "code": "TLM13",
     "name": "City of Edinburgh"
   },
   "S30000009": {
-    "code": "TLM76",
+    "code": "TLM12",
     "name": "Falkirk"
   },
   "S30000011": {
-    "code": "TLM77",
+    "code": "TLM02",
     "name": "Stirling"
   },
   "S30000012": {
-    "code": "TLM78",
+    "code": "TLM14",
     "name": "West Lothian"
   },
-  "S30000013": {
-    "code": "TLM81",
-    "name": "Helensburgh and Lomond"
-  },
   "S30000014": {
-    "code": "TLM81",
+    "code": "TLM31",
     "name": "West Dunbartonshire"
   },
   "S30000016": {
@@ -1356,15 +1276,15 @@
     "name": "North Ayrshire mainland"
   },
   "S30000020": {
-    "code": "TLM83",
+    "code": "TLM33",
     "name": "East Renfrewshire"
   },
   "S30000021": {
-    "code": "TLM83",
+    "code": "TLM33",
     "name": "Renfrewshire"
   },
   "S30000022": {
-    "code": "TLM83",
+    "code": "TLM33",
     "name": "Inverclyde"
   },
   "S30000024": {
@@ -1383,176 +1303,148 @@
     "code": "TLM50",
     "name": "Aberdeenshire"
   },
-  "S30000028": {
-    "code": "TLM61",
-    "name": "Ross and Cromarty"
-  },
-  "S30000029": {
-    "code": "TLM61",
-    "name": "Caithness and Sutherland"
-  },
-  "S30000030": {
-    "code": "TLM62",
-    "name": "Inverness and Nairn"
-  },
-  "S30000031": {
-    "code": "TLM62",
-    "name": "Badenoch and Strathspey"
-  },
-  "S30000032": {
-    "code": "TLM62",
-    "name": "West Moray"
-  },
-  "S30000033": {
-    "code": "TLM62",
-    "name": "North East Moray"
-  },
   "S30000034": {
-    "code": "TLM63",
+    "code": "TLM20",
     "name": "Arran and Cumbrae"
   },
-  "S30000035": {
-    "code": "TLM63",
-    "name": "Argyll and Bute Islands"
-  },
-  "S30000036": {
-    "code": "TLM63",
-    "name": "Argyll and Bute Mainland"
-  },
-  "S30000037": {
-    "code": "TLM63",
-    "name": "Lochaber"
-  },
-  "S30000038": {
-    "code": "TLM63",
-    "name": "Skye and Lochalsh"
-  },
   "S30000039": {
-    "code": "TLM64",
+    "code": "TLM20",
     "name": "Na h-Eileanan Siar"
   },
   "S30000040": {
-    "code": "TLM65",
+    "code": "TLM20",
     "name": "Orkney Islands"
   },
   "S30000041": {
-    "code": "TLM66",
+    "code": "TLM20",
     "name": "Shetland Islands"
   },
   "S30000042": {
-    "code": "TLM72",
+    "code": "TLM01",
     "name": "Fife"
   },
   "S30000043": {
-    "code": "TLM77",
+    "code": "TLM02",
     "name": "Perth and Kinross"
   },
   "S30000048": {
-    "code": "TLM71",
+    "code": "TLM03",
     "name": "Angus"
   },
   "S30000049": {
-    "code": "TLM71",
+    "code": "TLM03",
     "name": "Dundee City"
   },
   "S30000050": {
-    "code": "TLM81",
+    "code": "TLM31",
     "name": "East Dunbartonshire"
   },
   "S30000052": {
-    "code": "TLM82",
+    "code": "TLM32",
     "name": "Glasgow City"
   },
   "S30000053": {
-    "code": "TLM84",
+    "code": "TLM34",
     "name": "North Lanarkshire"
   },
+  "S30000054": {
+    "code": "TLM20",
+    "name": "Argyll and Bute"
+  },
+  "S30000055": {
+    "code": "TLM20",
+    "name": "Highland"
+  },
+  "S30000056": {
+    "code": "TLM20",
+    "name": "Moray"
+  },
   "W06000001": {
-    "code": "TLL11",
+    "code": "TLL31",
     "name": "Isle of Anglesey"
   },
   "W06000002": {
-    "code": "TLL12",
+    "code": "TLL32",
     "name": "Gwynedd"
   },
   "W06000003": {
-    "code": "TLL13",
+    "code": "TLL33",
     "name": "Conwy"
   },
   "W06000004": {
-    "code": "TLL13",
+    "code": "TLL33",
     "name": "Denbighshire"
   },
   "W06000005": {
-    "code": "TLL23",
+    "code": "TLL34",
     "name": "Flintshire"
   },
   "W06000006": {
-    "code": "TLL23",
+    "code": "TLL34",
     "name": "Wrexham"
   },
   "W06000008": {
-    "code": "TLL14",
+    "code": "TLL41",
     "name": "Ceredigion"
   },
   "W06000009": {
-    "code": "TLL14",
+    "code": "TLL42",
     "name": "Pembrokeshire"
   },
   "W06000010": {
-    "code": "TLL14",
+    "code": "TLL42",
     "name": "Carmarthenshire"
   },
   "W06000011": {
-    "code": "TLL18",
+    "code": "TLL43",
     "name": "Swansea"
   },
   "W06000012": {
-    "code": "TLL17",
+    "code": "TLL44",
     "name": "Neath Port Talbot"
   },
   "W06000013": {
-    "code": "TLL17",
+    "code": "TLL51",
     "name": "Bridgend"
   },
   "W06000014": {
-    "code": "TLL22",
+    "code": "TLL52",
     "name": "Vale of Glamorgan"
   },
   "W06000015": {
-    "code": "TLL22",
+    "code": "TLL52",
     "name": "Cardiff"
   },
   "W06000016": {
-    "code": "TLL15",
+    "code": "TLL51",
     "name": "Rhondda Cynon Taf"
   },
   "W06000018": {
-    "code": "TLL16",
+    "code": "TLL53",
     "name": "Caerphilly"
   },
   "W06000019": {
-    "code": "TLL16",
+    "code": "TLL53",
     "name": "Blaenau Gwent"
   },
   "W06000020": {
-    "code": "TLL16",
+    "code": "TLL53",
     "name": "Torfaen"
   },
   "W06000021": {
-    "code": "TLL21",
+    "code": "TLL54",
     "name": "Monmouthshire"
   },
   "W06000022": {
-    "code": "TLL21",
+    "code": "TLL54",
     "name": "Newport"
   },
   "W06000023": {
-    "code": "TLL24",
+    "code": "TLL41",
     "name": "Powys"
   },
   "W06000024": {
-    "code": "TLL15",
+    "code": "TLL51",
     "name": "Merthyr Tydfil"
   }
 }
