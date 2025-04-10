@@ -1,3 +1,16 @@
+# [17.2.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.1.2...17.2.0) (2025-04-10)
+
+
+### Bug Fixes
+
+* **CCGs:** Add missing CCG for IoM ([d1fc128](https://github.com/ideal-postcodes/postcodes.io/commit/d1fc128a0a10ca629152c6153d78958f40e75a0b))
+* **NUTS/ITL:** Update ITL for Feb 2025 ([a3fbd34](https://github.com/ideal-postcodes/postcodes.io/commit/a3fbd3466845fa4e7f9bf7b71ef1cd0b062b5e0d))
+
+
+### Features
+
+* **ONSPD:** Bump to Feb 2025 ([db8dd65](https://github.com/ideal-postcodes/postcodes.io/commit/db8dd65a4c76f6f4a7983b7e86b1c69a39351c7b))
+
 ## [17.1.2](https://github.com/ideal-postcodes/postcodes.io/compare/17.1.1...17.1.2) (2025-02-05)
 
 
