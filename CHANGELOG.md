@@ -1,3 +1,10 @@
+## [17.2.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.2.0...17.2.1) (2025-04-17)
+
+
+### Bug Fixes
+
+* **OpenAPI:** Update spec ([c9bbda8](https://github.com/ideal-postcodes/postcodes.io/commit/c9bbda8abc8a65741a127dd0183fefc12a9a87bd))
+
 # [17.2.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.1.2...17.2.0) (2025-04-10)
 
 
