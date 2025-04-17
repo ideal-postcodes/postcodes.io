@@ -6,53 +6,34 @@ info:
     url: https://opensource.org/licenses/MIT
   title: API Reference - Postcodes.io
   termsOfService: https://postcodes.io/about
-  description: >
+  description: |
     # Overview
-
 
     Postcodes.io is a free postcode lookup API and geocoder for the UK.
 
-
     ## Endpoint
-
 
     All services can be accessed from the following endpoint.
 
-
     ```
-
     https://api.postcodes.io
-
     ```
 
-
-    The API accepts GET and POST requests. POST methods use content type
-    `application/json`.
-
+    The API accepts GET and POST requests. POST methods use content type `application/json`.
 
     ## Responses
 
-
     JSON(P) only. CORS is enabled.
 
-
-    Each response comes with an appropriate HTTP Status code (except for JSONP
-    requests). These include 200 for success, 400 for a bad request, 404 for not
-    found and 500 for server error. The HTTP Status code is also included in the
-    response body.
-
+    Each response comes with an appropriate HTTP Status code (except for JSONP requests). These include 200 for success, 400 for a bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.
 
     ## Authentication
-
 
     Postcodes.io does not require authentication.
   contact:
     email: support@ideal-postcodes.co.uk
     name: Support
     url: https://ideal-postcodes.co.uk/support
-externalDocs:
-  description: More on our APIs, libraries with guides and examples
-  url: https://docs.ideal-postcodes.co.uk/postcodesio
 servers:
   - url: https://api.postcodes.io
     description: API Server
@@ -68,19 +49,9 @@ tags:
   - name: Place Search
   - name: Place Query
   - name: Random Place
-x-tagGroups:
-  - name: API
-    tags:
-      - Postcode Lookup
-      - Postcode Query
-      - Nearest Postcode
-      - Random Postcode
-      - Terminated Postcodes
-      - Scottish Postcodes
-      - Outward Code Lookup
-      - Place Search
-      - Place Query
-      - Random Place
+externalDocs:
+  description: More on our APIs, libraries with guides and examples
+  url: https://docs.ideal-postcodes.co.uk/postcodesio
 paths:
   /postcodes/{postcode}:
     get:
@@ -88,15 +59,12 @@ paths:
         - Postcode Lookup
       summary: Lookup Postcode
       operationId: Postcodes
-      description: >
+      description: |
         ### Postcode Data (Ordnance Survey Postcode Directory Dataset)
-
 
         Data points returned by the /postcodes and /outcodes API
 
-
-        Note: Some fields may be null if not applicable or populated. These
-        fields return type is specified as type|null
+        Note: Some fields may be null if not applicable or populated. These fields return type is specified as type|null
       parameters:
         - name: postcode
           in: path
@@ -131,41 +99,25 @@ paths:
         - Postcode Query
       summary: Postcode Query
       operationId: Postcode Query
-      description: >
+      description: |
         Query for a postcode either by:
 
-
         - The postcode itself (with `postcode=`) or by,
-
         - A geolocation (`lat=` and `lon=`).
-
 
         ## Query with Postcode
 
+        Submit a postcode query and receive a complete list of postcode matches and all associated postcode data. This is triggered when `query=` is supplied.
 
-        Submit a postcode query and receive a complete list of postcode matches
-        and all associated postcode data. This is triggered when `query=` is
-        supplied.
+        This is essentially a postcode search which prefix matches and returns postcodes in sorted order (case insensitive)
 
+        This method is space sensitive, i.e. it detects for spaces between outward and inward parts of the postcode (some examples detailed in this [issue](https://github.com/ideal-postcodes/postcodes.io/issues/44))
 
-        This is essentially a postcode search which prefix matches and returns
-        postcodes in sorted order (case insensitive)
-
-
-        This method is space sensitive, i.e. it detects for spaces between
-        outward and inward parts of the postcode (some examples detailed in this
-        [issue](https://github.com/ideal-postcodes/postcodes.io/issues/44))
-
-
-        The result set can either be empty or populated with up to 100 postcode
-        entities. Either way it will always return a 200 response code
-
+        The result set can either be empty or populated with up to 100 postcode entities. Either way it will always return a 200 response code
 
         ## Query with Geolocation
 
-
-        Returns nearest postcodes for a given longitude and latitude. This is
-        triggered when `lat=` and `lon=` is supplied.
+        Returns nearest postcodes for a given longitude and latitude. This is triggered when `lat=` and `lon=` is supplied.
       parameters:
         - name: query
           in: query
@@ -182,9 +134,7 @@ paths:
             default: 10
             maximum: 100
             minimum: 1
-            description: >-
-              PLimits number of postcodes matches to return. Defaults to 10.
-              Needs to be less than 100.
+            description: PLimits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
             example: 3
         - name: longitude
           in: query
@@ -194,9 +144,7 @@ paths:
             title: Longitude
             type: number
             format: double
-            description: >-
-              Geographic coordinate that specifies the east-west position of a
-              point
+            description: Geographic coordinate that specifies the east-west position of a point
             example: -0.127695
             maximum: 180
             minimum: -180
@@ -208,9 +156,7 @@ paths:
             title: Latitude
             type: number
             format: double
-            description: >-
-              Geographic coordinate that specifies the north-south position of a
-              point
+            description: Geographic coordinate that specifies the north-south position of a point
             example: 51.50354
             maximum: 90
             minimum: -90
@@ -221,9 +167,7 @@ paths:
           schema:
             title: Radius
             type: integer
-            description: >-
-              Limits number of postcodes matches to return. Defaults to 100m.
-              Needs to be less than 2,000m.
+            description: Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.
             example: 500
             default: 100
             maximum: 2000
@@ -235,12 +179,7 @@ paths:
           schema:
             title: Widesearch
             type: boolean
-            description: >-
-              Search up to 20km radius, but subject to a maximum of 10 results.
-              Since lookups over a wide area can be very expensive, we've
-              created this method to allow you choose to make the trade off
-              between search radius and number of results. Defaults to false.
-              When enabled, radius and limits over 10 are ignored.
+            description: Search up to 20km radius, but subject to a maximum of 10 results. Since lookups over a wide area can be very expensive, we've created this method to allow you choose to make the trade off between search radius and number of results. Defaults to false. When enabled, radius and limits over 10 are ignored.
             example: 'true'
             default: 'false'
         - name: filter
@@ -250,11 +189,7 @@ paths:
           schema:
             title: Filter
             type: string
-            description: >-
-              A comma separated whitelist of attributes to be returned in the
-              result object(s), e.g. filter=postcode,longitude,latitude. null
-              responses will continue to return null. If no attributes match the
-              result object, an empty object is returned
+            description: A comma separated whitelist of attributes to be returned in the result object(s), e.g. filter=postcode,longitude,latitude. null responses will continue to return null. If no attributes match the result object, an empty object is returned
             example: postcode
       responses:
         '200':
@@ -279,49 +214,34 @@ paths:
             https://api.postcodes.io/postcodes?lon=-0.127695&lat=51.50354
         - lang: cURL
           label: Nearest CLI
-          source: >
+          source: |
             curl -G -k \
-
-            --url
-            'https://api.postcodes.io/postcodes?lon=-0.127695&lat=51.50354'
+            --url 'https://api.postcodes.io/postcodes?lon=-0.127695&lat=51.50354'
     post:
       tags:
         - Postcode Query
       summary: Bulk Postcode Lookup
       operationId: Bulk Postcode Lookup
-      description: >
-        Accepts a JSON object containing an array of postcodes. Returns a list
-        of matching postcodes and respective available data.
+      description: |
+        Accepts a JSON object containing an array of postcodes. Returns a list of matching postcodes and respective available data.
 
-
-        Be sure to submit JSON requests setting `Content-Type` to
-        `application/json`
-
+        Be sure to submit JSON requests setting `Content-Type` to `application/json`
 
         Accepts up to 100 postcodes.
 
-
         ### Post Data
 
-
-        This method requires a JSON object containing an array of postcodes to
-        be posted, e.g.
-
+        This method requires a JSON object containing an array of postcodes to be posted, e.g.
 
         ```json
-
         {
           "postcodes": ["PR3 0SG", "M45 6GN", "EX165BL"]
         }
-
         ```
-
 
         ## Bulk Reverse Geocoding
 
-
-        Bulk translates geolocations into Postcodes. Accepts up to 100
-        geolocations.
+        Bulk translates geolocations into Postcodes. Accepts up to 100 geolocations.
       parameters: []
       responses:
         '200':
@@ -394,9 +314,7 @@ paths:
       parameters:
         - name: outcode
           in: query
-          description: >-
-            Filters random postcodes by outcode. Returns null if invalid
-            outcode.
+          description: Filters random postcodes by outcode. Returns null if invalid outcode.
           style: form
           explode: false
           schema:
@@ -426,17 +344,12 @@ paths:
       tags:
         - Terminated Postcodes
       summary: Terminated Postcodes
-      description: >
+      description: |
         Lookup a terminated postcode. 
 
+        If the terminated postcode exists, this API returns the date of termination and last known geospatial coordinates. 
 
-        If the terminated postcode exists, this API returns the date of
-        termination and last known geospatial coordinates. 
-
-
-        Returns `404` if postcode does not exist in our database of terminated
-        postcodes or not valid.
-
+        Returns `404` if postcode does not exist in our database of terminated postcodes or not valid.
 
         Source: Ordnance Survey Postcode Directory Dataset
       operationId: TerminatedPostcodes
@@ -471,20 +384,14 @@ paths:
       tags:
         - Scottish Postcodes
       summary: Scottish Postcodes
-      description: >
+      description: |
         Lookup a Scottish postcode. 
 
-
-        Returns Scottish Postcode Directory (SPD) data associated with postcode.
-        At the moment this is just Scottish Parliamentary Constituency.
-
+        Returns Scottish Postcode Directory (SPD) data associated with postcode. At the moment this is just Scottish Parliamentary Constituency.
 
         Returns `404` if postcode does not exist in SPD or is not valid.
 
-
-        For postcodes not in SPD but in ONSPD, 404 is returned with error
-        message Postcode exists in ONSPD but not in SPD.
-
+        For postcodes not in SPD but in ONSPD, 404 is returned with error message Postcode exists in ONSPD but not in SPD.
 
         Source: Scottish Postcode Directory
       operationId: Scottish Postcodes
@@ -503,7 +410,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ScottishPostcodes-2'
+                $ref: '#/components/schemas/ScottishPostcodesResponse'
       x-codeSamples:
         - lang: http
           label: URL
@@ -519,13 +426,10 @@ paths:
       tags:
         - Outward Code Lookup
       summary: Outcode Lookup
-      description: >
-        Returns aggregated information for postcodes grouped by their shared
-        outward code.
+      description: |
+        Returns aggregated information for postcodes grouped by their shared outward code.
 
-
-        The outward code is the first half of any postcode (3-4 characters and
-        preceded by a space).
+        The outward code is the first half of any postcode (3-4 characters and preceded by a space).
       operationId: FindOutcode
       parameters:
         - name: outcode
@@ -567,13 +471,10 @@ paths:
       tags:
         - Place Search
       summary: Find Place
-      description: >
-        Submit a place query and receive a complete list of places matches and
-        associated data.
+      description: |
+        Submit a place query and receive a complete list of places matches and associated data.
 
-
-        This API uses the Ordnance Survey Open Names Dataset. Places not
-        available for Northern Ireland.
+        This API uses the Ordnance Survey Open Names Dataset. Places not available for Northern Ireland.
       operationId: FindPlace
       parameters:
         - name: code
@@ -605,9 +506,7 @@ paths:
       tags:
         - Place Query
       summary: Place Query
-      description: >-
-        Submit a place query and receive a complete list of places matches and
-        associated data.
+      description: Submit a place query and receive a complete list of places matches and associated data.
       operationId: Place Query
       responses:
         '200':
@@ -681,61 +580,37 @@ components:
         postcode:
           title: Postcode
           type: string
-          description: >-
-            All current ('live') postcodes within the United Kingdom, the
-            Channel Islands and the Isle of Man, received monthly from Royal
-            Mail. 2, 3 or 4-character outward code, single space and 3-character
-            inward code.
+          description: All current ('live') postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received monthly from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code.
           example: SW1A 2AA
         outcode:
           title: Outward Code
           type: string
-          description: >-
-            The outward code is the part of the postcode before the single space
-            in the middle. It is between two and four characters long. A few
-            outward codes are non-geographic, not divulging where mail is to be
-            sent.
+          description: The outward code is the part of the postcode before the single space in the middle. It is between two and four characters long. A few outward codes are non-geographic, not divulging where mail is to be sent.
           example: SW1A
         incode:
           title: Inward Code
           type: string
-          description: >-
-            The inward part is the part of the postcode after the single space
-            in the middle. It is three characters long. The inward code assists
-            in the delivery of post within a postal district.
+          description: The inward part is the part of the postcode after the single space in the middle. It is three characters long. The inward code assists in the delivery of post within a postal district.
           example: 1AA
         quality:
           title: Positional Quality
           type: integer
-          description: >
+          description: |
             Shows the status of the assigned grid reference.
 
+            1 = within the building of the matched address closest to the postcode mean
 
-            1 = within the building of the matched address closest to the
-            postcode mean
-
-
-            2 = as for status value 1, except by visual inspection of Landline
-            maps (Scotland only)
-
+            2 = as for status value 1, except by visual inspection of Landline maps (Scotland only)
 
             3 = approximate to within 50m
 
+            4 = postcode unit mean (mean of matched addresses with the same postcode, but not snapped to a building)
 
-            4 = postcode unit mean (mean of matched addresses with the same
-            postcode, but not snapped to a building)
-
-
-            5 = imputed by ONS, by reference to surrounding postcode grid
-            references
-
+            5 = imputed by ONS, by reference to surrounding postcode grid references
 
             6 = postcode sector mean, (mainly | PO Boxes)
 
-
-            8 = postcode terminated prior to Gridlink® initiative, last known
-            ONS postcode grid reference1
-
+            8 = postcode terminated prior to Gridlink® initiative, last known ONS postcode grid reference1
 
             9 = no grid reference available
           example: '1'
@@ -744,28 +619,19 @@ components:
           type: integer
           format: int32
           x-nullable: true
-          description: >-
-            The Ordnance Survey postcode grid reference Easting to 1 metre
-            resolution. Grid references for postcodes in Northern Ireland relate
-            to the Irish Grid system. May be null if geolocation not available.
+          description: The Ordnance Survey postcode grid reference Easting to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.
           example: 530047
         northings:
           title: Northings
           type: integer
           format: int32
           x-nullable: true
-          description: >-
-            The Ordnance Survey postcode grid reference Northing to 1 metre
-            resolution. Grid references for postcodes in Northern Ireland relate
-            to the Irish Grid system. May be null if geolocation not available.
+          description: The Ordnance Survey postcode grid reference Northing to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.
           example: 179951
         country:
           title: Country
           type: string
-          description: >-
-            The country (i.e. one of the four constituent countries of the
-            United Kingdom or the Channel Islands or the Isle of Man) to which
-            each postcode is assigned.
+          description: The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each postcode is assigned.
           example: England
         nhs_ha:
           title: Strategic Health Authority
@@ -783,35 +649,27 @@ components:
           title: District
           type: string
           x-nullable: true
-          description: >-
-            The current district/unitary authority to which the postcode has
-            been assigned.
+          description: The current district/unitary authority to which the postcode has been assigned.
           example: Westminster
         admin_ward:
           title: Ward
           type: string
           x-nullable: true
-          description: >-
-            The current administrative/electoral area to which the postcode has
-            been assigned.
+          description: The current administrative/electoral area to which the postcode has been assigned.
           example: St. James's
         longitude:
           title: Longitude
           type: number
           format: double
           x-nullable: true
-          description: >-
-            The WGS84 longitude given the Postcode's national grid reference.
-            May be null if geolocation not available.
+          description: The WGS84 longitude given the Postcode's national grid reference. May be null if geolocation not available.
           example: -0.12767
         latitude:
           title: Latitude
           type: number
           format: double
           x-nullable: true
-          description: >-
-            The WGS84 latitude given the Postcode's national grid reference. May
-            be null if geolocation not available.
+          description: The WGS84 latitude given the Postcode's national grid reference. May be null if geolocation not available.
           example: 51.503541
         parliamentary_constituency:
           title: Westminster Parliamentary Constituency
@@ -829,121 +687,65 @@ components:
           title: Primary Care Trust (PCT)
           type: string
           x-nullable: true
-          description: >-
-            The code for the Primary Care areas in England, LHBs in Wales, CHPs
-            in Scotland, LCG in Northern Ireland and PHD in the Isle of Man;
-            there are no equivalent areas in the Channel Islands. Care Trust/
-            Care Trust Plus (CT)/ local health board (LHB)/ community health
-            partnership (CHP)/ local commissioning group (LCG)/ primary
-            healthcare directorate (PHD).
+          description: The code for the Primary Care areas in England, LHBs in Wales, CHPs in Scotland, LCG in Northern Ireland and PHD in the Isle of Man; there are no equivalent areas in the Channel Islands. Care Trust/ Care Trust Plus (CT)/ local health board (LHB)/ community health partnership (CHP)/ local commissioning group (LCG)/ primary healthcare directorate (PHD).
           example: Westminster
         region:
           title: Region (formerly GOR)
           type: string
           x-nullable: true
-          description: >-
-            The Region code for each postcode. The nine GORs were abolished on 1
-            April 2011 and are now known as ‘Regions’. They were the primary
-            statistical subdivisions of England and also the areas in which the
-            Government Offices for the Regions fulfilled their role. Each GOR
-            covered a number of local authorities.
+          description: The Region code for each postcode. The nine GORs were abolished on 1 April 2011 and are now known as ‘Regions’. They were the primary statistical subdivisions of England and also the areas in which the Government Offices for the Regions fulfilled their role. Each GOR covered a number of local authorities.
           example: London
         parish:
           title: Parish (England)/community (Wales)
           type: string
           x-nullable: true
-          description: >-
-            The smallest type of administrative area in England is the parish
-            (also known as 'civil parish'); the equivalent units in Wales are
-            communities.
+          description: The smallest type of administrative area in England is the parish (also known as 'civil parish'); the equivalent units in Wales are communities.
           example: Westminster, unparished area
         lsoa:
           title: 2011 Census lower layer super output area (LSOA)
           type: string
           x-nullable: true
-          description: >-
-            The 2011 Census lower layer SOA code for England and Wales, SOA code
-            for Northern Ireland and data zone code for Scotland.
+          description: The 2011 Census lower layer SOA code for England and Wales, SOA code for Northern Ireland and data zone code for Scotland.
           example: Westminster 018C
         msoa:
           title: 2011 Census middle layer super output area (MSOA)
           type: string
           x-nullable: true
-          description: >-
-            The 2011 Census middle layer SOA (MSOA) code for England and Wales
-            and intermediate zone for Scotland.
+          description: The 2011 Census middle layer SOA (MSOA) code for England and Wales and intermediate zone for Scotland.
           example: Westminster 018
         ced:
           title: County Electoral District
           type: string
           x-nullable: true
-          description: >-
-            The county electoral division code for each English postcode. Pseudo
-            codes are included for the remainder of the UK. The field will be
-            null for English postcodes with no grid reference. English county
-            councils use county electoral divisions (CED) to elect councillors.
-            These CEDs must be confined within district boundaries, but need not
-            be based on whole electoral wards. The only exceptions are the Isles
-            of Scilly and the Greater London Authority (GLA). CEDs do not exist
-            within UAs.
+          description: The county electoral division code for each English postcode. Pseudo codes are included for the remainder of the UK. The field will be null for English postcodes with no grid reference. English county councils use county electoral divisions (CED) to elect councillors. These CEDs must be confined within district boundaries, but need not be based on whole electoral wards. The only exceptions are the Isles of Scilly and the Greater London Authority (GLA). CEDs do not exist within UAs.
           example: null
         ccg:
           title: Clinical Commissioning Group
           type: string
           x-nullable: true
-          description: >-
-            Clinical commissioning groups (CCGs) are NHS organisations set up by
-            the Health and Social Care Act 2012 to organise the delivery of NHS
-            services in England.
+          description: Clinical commissioning groups (CCGs) are NHS organisations set up by the Health and Social Care Act 2012 to organise the delivery of NHS services in England.
           example: NHS North West London
         nuts:
-          title: >-
-            International Terratorial Levels (ITL) (Former Nomenclature of Units
-            for Territorial Statistics (NUTS)
+          title: International Terratorial Levels (ITL) (Former Nomenclature of Units for Territorial Statistics (NUTS)
           type: string
           x-nullable: true
-          description: >-
-            The national LAU1-equivalent code for each postcode. Pseudo codes
-            are included for Channel Islands and Isle of Man. The field will
-            otherwise be blank for postcodes with no grid reference.
+          description: |-
+            The national LAU1-equivalent code for each postcode. Pseudo codes are included for Channel Islands and Isle of Man. The field will otherwise be blank for postcodes with no grid reference.
 
+            As of May 2021. NUTS has changed to International Territorial Levels (ITL). Postcodes.io will report ITL in nuts and codes.nuts to preserve backwards compatibility.
 
-            As of May 2021. NUTS has changed to International Territorial Levels
-            (ITL). Postcodes.io will report ITL in nuts and codes.nuts to
-            preserve backwards compatibility.
+            Following the UK's withdrawal from the EU, a new UK-managed international statistical geography - ITL (International Territorial Levels) - was introduced from 1st January 2021, replacing the former NUTS classification. They align with international standards, enabling comparability both over time and internationally. To ensure continued alignment, the ITLs mirror the NUTS system. They also follow a similar review timetable, every three years.
 
+            NUTS is a hierarchical classification of spatial units that provides a breakdown of the European Union's territory for producing regional statistics that are comparable across the Union.
 
-            Following the UK's withdrawal from the EU, a new UK-managed
-            international statistical geography - ITL (International Territorial
-            Levels) - was introduced from 1st January 2021, replacing the former
-            NUTS classification. They align with international standards,
-            enabling comparability both over time and internationally. To ensure
-            continued alignment, the ITLs mirror the NUTS system. They also
-            follow a similar review timetable, every three years.
+            The ITL area classification in the UK comprises current national administrative and electoral areas, except in Scotland where some ITL areas comprise whole and/or part Local Enterprise Regions.
 
-
-            NUTS is a hierarchical classification of spatial units that provides
-            a breakdown of the European Union's territory for producing regional
-            statistics that are comparable across the Union.
-
-
-            The ITL area classification in the UK comprises current national
-            administrative and electoral areas, except in Scotland where some
-            ITL areas comprise whole and/or part Local Enterprise Regions.
-
-
-            The ONSPD contains the LAU1 code (9-character LAD/UA code for
-            England, Wales and Northern Ireland and 'S30' code for Scotland). A
-            comprehensive lookup of LAU and ITL codes is included with the
-            accompanying metadata.
+            The ONSPD contains the LAU1 code (9-character LAD/UA code for England, Wales and Northern Ireland and 'S30' code for Scotland). A comprehensive lookup of LAU and ITL codes is included with the accompanying metadata.
           example: Westminster
         codes:
           title: Returns an ID or Code associated with the postcode
           type: object
-          description: >-
-            Typically, these are a 9 character code known as an ONS Code or GSS
-            Code. This is currently only available for districts, parishes,
-            counties, CCGs, NUTS and wards.
+          description: Typically, these are a 9 character code known as an ONS Code or GSS Code. This is currently only available for districts, parishes, counties, CCGs, NUTS and wards.
           properties:
             admin_district:
               title: GSS Code for Administrative County
@@ -1013,9 +815,7 @@ components:
               example: E02000977
     NearestPostcode:
       title: Geolocated Postcode
-      description: >-
-        Standard postcode object extended with a distance attribute, indicating
-        how far the postcode is from a supplied geolocation.
+      description: Standard postcode object extended with a distance attribute, indicating how far the postcode is from a supplied geolocation.
       allOf:
         - $ref: '#/components/schemas/Postcode'
         - type: object
@@ -1058,11 +858,7 @@ components:
         postcode:
           title: Postcode
           type: string
-          description: >-
-            All currently terminated postcodes within the United Kingdom, the
-            Channel Islands and the Isle of Man, received every 3 months from
-            Royal Mail. 2, 3 or 4-character outward code, single space and
-            3-character inward code.
+          description: All currently terminated postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received every 3 months from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code.
           example: SW1A 2AA
         year_terminated:
           title: Termination year
@@ -1074,9 +870,7 @@ components:
           title: Termination month
           type: number
           format: int32
-          description: >-
-            Month of termination of a postcode. 1-January, 2-February ...
-            12-December.
+          description: Month of termination of a postcode. 1-January, 2-February ... 12-December.
           example: 1
         longitude:
           title: Longitude
@@ -1126,19 +920,15 @@ components:
           example: Inverness and Nairn
         codes:
           title: Returns an ID or Code associated with the postcode
-          description: >-
-            Typically, these are a 9 character code known as an ONS Code or GSS
-            Code.
+          description: Typically, these are a 9 character code known as an ONS Code or GSS Code.
           type: object
           properties:
             scottish_parliamentary_constituency:
               title: Scottish Parliamentary Constituency GSS Code
               type: string
-              description: >-
-                A code that identifies a 2014 Scottish Parliamentary
-                Constituency.
+              description: A code that identifies a 2014 Scottish Parliamentary Constituency.
               example: S16000125
-    ScottishPostcodes-2:
+    ScottishPostcodesResponse:
       title: Scottish Postcodes Response
       type: object
       required:
@@ -1172,35 +962,20 @@ components:
         outcode:
           title: Outcode
           type: string
-          description: >-
-            The outcode or outward code is the part of the postcode before the
-            single space in the middle. It is between two and four characters
-            long. Examples of outward codes include "L1", "W1A", "RH1", "RH10"
-            or "SE1P". A few outward codes are non-geographic, not divulging
-            where mail is to be sent.
+          description: The outcode or outward code is the part of the postcode before the single space in the middle. It is between two and four characters long. Examples of outward codes include "L1", "W1A", "RH1", "RH10" or "SE1P". A few outward codes are non-geographic, not divulging where mail is to be sent.
           example: SW1A
         eastings:
           title: Eastings
           type: number
           format: int32
           x-nullable: true
-          description: >-
-            The Ordnance Survey postcode grid reference Easting to 1 metre
-            resolution; blank for postcodes in the Channel Islands and the Isle
-            of Man. Grid references for postcodes in Northern Ireland relate to
-            the Irish Grid system. Computed as the arithmetic mean of the input
-            coordinates. Returns 0 if geolocation is not available.
+          description: The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates. Returns 0 if geolocation is not available.
           example: 529740
         northings:
           title: Northings
           type: number
           format: int32
-          description: >-
-            The Ordnance Survey postcode grid reference Northing to 1 metre
-            resolution; blank for postcodes in the Channel Islands and the Isle
-            of Man. Grid references for postcodes in Northern Ireland relate to
-            the Irish Grid system. Computed as the arithmetic mean of the input
-            coordinates. Returns 0 if geolocation is not available.
+          description: The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates. Returns 0 if geolocation is not available.
           example: 180066
         admin_county:
           title: County
@@ -1231,19 +1006,13 @@ components:
           title: Longitude
           type: number
           format: double
-          description: >-
-            The WGS84 longitude given the Postcode's national grid reference.
-            Computed as the arithmetic mean of input coordinates. May be null if
-            geolocation not available.
+          description: The WGS84 longitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates. May be null if geolocation not available.
           example: -0.132066
         latitude:
           title: Latitude
           type: number
           format: double
-          description: >-
-            The WGS84 latitude given the Postcode's national grid reference.
-            Computed as the arithmetic mean of input coordinates. May be null if
-            geolocation not available.
+          description: The WGS84 latitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates. May be null if geolocation not available.
           example: 51.50464
         country:
           title: Country
@@ -1305,51 +1074,35 @@ components:
         code:
           title: Code
           type: string
-          description: >-
-            A unique identifier that enables records to be identified easily.
-            The identifier will be persistent for all LocalTypes except Section
-            of Named Road and Section of Numbered Road.
+          description: A unique identifier that enables records to be identified easily. The identifier will be persistent for all LocalTypes except Section of Named Road and Section of Numbered Road.
           example: osgb4000000074559833
         name_1:
           title: Name
           type: string
-          description: >-
-            The proper noun that applies to the real world entity. Names that
-            are prefixed by the definite article are not formatted for
-            alphabetical sorting, that is, 'The Pennines' not 'Pennines, The'.
+          description: The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, 'The Pennines' not 'Pennines, The'.
           example: Y Trallwng
         name_1_lang:
           title: Language of Name
           type: string
           x-nullable: true
-          description: >-
-            The language type is only set where more than one name exists, e.g.
-            cym (Welsh), eng (English), gla (Scottish Gaelic).
+          description: The language type is only set where more than one name exists, e.g. cym (Welsh), eng (English), gla (Scottish Gaelic).
           example: cym
         name_2:
           title: Name (in case of multiple languages)
           type: string
           x-nullable: true
-          description: >-
-            The proper noun that applies to the real world entity. Names that
-            are prefixed by the definite article are not formatted for
-            alphabetical sorting, that is, 'The Pennines' not 'Pennines, The'.
+          description: The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, 'The Pennines' not 'Pennines, The'.
           example: Welshpool
         name_2_lang:
           title: Language of Name
           type: string
           x-nullable: true
-          description: >-
-            The language type is only set where more than one name exists, e.g.
-            cym (Welsh), eng (English), gla (Scottish Gaelic).
+          description: The language type is only set where more than one name exists, e.g. cym (Welsh), eng (English), gla (Scottish Gaelic).
           example: eng
         local_type:
           title: Local Type
           type: string
-          description: >-
-            The Ordnance Survey classification for the named place being
-            represented by the specific feature, e.g. City, Town, Village,
-            Hamlet, Other Settlement, Suburban Area.
+          description: The Ordnance Survey classification for the named place being represented by the specific feature, e.g. City, Town, Village, Hamlet, Other Settlement, Suburban Area.
           example: Hamlet
         outcode:
           title: Outcode
@@ -1360,10 +1113,7 @@ components:
           title: Administrative Area
           type: string
           x-nullable: true
-          description: >-
-            The name of the County (non-metropolitan or Metropolitan), Unitary
-            Authority or Greater London Authority administrative area that the
-            point geometry for feature is within or nearest to.
+          description: The name of the County (non-metropolitan or Metropolitan), Unitary Authority or Greater London Authority administrative area that the point geometry for feature is within or nearest to.
           example: Powys - Powys
         county_unitary_type:
           title: Administrative Area Type
@@ -1375,10 +1125,7 @@ components:
           title: District or Borough
           type: string
           x-nullable: true
-          description: >-
-            The name of the District, Metropolitan District or London Borough
-            administrative unit that the point geometry for the feature is
-            within.
+          description: The name of the District, Metropolitan District or London Borough administrative unit that the point geometry for the feature is within.
           example: 'null'
         district_borough_type:
           title: Borough Type
@@ -1389,16 +1136,12 @@ components:
         region:
           title: Region
           type: string
-          description: >-
-            The name of the European Region (was Government O ice Region) that
-            the point geometry for the feature is within or nearest to.
+          description: The name of the European Region (was Government O ice Region) that the point geometry for the feature is within or nearest to.
           example: Wales
         country:
           title: Country
           type: string
-          description: >-
-            OS Places relates to Great Britain only. i.e. England, Scotland,
-            Wales.
+          description: OS Places relates to Great Britain only. i.e. England, Scotland, Wales.
           example: Wales
         longitude:
           title: Longitude
@@ -1415,54 +1158,32 @@ components:
         eastings:
           title: Eastings
           type: integer
-          description: >-
-            The Ordnance Survey postcode grid reference Easting to 1 metre
-            resolution; blank for postcodes in the Channel Islands and the Isle
-            of Man.
+          description: The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.
           example: '322335'
         northings:
           title: Northings
           type: integer
-          description: >-
-            The Ordnance Survey postcode grid reference Northing to 1 metre
-            resolution; blank for postcodes in the Channel Islands and the Isle
-            of Man.
+          description: The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.
           example: '307611'
         min_eastings:
           title: Minimum Eastings
           type: integer
-          description: >-
-            Bounding box or Minimum Bounding Rectangle (MBR) for roads and
-            settlements. For Settlements and Sections of Named and Numbered
-            Roads, the MBR gives a representation of the extent of these
-            features and is not snapped to the real world extent.
+          description: Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
           example: '321623'
         min_northings:
           title: Minimum Northings
           type: integer
-          description: >-
-            Bounding box or Minimum Bounding Rectangle (MBR) for roads and
-            settlements. For Settlements and Sections of Named and Numbered
-            Roads, the MBR gives a representation of the extent of these
-            features and is not snapped to the real world extent.
+          description: Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
           example: '306458'
         max_eastings:
           title: Maximum Eastings
           type: integer
-          description: >-
-            Bounding box or Minimum Bounding Rectangle (MBR) for roads and
-            settlements. For Settlements and Sections of Named and Numbered
-            Roads, the MBR gives a representation of the extent of these
-            features and is not snapped to the real world extent.
+          description: Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
           example: '323592'
         max_northings:
           title: Maximum Northings
           type: integer
-          description: >-
-            Bounding box or Minimum Bounding Rectangle (MBR) for roads and
-            settlements. For Settlements and Sections of Named and Numbered
-            Roads, the MBR gives a representation of the extent of these
-            features and is not snapped to the real world extent.
+          description: Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
           example: '308740'
     PlaceResponse:
       title: Places Response
@@ -1482,3 +1203,16 @@ components:
             oneOf:
               - $ref: '#/components/schemas/Place'
           description: Data for a given place
+x-tagGroups:
+  - name: API
+    tags:
+      - Postcode Lookup
+      - Postcode Query
+      - Nearest Postcode
+      - Random Postcode
+      - Terminated Postcodes
+      - Scottish Postcodes
+      - Outward Code Lookup
+      - Place Search
+      - Place Query
+      - Random Place

@@ -15,10 +15,6 @@
       "url": "https://ideal-postcodes.co.uk/support"
     }
   },
-  "externalDocs": {
-    "description": "More on our APIs, libraries with guides and examples",
-    "url": "https://docs.ideal-postcodes.co.uk/postcodesio"
-  },
   "servers": [
     {
       "url": "https://api.postcodes.io",
@@ -58,23 +54,10 @@
       "name": "Random Place"
     }
   ],
-  "x-tagGroups": [
-    {
-      "name": "API",
-      "tags": [
-        "Postcode Lookup",
-        "Postcode Query",
-        "Nearest Postcode",
-        "Random Postcode",
-        "Terminated Postcodes",
-        "Scottish Postcodes",
-        "Outward Code Lookup",
-        "Place Search",
-        "Place Query",
-        "Random Place"
-      ]
-    }
-  ],
+  "externalDocs": {
+    "description": "More on our APIs, libraries with guides and examples",
+    "url": "https://docs.ideal-postcodes.co.uk/postcodesio"
+  },
   "paths": {
     "/postcodes/{postcode}": {
       "get": {
@@ -479,7 +462,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ScottishPostcodes-2"
+                  "$ref": "#/components/schemas/ScottishPostcodesResponse"
                 }
               }
             }
@@ -1110,7 +1093,7 @@
           }
         }
       },
-      "ScottishPostcodes-2": {
+      "ScottishPostcodesResponse": {
         "title": "Scottish Postcodes Response",
         "type": "object",
         "required": [
@@ -1460,5 +1443,22 @@
         }
       }
     }
-  }
+  },
+  "x-tagGroups": [
+    {
+      "name": "API",
+      "tags": [
+        "Postcode Lookup",
+        "Postcode Query",
+        "Nearest Postcode",
+        "Random Postcode",
+        "Terminated Postcodes",
+        "Scottish Postcodes",
+        "Outward Code Lookup",
+        "Place Search",
+        "Place Query",
+        "Random Place"
+      ]
+    }
+  ]
 }

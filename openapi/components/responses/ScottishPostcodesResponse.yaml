@@ -13,5 +13,5 @@ properties:
     type: array
     items:
       oneOf:
-        - $ref: '../schemas/ScottishPostcodes.yaml'
-    description: 'Data for a given postcode'
+        - $ref: "../schemas/ScottishPostcodes.yaml"
+    description: "Data for a given postcode"
