@@ -40,7 +40,6 @@ export interface Config {
   postgres: PostgresConfig;
   log: LogConfig;
   port: number;
-  serveStaticAssets: boolean;
   urlPrefix: string;
   defaults: any;
   httpHeaders?: Record<string, string>;
@@ -63,7 +62,6 @@ const config: Record<Env, Config> = {
       file: "stdout",
     },
     port: 8000,
-    serveStaticAssets: true,
     urlPrefix: "",
     defaults,
   },
@@ -82,7 +80,6 @@ const config: Record<Env, Config> = {
       file: join(__dirname, "../test.log"),
     },
     port: 8000,
-    serveStaticAssets: true,
     urlPrefix: "",
     defaults,
   },
@@ -101,7 +98,6 @@ const config: Record<Env, Config> = {
       file: "perf", // Use pino.extreme
     },
     port: 8000,
-    serveStaticAssets: false,
     urlPrefix: "",
     defaults,
   },
@@ -124,7 +120,6 @@ export const getConfig = (env?: Env): Config => {
     LOG_DESTINATION,
     PROMETHEUS_USERNAME,
     PROMETHEUS_PASSWORD,
-    SERVE_STATIC_ASSETS,
     HTTP_HEADERS,
     URL_PREFIX,
   } = process.env;
@@ -150,11 +145,7 @@ export const getConfig = (env?: Env): Config => {
   if (PROMETHEUS_PASSWORD !== undefined)
     cfg.prometheusPassword = PROMETHEUS_PASSWORD;
 
-  if (SERVE_STATIC_ASSETS !== undefined)
-    cfg.serveStaticAssets = SERVE_STATIC_ASSETS.toLowerCase() !== "false";
-
-  if (URL_PREFIX !== undefined)
-    cfg.urlPrefix = URL_PREFIX
+  if (URL_PREFIX !== undefined) cfg.urlPrefix = URL_PREFIX;
 
   try {
     if (HTTP_HEADERS !== undefined) cfg.httpHeaders = JSON.parse(HTTP_HEADERS);
