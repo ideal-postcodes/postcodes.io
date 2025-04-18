@@ -1,6 +1,5 @@
 import express from "express";
 import { Express } from "express";
-import * as pages from "../app/controllers/pages_controller";
 import * as utils from "../app/controllers/utils_controller";
 import * as places from "../app/controllers/places_controller";
 import * as outcodes from "../app/controllers/outcodes_controller";
@@ -11,11 +10,8 @@ import { getConfig } from "./config";
 
 export const routes = (app: Express): void => {
   const router = express.Router();
-  router.get("/", pages.home);
   router.get("/ping", utils.ping);
   router.get("/ready", utils.ready);
-  router.get("/about", pages.about);
-  router.get("/docs", pages.documentation);
 
   router.get("/postcodes", postcodes.query);
   router.post("/postcodes", postcodes.bulk);
@@ -32,8 +28,6 @@ export const routes = (app: Express): void => {
 
   router.get("/places", places.query);
   router.get("/places/:id", places.show);
-  // Todo: Query for geolocation contained in polygon (geolocation contained in polygon)
-  // Todo: Query for geolocation near polygon (radius intersects polygon)
 
   router.get("/random/places", places.random);
   router.get("/random/postcodes", postcodes.random);
@@ -41,6 +35,8 @@ export const routes = (app: Express): void => {
   router.get("/terminated_postcodes/:postcode", terminatedPostcodes.show);
 
   router.get("/scotland/postcodes/:postcode", scottishPostcodes.show);
+
+  router.use(express.static("docs/build"));
 
   const { urlPrefix } = getConfig();
   app.use(urlPrefix, router);
