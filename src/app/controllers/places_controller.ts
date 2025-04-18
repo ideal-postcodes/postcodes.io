@@ -51,7 +51,7 @@ const searchPlace: Handler = async (request, response, next) => {
     //if NAN make it undefined
     if (isNaN(limit)) limit = undefined;
 
-    const places = await Place.search({ name, limit });
+    const places = await Place.prefixSearch({ name, limit });
     if (!places) return returnEmptyResponse(response, next);
     response.jsonApiResponse = {
       status: 200,
