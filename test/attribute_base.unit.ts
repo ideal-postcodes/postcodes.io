@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import { generateAttributeMethods } from "../src/app/models/attribute_base";
-import { query, dollarise } from "../src/app/models/index";
+import { generateAttributeMethods } from "../api/app/models/attribute_base";
+import { query, dollarise } from "../api/app/models/index";
 
 const relation = "customattribute";
 

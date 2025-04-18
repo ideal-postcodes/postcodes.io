@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import * as helper from "./helper/index";
-import { getConfig } from "../src/config/config";
+import { getConfig } from "../api/config/config";
 const { defaults } = getConfig();
 const searchDefaults = defaults.placesSearch;
 const { Place } = helper;

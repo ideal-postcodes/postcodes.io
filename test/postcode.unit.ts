@@ -3,10 +3,10 @@ import * as path from "path";
 import { assert } from "chai";
 import parse from "csv-parse/lib/sync";
 import * as helper from "./helper/index";
-import { PostcodesioHttpError } from "../src/app/lib/errors";
+import { PostcodesioHttpError } from "../api/app/lib/errors";
 const seedFilePath = path.resolve(__dirname, "./seed/postcode.csv");
 const Postcode = helper.Postcode;
-import { query } from "../src/app/models/base";
+import { query } from "../api/app/models/base";
 
 /**
  * Counts number of postcode records if
@@ -54,9 +54,9 @@ describe("Postcode Model", function () {
     describe("#_createRelation", () => {
       it(`creates a relation that matches ${Postcode.relation.relation} schema`, async () => {
         const q = `
-					SELECT 
+					SELECT
 						column_name, data_type, character_maximum_length, collation_name
-					FROM INFORMATION_SCHEMA.COLUMNS 
+					FROM INFORMATION_SCHEMA.COLUMNS
 					WHERE table_name = '${Postcode.relation.relation}'
 				`;
         const result = await query(q);
@@ -88,8 +88,8 @@ describe("Postcode Model", function () {
     describe("#createIndexes", () => {
       it("generates indexes that matches to what's been specified", async () => {
         const q = `
-					SELECT indexdef 
-					FROM pg_indexes 
+					SELECT indexdef
+					FROM pg_indexes
 					WHERE tablename = '${Postcode.relation.relation}'
 				`;
         const result = await query(q);

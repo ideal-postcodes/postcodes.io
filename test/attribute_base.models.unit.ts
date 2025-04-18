@@ -12,7 +12,7 @@ import {
   Msoa,
   Lsoa,
   PoliceForceArea,
-} from "../src/app/models/index";
+} from "../api/app/models/index";
 
 const { rigCoreSpecs } = AttributeBaseSuite;
 

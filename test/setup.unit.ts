@@ -3,7 +3,7 @@ import {
   setupSupportTables,
   setupOutcodeTable,
   SUPPORT_TABLES,
-} from "../src/app/lib/setup";
+} from "../api/app/lib/setup";
 import {
   listDatabaseRelations,
   clearPostcodeDb,

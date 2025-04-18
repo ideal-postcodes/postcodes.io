@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { chunk } from "../src/app/lib/chunk";
+import { chunk } from "../api/app/lib/chunk";
 
 describe("chunk", () => {
   it("chunks arrays", () => {
