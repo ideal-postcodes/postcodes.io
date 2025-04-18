@@ -494,7 +494,7 @@ Any changes, including backwards incompatible changes will be listed here
   - `"perf"` logs to stdout in [extreme mode](https://github.com/pinojs/pino/blob/master/docs/extreme.md)
 - Added ability to export prometheus metrics by basic auth protected `/metrics` endpoint. To enable include `PROMETHEUS_USERNAME` and `PROMETHEUS_PASSWORD` as environment variables. Those environment variables are required to authenticate using [HTTP basic authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication)
 - Updated dependencies
-- Added ability to configure application limits using environment variables. [See readme](/src/config/README.md)
+- Added ability to configure application limits using environment variables. [See readme](/api/config/README.md)
 - Amended `npm run setup` bash script to accept more configuration arguments
 
 ## 10.0.1 (16/01/2019)

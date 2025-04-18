@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import * as helper from "./helper/index";
-import { query } from "../src/app/models/base";
+import { query } from "../api/app/models/base";
 
 const TerminatedPostcode = helper.TerminatedPostcode;
 

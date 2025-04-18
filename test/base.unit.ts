@@ -1,6 +1,6 @@
 import * as helper from "./helper";
 import { assert } from "chai";
-import { query, csvExtractor } from "../src/app/models/base";
+import { query, csvExtractor } from "../api/app/models/base";
 import spdSchemaLarge from "../data/spd_large_schema.json";
 import spdSchemaSmall from "../data/spd_small_schema.json";
 import onspdSchema from "../data/onspd_schema.json";

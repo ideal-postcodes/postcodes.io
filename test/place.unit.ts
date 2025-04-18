@@ -2,7 +2,7 @@ import fs from "fs";
 import { assert } from "chai";
 import parse from "csv-parse/lib/sync";
 import * as helper from "./helper/index";
-import { query } from "../src/app/models/base";
+import { query } from "../api/app/models/base";
 const seedPathDirectory = `${__dirname}/seed/places/`;
 const seedFilePath = `${__dirname}/seed/places/HY20.csv`;
 const { Place } = helper;
