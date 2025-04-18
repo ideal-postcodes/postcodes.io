@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { filter } from "../src/config/filter";
+import { filter } from "../api/config/filter";
 import bulkPostcodeResult = require("./seed/bulk_postcode.json");
 import bulkGeocodingResult = require("./seed/bulk_geocoding.json");
 const cloneObject = (o: any) => JSON.parse(JSON.stringify(o));

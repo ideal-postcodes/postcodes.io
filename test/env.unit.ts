@@ -1,7 +1,7 @@
 "use strict";
 
 import { assert } from "chai";
-import { parseEnv } from "../src/app/lib/env";
+import { parseEnv } from "../api/app/lib/env";
 
 describe("parseEnv", () => {
   it("returns default if variable is undefined", () => {
