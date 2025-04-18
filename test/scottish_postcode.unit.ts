@@ -5,7 +5,7 @@ import {
   clearPostcodeDb,
   seedPostcodeDb,
 } from "./helper";
-import { query } from "../src/app/models/base";
+import { query } from "../api/app/models/base";
 const seedFilePath = `${__dirname}/seed/`;
 
 describe("Scottish Postcode Model", () => {

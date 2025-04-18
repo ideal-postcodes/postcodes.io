@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { unaccent } from "../src/app/lib/unaccent";
+import { unaccent } from "../api/app/lib/unaccent";
 const testData = require("./seed/accent_tests.json");
 
 describe("unaccent", () => {
