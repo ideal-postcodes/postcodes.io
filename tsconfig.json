@@ -4,7 +4,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "target": "es5",
-    "lib": ["es6"],
+    "lib": ["DOM", "es6"],
     "noImplicitAny": true,
     "moduleResolution": "node",
     "allowJs": true,
