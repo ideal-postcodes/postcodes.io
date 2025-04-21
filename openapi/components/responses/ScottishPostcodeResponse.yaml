@@ -12,10 +12,5 @@ properties:
   result:
     type: array
     items:
-<<<<<<<< HEAD:openapi/components/responses/ScottishPostcodesResponse.yaml
-      oneOf:
-        - $ref: "../schemas/ScottishPostcodes.yaml"
-========
       $ref: "../schemas/ScottishPostcodes.yaml"
->>>>>>>> 773e1ed (Improve openapi specs):openapi/components/responses/ScottishPostcodeResponse.yaml
     description: "Data for a given postcode"
