@@ -1,4 +1,5 @@
 import express from "express";
+import { join } from "path";
 import { Express } from "express";
 import * as utils from "../app/controllers/utils_controller";
 import * as places from "../app/controllers/places_controller";
@@ -36,8 +37,11 @@ export const routes = (app: Express): void => {
 
   router.get("/scotland/postcodes/:postcode", scottishPostcodes.show);
 
-  router.use(express.static("docs/build"));
+  const docsBuildPath = join(__dirname, "../../build");
+
+  router.use(express.static(docsBuildPath));
 
   const { urlPrefix } = getConfig();
   app.use(urlPrefix, router);
+
 };
