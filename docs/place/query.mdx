@@ -1,0 +1,16 @@
+---
+sidebar_label: "Query"
+title: "Query for GB place"
+---
+
+Submit a place query and receive a complete list of places matches and associated data.
+
+```javascript
+GET https://api.postcodes.io/places?q=[query]
+```
+
+## Optional Query Parameters
+
+`query=` (not required) aliases `toq=`
+
+`limit=` (not required) Limits number of places matches to return. Defaults to 10. Needs to be less than 100.

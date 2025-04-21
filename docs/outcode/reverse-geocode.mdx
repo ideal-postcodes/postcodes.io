@@ -1,0 +1,16 @@
+---
+sidebar_label: "Reverse Geocode"
+title: "Reverse Geocode an Outcode"
+---
+
+Returns nearest outcodes for a given longitude and latitude.
+
+```javascript
+GET https://api.postcodes.io/outcodes?lon=:longitude&lat=:latitude
+```
+
+## Optional Query Parameters
+
+`limit=` (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+
+`radius=` (not required) Limits number of postcodes matches to return. Defaults to 5,000m. Needs to be less than 25,000m.

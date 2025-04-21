@@ -1,0 +1,49 @@
+---
+sidebar_label: "Bulk Reverse Geocode"
+title: "Bulk Reverse Geocode Postcodes"
+---
+
+Bulk translates geolocations into Postcodes. Accepts up to 100 geolocations.
+
+```javascript
+POST https://api.postcodes.io/postcodes
+```
+
+## Optional Query Parameters
+
+`limit=` (not required) Applies a global limit parameter to all geolocation lookup objects. Defaults to 10. Needs to be less than 100.
+
+`radius=` (not required) Applies a global search radius to all geolocation lookup objects. Defaults to 100m. Needs to be less than 2,000m.
+
+`widesearch=` (not required) Applies a global widesearch parameter to all geolocation lookup objects. Defaults to `false`.
+
+## Post Data
+
+This method requires a JSON object containing an array of geolocation objects to be POSTed. Each geolocation object accepts an optional radius (metres) and limit argument. Both default to 100m and 10 respectively. It also accepts a widesearch argument, e.g.
+
+```json
+{
+  "geolocations": [
+    {
+      "longitude": -3.15807731271522,
+      "latitude": 51.4799900627036
+    },
+    {
+      "longitude": -1.12935802905177,
+      "latitude": 50.7186356978817,
+      "limit": 100,
+      "radius": 500
+    }
+  ]
+}
+```
+
+## Optional Geolocation Object Parameters
+
+`filter=` (not required) A comma separated whitelist of attributes to be returned in the result object(s). e.g. `filter=postcode,longitude,latitude`. `null` responses will continue to return null. If no attributes match the result object, an empty object is returned
+
+`widesearch=` (not required) Search up to 20km radius, but subject to a maximum of 10 results
+
+## Additional Response Attributes
+
+`distance` Distance in metres from specified postode
