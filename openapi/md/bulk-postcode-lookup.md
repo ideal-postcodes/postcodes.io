@@ -1,6 +1,6 @@
 Accepts a JSON object containing an array of postcodes. Returns a list of matching postcodes and respective available data.
 
-Be sure to submit JSON requests setting `Content-Type` to `application/json`
+Be sure to submit JSON requests setting `Content-Type` to `application/json`.
 
 Accepts up to 100 postcodes.
 
@@ -10,7 +10,7 @@ This method requires a JSON object containing an array of postcodes to be posted
 
 ```json
 {
-  "postcodes": ["PR3 0SG", "M45 6GN", "EX165BL"]
+  "postcodes": ["PR3 0SG", "M45 6GN", "EX16 5BL"]
 }
 ```
 

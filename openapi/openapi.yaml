@@ -1,4 +1,4 @@
-openapi: "3.0.3"
+openapi: "3.1.0"
 info:
   version: 3.5.1
   license:
@@ -20,29 +20,19 @@ servers:
     description: "API Server"
     variables: {}
 tags:
-  - name: Postcode Lookup
-  - name: Postcode Query
-  - name: Nearest Postcode
-  - name: Random Postcode
+  - name: Postcodes
   - name: Terminated Postcodes
-  - name: Scottish Postcode Search
-  - name: Outward Postcodes
-  - name: Place Search
-  - name: Place Query
-  - name: Random Place
+  - name: Scottish Postcodes
+  - name: Outward Codes
+  - name: Places
 x-tagGroups:
   - name: API
     tags:
-      - Postcode Lookup
-      - Postcode Query
-      - Nearest Postcode
-      - Random Postcode
+      - Postcodes
       - Terminated Postcodes
       - Scottish Postcodes
-      - Outward Code Lookup
-      - Place Search
-      - Place Query
-      - Random Place
+      - Outward Codes
+      - Places
 paths:
   "/postcodes/{postcode}":
     $ref: "paths/postcodes@{postcode}.yaml"
@@ -58,9 +48,9 @@ paths:
     $ref: "paths/scotland@postcodes@{postcode}.yaml"
   "/outcodes/{outcode}":
     $ref: "paths/outcodes@{outcode}.yaml"
-  "/places/{code}":
-    $ref: "paths/places@{code}.yaml"
   "/places":
     $ref: "paths/places.yaml"
+  "/places/{code}":
+    $ref: "paths/places@{code}.yaml"
   "/random/places":
     $ref: "paths/random@places.yaml"

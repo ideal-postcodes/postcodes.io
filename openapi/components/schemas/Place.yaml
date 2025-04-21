@@ -1,5 +1,6 @@
+type: object
 title: Place
-description: Represents a geographical place
+description: A geographical location with detailed information including names, coordinates, and administrative boundaries
 required:
   - code
   - name_1
@@ -25,135 +26,114 @@ properties:
   code:
     title: Code
     type: string
-    description: >-
-      A unique identifier that enables records to be identified easily. The identifier will be persistent for all LocalTypes except Section of Named Road and Section of Numbered Road.
+    description: Unique identifier for the place record (persistent except for Section of Named/Numbered Roads)
     example: "osgb4000000074559833"
   name_1:
-    title: Name
+    title: Primary Name
     type: string
-    description: >-
-      The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, 'The Pennines' not 'Pennines, The'.
+    description: Official name of the place (preserves original format, e.g., "The Pennines" not "Pennines, The")
     example: "Y Trallwng"
   name_1_lang:
-    title: Language of Name
+    title: Primary Name Language
     type: string
-    x-nullable: true
-    description: >-
-      The language type is only set where more than one name exists, e.g. cym (Welsh), eng (English), gla (Scottish Gaelic).
+    nullable: true
+    description: Language code for name_1 (cym=Welsh, eng=English, gla=Scottish Gaelic)
     example: "cym"
   name_2:
-    title: Name (in case of multiple languages)
+    title: Secondary Name
     type: string
-    x-nullable: true
-    description: >-
-      The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, 'The Pennines' not 'Pennines, The'.
+    nullable: true
+    description: Alternative name in a different language
     example: "Welshpool"
   name_2_lang:
-    title: Language of Name
+    title: Secondary Name Language
     type: string
-    x-nullable: true
-    description: >-
-      The language type is only set where more than one name exists, e.g. cym (Welsh), eng (English), gla (Scottish Gaelic).
+    nullable: true
+    description: Language code for name_2 (cym=Welsh, eng=English, gla=Scottish Gaelic)
     example: "eng"
   local_type:
     title: Local Type
     type: string
-    description: >-
-      The Ordnance Survey classification for the named place being represented by the specific feature, e.g. City, Town, Village, Hamlet, Other Settlement, Suburban Area.
+    description: Ordnance Survey classification (City, Town, Village, Hamlet, etc.)
     example: "Hamlet"
   outcode:
     title: Outcode
     type: string
-    description: >-
-      The postcode district.
+    description: Postcode district (first part of the postcode)
     example: "BH24"
   county_unitary:
     title: Administrative Area
     type: string
-    x-nullable: true
-    description: >-
-      The name of the County (non-metropolitan or Metropolitan), Unitary Authority or Greater London Authority administrative area that the point geometry for feature is within or nearest to.
+    nullable: true
+    description: County, Unitary Authority or Greater London Authority that contains this place
     example: "Powys - Powys"
   county_unitary_type:
     title: Administrative Area Type
     type: string
-    x-nullable: true
-    description: >-
-      Classifies the type of administrative unit.
+    nullable: true
+    description: Type of administrative unit (e.g., County, UnitaryAuthority)
     example: "UnitaryAuthority"
   district_borough:
     title: District or Borough
     type: string
-    x-nullable: true
-    description: >-
-      The name of the District, Metropolitan District or London Borough administrative unit that the point geometry for the feature is within.
+    nullable: true
+    description: District, Metropolitan District or London Borough containing this place
     example: "null"
   district_borough_type:
     title: Borough Type
     type: string
-    x-nullable: true
-    description: >-
-      Classifies the type of administrative unit.
+    nullable: true
+    description: Type of district/borough administrative unit
     example: "null"
   region:
     title: Region
     type: string
-    description: >-
-      The name of the European Region (was Government O ice Region) that the point geometry for the feature is within or nearest to.
+    description: European Region (formerly Government Office Region) containing this place
     example: "Wales"
   country:
     title: Country
     type: string
-    description: >-
-      OS Places relates to Great Britain only. i.e. England, Scotland, Wales.
+    description: Country within Great Britain (England, Scotland, or Wales)
     example: "Wales"
   longitude:
     title: Longitude
     type: number
     format: double
-    description: >-
-      The WGS84 longitude given the Place's national grid reference.
+    description: WGS84 longitude coordinate
     example: "-3.14971194307843"
   latitude:
     title: Latitude
     type: number
     format: double
-    description: >-
-      The WGS84 latitude given the Place's national grid reference.
+    description: WGS84 latitude coordinate
     example: "52.6606391732959"
   eastings:
     title: Eastings
     type: integer
-    description: >-
-      The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.
+    description: Ordnance Survey grid reference Easting (1m resolution, not available for Channel Islands/Isle of Man)
     example: "322335"
   northings:
     title: Northings
     type: integer
-    description: >-
-      The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.
+    description: Ordnance Survey grid reference Northing (1m resolution, not available for Channel Islands/Isle of Man)
     example: "307611"
   min_eastings:
     title: Minimum Eastings
     type: integer
-    description: >-
-      Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
+    description: Western edge of the place's bounding box (Minimum Bounding Rectangle)
     example: "321623"
   min_northings:
     title: Minimum Northings
     type: integer
-    description: >-
-      Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
+    description: Southern edge of the place's bounding box (Minimum Bounding Rectangle)
     example: "306458"
   max_eastings:
     title: Maximum Eastings
     type: integer
-    description: >-
-      Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
+    description: Eastern edge of the place's bounding box (Minimum Bounding Rectangle)
     example: "323592"
   max_northings:
     title: Maximum Northings
     type: integer
-    description: >-
-      Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.
+    description: Northern edge of the place's bounding box (Minimum Bounding Rectangle)
     example: "308740"

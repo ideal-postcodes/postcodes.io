@@ -1,7 +1,7 @@
 get:
   tags:
     - Terminated Postcodes
-  summary: Terminated Postcodes
+  summary: Lookup Terminated Postcodes
   description:
     $ref: ../md/terminated-postcodes.md
   operationId: TerminatedPostcodes
@@ -15,19 +15,21 @@ get:
       schema:
         type: string
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
-            $ref: '../components/responses/TerminatedPostcodes.yaml'
+            $ref: "../components/responses/TerminatedPostcodeResponse.yaml"
+    "404":
+      description: Postcode not found
   x-codeSamples:
-  - lang: 'http'
-    label: 'URL'
-    source: |
-      api.postcodes.io/terminated_postcodes/E1W1UU
-  - lang: 'cURL'
-    label: 'CLI'
-    source: |
-      curl -G -k \
-      --url 'https://api.postcodes.io/terminated_postcodes/E1W1UU'
+    - lang: "http"
+      label: "URL"
+      source: |
+        api.postcodes.io/terminated_postcodes/E1W1UU
+    - lang: "cURL"
+      label: "CLI"
+      source: |
+        curl -G -k \
+        --url 'https://api.postcodes.io/terminated_postcodes/E1W1UU'

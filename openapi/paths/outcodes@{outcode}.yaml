@@ -1,7 +1,7 @@
 get:
   tags:
-    - Outward Code Lookup
-  summary: "Outcode Lookup"
+    - Outward Codes
+  summary: Find an Outward Code
   description:
     $ref: ../md/outcode.md
   operationId: FindOutcode
@@ -10,33 +10,34 @@ get:
       in: path
       description: Specifies the outward code you wish to query.
       required: true
+      example: SW1A
       style: simple
       explode: false
       schema:
         type: string
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
-            $ref: '../components/responses/OutcodeResponse.yaml'
+            $ref: "../components/responses/OutcodeResponse.yaml"
   x-codeSamples:
-  - lang: 'http'
-    label: 'URL'
-    source: |
-      https://api.postcodes.io/outcodes/sw1a
-  - lang: 'cURL'
-    label: 'CLI'
-    source: |
-      curl -G -k \
-        --url 'https://api.postcodes.io/outcodes/sw1a'
-  - lang: 'http'
-    label: 'Nearest URL'
-    source: |
-      https://api.postcodes.io/outcodes?lon=-0.127695&lat=51.50354
-  - lang: 'cURL'
-    label: 'Nearest CLI'
-    source: |
-      curl -G -k \
-      --url 'https://api.postcodes.io/outcodes?lon=-0.127695&lat=51.50354'
+    - lang: "http"
+      label: "URL"
+      source: |
+        https://api.postcodes.io/outcodes/sw1a
+    - lang: "cURL"
+      label: "CLI"
+      source: |
+        curl -G -k \
+          --url 'https://api.postcodes.io/outcodes/sw1a'
+    - lang: "http"
+      label: "Nearest URL"
+      source: |
+        https://api.postcodes.io/outcodes?lon=-0.127695&lat=51.50354
+    - lang: "cURL"
+      label: "Nearest CLI"
+      source: |
+        curl -G -k \
+        --url 'https://api.postcodes.io/outcodes?lon=-0.127695&lat=51.50354'
