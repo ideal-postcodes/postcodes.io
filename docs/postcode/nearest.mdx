@@ -1,0 +1,20 @@
+---
+sidebar_label: "Nearest"
+title: "Find Nearest Postcode"
+---
+
+Returns nearest postcodes for a given postcode.
+
+```javascript
+GET https://api.postcodes.io/postcodes/:postcode/nearest
+```
+
+## Optional Query Parameters
+
+`limit=` (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+
+`radius=` (not required) Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.
+
+## Additional Response Attributes
+
+`distance` Distance in metres from specified postode

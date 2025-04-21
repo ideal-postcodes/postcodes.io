@@ -1,0 +1,14 @@
+---
+sidebar_label: "Schema"
+title: "Terminated Postcode Schema"
+---
+
+Data Returned by the `/terminated_postcodes/*` APIs
+
+| Field              | Type         | Description                                                                                                                                                                                                                           |
+| ------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `postcode`         | string       | Postcode. All currently terminated postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received every 3 months from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code. |
+| `year_terminated`  | integer      | Termination year. Year of termination of a postcode.                                                                                                                                                                                  |
+| `month_terminated` | integer      | Termination month. Month of termination of a postcode. 1-January, 2-February ... 12-December.                                                                                                                                         |
+| `longitude`        | double float | Longitude. The WGS84 longitude given the Postcode's national grid reference.                                                                                                                                                          |
+| `latitude`         | double float | Latitude. The WGS84 latitude given the Postcode's national grid reference.                                                                                                                                                            |

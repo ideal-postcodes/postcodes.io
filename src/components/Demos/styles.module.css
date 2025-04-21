@@ -1,0 +1,79 @@
+.features {
+  padding: 2rem 0;
+  width: 100%;
+  margin-top: 100px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 0 50px 0;
+  padding-bottom: 50px;
+  border-bottom: 1px solid #888;
+}
+
+.endpointContainer {
+  width: 50vw;
+}
+
+.endpointLabel {
+  font-size: 1.5em;
+  text-align: left;
+}
+
+.requestContainer {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.httpMethod {
+  margin-right: 1em;
+  text-decoration: none;
+  background-color: #435e67;
+  border-radius: 5px;
+  padding: 10px 15px;
+  color: #eee;
+  display: inline-block;
+}
+
+.request {
+  font-size: 1.5em;
+  margin: 0;
+  padding-right: 8px;
+}
+
+.postcodeInput {
+  border: none;
+  border-bottom: 2px solid #000;
+  outline: none;
+  font-size: 1.5em;
+  width: 110px;
+  background-color: transparent;
+  color: #888;
+  margin-left: -10px;
+}
+
+button {
+  margin-left: auto;
+  font-size: 1em;
+  background-color: transparent;
+  padding: 10px 20px;
+  border-radius: 10px;
+
+  &&:hover {
+    cursor: pointer;
+    background-color: green;
+    color: white;
+  }
+}

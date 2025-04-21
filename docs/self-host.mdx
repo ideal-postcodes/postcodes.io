@@ -1,0 +1,60 @@
+---
+sidebar_label: "Self Host"
+title: "Self Host (Docker)"
+---
+
+Postcodes.io can be installed using two Docker containers: the postcodes.io application container and the postcodes.io database container.
+
+### Requirements
+
+- Local copy of [postcodes.io repository](https://github.com/ideal-postcodes/postcodes.io)
+- [Docker](https://www.docker.com/)
+
+### Quickstart
+
+If you want to launch the postcodes.io HTTP interface and underlying database quickly, you may do so with `docker-compose`.
+
+Clone the project repository and run docker-compose:
+
+```bash
+$ docker-compose up -d
+```
+
+Running the above command in your terminal will create and network the containers. The HTTP service will be available on port `8000`.
+
+### Application Container
+
+The Postcodes.io application, which provides the HTTP interface, is packaged as a Docker container identified on the Docker Hub as `idealpostcodes/postcodes.io`.
+
+Example usage:
+
+```bash
+$ docker run -d -p 8000 idealpostcodes/postcodes.io
+```
+
+Configuration available via Environment Variables:
+
+- `POSTGRES_USER`
+- `POSTGRES_PASSWORD`
+- `POSTGRES_DATABASE`
+- `POSTGRES_HOST`
+- `POSTGRES_PORT`
+- `PORT (HTTP Port to run on)`
+
+### Database Container
+
+`idealpostcodes/postcodes.io.db` points to a [PostgreSQL & PostGIS](https://hub.docker.com/r/mdillon/postgis/) base image and preloads the latest `pg_dump` in the initialization process. The database Docker image is updated with new releases of the ONSPD dataset.
+
+The database Docker image is updated with new releases of the ONSPD dataset. See the [Changelog](https://github.com/ideal-postcodes/postcodes.io/blob/master/CHANGELOG.md) for when a new dataset has been ingested.
+
+:::info
+Upon starting a container for the first time, PostGIS will be enabled and the `pg_dump` will take 15-60s to restore depending on your system resources.
+:::
+
+Example Usage:
+
+```bash
+$ docker run -p 5432 -e POSTGRES_USER=postcodesio -e POSTGRES_DB=postcodesiodb -e POSTGRES_PASSWORD=password idealpostcodes/postcodes.io.db
+```
+
+As this contains the official PostreSQL base image, the available configuration environment variables are documented [here](https://hub.docker.com/_/postgres/)
