@@ -16,3 +16,4 @@ npm-debug.log
 dist
 coverage
 .*.csv
+.docusaurus
