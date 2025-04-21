@@ -1,4 +1,4 @@
-title: Places Response
+title: Place Response
 type: object
 required:
   - status
@@ -7,11 +7,8 @@ properties:
   status:
     type: integer
     format: int32
-    enum: 
+    enum:
       - 200
   result:
-    type: array
-    items:
-      oneOf:
-        - $ref: '../schemas/Place.yaml'
-    description: 'Data for a given place'
+    $ref: "../schemas/Place.yaml"
+    description: "Data for a given place"

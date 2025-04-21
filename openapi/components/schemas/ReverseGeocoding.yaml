@@ -1,14 +1,19 @@
 title: Geolocated Postcode
-description: Standard postcode object extended with a distance attribute, indicating how far the postcode is from a supplied geolocation.
+description: >-
+  Enhanced postcode object that includes distance information from a specified geolocation.
+  This extends the standard Postcode object with additional distance metrics.
 allOf:
   - $ref: "./Postcode.yaml"
   - type: object
     required:
-      - display
+      - distance
     properties:
       distance:
-        title: Distance from supplied geolocation
+        title: Distance from Geolocation
         type: number
         format: double
-        description: Distance in metres from specified postcode
-        example: 0
+        description: >-
+          The direct distance (as the crow flies) in metres between the supplied
+          coordinates and this postcode's location. Calculated using the Haversine formula.
+        minimum: 0
+        example: 1250.5

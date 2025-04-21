@@ -10,9 +10,5 @@ properties:
     enum:
       - 200
   result:
-    type: array
-    items:
-      oneOf:
-        - $ref: '../schemas/Postcode.yaml'
-        - $ref: '../schemas/NearestPostcode.yaml'
-    description: 'Data for a given postcode'
+    $ref: "../schemas/Postcode.yaml"
+    description: "Comprehensive location data including geographic coordinates, administrative boundaries, and electoral information for the requested postcode"

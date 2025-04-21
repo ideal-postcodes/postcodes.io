@@ -1,23 +1,23 @@
 get:
   tags:
-    - Place Query
-  summary: Place Query
+    - Places
+  summary: Find a Place
   description: "Submit a place query and receive a complete list of places matches and associated data."
   operationId: Place Query
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
-            $ref: '../components/responses/PlaceResponse.yaml'
+            $ref: "../components/responses/PlacesResponse.yaml"
   x-codeSamples:
-  - lang: 'http'
-    label: 'URL'
-    source: |
-      https://api.postcodes.io/places?query=welshpool
-  - lang: 'cURL'
-    label: 'CLI'
-    source: |
-      curl -k -G 'https://api.postcodes.io/places' \
-        --data-urlencode 'query=welshpool'
+    - lang: "http"
+      label: "URL"
+      source: |
+        https://api.postcodes.io/places?query=welshpool
+    - lang: "cURL"
+      label: "CLI"
+      source: |
+        curl -k -G 'https://api.postcodes.io/places' \
+          --data-urlencode 'query=welshpool'

@@ -1,4 +1,4 @@
-title: Postcode Response
+title: Places Response
 type: object
 required:
   - status
@@ -12,6 +12,5 @@ properties:
   result:
     type: array
     items:
-      oneOf:
-        - $ref: '../schemas/ReverseGeocoding.yaml'
-    description: 'Data for given geocode'
+      $ref: "../schemas/Place.yaml"
+    description: "Data for a given place"

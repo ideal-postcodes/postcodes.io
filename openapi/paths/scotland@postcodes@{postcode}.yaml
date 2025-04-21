@@ -1,10 +1,10 @@
 get:
   tags:
     - Scottish Postcodes
-  summary: Scottish Postcodes
+  summary: Lookup Scottish Postcode
   description:
     $ref: ../md/scottish-postcodes.md
-  operationId: Scottish Postcodes
+  operationId: getScottishPostcode
   parameters:
     - name: postcode
       in: path
@@ -20,7 +20,9 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/responses/ScottishPostcodesResponse.yaml"
+            $ref: "../components/responses/ScottishPostcodeResponse.yaml"
+    "404":
+      description: Postcode not found
   x-codeSamples:
     - lang: "http"
       label: "URL"

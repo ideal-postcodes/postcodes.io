@@ -1,6 +1,6 @@
 get:
   tags:
-    - Postcode Lookup
+    - Postcodes
   summary: Lookup Postcode
   operationId: Postcodes
   description:
@@ -17,19 +17,19 @@ get:
         description: Postcode to query
         example: SW1A 2AA
   responses:
-    '200':
+    "200":
       description: "Success"
       content:
         application/json:
           schema:
-            $ref: '../components/responses/PostcodeResponse.yaml'
+            $ref: "../components/responses/PostcodeResponse.yaml"
   x-codeSamples:
-  - lang: 'http'
-    label: 'URL'
-    source: |
-      https://api.postcodes.io/postcodes/SW1A2AA
-  - lang: 'cURL'
-    label: 'CLI'
-    source: |
-      curl -G -k \
-      --url 'https://api.postcodes.io/postcodes/SW1A2AA'
+    - lang: "http"
+      label: "URL"
+      source: |
+        https://api.postcodes.io/postcodes/SW1A2AA
+    - lang: "cURL"
+      label: "CLI"
+      source: |
+        curl -G -k \
+        --url 'https://api.postcodes.io/postcodes/SW1A2AA'

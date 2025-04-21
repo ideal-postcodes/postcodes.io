@@ -1,7 +1,7 @@
 get:
   tags:
-    - Place Search
-  summary: Find Place
+    - Places
+  summary: Find a Place by ID
   description:
     $ref: ../md/places.md
   operationId: FindPlace
@@ -15,18 +15,18 @@ get:
       schema:
         type: string
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
-            $ref: '../components/responses/PlaceResponse.yaml'
+            $ref: "../components/responses/PlaceResponse.yaml"
   x-codeSamples:
-  - lang: 'http'
-    label: 'URL'
-    source: |
-      https://api.postcodes.io/places/osgb4000000074813508
-  - lang: 'cURL'
-    label: 'CLI'
-    source: |
-      curl -k -G 'https://api.postcodes.io/places/osgb4000000074813508' 
+    - lang: "http"
+      label: "URL"
+      source: |
+        https://api.postcodes.io/places/osgb4000000074813508
+    - lang: "cURL"
+      label: "CLI"
+      source: |
+        curl -k -G 'https://api.postcodes.io/places/osgb4000000074813508'

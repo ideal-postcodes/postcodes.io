@@ -4,7 +4,7 @@ allOf:
   - $ref: "./Postcode.yaml"
   - type: object
     required:
-      - display
+      - distance
     properties:
       distance:
         title: Distance from supplied geolocation

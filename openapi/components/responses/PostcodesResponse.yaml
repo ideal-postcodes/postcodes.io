@@ -1,0 +1,17 @@
+title: Postcodes Response
+type: object
+required:
+  - status
+  - result
+properties:
+  status:
+    type: integer
+    format: int32
+    enum:
+      - 200
+  result:
+    type: array
+    items:
+      oneOf:
+        - $ref: "../schemas/Postcode.yaml"
+    description: "Array containing detailed location information for the requested postcode or nearest postcodes"
