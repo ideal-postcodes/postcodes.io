@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.3",
+  "openapi": "3.1.0",
   "info": {
     "version": "3.5.1",
     "license": {
@@ -8,7 +8,7 @@
     },
     "title": "API Reference - Postcodes.io",
     "termsOfService": "https://postcodes.io/about",
-    "description": "# Overview\n\nPostcodes.io is a free postcode lookup API and geocoder for the UK.\n\n## Endpoint\n\nAll services can be accessed from the following endpoint.\n\n```\nhttps://api.postcodes.io\n```\n\nThe API accepts GET and POST requests. POST methods use content type `application/json`.\n\n## Responses\n\nJSON(P) only. CORS is enabled.\n\nEach response comes with an appropriate HTTP Status code (except for JSONP requests). These include 200 for success, 400 for a bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.\n\n## Authentication\n\nPostcodes.io does not require authentication.\n",
+    "description": "# Overview\n\nPostcodes.io is a free postcode lookup API and geocoder for the UK.\n\n## Endpoint\n\nAll services can be accessed from the following endpoint.\n\n```\nhttps://api.postcodes.io\n```\n\nThe API accepts GET and POST requests. POST methods use content type `application/json`.\n\n## Responses\n\nEach response comes with an appropriate HTTP Status code (except for JSONP requests). These include 200 for success, 400 for a bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.\n\n## Authentication\n\nPostcodes.io does not require authentication.\n",
     "contact": {
       "email": "support@ideal-postcodes.co.uk",
       "name": "Support",
@@ -24,34 +24,19 @@
   ],
   "tags": [
     {
-      "name": "Postcode Lookup"
-    },
-    {
-      "name": "Postcode Query"
-    },
-    {
-      "name": "Nearest Postcode"
-    },
-    {
-      "name": "Random Postcode"
+      "name": "Postcodes"
     },
     {
       "name": "Terminated Postcodes"
     },
     {
-      "name": "Scottish Postcode Search"
+      "name": "Scottish Postcodes"
     },
     {
-      "name": "Outward Postcodes"
+      "name": "Outward Codes"
     },
     {
-      "name": "Place Search"
-    },
-    {
-      "name": "Place Query"
-    },
-    {
-      "name": "Random Place"
+      "name": "Places"
     }
   ],
   "externalDocs": {
@@ -62,11 +47,11 @@
     "/postcodes/{postcode}": {
       "get": {
         "tags": [
-          "Postcode Lookup"
+          "Postcodes"
         ],
         "summary": "Lookup Postcode",
         "operationId": "Postcodes",
-        "description": "### Postcode Data (Ordnance Survey Postcode Directory Dataset)\n\nData points returned by the /postcodes and /outcodes API\n\nNote: Some fields may be null if not applicable or populated. These fields return type is specified as type|null\n",
+        "description": "### Postcode Data (Ordnance Survey Postcode Directory Dataset)\n\nData points returned by the /postcodes and /outcodes API\n",
         "parameters": [
           {
             "name": "postcode",
@@ -111,11 +96,11 @@
     "/postcodes": {
       "get": {
         "tags": [
-          "Postcode Query"
+          "Postcodes"
         ],
-        "summary": "Postcode Query",
-        "operationId": "Postcode Query",
-        "description": "Query for a postcode either by:\n\n- The postcode itself (with `postcode=`) or by,\n- A geolocation (`lat=` and `lon=`).\n\n## Query with Postcode\n\nSubmit a postcode query and receive a complete list of postcode matches and all associated postcode data. This is triggered when `query=` is supplied.\n\nThis is essentially a postcode search which prefix matches and returns postcodes in sorted order (case insensitive)\n\nThis method is space sensitive, i.e. it detects for spaces between outward and inward parts of the postcode (some examples detailed in this [issue](https://github.com/ideal-postcodes/postcodes.io/issues/44))\n\nThe result set can either be empty or populated with up to 100 postcode entities. Either way it will always return a 200 response code\n\n## Query with Geolocation\n\nReturns nearest postcodes for a given longitude and latitude. This is triggered when `lat=` and `lon=` is supplied.\n",
+        "summary": "Autocomplete Search a Postcode",
+        "operationId": "Postcode Lookup",
+        "description": "Query for a postcode either by:\n\n- The postcode itself (with `query=`) or by,\n- A geolocation (`lat=` and `lon=`).\n\n## Query with Postcode\n\nSubmit a postcode query and receive a complete list of postcode matches and all associated postcode data. This is triggered when `query=` is supplied.\n\nThis is essentially a postcode search which prefix matches and returns postcodes in sorted order (case insensitive).\n\nThis method is space sensitive, i.e. it detects for spaces between outward and inward parts of the postcode (some examples detailed in this [issue](https://github.com/ideal-postcodes/postcodes.io/issues/44)).\n\nThe result set can either be empty or populated with up to 100 postcode entities. Either way it will always return a 200 response code.\n\n## Query with Geolocation\n\nReturns nearest postcodes for a given longitude and latitude. This is triggered when `lat=` and `lon=` are supplied.\n",
         "parameters": [
           {
             "name": "query",
@@ -132,11 +117,11 @@
             "in": "query",
             "style": "form",
             "explode": false,
+            "description": "Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.",
             "schema": {
               "default": 10,
               "maximum": 100,
               "minimum": 1,
-              "description": "PLimits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.",
               "example": 3
             }
           },
@@ -145,11 +130,11 @@
             "in": "query",
             "style": "form",
             "explode": false,
+            "description": "Geographic coordinate that specifies the east-west position of a point",
             "schema": {
               "title": "Longitude",
               "type": "number",
               "format": "double",
-              "description": "Geographic coordinate that specifies the east-west position of a point",
               "example": -0.127695,
               "maximum": 180,
               "minimum": -180
@@ -164,7 +149,7 @@
               "title": "Latitude",
               "type": "number",
               "format": "double",
-              "description": "Geographic coordinate that specifies the north-south position of a point",
+              "description": "Latitude",
               "example": 51.50354,
               "maximum": 90,
               "minimum": -90
@@ -175,10 +160,10 @@
             "in": "query",
             "style": "form",
             "explode": false,
+            "description": "Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.",
             "schema": {
               "title": "Radius",
               "type": "integer",
-              "description": "Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.",
               "example": 500,
               "default": 100,
               "maximum": 2000,
@@ -217,7 +202,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostcodeResponse"
+                  "$ref": "#/components/schemas/PostcodesResponse"
                 }
               }
             }
@@ -252,7 +237,7 @@
         ],
         "summary": "Bulk Postcode Lookup",
         "operationId": "Bulk Postcode Lookup",
-        "description": "Accepts a JSON object containing an array of postcodes. Returns a list of matching postcodes and respective available data.\n\nBe sure to submit JSON requests setting `Content-Type` to `application/json`\n\nAccepts up to 100 postcodes.\n\n### Post Data\n\nThis method requires a JSON object containing an array of postcodes to be posted, e.g.\n\n```json\n{\n  \"postcodes\": [\"PR3 0SG\", \"M45 6GN\", \"EX165BL\"]\n}\n```\n\n## Bulk Reverse Geocoding\n\nBulk translates geolocations into Postcodes. Accepts up to 100 geolocations.\n",
+        "description": "Accepts a JSON object containing an array of postcodes. Returns a list of matching postcodes and respective available data.\n\nBe sure to submit JSON requests setting `Content-Type` to `application/json`.\n\nAccepts up to 100 postcodes.\n\n### Post Data\n\nThis method requires a JSON object containing an array of postcodes to be posted, e.g.\n\n```json\n{\n  \"postcodes\": [\"PR3 0SG\", \"M45 6GN\", \"EX16 5BL\"]\n}\n```\n\n## Bulk Reverse Geocoding\n\nBulk translates geolocations into Postcodes. Accepts up to 100 geolocations.\n",
         "parameters": [],
         "responses": {
           "200": {
@@ -293,22 +278,21 @@
     "/postcodes/{postcode}/nearest": {
       "get": {
         "tags": [
-          "Nearest Postcode"
+          "Postcodes"
         ],
-        "summary": "Lookup Nearest Postcodes",
+        "summary": "Find the Nearest Postcodes",
         "operationId": "Nearest Postcode",
-        "description": "Returns nearest postcodes for a given postcode.",
+        "description": "Returns a list of postcodes geographically nearest to the specified postcode, ordered by proximity (closest first).",
         "parameters": [
           {
             "name": "postcode",
             "in": "path",
-            "description": "Postcode to retrieve",
+            "description": "Valid UK postcode to use as the geographic center point for the proximity search",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
               "title": "Postcode",
-              "description": "Postcode to query",
               "example": "SW1A 2AA"
             }
           }
@@ -319,7 +303,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostcodeResponse"
+                  "$ref": "#/components/schemas/NearestPostcodesResponse"
                 }
               }
             }
@@ -342,11 +326,11 @@
     "/random/postcodes": {
       "get": {
         "tags": [
-          "Random Postcode"
+          "Postcodes"
         ],
-        "summary": "Random Postcode",
-        "operationId": "Random Postcode",
-        "description": "Returns a random postcode and all available data for that postcode.",
+        "summary": "Get a Random Postcode",
+        "operationId": "randomPostcode",
+        "description": "Returns a randomly selected postcode along with comprehensive geographic, administrative, and statistical data associated with that postcode.",
         "parameters": [
           {
             "name": "outcode",
@@ -356,7 +340,6 @@
             "explode": false,
             "schema": {
               "title": "Outward code",
-              "description": "Restrict results to a specific outward code",
               "type": "string",
               "example": "SW1A"
             }
@@ -393,8 +376,8 @@
         "tags": [
           "Terminated Postcodes"
         ],
-        "summary": "Terminated Postcodes",
-        "description": "Lookup a terminated postcode. \n\nIf the terminated postcode exists, this API returns the date of termination and last known geospatial coordinates. \n\nReturns `404` if postcode does not exist in our database of terminated postcodes or not valid.\n\nSource: Ordnance Survey Postcode Directory Dataset\n",
+        "summary": "Lookup Terminated Postcodes",
+        "description": "Lookup a terminated postcode.\n\nIf the terminated postcode exists, this API returns the date of termination and last known geospatial coordinates.\n\nReturns `404` if postcode does not exist in our database of terminated postcodes or is not valid.\n\nSource: Ordnance Survey Postcode Directory Dataset\n",
         "operationId": "TerminatedPostcodes",
         "parameters": [
           {
@@ -415,10 +398,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TerminatedPostcodes"
+                  "$ref": "#/components/schemas/TerminatedPostcodeResponse"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Postcode not found"
           }
         },
         "x-codeSamples": [
@@ -440,9 +426,9 @@
         "tags": [
           "Scottish Postcodes"
         ],
-        "summary": "Scottish Postcodes",
-        "description": "Lookup a Scottish postcode. \n\nReturns Scottish Postcode Directory (SPD) data associated with postcode. At the moment this is just Scottish Parliamentary Constituency.\n\nReturns `404` if postcode does not exist in SPD or is not valid.\n\nFor postcodes not in SPD but in ONSPD, 404 is returned with error message Postcode exists in ONSPD but not in SPD.\n\nSource: Scottish Postcode Directory\n",
-        "operationId": "Scottish Postcodes",
+        "summary": "Lookup Scottish Postcode",
+        "description": "Lookup a Scottish postcode.\n\nReturns Scottish Postcode Directory (SPD) data associated with postcode. At the moment this is just Scottish Parliamentary Constituency.\n\nReturns `404` if postcode does not exist in SPD or is not valid.\n\nFor postcodes not in SPD but in ONSPD, a 404 is returned with the error message \"Postcode exists in ONSPD but not in SPD.\"\n\nSource: Scottish Postcode Directory\n",
+        "operationId": "getScottishPostcode",
         "parameters": [
           {
             "name": "postcode",
@@ -462,10 +448,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ScottishPostcodesResponse"
+                  "$ref": "#/components/schemas/ScottishPostcodeResponse"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Postcode not found"
           }
         },
         "x-codeSamples": [
@@ -485,10 +474,10 @@
     "/outcodes/{outcode}": {
       "get": {
         "tags": [
-          "Outward Code Lookup"
+          "Outward Codes"
         ],
-        "summary": "Outcode Lookup",
-        "description": "Returns aggregated information for postcodes grouped by their shared outward code.\n\nThe outward code is the first half of any postcode (3-4 characters and preceded by a space).\n",
+        "summary": "Find an Outward Code",
+        "description": "Returns aggregated information for postcodes grouped by their shared outward code.\n\nThe outward code is the first half of any postcode (3-4 characters and followed by a space). E.g. `SW1A` is the outward code for `SW1A 1AA`.\n",
         "operationId": "FindOutcode",
         "parameters": [
           {
@@ -496,6 +485,7 @@
             "in": "path",
             "description": "Specifies the outward code you wish to query.",
             "required": true,
+            "example": "SW1A",
             "style": "simple",
             "explode": false,
             "schema": {
@@ -539,13 +529,47 @@
         ]
       }
     },
+    "/places": {
+      "get": {
+        "tags": [
+          "Places"
+        ],
+        "summary": "Find a Place",
+        "description": "Submit a place query and receive a complete list of places matches and associated data.",
+        "operationId": "Place Query",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlacesResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "http",
+            "label": "URL",
+            "source": "https://api.postcodes.io/places?query=welshpool\n"
+          },
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl -k -G 'https://api.postcodes.io/places' \\\n  --data-urlencode 'query=welshpool'\n"
+          }
+        ]
+      }
+    },
     "/places/{code}": {
       "get": {
         "tags": [
-          "Place Search"
+          "Places"
         ],
-        "summary": "Find Place",
-        "description": "Submit a place query and receive a complete list of places matches and associated data.\n\nThis API uses the Ordnance Survey Open Names Dataset. Places not available for Northern Ireland.\n",
+        "summary": "Find a Place by ID",
+        "description": "Submit a place query and receive a complete list of place matches and associated data.\n\nThis API uses the Ordnance Survey Open Names Dataset. Places are not available for Northern Ireland.\n",
         "operationId": "FindPlace",
         "parameters": [
           {
@@ -581,41 +605,7 @@
           {
             "lang": "cURL",
             "label": "CLI",
-            "source": "curl -k -G 'https://api.postcodes.io/places/osgb4000000074813508' \n"
-          }
-        ]
-      }
-    },
-    "/places": {
-      "get": {
-        "tags": [
-          "Place Query"
-        ],
-        "summary": "Place Query",
-        "description": "Submit a place query and receive a complete list of places matches and associated data.",
-        "operationId": "Place Query",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlaceResponse"
-                }
-              }
-            }
-          }
-        },
-        "x-codeSamples": [
-          {
-            "lang": "http",
-            "label": "URL",
-            "source": "https://api.postcodes.io/places?query=welshpool\n"
-          },
-          {
-            "lang": "cURL",
-            "label": "CLI",
-            "source": "curl -k -G 'https://api.postcodes.io/places' \\\n  --data-urlencode 'query=welshpool'\n"
+            "source": "curl -k -G 'https://api.postcodes.io/places/osgb4000000074813508'\n"
           }
         ]
       }
@@ -623,14 +613,14 @@
     "/random/places": {
       "get": {
         "tags": [
-          "Random Place"
+          "Places"
         ],
-        "summary": "Random Place",
-        "description": "Returns a random place and all associated data",
-        "operationId": "Random Place",
+        "summary": "Retrieve a Random Place",
+        "description": "Returns a randomly selected place from the database along with all its associated geographical and administrative data. Useful for testing or displaying sample location data.",
+        "operationId": "randomPlace",
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Successfully retrieved a random place",
             "content": {
               "application/json": {
                 "schema": {
@@ -649,7 +639,7 @@
           {
             "lang": "cURL",
             "label": "CLI",
-            "source": "curl -k -G 'https://api.postcodes.io/random/places/' \n"
+            "source": "curl -k -G 'https://api.postcodes.io/random/places/'\n"
           }
         ]
       }
@@ -658,6 +648,7 @@
   "components": {
     "schemas": {
       "Postcode": {
+        "type": "object",
         "required": [
           "postcode",
           "outcode",
@@ -688,275 +679,272 @@
           "postcode": {
             "title": "Postcode",
             "type": "string",
-            "description": "All current ('live') postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received monthly from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code.",
+            "description": "UK postcode format: 2-4 character outward code, a space, and a 3-character inward code (e.g., SW1A 2AA). Updated monthly from Royal Mail.",
             "example": "SW1A 2AA"
           },
           "outcode": {
             "title": "Outward Code",
             "type": "string",
-            "description": "The outward code is the part of the postcode before the single space in the middle. It is between two and four characters long. A few outward codes are non-geographic, not divulging where mail is to be sent.",
+            "description": "The first part of a postcode before the space (2-4 characters). This generally identifies the postal town or district.",
             "example": "SW1A"
           },
           "incode": {
             "title": "Inward Code",
             "type": "string",
-            "description": "The inward part is the part of the postcode after the single space in the middle. It is three characters long. The inward code assists in the delivery of post within a postal district.",
+            "description": "The second part of a postcode after the space (always 3 characters). Helps identify specific streets or buildings within a postal area.",
             "example": "1AA"
           },
           "quality": {
             "title": "Positional Quality",
             "type": "integer",
-            "description": "Shows the status of the assigned grid reference.\n\n1 = within the building of the matched address closest to the postcode mean\n\n2 = as for status value 1, except by visual inspection of Landline maps (Scotland only)\n\n3 = approximate to within 50m\n\n4 = postcode unit mean (mean of matched addresses with the same postcode, but not snapped to a building)\n\n5 = imputed by ONS, by reference to surrounding postcode grid references\n\n6 = postcode sector mean, (mainly | PO Boxes)\n\n8 = postcode terminated prior to Gridlink® initiative, last known ONS postcode grid reference1\n\n9 = no grid reference available\n",
-            "example": "1"
+            "description": "Indicates accuracy of the grid reference location:\n\n* 1: Within the actual building (most accurate)\n* 2: Same as 1, but verified by Landline maps (Scotland only)\n* 3: Approximate location within 50m\n* 4: Postcode unit mean (averaged from addresses with same postcode)\n* 5: Estimated by ONS using surrounding postcodes\n* 6: Postcode sector mean (mainly PO Boxes)\n* 8: Historical postcode (pre-Gridlink®)\n* 9: No grid reference available\n",
+            "example": 1
           },
           "eastings": {
             "title": "Eastings",
             "type": "integer",
             "format": "int32",
-            "x-nullable": true,
-            "description": "The Ordnance Survey postcode grid reference Easting to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.",
+            "nullable": true,
+            "description": "Ordnance Survey grid reference easting (X-coordinate) with 1-meter resolution. May be null if geolocation unavailable.",
             "example": 530047
           },
           "northings": {
             "title": "Northings",
             "type": "integer",
             "format": "int32",
-            "x-nullable": true,
-            "description": "The Ordnance Survey postcode grid reference Northing to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.",
+            "nullable": true,
+            "description": "Ordnance Survey grid reference northing (Y-coordinate) with 1-meter resolution. May be null if geolocation unavailable.",
             "example": 179951
           },
           "country": {
             "title": "Country",
             "type": "string",
-            "description": "The country (i.e. one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each postcode is assigned.",
+            "description": "The UK constituent country for this postcode (England, Scotland, Wales, Northern Ireland, Channel Islands, or Isle of Man).",
             "example": "England"
           },
           "nhs_ha": {
             "title": "Strategic Health Authority",
             "type": "string",
-            "x-nullable": true,
-            "description": "The health area code for the postcode.",
+            "nullable": true,
+            "description": "The NHS health authority area for this postcode.",
             "example": "London"
           },
           "admin_county": {
             "title": "County",
             "type": "string",
-            "x-nullable": true,
-            "description": "The current county to which the postcode has been assigned.",
+            "nullable": true,
+            "description": "The administrative county for this postcode. May be empty for areas without county-level administration.",
             "example": ""
           },
           "admin_district": {
             "title": "District",
             "type": "string",
-            "x-nullable": true,
-            "description": "The current district/unitary authority to which the postcode has been assigned.",
+            "nullable": true,
+            "description": "The administrative district or unitary authority for this postcode.",
             "example": "Westminster"
           },
           "admin_ward": {
             "title": "Ward",
             "type": "string",
-            "x-nullable": true,
-            "description": "The current administrative/electoral area to which the postcode has been assigned.",
+            "nullable": true,
+            "description": "The electoral/administrative ward for this postcode.",
             "example": "St. James's"
           },
           "longitude": {
             "title": "Longitude",
             "type": "number",
             "format": "double",
-            "x-nullable": true,
-            "description": "The WGS84 longitude given the Postcode's national grid reference. May be null if geolocation not available.",
+            "nullable": true,
+            "description": "WGS84 longitude coordinate (east-west position). May be null if geolocation unavailable.",
             "example": -0.12767
           },
           "latitude": {
             "title": "Latitude",
             "type": "number",
             "format": "double",
-            "x-nullable": true,
-            "description": "The WGS84 latitude given the Postcode's national grid reference. May be null if geolocation not available.",
+            "nullable": true,
+            "description": "WGS84 latitude coordinate (north-south position). May be null if geolocation unavailable.",
             "example": 51.503541
           },
           "parliamentary_constituency": {
             "title": "Westminster Parliamentary Constituency",
             "type": "string",
-            "x-nullable": true,
-            "description": "The Westminster Parliamentary Constituency code for each postcode.",
+            "nullable": true,
+            "description": "The UK Parliamentary constituency for this postcode.",
             "example": "Cities of London and Westminster"
           },
           "european_electoral_region": {
             "title": "European Electoral Region (EER)",
             "type": "string",
-            "x-nullable": true,
-            "description": "The European Electoral Region code for each postcode.",
+            "nullable": true,
+            "description": "The European Electoral Region for this postcode.",
             "example": "London"
           },
           "primary_care_trust": {
             "title": "Primary Care Trust (PCT)",
             "type": "string",
-            "x-nullable": true,
-            "description": "The code for the Primary Care areas in England, LHBs in Wales, CHPs in Scotland, LCG in Northern Ireland and PHD in the Isle of Man; there are no equivalent areas in the Channel Islands. Care Trust/ Care Trust Plus (CT)/ local health board (LHB)/ community health partnership (CHP)/ local commissioning group (LCG)/ primary healthcare directorate (PHD).",
+            "nullable": true,
+            "description": "The healthcare administrative area for this postcode. Different naming conventions apply across UK regions.",
             "example": "Westminster"
           },
           "region": {
-            "title": "Region (formerly GOR)",
+            "title": "Region",
             "type": "string",
-            "x-nullable": true,
-            "description": "The Region code for each postcode. The nine GORs were abolished on 1 April 2011 and are now known as ‘Regions’. They were the primary statistical subdivisions of England and also the areas in which the Government Offices for the Regions fulfilled their role. Each GOR covered a number of local authorities.",
+            "nullable": true,
+            "description": "The regional designation for this postcode (formerly Government Office Regions or GORs).",
             "example": "London"
           },
           "parish": {
-            "title": "Parish (England)/community (Wales)",
+            "title": "Parish/Community",
             "type": "string",
-            "x-nullable": true,
-            "description": "The smallest type of administrative area in England is the parish (also known as 'civil parish'); the equivalent units in Wales are communities.",
+            "nullable": true,
+            "description": "The civil parish (England) or community (Wales) for this postcode.",
             "example": "Westminster, unparished area"
           },
           "lsoa": {
-            "title": "2011 Census lower layer super output area (LSOA)",
+            "title": "Lower Layer Super Output Area",
             "type": "string",
-            "x-nullable": true,
-            "description": "The 2011 Census lower layer SOA code for England and Wales, SOA code for Northern Ireland and data zone code for Scotland.",
+            "nullable": true,
+            "description": "2011 Census LSOA code (smaller statistical area, typically 1,000-1,500 residents).",
             "example": "Westminster 018C"
           },
           "msoa": {
-            "title": "2011 Census middle layer super output area (MSOA)",
+            "title": "Middle Layer Super Output Area",
             "type": "string",
-            "x-nullable": true,
-            "description": "The 2011 Census middle layer SOA (MSOA) code for England and Wales and intermediate zone for Scotland.",
+            "nullable": true,
+            "description": "2011 Census MSOA code (mid-size statistical area, typically 5,000-7,000 residents).",
             "example": "Westminster 018"
           },
           "ced": {
             "title": "County Electoral District",
             "type": "string",
-            "x-nullable": true,
-            "description": "The county electoral division code for each English postcode. Pseudo codes are included for the remainder of the UK. The field will be null for English postcodes with no grid reference. English county councils use county electoral divisions (CED) to elect councillors. These CEDs must be confined within district boundaries, but need not be based on whole electoral wards. The only exceptions are the Isles of Scilly and the Greater London Authority (GLA). CEDs do not exist within UAs.",
+            "nullable": true,
+            "description": "The county electoral division for English postcodes. Will be null for postcodes without a grid reference or in other UK regions.",
             "example": null
           },
           "ccg": {
             "title": "Clinical Commissioning Group",
             "type": "string",
-            "x-nullable": true,
-            "description": "Clinical commissioning groups (CCGs) are NHS organisations set up by the Health and Social Care Act 2012 to organise the delivery of NHS services in England.",
+            "nullable": true,
+            "description": "NHS Clinical Commissioning Group responsible for planning healthcare services in England.",
             "example": "NHS North West London"
           },
           "nuts": {
-            "title": "International Terratorial Levels (ITL) (Former Nomenclature of Units for Territorial Statistics (NUTS)",
+            "title": "International Territorial Levels (ITL)",
             "type": "string",
-            "x-nullable": true,
-            "description": "The national LAU1-equivalent code for each postcode. Pseudo codes are included for Channel Islands and Isle of Man. The field will otherwise be blank for postcodes with no grid reference.\n\nAs of May 2021. NUTS has changed to International Territorial Levels (ITL). Postcodes.io will report ITL in nuts and codes.nuts to preserve backwards compatibility.\n\nFollowing the UK's withdrawal from the EU, a new UK-managed international statistical geography - ITL (International Territorial Levels) - was introduced from 1st January 2021, replacing the former NUTS classification. They align with international standards, enabling comparability both over time and internationally. To ensure continued alignment, the ITLs mirror the NUTS system. They also follow a similar review timetable, every three years.\n\nNUTS is a hierarchical classification of spatial units that provides a breakdown of the European Union's territory for producing regional statistics that are comparable across the Union.\n\nThe ITL area classification in the UK comprises current national administrative and electoral areas, except in Scotland where some ITL areas comprise whole and/or part Local Enterprise Regions.\n\nThe ONSPD contains the LAU1 code (9-character LAD/UA code for England, Wales and Northern Ireland and 'S30' code for Scotland). A comprehensive lookup of LAU and ITL codes is included with the accompanying metadata.",
+            "nullable": true,
+            "description": "Statistical geography code for international comparisons (formerly NUTS - Nomenclature of Units for Territorial Statistics).\n\nAs of January 2021, following Brexit, NUTS was replaced by ITL (International Territorial Levels) in the UK.\nFor backward compatibility, Postcodes.io continues to provide this data under the \"nuts\" field name.",
             "example": "Westminster"
           },
           "codes": {
-            "title": "Returns an ID or Code associated with the postcode",
+            "title": "Administrative Codes",
             "type": "object",
-            "description": "Typically, these are a 9 character code known as an ONS Code or GSS Code. This is currently only available for districts, parishes, counties, CCGs, NUTS and wards.",
+            "description": "Standard 9-character codes (ONS/GSS) for various administrative boundaries. Useful for data linking with official statistics.",
             "properties": {
               "admin_district": {
-                "title": "GSS Code for Administrative County",
+                "title": "District GSS Code",
                 "type": "string",
-                "x-nullable": true,
-                "description": "See description of admin_district field.",
+                "nullable": true,
+                "description": "Official 9-character GSS code for this administrative district.",
                 "example": "E09000033"
               },
               "admin_county": {
-                "title": "",
+                "title": "County GSS Code",
                 "type": "string",
-                "x-nullable": true,
-                "description": "See description of admin_county field.",
+                "nullable": true,
+                "description": "Official 9-character GSS code for this administrative county.",
                 "example": "E99999999"
               },
               "admin_ward": {
-                "title": "",
+                "title": "Ward GSS Code",
                 "type": "string",
-                "x-nullable": true,
-                "description": "See description of admin_ward field.",
+                "nullable": true,
+                "description": "Official 9-character GSS code for this administrative ward.",
                 "example": "E05013806"
               },
               "parish": {
-                "title": "",
+                "title": "Parish GSS Code",
                 "type": "string",
-                "x-nullable": true,
-                "description": "See description of parish field.",
+                "nullable": true,
+                "description": "Official 9-character GSS code for this parish.",
                 "example": "E43000236"
               },
               "ccg": {
-                "title": "",
+                "title": "CCG GSS Code",
                 "type": "string",
-                "x-nullable": true,
-                "description": "See description of ccg field.",
+                "nullable": true,
+                "description": "Official 9-character GSS code for this Clinical Commissioning Group.",
                 "example": "E38000256"
               },
               "ccg_id": {
                 "title": "CCG ID",
                 "type": "string",
-                "x-nullable": true,
-                "description": "CCG Short Code",
+                "nullable": true,
+                "description": "Short code identifier for this Clinical Commissioning Group.",
                 "example": "W2U3Z"
               },
               "ced": {
-                "title": "CED",
+                "title": "CED GSS Code",
                 "type": "string",
-                "x-nullable": true,
-                "description": "",
+                "nullable": true,
+                "description": "Official 9-character GSS code for this County Electoral District.",
                 "example": "E99999999"
               },
               "nuts": {
-                "title": "",
+                "title": "ITL Code",
                 "type": "string",
-                "x-nullable": true,
-                "description": "The ITL code associated with the postcode.",
+                "nullable": true,
+                "description": "Official code for this International Territorial Level area.",
                 "example": "TLI32"
               },
               "lau2": {
-                "title": "LAU2",
+                "title": "LAU2 Code",
                 "type": "string",
-                "x-nullable": true,
-                "description": "The LAU2 code associated with the postcode.",
+                "nullable": true,
+                "description": "Local Administrative Unit level 2 code for this area.",
                 "example": "E09000033"
               },
               "lsoa": {
-                "title": "",
+                "title": "LSOA GSS Code",
                 "type": "string",
-                "x-nullable": true,
-                "description": "See description of lsoa field.",
+                "nullable": true,
+                "description": "Official 9-character GSS code for this Lower Layer Super Output Area.",
                 "example": "E01004736"
               },
               "msoa": {
-                "title": "",
+                "title": "MSOA GSS Code",
                 "type": "string",
-                "x-nullable": true,
-                "description": "See description of msoa field.",
+                "nullable": true,
+                "description": "Official 9-character GSS code for this Middle Layer Super Output Area.",
                 "example": "E02000977"
               }
             }
           }
         }
       },
-      "NearestPostcode": {
-        "title": "Geolocated Postcode",
-        "description": "Standard postcode object extended with a distance attribute, indicating how far the postcode is from a supplied geolocation.",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Postcode"
-          },
-          {
-            "type": "object",
-            "required": [
-              "display"
-            ],
-            "properties": {
-              "distance": {
-                "title": "Distance from supplied geolocation",
-                "type": "number",
-                "format": "double",
-                "description": "Distance in metres from specified postcode",
-                "example": 0
-              }
-            }
-          }
-        ]
-      },
       "PostcodeResponse": {
         "title": "Postcode Response",
+        "type": "object",
+        "required": [
+          "status",
+          "result"
+        ],
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              200
+            ]
+          },
+          "result": {
+            "$ref": "#/components/schemas/Postcode",
+            "description": "Comprehensive location data including geographic coordinates, administrative boundaries, and electoral information for the requested postcode"
+          }
+        }
+      },
+      "PostcodesResponse": {
+        "title": "Postcodes Response",
         "type": "object",
         "required": [
           "status",
@@ -976,63 +964,39 @@
               "oneOf": [
                 {
                   "$ref": "#/components/schemas/Postcode"
-                },
-                {
-                  "$ref": "#/components/schemas/NearestPostcode"
                 }
               ]
             },
-            "description": "Data for a given postcode"
+            "description": "Array containing detailed location information for the requested postcode or nearest postcodes"
           }
         }
       },
-      "TerminatedPostcode": {
-        "required": [
-          "postcode",
-          "year_terminated",
-          "month_terminated",
-          "longitude",
-          "latitude"
-        ],
-        "properties": {
-          "postcode": {
-            "title": "Postcode",
-            "type": "string",
-            "description": "All currently terminated postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received every 3 months from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code.",
-            "example": "SW1A 2AA"
+      "NearestPostcode": {
+        "title": "Geolocated Postcode",
+        "description": "Standard postcode object extended with a distance attribute, indicating how far the postcode is from a supplied geolocation.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Postcode"
           },
-          "year_terminated": {
-            "title": "Termination year",
-            "type": "number",
-            "format": "int32",
-            "description": "Termination year.",
-            "example": 2019
-          },
-          "month_terminated": {
-            "title": "Termination month",
-            "type": "number",
-            "format": "int32",
-            "description": "Month of termination of a postcode. 1-January, 2-February ... 12-December.",
-            "example": 1
-          },
-          "longitude": {
-            "title": "Longitude",
-            "type": "number",
-            "format": "double",
-            "description": "The WGS84 longitude given the Postcode's national grid reference.",
-            "example": -2.496903
-          },
-          "latitude": {
-            "title": "Latitude",
-            "type": "number",
-            "format": "double",
-            "description": "The WGS84 latitude given the Postcode's national grid reference.",
-            "example": 53.53513
+          {
+            "type": "object",
+            "required": [
+              "distance"
+            ],
+            "properties": {
+              "distance": {
+                "title": "Distance from supplied geolocation",
+                "type": "number",
+                "format": "double",
+                "description": "Distance in metres from specified postcode",
+                "example": 0
+              }
+            }
           }
-        }
+        ]
       },
-      "TerminatedPostcodes": {
-        "title": "Postcode Response",
+      "NearestPostcodesResponse": {
+        "title": "Nearest Postcodes Response",
         "type": "object",
         "required": [
           "status",
@@ -1051,9 +1015,101 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/TerminatedPostcode"
+                  "$ref": "#/components/schemas/NearestPostcode"
                 }
               ]
+            },
+            "description": "Array of nearest postcodes sorted by distance"
+          }
+        }
+      },
+      "TerminatedPostcode": {
+        "type": "object",
+        "required": [
+          "postcode",
+          "year_terminated",
+          "month_terminated",
+          "longitude",
+          "latitude"
+        ],
+        "properties": {
+          "postcode": {
+            "title": "Postcode",
+            "type": "string",
+            "description": "UK postal code format that has been terminated. Follows the standard format of 2-4 character outward code, a space, then 3-character inward code.",
+            "example": "SW1A 2AA",
+            "pattern": "^[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][A-Z]{2}$"
+          },
+          "year_terminated": {
+            "title": "Termination year",
+            "type": "integer",
+            "format": "int32",
+            "description": "The year when the postcode was terminated (YYYY format).",
+            "example": 2019,
+            "minimum": 1900
+          },
+          "month_terminated": {
+            "title": "Termination month",
+            "type": "integer",
+            "format": "int32",
+            "description": "Month when the postcode was terminated (1-12, where 1=January, 12=December).",
+            "example": 1,
+            "minimum": 1,
+            "maximum": 12,
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12
+            ]
+          },
+          "longitude": {
+            "title": "Longitude",
+            "type": "number",
+            "format": "double",
+            "description": "WGS84 longitude coordinate of the postcode location.",
+            "example": -2.496903,
+            "minimum": -180,
+            "maximum": 180
+          },
+          "latitude": {
+            "title": "Latitude",
+            "type": "number",
+            "format": "double",
+            "description": "WGS84 latitude coordinate of the postcode location.",
+            "example": 53.53513,
+            "minimum": -90,
+            "maximum": 90
+          }
+        }
+      },
+      "TerminatedPostcodeResponse": {
+        "title": "Terminated Postcode Response",
+        "type": "object",
+        "required": [
+          "status",
+          "result"
+        ],
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              200
+            ]
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TerminatedPostcode"
             },
             "description": "Data for a given postcode"
           }
@@ -1067,33 +1123,35 @@
         ],
         "properties": {
           "postcode": {
-            "title": "Postcode",
             "type": "string",
-            "description": "Royal Mail postcode",
-            "example": "IV2 7JB"
+            "title": "Postcode",
+            "description": "The Royal Mail postcode associated with this location (e.g., IV2 7JB)",
+            "example": "IV2 7JB",
+            "pattern": "^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$"
           },
           "scottish_parliamentary_constituency": {
-            "title": "Scottish Parliamentary Constituency",
             "type": "string",
-            "description": "2014 Scottish Parliamentary Constituency.",
+            "title": "Scottish Parliamentary Constituency",
+            "description": "The name of the 2014 Scottish Parliamentary Constituency for this location",
             "example": "Inverness and Nairn"
           },
           "codes": {
-            "title": "Returns an ID or Code associated with the postcode",
-            "description": "Typically, these are a 9 character code known as an ONS Code or GSS Code.",
             "type": "object",
+            "title": "Location Codes",
+            "description": "Official identification codes associated with this postcode location",
             "properties": {
               "scottish_parliamentary_constituency": {
-                "title": "Scottish Parliamentary Constituency GSS Code",
                 "type": "string",
-                "description": "A code that identifies a 2014 Scottish Parliamentary Constituency.",
-                "example": "S16000125"
+                "title": "Scottish Parliamentary Constituency Code",
+                "description": "The 9-character GSS/ONS code identifying the 2014 Scottish Parliamentary Constituency (format: S#######)",
+                "example": "S16000125",
+                "pattern": "^S[0-9]{8}$"
               }
             }
           }
         }
       },
-      "ScottishPostcodesResponse": {
+      "ScottishPostcodeResponse": {
         "title": "Scottish Postcodes Response",
         "type": "object",
         "required": [
@@ -1111,11 +1169,7 @@
           "result": {
             "type": "array",
             "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/ScottishPostcodes"
-                }
-              ]
+              "$ref": "#/components/schemas/ScottishPostcodes"
             },
             "description": "Data for a given postcode"
           }
@@ -1138,31 +1192,32 @@
           "outcode": {
             "title": "Outcode",
             "type": "string",
-            "description": "The outcode or outward code is the part of the postcode before the single space in the middle. It is between two and four characters long. Examples of outward codes include \"L1\", \"W1A\", \"RH1\", \"RH10\" or \"SE1P\". A few outward codes are non-geographic, not divulging where mail is to be sent.",
+            "description": "First part of the postcode before the space (e.g., \"SW1A\" in \"SW1A 1AA\"). Usually 2-4 characters.",
             "example": "SW1A"
           },
           "eastings": {
             "title": "Eastings",
             "type": "number",
             "format": "int32",
-            "x-nullable": true,
-            "description": "The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates. Returns 0 if geolocation is not available.",
+            "nullable": true,
+            "description": "Ordnance Survey eastings coordinate (1m resolution). Returns 0 if location unavailable.",
             "example": 529740
           },
           "northings": {
             "title": "Northings",
             "type": "number",
             "format": "int32",
-            "description": "The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates. Returns 0 if geolocation is not available.",
+            "nullable": true,
+            "description": "Ordnance Survey northings coordinate (1m resolution). Returns 0 if location unavailable.",
             "example": 180066
           },
           "admin_county": {
-            "title": "County",
+            "title": "Administrative County",
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "The current counties under the outcode.",
+            "description": "Administrative counties within this outcode.",
             "example": []
           },
           "admin_district": {
@@ -1171,7 +1226,7 @@
             "items": {
               "type": "string"
             },
-            "description": "The current district/unitary authorites under the outcode.",
+            "description": "District/unitary authorities within this outcode.",
             "example": [
               "Westminster",
               "Wandsworth"
@@ -1183,7 +1238,7 @@
             "items": {
               "type": "string"
             },
-            "description": "The current administrative/electoral areas under the outcode.",
+            "description": "Administrative/electoral wards within this outcode.",
             "example": [
               "Nine Elms",
               "St. James's"
@@ -1193,14 +1248,16 @@
             "title": "Longitude",
             "type": "number",
             "format": "double",
-            "description": "The WGS84 longitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates. May be null if geolocation not available.",
+            "nullable": true,
+            "description": "WGS84 longitude coordinate. May be null if location unavailable.",
             "example": -0.132066
           },
           "latitude": {
             "title": "Latitude",
             "type": "number",
             "format": "double",
-            "description": "The WGS84 latitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates. May be null if geolocation not available.",
+            "nullable": true,
+            "description": "WGS84 latitude coordinate. May be null if location unavailable.",
             "example": 51.50464
           },
           "country": {
@@ -1209,16 +1266,18 @@
             "items": {
               "type": "string"
             },
-            "description": "The countries included in the outcode.",
-            "example": "England"
+            "description": "Countries within this outcode.",
+            "example": [
+              "England"
+            ]
           },
           "parish": {
-            "title": "Parish (England)/community (Wales)",
+            "title": "Parish",
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "The parishes included in the outcode.",
+            "description": "Parishes (England) or communities (Wales) within this outcode.",
             "example": [
               "Wandsworth, unparished area",
               "Westminster, unparished area"
@@ -1227,7 +1286,7 @@
         }
       },
       "OutcodeResponse": {
-        "title": "Places Response",
+        "title": "Outcode Response",
         "type": "object",
         "required": [
           "status",
@@ -1242,18 +1301,19 @@
             ]
           },
           "result": {
+            "description": "Comprehensive geographical and administrative data for the specified outcode, including location coordinates, administrative boundaries, and related postal information",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/Outcode"
               }
-            ],
-            "description": "Data for a given place"
+            ]
           }
         }
       },
       "Place": {
+        "type": "object",
         "title": "Place",
-        "description": "Represents a geographical place",
+        "description": "A geographical location with detailed information including names, coordinates, and administrative boundaries",
         "required": [
           "code",
           "name_1",
@@ -1280,141 +1340,141 @@
           "code": {
             "title": "Code",
             "type": "string",
-            "description": "A unique identifier that enables records to be identified easily. The identifier will be persistent for all LocalTypes except Section of Named Road and Section of Numbered Road.",
+            "description": "Unique identifier for the place record (persistent except for Section of Named/Numbered Roads)",
             "example": "osgb4000000074559833"
           },
           "name_1": {
-            "title": "Name",
+            "title": "Primary Name",
             "type": "string",
-            "description": "The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, 'The Pennines' not 'Pennines, The'.",
+            "description": "Official name of the place (preserves original format, e.g., \"The Pennines\" not \"Pennines, The\")",
             "example": "Y Trallwng"
           },
           "name_1_lang": {
-            "title": "Language of Name",
+            "title": "Primary Name Language",
             "type": "string",
-            "x-nullable": true,
-            "description": "The language type is only set where more than one name exists, e.g. cym (Welsh), eng (English), gla (Scottish Gaelic).",
+            "nullable": true,
+            "description": "Language code for name_1 (cym=Welsh, eng=English, gla=Scottish Gaelic)",
             "example": "cym"
           },
           "name_2": {
-            "title": "Name (in case of multiple languages)",
+            "title": "Secondary Name",
             "type": "string",
-            "x-nullable": true,
-            "description": "The proper noun that applies to the real world entity. Names that are prefixed by the definite article are not formatted for alphabetical sorting, that is, 'The Pennines' not 'Pennines, The'.",
+            "nullable": true,
+            "description": "Alternative name in a different language",
             "example": "Welshpool"
           },
           "name_2_lang": {
-            "title": "Language of Name",
+            "title": "Secondary Name Language",
             "type": "string",
-            "x-nullable": true,
-            "description": "The language type is only set where more than one name exists, e.g. cym (Welsh), eng (English), gla (Scottish Gaelic).",
+            "nullable": true,
+            "description": "Language code for name_2 (cym=Welsh, eng=English, gla=Scottish Gaelic)",
             "example": "eng"
           },
           "local_type": {
             "title": "Local Type",
             "type": "string",
-            "description": "The Ordnance Survey classification for the named place being represented by the specific feature, e.g. City, Town, Village, Hamlet, Other Settlement, Suburban Area.",
+            "description": "Ordnance Survey classification (City, Town, Village, Hamlet, etc.)",
             "example": "Hamlet"
           },
           "outcode": {
             "title": "Outcode",
             "type": "string",
-            "description": "The postcode district.",
+            "description": "Postcode district (first part of the postcode)",
             "example": "BH24"
           },
           "county_unitary": {
             "title": "Administrative Area",
             "type": "string",
-            "x-nullable": true,
-            "description": "The name of the County (non-metropolitan or Metropolitan), Unitary Authority or Greater London Authority administrative area that the point geometry for feature is within or nearest to.",
+            "nullable": true,
+            "description": "County, Unitary Authority or Greater London Authority that contains this place",
             "example": "Powys - Powys"
           },
           "county_unitary_type": {
             "title": "Administrative Area Type",
             "type": "string",
-            "x-nullable": true,
-            "description": "Classifies the type of administrative unit.",
+            "nullable": true,
+            "description": "Type of administrative unit (e.g., County, UnitaryAuthority)",
             "example": "UnitaryAuthority"
           },
           "district_borough": {
             "title": "District or Borough",
             "type": "string",
-            "x-nullable": true,
-            "description": "The name of the District, Metropolitan District or London Borough administrative unit that the point geometry for the feature is within.",
+            "nullable": true,
+            "description": "District, Metropolitan District or London Borough containing this place",
             "example": "null"
           },
           "district_borough_type": {
             "title": "Borough Type",
             "type": "string",
-            "x-nullable": true,
-            "description": "Classifies the type of administrative unit.",
+            "nullable": true,
+            "description": "Type of district/borough administrative unit",
             "example": "null"
           },
           "region": {
             "title": "Region",
             "type": "string",
-            "description": "The name of the European Region (was Government O ice Region) that the point geometry for the feature is within or nearest to.",
+            "description": "European Region (formerly Government Office Region) containing this place",
             "example": "Wales"
           },
           "country": {
             "title": "Country",
             "type": "string",
-            "description": "OS Places relates to Great Britain only. i.e. England, Scotland, Wales.",
+            "description": "Country within Great Britain (England, Scotland, or Wales)",
             "example": "Wales"
           },
           "longitude": {
             "title": "Longitude",
             "type": "number",
             "format": "double",
-            "description": "The WGS84 longitude given the Place's national grid reference.",
+            "description": "WGS84 longitude coordinate",
             "example": "-3.14971194307843"
           },
           "latitude": {
             "title": "Latitude",
             "type": "number",
             "format": "double",
-            "description": "The WGS84 latitude given the Place's national grid reference.",
+            "description": "WGS84 latitude coordinate",
             "example": "52.6606391732959"
           },
           "eastings": {
             "title": "Eastings",
             "type": "integer",
-            "description": "The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.",
+            "description": "Ordnance Survey grid reference Easting (1m resolution, not available for Channel Islands/Isle of Man)",
             "example": "322335"
           },
           "northings": {
             "title": "Northings",
             "type": "integer",
-            "description": "The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man.",
+            "description": "Ordnance Survey grid reference Northing (1m resolution, not available for Channel Islands/Isle of Man)",
             "example": "307611"
           },
           "min_eastings": {
             "title": "Minimum Eastings",
             "type": "integer",
-            "description": "Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.",
+            "description": "Western edge of the place's bounding box (Minimum Bounding Rectangle)",
             "example": "321623"
           },
           "min_northings": {
             "title": "Minimum Northings",
             "type": "integer",
-            "description": "Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.",
+            "description": "Southern edge of the place's bounding box (Minimum Bounding Rectangle)",
             "example": "306458"
           },
           "max_eastings": {
             "title": "Maximum Eastings",
             "type": "integer",
-            "description": "Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.",
+            "description": "Eastern edge of the place's bounding box (Minimum Bounding Rectangle)",
             "example": "323592"
           },
           "max_northings": {
             "title": "Maximum Northings",
             "type": "integer",
-            "description": "Bounding box or Minimum Bounding Rectangle (MBR) for roads and settlements. For Settlements and Sections of Named and Numbered Roads, the MBR gives a representation of the extent of these features and is not snapped to the real world extent.",
+            "description": "Northern edge of the place's bounding box (Minimum Bounding Rectangle)",
             "example": "308740"
           }
         }
       },
-      "PlaceResponse": {
+      "PlacesResponse": {
         "title": "Places Response",
         "type": "object",
         "required": [
@@ -1432,12 +1492,29 @@
           "result": {
             "type": "array",
             "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/Place"
-                }
-              ]
+              "$ref": "#/components/schemas/Place"
             },
+            "description": "Data for a given place"
+          }
+        }
+      },
+      "PlaceResponse": {
+        "title": "Place Response",
+        "type": "object",
+        "required": [
+          "status",
+          "result"
+        ],
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              200
+            ]
+          },
+          "result": {
+            "$ref": "#/components/schemas/Place",
             "description": "Data for a given place"
           }
         }
@@ -1448,16 +1525,11 @@
     {
       "name": "API",
       "tags": [
-        "Postcode Lookup",
-        "Postcode Query",
-        "Nearest Postcode",
-        "Random Postcode",
+        "Postcodes",
         "Terminated Postcodes",
         "Scottish Postcodes",
-        "Outward Code Lookup",
-        "Place Search",
-        "Place Query",
-        "Random Place"
+        "Outward Codes",
+        "Places"
       ]
     }
   ]
