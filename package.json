@@ -20,7 +20,6 @@
     "test:clear": "NODE_ENV=test bin/clear_test_db",
     "docs:build": "docusaurus build",
     "docs:start": "docusaurus start",
-    "lint": "tslint -c tslint.json -p tsconfig.json",
     "openapi:start": "openapi preview-docs",
     "openapi:build": "openapi bundle openapi/openapi.yaml -o public/openapi.json --ext json && openapi bundle openapi/openapi.yaml -o public/openapi.yaml"
   },
@@ -125,7 +124,6 @@
     "typescript": "~5.2.2",
     "@cablanchard/semantic-release": "~1.3.4",
     "@cablanchard/tsconfig": "~2.0.0",
-    "@cablanchard/tslint": "~0.0.1",
     "@types/async": "~3.2.12",
     "@types/chai": "~4.3.1",
     "@types/cors": "~2.8.12",
@@ -139,12 +137,8 @@
     "@types/pino": "~6.3.12",
     "@types/serve-favicon": "~2.5.3",
     "@types/supertest": "~2.0.12",
-    "@typescript-eslint/eslint-plugin": "~4.0.0",
-    "@typescript-eslint/parser": "~3.10.1",
     "chai": "~4.3.4",
     "es6-promise-pool": "~2.5.0",
-    "eslint": "~7.32.0",
-    "eslint-config-prettier": "~8.5.0",
     "fast-csv": "~4.3.6",
     "mocha": "~10.2.0",
     "mocha-lcov-reporter": "~1.3.0",
@@ -153,8 +147,7 @@
     "serve-favicon": "~2.5.0",
     "source-map-support": "~0.5.21",
     "supertest": "~6.3.3",
-    "ts-node": "~10.9.1",
-    "tslint": "~6.1.3"
+    "ts-node": "~10.9.1"
   },
   "engines": {
     "node": ">=12.0.0"
