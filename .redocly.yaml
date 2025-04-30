@@ -1,6 +1,10 @@
+extends:
+  - recommended
+
 apis:
   idealpostcodes:
     root: ./openapi/openapi.yaml
+
 theme:
   openapi:
     htmlTemplate: ./openapi/index.html
