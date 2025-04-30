@@ -4,7 +4,8 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "Postcodes.io",
-  tagline: "Postcode & geolocation API for the UK",
+  tagline:
+    "Search, validate and geolocate UK postcodes. Retrieve the latest administrative and geospatial information for postcodes",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
@@ -16,7 +17,7 @@ const config: Config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "ideal-postcodes", // Usually your GitHub org/user name.
-  projectName: "Postcodes.io", // Usually your repo name.
+  projectName: "postcodes.io", // Usually your repo name.
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -35,8 +36,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars"),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
+          docItemComponent: "@theme/ApiItem", // Fix for docusaurus-openapi-docs
           editUrl: "https://github.com/ideal-postcodes/postcodes.io",
         },
         theme: {
@@ -48,12 +48,12 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: "img/docusaurus-social-card.jpg",
+    image: "img/postcodesio.png",
     navbar: {
       title: "Postcodes.io",
       logo: {
         alt: "Postcodes.io Logo",
-        src: "img/logo.svg",
+        src: "img/favicon.png",
       },
       items: [
         {
@@ -63,33 +63,59 @@ const config: Config = {
           label: "Documentation",
         },
         {
-          type: "docSidebar",
-          sidebarId: "docsSidebar",
           position: "left",
           label: "API",
+          to: "/docs/api",
+        },
+        {
+          to: "https://status.ideal-postcodes.co.uk",
+          label: "Status",
+          target: "_blank",
+          position: "right",
         },
         {
           to: "https://blog.ideal-postcodes.co.uk/tag/postcodes-io",
           label: "Blog",
-          position: "left",
-        },
-        {
-          type: "docSidebar",
-          sidebarId: "aboutSidebar",
-          position: "left",
-          label: "About",
+          target: "_blank",
+          position: "right",
         },
       ],
     },
     footer: {
       style: "dark",
+
+      logo: {
+        alt: "Ideal Postcodes",
+        src: "img/iddqd-logo-white.svg",
+        href: "https://ideal-postcodes.co.uk",
+        width: 240,
+        height: 160,
+      },
+
       links: [
         {
-          title: "Docs",
+          title: "Documentation",
           items: [
             {
               label: "Overview",
               to: "/docs/overview",
+            },
+            {
+              label: "Self Hosting",
+              to: "/docs/self-host",
+            },
+            {
+              label: "About",
+              to: "/docs/about",
+            },
+          ],
+        },
+        {
+          title: "API",
+          items: [
+            {
+              label: "API",
+              to: "/docs/api",
             },
           ],
         },
@@ -97,8 +123,16 @@ const config: Config = {
           title: "Community",
           items: [
             {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
+              label: "Help",
+              href: "https://ideal-postcodes.co.uk/support",
+            },
+            {
+              label: "Issue Tracker",
+              href: "https://github.com/ideal-postcodes/postcodes.io/issues",
+            },
+            {
+              label: "Libraries",
+              to: "/docs/libraries",
             },
           ],
         },
@@ -109,6 +143,14 @@ const config: Config = {
               label: "GitHub",
               href: "https://github.com/ideal-postcodes/postcodes.io",
             },
+            {
+              label: "Changelog",
+              href: "https://github.com/ideal-postcodes/postcodes.io/blob/master/CHANGELOG.md",
+            },
+            {
+              label: "Ideal Postcodes",
+              href: "https://ideal-postcodes.co.uk",
+            },
           ],
         },
       ],
@@ -117,8 +159,31 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+      additionalLanguages: ["http"],
     },
   } satisfies Preset.ThemeConfig,
+
+  plugins: [
+    [
+      "docusaurus-plugin-openapi-docs",
+      {
+        id: "api",
+        docsPluginId: "classic",
+        config: {
+          ideal: {
+            specPath: "public/openapi.yaml",
+            outputDir: "docs/api",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+              categoryLinkSource: "tag",
+            },
+          },
+        },
+      },
+    ],
+  ],
+
+  themes: ["docusaurus-theme-openapi-docs"],
 };
 
 export default config;
