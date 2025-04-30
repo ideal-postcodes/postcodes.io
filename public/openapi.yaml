@@ -51,7 +51,7 @@ paths:
       tags:
         - Postcodes
       summary: Lookup Postcode
-      operationId: Postcodes
+      operationId: LookupPostcode
       description: |
         ### Postcode Data (Ordnance Survey Postcode Directory Dataset)
 
@@ -341,7 +341,7 @@ paths:
         Returns `404` if postcode does not exist in our database of terminated postcodes or is not valid.
 
         Source: Ordnance Survey Postcode Directory Dataset
-      operationId: TerminatedPostcodes
+      operationId: LookupTerminatedPostcode
       parameters:
         - name: postcode
           in: path

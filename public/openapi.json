@@ -50,7 +50,7 @@
           "Postcodes"
         ],
         "summary": "Lookup Postcode",
-        "operationId": "Postcodes",
+        "operationId": "LookupPostcode",
         "description": "### Postcode Data (Ordnance Survey Postcode Directory Dataset)\n\nData points returned by the /postcodes and /outcodes API\n",
         "parameters": [
           {
@@ -378,7 +378,7 @@
         ],
         "summary": "Lookup Terminated Postcodes",
         "description": "Lookup a terminated postcode.\n\nIf the terminated postcode exists, this API returns the date of termination and last known geospatial coordinates.\n\nReturns `404` if postcode does not exist in our database of terminated postcodes or is not valid.\n\nSource: Ordnance Survey Postcode Directory Dataset\n",
-        "operationId": "TerminatedPostcodes",
+        "operationId": "LookupTerminatedPostcode",
         "parameters": [
           {
             "name": "postcode",
