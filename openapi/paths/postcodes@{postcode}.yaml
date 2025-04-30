@@ -2,7 +2,7 @@ get:
   tags:
     - Postcodes
   summary: Lookup Postcode
-  operationId: Postcodes
+  operationId: LookupPostcode
   description:
     $ref: ../md/postcode.md
   parameters:
