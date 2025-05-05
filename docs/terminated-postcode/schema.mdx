@@ -1,14 +1,28 @@
 ---
-sidebar_label: "Schema"
-title: "Terminated Postcode Schema"
+sidebar_label: "Terminated Postcode Schema"
+title: "Terminated Postcode Response Schema"
 ---
 
-Data Returned by the `/terminated_postcodes/*` APIs
+The Terminated Postcode schema provides information about UK postcodes that are no longer in use. This data is returned when using the terminated postcode lookup endpoints.
 
-| Field              | Type         | Description                                                                                                                                                                                                                           |
-| ------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `postcode`         | string       | Postcode. All currently terminated postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received every 3 months from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code. |
-| `year_terminated`  | integer      | Termination year. Year of termination of a postcode.                                                                                                                                                                                  |
-| `month_terminated` | integer      | Termination month. Month of termination of a postcode. 1-January, 2-February ... 12-December.                                                                                                                                         |
-| `longitude`        | double float | Longitude. The WGS84 longitude given the Postcode's national grid reference.                                                                                                                                                          |
-| `latitude`         | double float | Latitude. The WGS84 latitude given the Postcode's national grid reference.                                                                                                                                                            |
+## Example
+
+```json
+{
+  "postcode": "AB1 0AA",
+  "year_terminated": 2018,
+  "month_terminated": 6,
+  "longitude": -2.242851,
+  "latitude": 57.101474
+}
+```
+
+## Reference
+
+| Field              | Type    | Description                                                                                                                                                                                         | Example   |
+| ------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `postcode`         | string  | UK postcode format: 2-4 character outward code, a space, and a 3-character inward code. All terminated postcodes within the UK, Channel Islands and Isle of Man, updated quarterly from Royal Mail. | "AB1 0AA" |
+| `year_terminated`  | integer | The year in which the postcode was terminated.                                                                                                                                                      | 2018      |
+| `month_terminated` | integer | The month in which the postcode was terminated (1-12 format, where 1 is January and 12 is December).                                                                                                | 6         |
+| `longitude`        | number  | WGS84 longitude coordinate (east-west position) based on the postcode's national grid reference.                                                                                                    | -2.242851 |
+| `latitude`         | number  | WGS84 latitude coordinate (north-south position) based on the postcode's national grid reference.                                                                                                   | 57.101474 |

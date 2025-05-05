@@ -3,8 +3,41 @@ sidebar_label: "Lookup"
 title: "Lookup a Terminated Postcode"
 ---
 
-Lookup a terminated postcode. Returns the postcode, year and month of termination. Returns 404 if postcode does not exist in our database of terminated postcodes or not valid.
+This endpoint allows you to retrieve information about a UK postcode that is no longer in use (terminated).
 
-```javascript
+A successful request returns HTTP status code 200 and a JSON object containing details about when the postcode was terminated.
+
+If the terminated postcode is not found, the API returns a 404 response.
+
+For more details, see the [API Documentation](/docs/api/lookup-terminated-postcode)
+
+## Endpoint
+
+```http
 GET https://api.postcodes.io/terminated_postcodes/:postcode
+```
+
+## Example Request
+
+```http
+GET https://api.postcodes.io/terminated_postcodes/E1W1UU
+```
+
+The above would match any of these inputs: "E1W 1UU", "e1w1uu", "E1w 1uU", etc.
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": {
+    "postcode": "E1W 1UU",
+    "year_terminated": 2007,
+    "month_terminated": 12,
+    "longitude": -0.051135,
+    "latitude": 51.508774,
+    "eastings": 534812,
+    "northings": 180747
+  }
+}
 ```

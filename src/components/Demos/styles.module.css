@@ -4,11 +4,6 @@
   margin-top: 100px;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-}
-
 .header {
   display: flex;
   justify-content: center;
@@ -16,15 +11,22 @@
 
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 50px 0 50px 0;
   padding-bottom: 50px;
-  border-bottom: 1px solid #888;
 }
 
 .endpointContainer {
-  width: 50vw;
+  padding: 2rem;
+  width: 60vw;
+}
+
+@media screen and (max-width: 996px) {
+  .endpointContainer {
+    width: 100vw;
+  }
 }
 
 .endpointLabel {
@@ -35,9 +37,12 @@
 .requestContainer {
   display: flex;
   margin-bottom: 20px;
+  align-items: center;
+  flex-grow: 1;
 }
 
 .httpMethod {
+  font-size: 1.5em;
   margin-right: 1em;
   text-decoration: none;
   background-color: #435e67;
@@ -55,25 +60,52 @@
 
 .postcodeInput {
   border: none;
-  border-bottom: 2px solid #000;
+  border-bottom: 1px solid #000;
   outline: none;
   font-size: 1.5em;
   width: 110px;
   background-color: transparent;
   color: #888;
-  margin-left: -10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .postcodeInput {
+    border-bottom: 1px solid #fff;
+  }
 }
 
 button {
   margin-left: auto;
   font-size: 1em;
-  background-color: transparent;
+  background-color: var(--ifm-color-primary);
+  color: white;
   padding: 10px 20px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
+  border: none;
+  font-weight: var(--font-weight-medium);
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
 
-  &&:hover {
-    cursor: pointer;
-    background-color: green;
-    color: white;
-  }
+button:hover {
+  cursor: pointer;
+  background-color: var(--ifm-color-primary-lighter);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+button:active {
+  background-color: var(--ifm-color-primary-darker);
+  transform: translateY(1px);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] button {
+  background-color: var(--ifm-color-primary);
+}
+
+[data-theme="dark"] button:hover {
+  background-color: var(--ifm-color-primary-lighter);
 }

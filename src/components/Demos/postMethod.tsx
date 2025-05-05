@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Code } from "../Code";
 import styles from "./styles.module.css";
 
 interface PostMethodProps {
@@ -43,10 +44,10 @@ const PostMethod: React.FC<PostMethodProps> = ({
           <p className={styles.request}>{endpoint}</p>
           <button onClick={fetchPostcodeData}>Request</button>
         </div>
-        <pre className={styles.payload}>{JSON.stringify(payload, null, 2)}</pre>
+        <Code language="json" code={JSON.stringify(payload, null, 2)} />
         {hasSearched && (
           <div className={styles.result}>
-            <pre>{apiResult}</pre>
+            <Code language="json" code={apiResult} />
           </div>
         )}
       </div>

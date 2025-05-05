@@ -3,8 +3,67 @@ sidebar_label: "Lookup"
 title: "Lookup an Outward Code"
 ---
 
-Geolocation data for the centroid of the outward code specified. The outward code represents the first half of any postcode (separated by a space).
+This endpoint allows you to retrieve detailed information about a UK outward code (the first half of a postcode).
 
-```javascript
+A successful request returns HTTP status code 200 and a JSON object containing comprehensive outward code data.
+
+If the outward code is not found, the API returns a 404 response.
+
+For more details, see the [API Documentation](/docs/api/find-outcode)
+
+## Endpoint
+
+```http
 GET https://api.postcodes.io/outcodes/:outcode
+```
+
+## Example Request
+
+```http
+GET https://api.postcodes.io/outcodes/BR8
+```
+
+The above would match any of these inputs: "BR8", "br8", "Br8", etc.
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": {
+    "outcode": "BR8",
+    "longitude": 0.17398827115555,
+    "latitude": 51.41300203259024,
+    "northings": 170105,
+    "eastings": 551032,
+    "admin_district": [
+      "Sevenoaks",
+      "Bromley"
+    ],
+    "parish": [
+      "Eynsford",
+      "Hextable",
+      "Swanley"
+    ],
+    "admin_county": [
+      "Kent"
+    ],
+    "admin_ward": [
+      "Hextable",
+      "Swanley St. Mary's",
+      "Crockenhill and Well Hill"
+    ],
+    "country": [
+      "England"
+    ],
+    "parliamentary_constituency": [
+      "Sevenoaks",
+      "Orpington"
+    ],
+    "parliamentary_constituency_2024": [
+      "Sevenoaks",
+      "Orpington"
+    ]
+  }
+}
 ```

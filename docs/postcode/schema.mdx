@@ -1,45 +1,108 @@
 ---
-sidebar_label: "Schema"
-title: "Postcode Model"
+sidebar_label: "Postcode Schema"
+title: "Postcode Response Schema"
 ---
 
-Data Points Returned by the `/postcodes` and `/outcodes` API
+The Postcode schema represents all geographical and administrative information associated with a UK postcode. This data is returned when using the postcode lookup endpoints and forms the core of the Postcodes.io API response structure.
 
-Note: Some fields may be null if not applicable or populated. These fields return type is specified as `type|null`.
+## Example
 
-| Field                        | Type               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| ---------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `postcode`                   | string             | Postcode. All current (‘live’) postcodes within the United Kingdom, the Channel Islands and the Isle of Man, received monthly from Royal Mail. 2, 3 or 4-character outward code, single space and 3-character inward code.                                                                                                                                                                                                                         |
-| `outcode`                    | string             | Outward Code. The outward code is the part of the postcode before the single space in the middle. It is between two and four characters long. A few outward codes are non-geographic, not divulging where mail is to be sent. Examples of outward codes include "L1", "W1A", "RH1", "RH10" or "SE1P".                                                                                                                                              |
-| `incode`                     | string             | Inward Code. The inward part is the part of the postcode after the single space in the middle. It is three characters long. The inward code assists in the delivery of post within a postal district. Examples of inward codes include "0NY", "7GZ", "7HF", or "8JQ".                                                                                                                                                                              |
-| `quality`                    | integer            | Positional Quality. Shows the status of the assigned grid reference. 1 = within the building of the matched address closest to the postcode mean, 2 = as for status value 1, except by visual inspection of Landline maps (Scotland only), 3 = approximate to within 50m, 4 = postcode unit mean, 5 = imputed by ONS, 6 = postcode sector mean, 8 = postcode terminated prior to Gridlink® initiative, 9 = no grid reference available.            |
-| `eastings`                   | integer\|null      | Eastings. The Ordnance Survey postcode grid reference Easting to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.                                                                                                                                                                                                                                  |
-| `northings`                  | integer\|null      | Northings. The Ordnance Survey postcode grid reference Northing to 1 metre resolution. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. May be null if geolocation not available.                                                                                                                                                                                                                                |
-| `country`                    | string             | Country. The country (i.e., one of the four constituent countries of the United Kingdom or the Channel Islands or the Isle of Man) to which each postcode is assigned.                                                                                                                                                                                                                                                                             |
-| `nhs_ha`                     | string\|null       | Strategic Health Authority. The health area code for the postcode. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                     |
-| `admin_county`               | string\|null       | County. The current county to which the postcode has been assigned. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                    |
-| `admin_district`             | string\|null       | District. The current district/unitary authority to which the postcode has been assigned. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                              |
-| `admin_ward`                 | string\|null       | Ward. The current administrative/electoral area to which the postcode has been assigned. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                               |
-| `longitude`                  | double float\|null | Longitude. The WGS84 longitude given the Postcode's national grid reference. May be null if geolocation not available.                                                                                                                                                                                                                                                                                                                             |
-| `latitude`                   | double float\|null | Latitude. The WGS84 latitude given the Postcode's national grid reference. May be null if geolocation not available.                                                                                                                                                                                                                                                                                                                               |
-| `parliamentary_constituency` | string\|null       | Westminster Parliamentary Constituency. The Westminster Parliamentary Constituency code for each postcode. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                             |
-| `european_electoral_region`  | string\|null       | European Electoral Region (EER). The European Electoral Region code for each postcode. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                 |
-| `primary_care_trust`         | string\|null       | Primary Care Trust (PCT). The code for the Primary Care areas in England, LHBs in Wales, CHPs in Scotland, LCG in Northern Ireland and PHD in the Isle of Man; there are no equivalent areas in the Channel Islands. May be null if not applicable or populated.                                                                                                                                                                                   |
-| `region`                     | string\|null       | Region (formerly GOR). The Region code for each postcode. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                              |
-| `parish`                     | string\|null       | Parish (England)/community (Wales). The smallest type of administrative area in England is the parish (also known as 'civil parish'); the equivalent units in Wales are communities. May be null if not applicable or populated.                                                                                                                                                                                                                   |
-| `lsoa`                       | string\|null       | 2011 Census lower layer super output area (LSOA). The 2011 Census lower layer SOA code for England and Wales, SOA code for Northern Ireland and data zone code for Scotland. May be null if not applicable or populated.                                                                                                                                                                                                                           |
-| `msoa`                       | string\|null       | 2011 Census middle layer super output area (MSOA). The 2011 Census middle layer SOA (MSOA) code for England and Wales and intermediate zone for Scotland. May be null if not applicable or populated.                                                                                                                                                                                                                                              |
-| `ced`                        | string\|null       | County Electoral District. The county electoral division code for each English postcode. Pseudo codes are included for the remainder of the UK. The field will be null for English postcodes with no grid reference.                                                                                                                                                                                                                               |
-| `ccg`                        | string\|null       | Sub ICB Location (LOC)/ Local Health Board (LHB)/ Community Health Partnership (CHP)/ Local Commissioning Group (LCG)/ Primary Healthcare Directorate (PHD). The code for the Sub ICB Locations in England, LHBs in Wales, CHPs in Scotland, LCG in Northern Ireland and PHD in the Isle of Man; there are no equivalent areas in the Channel Islands. This was formerly Clinical Commissioning Group. May be null if not applicable or populated. |
-| `nuts`                       | string\|null       | International Terratorial Levels (ITL) (Former Nomenclature of Units for Territorial Statistics (NUTS). The national LAU1-equivalent code for each postcode. Pseudo codes are included for Channel Islands and Isle of Man. The field will otherwise be blank for postcodes with no grid reference. May be null if not applicable or populated.                                                                                                    |
-| `codes`                      | Object             | Returns an ID or Code associated with the postcode. Typically, these are a 9 character code known as an ONS Code or GSS Code. This is currently only available for districts, parishes, counties, CCGs, NUTS, and wards.                                                                                                                                                                                                                           |
-| `codes.admin_district`       | string\|null       | See description of admin_district field. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                                               |
-| `codes.admin_county`         | string\|null       | See description of admin_county field. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                                                 |
-| `codes.admin_ward`           | string\|null       | See description of admin_ward field. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                                                   |
-| `codes.parish`               | string\|null       | See description of parish field. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                                                       |
-| `codes.ccg`                  | string\|null       | See description of ccg field. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                                                          |
-| `codes.ccg_code`             | string\|null       | CCG Short Code. e.g., "07N". May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                                                           |
-| `codes.nuts`                 | string\|null       | The ITL code associated with the postcode. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                                             |
-| `codes.lau2`                 | string\|null       | The LAU2 code associated with the postcode. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                                            |
-| `codes.lsoa`                 | string\|null       | See description of lsoa field. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                                                         |
-| `codes.msoa`                 | string\|null       | See description of msoa field. May be null if not applicable or populated.                                                                                                                                                                                                                                                                                                                                                                         |
+```json
+{
+  "postcode": "BR8 7RE",
+  "quality": 1,
+  "eastings": 551626,
+  "northings": 170342,
+  "country": "England",
+  "nhs_ha": "South East Coast",
+  "longitude": 0.178871,
+  "latitude": 51.411831,
+  "european_electoral_region": "South East",
+  "primary_care_trust": "West Kent",
+  "region": "South East",
+  "lsoa": "Sevenoaks 001A",
+  "msoa": "Sevenoaks 001",
+  "incode": "7RE",
+  "outcode": "BR8",
+  "parliamentary_constituency": "Sevenoaks",
+  "parliamentary_constituency_2024": "Sevenoaks",
+  "admin_district": "Sevenoaks",
+  "parish": "Hextable",
+  "admin_county": "Kent",
+  "date_of_introduction": "198001",
+  "admin_ward": "Hextable",
+  "ced": "Swanley",
+  "ccg": "NHS Kent and Medway",
+  "nuts": "Sevenoaks",
+  "pfa": "Kent",
+  "codes": {
+    "admin_district": "E07000111",
+    "admin_county": "E10000016",
+    "admin_ward": "E05009960",
+    "parish": "E04012394",
+    "parliamentary_constituency": "E14001465",
+    "parliamentary_constituency_2024": "E14001465",
+    "ccg": "E38000237",
+    "ccg_id": "91Q",
+    "ced": "E58000739",
+    "nuts": "TLJ46",
+    "lsoa": "E01024445",
+    "msoa": "E02005087",
+    "lau2": "E07000111",
+    "pfa": "E23000032"
+  }
+}
+```
+
+## Reference
+
+| Field                        | Type            | Description                                                                                                                               | Example                            |
+| ---------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| `postcode`                   | string          | UK postcode format: 2-4 character outward code, a space, and a 3-character inward code. Updated monthly from Royal Mail.                  | "SW1A 2AA"                         |
+| `outcode`                    | string          | The first part of a postcode before the space (2-4 characters). This generally identifies the postal town or district.                    | "SW1A"                             |
+| `incode`                     | string          | The second part of a postcode after the space (always 3 characters). Helps identify specific streets or buildings within a postal area.   | "1AA"                              |
+| `quality`                    | integer         | Indicates accuracy of the grid reference location (1-9 scale, 1 being most accurate).                                                     | 1                                  |
+| `eastings`                   | integer \| null | Ordnance Survey grid reference easting (X-coordinate) with 1-meter resolution. May be null if geolocation unavailable.                    | 530047                             |
+| `northings`                  | integer \| null | Ordnance Survey grid reference northing (Y-coordinate) with 1-meter resolution. May be null if geolocation unavailable.                   | 179951                             |
+| `country`                    | string          | The UK constituent country for this postcode (England, Scotland, Wales, Northern Ireland, Channel Islands, or Isle of Man).               | "England"                          |
+| `nhs_ha`                     | string \| null  | The NHS health authority area for this postcode.                                                                                          | "London"                           |
+| `admin_county`               | string \| null  | The administrative county for this postcode. May be empty for areas without county-level administration.                                  | ""                                 |
+| `admin_district`             | string \| null  | The administrative district or unitary authority for this postcode.                                                                       | "Westminster"                      |
+| `admin_ward`                 | string \| null  | The electoral/administrative ward for this postcode.                                                                                      | "St. James's"                      |
+| `longitude`                  | number \| null  | WGS84 longitude coordinate (east-west position). May be null if geolocation unavailable.                                                  | -0.12767                           |
+| `latitude`                   | number \| null  | WGS84 latitude coordinate (north-south position). May be null if geolocation unavailable.                                                 | 51.503541                          |
+| `parliamentary_constituency` | string \| null  | The UK Parliamentary constituency for this postcode.                                                                                      | "Cities of London and Westminster" |
+| `european_electoral_region`  | string \| null  | The European Electoral Region for this postcode.                                                                                          | "London"                           |
+| `primary_care_trust`         | string \| null  | The healthcare administrative area for this postcode. Different naming conventions apply across UK regions.                               | "Westminster"                      |
+| `region`                     | string \| null  | The regional designation for this postcode (formerly Government Office Regions or GORs).                                                  | "London"                           |
+| `parish`                     | string \| null  | The civil parish (England) or community (Wales) for this postcode.                                                                        | "Westminster, unparished area"     |
+| `lsoa`                       | string \| null  | 2011 Census LSOA code (smaller statistical area, typically 1,000-1,500 residents).                                                        | "Westminster 018C"                 |
+| `msoa`                       | string \| null  | 2011 Census MSOA code (mid-size statistical area, typically 5,000-7,000 residents).                                                       | "Westminster 018"                  |
+| `ced`                        | string \| null  | The county electoral division for English postcodes. Will be null for postcodes without a grid reference or in other UK regions.          | null                               |
+| `ccg`                        | string \| null  | NHS Clinical Commissioning Group responsible for planning healthcare services in England.                                                 | "NHS North West London"            |
+| `nuts`                       | string \| null  | International Territorial Levels (ITL) code for statistical geography (formerly NUTS - Nomenclature of Units for Territorial Statistics). | "Westminster"                      |
+| `codes`                      | object          | Standard 9-character codes (ONS/GSS) for various administrative boundaries. Useful for data linking with official statistics.             | -                                  |
+| `codes.admin_district`       | string \| null  | Official 9-character GSS code for this administrative district.                                                                           | "E09000033"                        |
+| `codes.admin_county`         | string \| null  | Official 9-character GSS code for this administrative county.                                                                             | "E99999999"                        |
+| `codes.admin_ward`           | string \| null  | Official 9-character GSS code for this administrative ward.                                                                               | "E05013806"                        |
+| `codes.parish`               | string \| null  | Official 9-character GSS code for this parish.                                                                                            | "E43000236"                        |
+| `codes.ccg`                  | string \| null  | Official 9-character GSS code for this Clinical Commissioning Group.                                                                      | "E38000256"                        |
+| `codes.ccg_id`               | string \| null  | Short code identifier for this Clinical Commissioning Group.                                                                              | "W2U3Z"                            |
+| `codes.ced`                  | string \| null  | Official 9-character GSS code for this County Electoral District.                                                                         | "E99999999"                        |
+| `codes.nuts`                 | string \| null  | Official code for this International Territorial Level area.                                                                              | "TLI32"                            |
+| `codes.lau2`                 | string \| null  | Local Administrative Unit level 2 code for this area.                                                                                     | "E09000033"                        |
+| `codes.lsoa`                 | string \| null  | Official 9-character GSS code for this Lower Layer Super Output Area.                                                                     | "E01004736"                        |
+| `codes.msoa`                 | string \| null  | Official 9-character GSS code for this Middle Layer Super Output Area.                                                                    | "E02000977"                        |
+
+## Positional Quality
+
+| Quality Value | Description                                                     |
+| ------------- | --------------------------------------------------------------- |
+| 1             | Within the actual building (most accurate)                      |
+| 2             | Same as 1, but verified by Landline maps (Scotland only)        |
+| 3             | Approximate location within 50m                                 |
+| 4             | Postcode unit mean (averaged from addresses with same postcode) |
+| 5             | Estimated by ONS using surrounding postcodes                    |
+| 6             | Postcode sector mean (mainly PO Boxes)                          |
+| 8             | Historical postcode (pre-Gridlink®)                            |
+| 9             | No grid reference available                                     |

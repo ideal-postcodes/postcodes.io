@@ -1,10 +1,9 @@
 import clsx from "clsx";
-import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import Heading from "@theme/Heading";
-
+import React from "react";
 import styles from "./index.module.css";
 import HomepageDemos from "../components/Demos";
 
@@ -13,26 +12,39 @@ function HomepageHeader() {
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
+        <Heading as="h1" className={clsx("hero__title")}>
+          Postcode &amp; Geolocation API for the UK
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.btnContainer}>
+        <p
+          className={clsx(
+            "hero__subtitle",
+            styles.tagline,
+            "text--center",
+            "margin-vert--lg"
+          )}
+        >
+          {siteConfig.tagline}
+        </p>
+        <div className={clsx(styles.btnContainer, "margin-vert--lg")}>
           <div className={styles.buttons}>
-            <Link
-              className="button button--secondary button--lg"
-              to="/docs/overview"
-            >
-              Star
-            </Link>
+            <iframe
+              src="https://ghbtns.com/github-btn.html?user=ideal-postcodes&repo=postcodes.io&type=star&count=true&size=large"
+              frameBorder="0"
+              scrolling="0"
+              width="170"
+              height="30"
+              title="GitHub"
+            ></iframe>
           </div>
           <div className={styles.buttons}>
-            <Link
-              className="button button--secondary button--lg"
-              to="/docs/overview"
-            >
-              Fork
-            </Link>
+            <iframe
+              src="https://ghbtns.com/github-btn.html?user=ideal-postcodes&repo=postcodes.io&type=fork&count=true&size=large"
+              frameBorder="0"
+              scrolling="0"
+              width="170"
+              height="30"
+              title="GitHub"
+            ></iframe>
           </div>
         </div>
       </div>
@@ -44,8 +56,8 @@ export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
+      title="Postcode & Geolocation API for the UK"
+      description={siteConfig.tagline}
     >
       <HomepageHeader />
       <main>

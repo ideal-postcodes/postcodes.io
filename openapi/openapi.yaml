@@ -5,7 +5,7 @@ info:
     name: MIT
     url: "https://opensource.org/licenses/MIT"
   title: API Reference - Postcodes.io
-  termsOfService: "https://postcodes.io/about"
+  termsOfService: "https://postcodes.io/docs/licenses"
   description:
     $ref: "./description.md"
   contact:

@@ -4,12 +4,65 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  padding: 8em 0;
+  background-color: #1c2533;
+  background: -webkit-linear-gradient(
+    70deg,
+    #080f1f 30%,
+    #2b4b5a 87%,
+    #435e67 100%
+  );
+  background: -o-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+  background: -ms-linear-gradient(
+    70deg,
+    #080f1f 30%,
+    #2b4b5a 87%,
+    #435e67 100%
+  );
+  background: -moz-linear-gradient(
+    70deg,
+    #080f1f 30%,
+    #2b4b5a 87%,
+    #435e67 100%
+  );
+  background: linear-gradient(20deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+  background-attachment: fixed;
+  color: #fff;
+  text-align: center;
 }
 
+.heroBanner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  background-size: 400% 400%;
+  animation: shimmer 15s infinite ease-in-out;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
@@ -23,5 +76,17 @@
 }
 
 .buttons {
-  margin: 0 20px;
+  margin: 0 2em;
+}
+
+.tagline {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (min-width: 996px) {
+  .tagline {
+    max-width: 60%;
+  }
 }

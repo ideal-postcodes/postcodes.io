@@ -3,18 +3,172 @@ sidebar_label: "Nearest"
 title: "Find Nearest Postcode"
 ---
 
-Returns nearest postcodes for a given postcode.
+Returns a list of postcodes nearest to the specified postcode, ordered by distance.
+
+All standard postcode fields are returned for each result, plus a `distance` attribute (in metres from the specified postcode); if the input postcode is not found, the API returns a 404 response code.
+
+For more details, see the [API documentation](/docs/api/nearest-postcode).
+
+## Endpoint
 
 ```javascript
 GET https://api.postcodes.io/postcodes/:postcode/nearest
 ```
 
+## Example Request
+
+```
+https://api.postcodes.io/postcodes/NW19HZ/nearest
+```
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": [
+    {
+      "postcode": "NW1 9HZ",
+      "quality": 1,
+      "eastings": 529254,
+      "northings": 184547,
+      "country": "England",
+      "nhs_ha": "London",
+      "longitude": -0.137429,
+      "latitude": 51.545024,
+      "european_electoral_region": "London",
+      "primary_care_trust": "Camden",
+      "region": "London",
+      "lsoa": "Camden 009A",
+      "msoa": "Camden 009",
+      "incode": "9HZ",
+      "outcode": "NW1",
+      "parliamentary_constituency": "Holborn and St Pancras",
+      "parliamentary_constituency_2024": "Holborn and St Pancras",
+      "admin_district": "Camden",
+      "parish": "Camden, unparished area",
+      "admin_county": null,
+      "date_of_introduction": "199912",
+      "admin_ward": "Kentish Town South",
+      "ced": null,
+      "ccg": "NHS North Central London",
+      "nuts": "Camden",
+      "pfa": "Metropolitan Police",
+      "codes": {
+        "admin_district": "E09000007",
+        "admin_county": "E99999999",
+        "admin_ward": "E05013664",
+        "parish": "E43000197",
+        "parliamentary_constituency": "E14001290",
+        "parliamentary_constituency_2024": "E14001290",
+        "ccg": "E38000240",
+        "ccg_id": "93C",
+        "ced": "E99999999",
+        "nuts": "TLI36",
+        "lsoa": "E01000866",
+        "msoa": "E02000174",
+        "lau2": "E09000007",
+        "pfa": "E23000001"
+      },
+      "distance": 0
+    },
+    {
+      "postcode": "NW1 9JH",
+      "quality": 1,
+      "eastings": 529227,
+      "northings": 184533,
+      "country": "England",
+      "nhs_ha": "London",
+      "longitude": -0.137824,
+      "latitude": 51.544905,
+      "european_electoral_region": "London",
+      "primary_care_trust": "Camden",
+      "region": "London",
+      "lsoa": "Camden 009A",
+      "msoa": "Camden 009",
+      "incode": "9JH",
+      "outcode": "NW1",
+      "parliamentary_constituency": "Holborn and St Pancras",
+      "parliamentary_constituency_2024": "Holborn and St Pancras",
+      "admin_district": "Camden",
+      "parish": "Camden, unparished area",
+      "admin_county": null,
+      "date_of_introduction": "198001",
+      "admin_ward": "Kentish Town South",
+      "ced": null,
+      "ccg": "NHS North Central London",
+      "nuts": "Camden",
+      "pfa": "Metropolitan Police",
+      "codes": {
+        "admin_district": "E09000007",
+        "admin_county": "E99999999",
+        "admin_ward": "E05013664",
+        "parish": "E43000197",
+        "parliamentary_constituency": "E14001290",
+        "parliamentary_constituency_2024": "E14001290",
+        "ccg": "E38000240",
+        "ccg_id": "93C",
+        "ced": "E99999999",
+        "nuts": "TLI36",
+        "lsoa": "E01000866",
+        "msoa": "E02000174",
+        "lau2": "E09000007",
+        "pfa": "E23000001"
+      },
+      "distance": 30.43290554
+    },
+    {
+      "postcode": "NW5 2AH",
+      "quality": 1,
+      "eastings": 529253,
+      "northings": 184615,
+      "country": "England",
+      "nhs_ha": "London",
+      "longitude": -0.137419,
+      "latitude": 51.545636,
+      "european_electoral_region": "London",
+      "primary_care_trust": "Camden",
+      "region": "London",
+      "lsoa": "Camden 009A",
+      "msoa": "Camden 009",
+      "incode": "2AH",
+      "outcode": "NW5",
+      "parliamentary_constituency": "Holborn and St Pancras",
+      "parliamentary_constituency_2024": "Holborn and St Pancras",
+      "admin_district": "Camden",
+      "parish": "Camden, unparished area",
+      "admin_county": null,
+      "date_of_introduction": "198001",
+      "admin_ward": "Kentish Town South",
+      "ced": null,
+      "ccg": "NHS North Central London",
+      "nuts": "Camden",
+      "pfa": "Metropolitan Police",
+      "codes": {
+        "admin_district": "E09000007",
+        "admin_county": "E99999999",
+        "admin_ward": "E05013664",
+        "parish": "E43000197",
+        "parliamentary_constituency": "E14001290",
+        "parliamentary_constituency_2024": "E14001290",
+        "ccg": "E38000240",
+        "ccg_id": "93C",
+        "ced": "E99999999",
+        "nuts": "TLI36",
+        "lsoa": "E01000866",
+        "msoa": "E02000174",
+        "lau2": "E09000007",
+        "pfa": "E23000001"
+      },
+      "distance": 68.0938571
+    }, f
+  ]
+}
+```
+
 ## Optional Query Parameters
 
-`limit=` (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
-
-`radius=` (not required) Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.
-
-## Additional Response Attributes
-
-`distance` Distance in metres from specified postode
+| Parameter | Description                                                                   |
+| --------- | ----------------------------------------------------------------------------- |
+| `limit`   | Limits number of postcodes to return. Defaults to 10. Maximum allowed is 100. |
+| `radius`  | Sets search radius in metres. Defaults to 100m. Maximum allowed is 2,000m.    |

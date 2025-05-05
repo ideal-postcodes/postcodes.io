@@ -3,26 +3,233 @@ sidebar_label: "Bulk Lookup"
 title: "Bulk Lookup Postcodes"
 ---
 
-Accepts a JSON object containing an array of postcodes. Returns a list of matching postcodes and respective available data.
+This endpoint allows you to retrieve data for multiple postcodes in a single request.
 
-Be sure to submit JSON requests setting `Content-Type` to `application/json`
+Returns matching postcode data for each valid postcode provided. If a postcode is not found, its result will be null.
 
-Accepts up to 100 postcodes.
+For more details, see the [the API Documentation](/docs/api/bulk-postcode-lookup).
+
+## Endpoint
 
 ```javascript
-POST https://api.postcodes.io/postcodes/
+POST https://api.postcodes.io/postcodes
 ```
 
-## Post Data
+## Request Format
 
-This method requires a JSON object containing an array of postcodes to be posted, e.g.
+Submit a JSON object with an array of postcodes. Ensure you set the `Content-Type` header to `application/json`.
 
-```JSON
+You can include up to 100 postcodes in a single request.
+
+## Example Request
+
+```http
+POST https://api.postcodes.io/postcodes
+Content-Type: application/json
+
 {
-  "postcodes" : ["PR3 0SG", "M45 6GN", "EX165BL"]
+  "postcodes": ["PR3 0SG", "M45 6GN", "EX165BL"]
+}
+```
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": [
+    {
+      "query": "PR3 0SG",
+      "result": {
+        "postcode": "PR3 0SG",
+        "quality": 1,
+        "eastings": 354224,
+        "northings": 446279,
+        "country": "England",
+        "nhs_ha": "North West",
+        "longitude": -2.723233,
+        "latitude": 53.873809,
+        "european_electoral_region": "North West",
+        "primary_care_trust": "North Lancashire",
+        "region": "North West",
+        "lsoa": "Lancaster 001C",
+        "msoa": "Lancaster 001",
+        "incode": "0SG",
+        "outcode": "PR3",
+        "parliamentary_constituency": "Wyre and Preston North",
+        "parliamentary_constituency_2024": "Wyre and Preston North",
+        "admin_district": "Lancaster",
+        "parish": "Cockerham",
+        "admin_county": "Lancashire",
+        "date_of_introduction": "198001",
+        "admin_ward": "Upper Lune Valley",
+        "ced": "Lancaster Rural East",
+        "ccg": "NHS Lancashire and South Cumbria",
+        "nuts": "Lancaster",
+        "pfa": "Lancashire",
+        "codes": {
+          "admin_district": "E07000121",
+          "admin_county": "E10000017",
+          "admin_ward": "E05009646",
+          "parish": "E04005324",
+          "parliamentary_constituency": "E14000995",
+          "parliamentary_constituency_2024": "E14000995",
+          "ccg": "E38000222",
+          "ccg_id": "02M",
+          "ced": "E58000659",
+          "nuts": "TLD45",
+          "lsoa": "E01025301",
+          "msoa": "E02005344",
+          "lau2": "E07000121",
+          "pfa": "E23000005"
+        }
+      }
+    },
+    {
+      "query": "M45 6GN",
+      "result": {
+        "postcode": "M45 6GN",
+        "quality": 1,
+        "eastings": 381471,
+        "northings": 405968,
+        "country": "England",
+        "nhs_ha": "North West",
+        "longitude": -2.298444,
+        "latitude": 53.513289,
+        "european_electoral_region": "North West",
+        "primary_care_trust": "Bury",
+        "region": "North West",
+        "lsoa": "Bury 009E",
+        "msoa": "Bury 009",
+        "incode": "6GN",
+        "outcode": "M45",
+        "parliamentary_constituency": "Bury South",
+        "parliamentary_constituency_2024": "Bury South",
+        "admin_district": "Bury",
+        "parish": "Bury, unparished area",
+        "admin_county": null,
+        "date_of_introduction": "198001",
+        "admin_ward": "Pilkington Park",
+        "ced": null,
+        "ccg": "NHS Greater Manchester",
+        "nuts": "Greater Manchester North East",
+        "pfa": "Greater Manchester",
+        "codes": {
+          "admin_district": "E08000002",
+          "admin_county": null,
+          "admin_ward": "E05000678",
+          "parish": "E43000144",
+          "parliamentary_constituency": "E14000600",
+          "parliamentary_constituency_2024": "E14000600",
+          "ccg": "E38000223",
+          "ccg_id": "02H",
+          "ced": null,
+          "nuts": "TLD33",
+          "lsoa": "E01005134",
+          "msoa": "E02001101",
+          "lau2": "E08000002",
+          "pfa": "E23000006"
+        }
+      }
+    },
+    {
+      "query": "EX165BL",
+      "result": {
+        "postcode": "EX16 5BL",
+        "quality": 1,
+        "eastings": 294373,
+        "northings": 114872,
+        "country": "England",
+        "nhs_ha": "South West",
+        "longitude": -3.489552,
+        "latitude": 50.911417,
+        "european_electoral_region": "South West",
+        "primary_care_trust": "Devon",
+        "region": "South West",
+        "lsoa": "Mid Devon 002C",
+        "msoa": "Mid Devon 002",
+        "incode": "5BL",
+        "outcode": "EX16",
+        "parliamentary_constituency": "Tiverton and Honiton",
+        "parliamentary_constituency_2024": "Tiverton and Minehead",
+        "admin_district": "Mid Devon",
+        "parish": "Tiverton",
+        "admin_county": "Devon",
+        "date_of_introduction": "198001",
+        "admin_ward": "Cranmore",
+        "ced": "Tiverton East",
+        "ccg": "NHS Devon",
+        "nuts": "Devon",
+        "pfa": "Devon & Cornwall",
+        "codes": {
+          "admin_district": "E07000042",
+          "admin_county": "E10000008",
+          "admin_ward": "E05012834",
+          "parish": "E04003121",
+          "parliamentary_constituency": "E14000996",
+          "parliamentary_constituency_2024": "E14001495",
+          "ccg": "E38000230",
+          "ccg_id": "15N",
+          "ced": "E58000169",
+          "nuts": "TLK43",
+          "lsoa": "E01020125",
+          "msoa": "E02004179",
+          "lau2": "E07000042",
+          "pfa": "E23000028"
+        }
+      }
+    }
+  ]
 }
 ```
 
 ## Optional Query Parameters
 
-`filter=` (not required) A comma separated whitelist of attributes to be returned in the result object(s), e.g.` filter=postcode,longitude,latitude`. `null` responses will continue to return `null`. If no attributes match the result object, an empty object is returned
+| Parameter | Description                                                                                                                                                                                                          |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `filter`  | A comma-separated whitelist of attributes to include in the result objects. Example: `filter=postcode,longitude,latitude`. Null responses will remain null, and if no attributes match, an empty object is returned. |
+
+## Example Filtered Request
+
+```http
+POST https://api.postcodes.io/postcodes?filter=postcode,longitude,latitude
+Content-Type: application/json
+
+{
+  "postcodes": ["PR3 0SG", "M45 6GN", "EX165BL"]
+}
+```
+
+## Example Filtered Response
+
+```json
+{
+  "status": 200,
+  "result": [
+    {
+      "query": "PR3 0SG",
+      "result": {
+        "postcode": "PR3 0SG",
+        "longitude": -2.723233,
+        "latitude": 53.873809
+      }
+    },
+    {
+      "query": "M45 6GN",
+      "result": {
+        "postcode": "M45 6GN",
+        "longitude": -2.298444,
+        "latitude": 53.513289
+      }
+    },
+    {
+      "query": "EX165BL",
+      "result": {
+        "postcode": "EX16 5BL",
+        "longitude": -3.489552,
+        "latitude": 50.911417
+      }
+    }
+  ]
+}
+```

@@ -3,10 +3,39 @@ sidebar_label: "Lookup"
 title: "Lookup a Scottish Postcode"
 ---
 
-Lookup a Scottish postcode. Returns SPD data associated with postcode. At the moment this is just Scottish Parliamentary Constituency.
+This endpoint allows you to retrieve Scottish Parliamentary Constituency data associated with a Scottish postcode.
 
-Returns 404 if postcode does not exist in SPD or is not valid. For postcodes not in SPD but in ONSPD, 404 is returned with error message `Postcode exists in ONSPD but not in SPD`.
+A successful request returns HTTP status code 200 and a JSON object containing Scottish postcode data.
 
-```javascript
+If the postcode is not found in the Scottish Postcode Directory (SPD), the API returns a 404 response. For postcodes that exist in the ONS Postcode Directory (ONSPD) but not in SPD, a 404 response is returned with the message "Postcode exists in ONSPD but not in SPD".
+
+For more details, see the [API Documentation](/docs/api/get-scottish-postcode)
+
+## Endpoint
+
+```http
 GET https://api.postcodes.io/scotland/postcodes/:postcode
+```
+
+## Example Request
+
+```http
+GET https://api.postcodes.io/scotland/postcodes/EH12QZ
+```
+
+The above would match any of these inputs: "EH1 2QZ", "eh12qz", "Eh1 2qZ", etc.
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": {
+    "postcode": "EH1 2QZ",
+    "scottish_parliamentary_constituency": "Edinburgh Central",
+    "codes": {
+      "scottish_parliamentary_constituency": "S16000093"
+    }
+  }
+}
 ```

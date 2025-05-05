@@ -3,20 +3,97 @@ sidebar_label: "Query"
 title: "Query for a Postcode"
 ---
 
-Submit a postcode query and receive a complete list of postcode matches and all associated postcode data.
+Search for postcodes that match a given query string. This endpoint returns a list of matching postcodes with their associated data.
 
-This is essentially a postcode search which prefix matches and returns postcodes in sorted order (case insensitive)
+The search performs prefix matching and returns results in sorted order (case insensitive).
 
-This method is space sensitive, i.e. it detects for spaces between outward and inward parts of the postcode (some examples detailed [in this issue](https://github.com/ideal-postcodes/postcodes.io/issues/44))
+Returns a 200 response with either an empty array or up to 100 matching postcode entities.
 
-The result set can either be empty or populated with up to 100 postcode entities. Either way it will always return a 200 response code
+## Endpoint
 
 ```javascript
 GET https://api.postcodes.io/postcodes?q=[query]
 ```
 
+## Example Request
+
+```
+https://api.postcodes.io/postcodes?q=SW1A&limit=3
+```
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": [
+    {
+      "postcode": "SW1A 0AA",
+      "quality": 1,
+      "eastings": 530047,
+      "northings": 179951,
+      "country": "England",
+      "nhs_ha": "London",
+      "longitude": -0.141588,
+      "latitude": 51.501009,
+      "european_electoral_region": "London",
+      "primary_care_trust": "Westminster",
+      "region": "London",
+      "lsoa": "Westminster 018C",
+      "msoa": "Westminster 018",
+      "incode": "0AA",
+      "outcode": "SW1A",
+      "parliamentary_constituency": "Cities of London and Westminster",
+      "parliamentary_constituency_2024": "Cities of London and Westminster",
+      "admin_district": "Westminster",
+      "parish": "Westminster, unparished area",
+      "admin_county": null,
+      "date_of_introduction": "198001",
+      "admin_ward": "St James's",
+      "ced": null,
+      "ccg": "NHS North West London",
+      "nuts": "Westminster",
+      "pfa": "Metropolitan Police",
+      "codes": {
+        "admin_district": "E09000033",
+        "admin_county": "E99999999",
+        "admin_ward": "E05013806",
+        "parish": "E43000236",
+        "parliamentary_constituency": "E14000639",
+        "parliamentary_constituency_2024": "E14000639",
+        "ccg": "E38000256",
+        "ccg_id": "W2U3Z",
+        "ced": "E99999999",
+        "nuts": "TLI31",
+        "lsoa": "E01004736",
+        "msoa": "E02000977",
+        "lau2": "E09000033",
+        "pfa": "E23000001"
+      }
+    },
+    {
+      "postcode": "SW1A 0AB",
+      "quality": 1
+      // Additional fields omitted for brevity
+    },
+    {
+      "postcode": "SW1A 0AQ",
+      "quality": 1
+      // Additional fields omitted for brevity
+    }
+  ]
+}
+```
+
+## Query Parameters
+
+| Parameter | Description             | Default  | Constraints |
+| --------- | ----------------------- | -------- | ----------- |
+| `q=`      | The search query string | Required | String      |
+| `query=`  | Alias for `q=`          | -        | String      |
+
 ## Optional Query Parameters
 
-`query=` (not required) aliases `toq=`
-
-`limit= `(not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+| Parameter | Description                         | Default | Constraints      |
+| --------- | ----------------------------------- | ------- | ---------------- |
+| `limit=`  | Maximum number of results to return | 10      | Integer, max 100 |

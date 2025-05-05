@@ -18,15 +18,6 @@ describe("Pages routes", () => {
         .expect(200);
     });
   });
-
-  describe("/about", () => {
-    it("should return 200", async () => {
-      await request(app)
-        .get("/about")
-        .expect("Content-Type", /html/)
-        .expect(200);
-    });
-  });
 });
 
 describe("Errors", () => {

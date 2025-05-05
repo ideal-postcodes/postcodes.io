@@ -1,21 +1,59 @@
 ---
-sidebar_label: "Schema"
-title: "Outward Code Schema"
+sidebar_label: "Outward Code Schema"
+title: "Outward Code Response Schema"
 ---
 
-Data Returned by the `/outcodes` API
+The Outcode schema represents geographical and administrative information associated with a UK outward code (the first part of a postcode). This data is returned when using the outcode lookup endpoints.
 
-This table documents the structure and description of data returned by the `/outcodes` API.
+## Example
 
-| Field            | Type               | Description                                                                                                                                                                                                                                                                                                                                    |
-| ---------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `outcode`        | string             | Outcode. The outcode or outward code is the part of the postcode before the single space in the middle. It is between two and four characters long. Examples of outward codes include "L1", "W1A", "RH1", "RH10" or "SE1P". A few outward codes are non-geographic, not divulging where mail is to be sent.                                    |
-| `eastings`       | integer\|null      | Eastings. The Ordnance Survey postcode grid reference Easting to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates. Returns 0 if geolocation is not available.   |
-| `northings`      | integer\|null      | Northings. The Ordnance Survey postcode grid reference Northing to 1 metre resolution; blank for postcodes in the Channel Islands and the Isle of Man. Grid references for postcodes in Northern Ireland relate to the Irish Grid system. Computed as the arithmetic mean of the input coordinates. Returns 0 if geolocation is not available. |
-| `admin_county`   | string[]           | County. The current counties under the outcode.                                                                                                                                                                                                                                                                                                |
-| `admin_district` | string[]           | District. The current district/unitary authorities under the outcode.                                                                                                                                                                                                                                                                          |
-| `admin_ward`     | string[]           | Ward. The current administrative/electoral areas under the outcode.                                                                                                                                                                                                                                                                            |
-| `longitude`      | double float\|null | Longitude. The WGS84 longitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates. May be null if geolocation not available.                                                                                                                                                                   |
-| `latitude`       | double float\|null | Latitude. The WGS84 latitude given the Postcode's national grid reference. Computed as the arithmetic mean of input coordinates. May be null if geolocation not available.                                                                                                                                                                     |
-| `country`        | string[]           | Country. The countries included in the outcode.                                                                                                                                                                                                                                                                                                |
-| `parish`         | string[]           | Parish (England)/community (Wales). The parishes included in the outcode.                                                                                                                                                                                                                                                                      |
+```json
+{
+  "status": 200,
+  "result": {
+    "outcode": "SW1A",
+    "longitude": -0.13226037062937065,
+    "latitude": 51.504530636363654,
+    "northings": 180053,
+    "eastings": 529727,
+    "admin_district": [
+      "Westminster",
+      "Wandsworth"
+    ],
+    "parish": [
+      "Wandsworth, unparished area",
+      "Westminster, unparished area"
+    ],
+    "admin_county": [],
+    "admin_ward": [
+      "Nine Elms",
+      "St James's"
+    ],
+    "country": [
+      "England"
+    ],
+    "parliamentary_constituency": [
+      "Battersea",
+      "Cities of London and Westminster"
+    ]
+  }
+}```
+
+## Reference
+
+| Field            | Type            | Description                                                                                                                             | Example                          |
+| ---------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `outcode`        | string          | The outward code part of a postcode (2-4 characters). This generally identifies the postal town or district.                            | "SW1A"                           |
+| `eastings`       | integer \| null | Ordnance Survey grid reference easting (X-coordinate) averaged from all postcodes in the outcode. May be null if unavailable.           | 529993                           |
+| `northings`      | integer \| null | Ordnance Survey grid reference northing (Y-coordinate) averaged from all postcodes in the outcode. May be null if unavailable.          | 179950                           |
+| `longitude`      | number \| null  | WGS84 longitude coordinate (east-west position) averaged from all postcodes in the outcode. May be null if unavailable.                 | -0.132759148                     |
+| `latitude`       | number \| null  | WGS84 latitude coordinate (north-south position) averaged from all postcodes in the outcode. May be null if unavailable.                | 51.50100708                      |
+| `admin_district` | string[]        | List of administrative districts or unitary authorities that contain postcodes within this outcode.                                     | ["Westminster", "Camden"]        |
+| `admin_county`   | string[]        | List of administrative counties that contain postcodes within this outcode. May be empty for areas without county-level administration. | []                               |
+| `admin_ward`     | string[]        | List of electoral/administrative wards that contain postcodes within this outcode.                                                      | ["St James's", "West End"]       |
+| `parish`         | string[]        | List of civil parishes (England) or communities (Wales) that contain postcodes within this outcode.                                     | ["Westminster, unparished area"] |
+| `country`        | string[]        | List of UK constituent countries that contain postcodes within this outcode.                                                            | ["England"]                      |
+
+```
+
+```

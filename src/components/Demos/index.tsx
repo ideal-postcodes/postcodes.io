@@ -1,6 +1,5 @@
-import clsx from "clsx";
-import Heading from "@theme/Heading";
 import styles from "./styles.module.css";
+import React from "react";
 import GetPostcode from "./getPostcode";
 import PostMethod from "./postMethod";
 import GetGeocode from "./getGeocode";
@@ -10,14 +9,15 @@ export default function HomepageDemos(): JSX.Element {
     <section className={styles.features}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h2>API Endpoint & Methods</h2>
+          <h2>API Endpoints</h2>
         </div>
         <div>
           <GetPostcode
             endpointTemplate="api.postcodes.io/postcodes/"
             linkEnd=""
-            headingText="Lookup a postcode"
+            headingText="Lookup a Postcode"
             placeholder=":postcode"
+            defaultPostcode="BR8 7RE"
           />
 
           <PostMethod
@@ -28,7 +28,7 @@ export default function HomepageDemos(): JSX.Element {
 
           <GetGeocode
             endpointTemplate="api.postcodes.io/postcodes"
-            headingText="Get nearest postcodes for a given longitude & latitude"
+            headingText="Lookup Nearest Postcodes around a Point"
             longPlaceholder=":longitude"
             latPlaceholder=":latitude"
           />
@@ -55,36 +55,29 @@ export default function HomepageDemos(): JSX.Element {
           <GetPostcode
             endpointTemplate="api.postcodes.io/postcodes/"
             linkEnd="/nearest"
-            headingText="Nearest postcodes for postcode"
+            headingText="Nearest Postcodes around a Postcode"
             placeholder=":postcode"
           />
 
           <GetPostcode
             endpointTemplate="api.postcodes.io/terminated_postcodes/"
             linkEnd=""
-            headingText="Lookup terminated postcode"
+            headingText="Lookup Terminated Postcode"
             placeholder=":postcode"
           />
 
           <GetPostcode
             endpointTemplate="api.postcodes.io/outcodes/"
             linkEnd=""
-            headingText="Lookup Outward Code"
+            headingText="Lookup an Outward Code"
             placeholder=":outcode"
           />
 
           <GetPostcode
             endpointTemplate="api.postcodes.io/outcodes/"
             linkEnd="/nearest"
-            headingText="Nearest outward code for outward code"
+            headingText="Nearest Outward Code around an Outward Code"
             placeholder=":outcode"
-          />
-
-          <GetGeocode
-            endpointTemplate="api.postcodes.io/outcodes"
-            headingText="Get nearest outward codes for a given longitude & latitude"
-            longPlaceholder=":longitude"
-            latPlaceholder=":latitude"
           />
         </div>
       </div>

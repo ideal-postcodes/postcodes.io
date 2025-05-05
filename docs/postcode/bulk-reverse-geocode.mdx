@@ -3,25 +3,24 @@ sidebar_label: "Bulk Reverse Geocode"
 title: "Bulk Reverse Geocode Postcodes"
 ---
 
-Bulk translates geolocations into Postcodes. Accepts up to 100 geolocations.
+Translates multiple geographic coordinates (longitude/latitude) into postcodes in a single request. This endpoint returns the nearest postcodes for each set of coordinates provided.
 
 ```javascript
 POST https://api.postcodes.io/postcodes
 ```
 
-## Optional Query Parameters
+## Endpoint
 
-`limit=` (not required) Applies a global limit parameter to all geolocation lookup objects. Defaults to 10. Needs to be less than 100.
+```
+POST https://api.postcodes.io/postcodes
+```
 
-`radius=` (not required) Applies a global search radius to all geolocation lookup objects. Defaults to 100m. Needs to be less than 2,000m.
+## Example Request
 
-`widesearch=` (not required) Applies a global widesearch parameter to all geolocation lookup objects. Defaults to `false`.
+```http
+POST https://api.postcodes.io/postcodes HTTP/1.1
+Content-Type: application/json
 
-## Post Data
-
-This method requires a JSON object containing an array of geolocation objects to be POSTed. Each geolocation object accepts an optional radius (metres) and limit argument. Both default to 100m and 10 respectively. It also accepts a widesearch argument, e.g.
-
-```json
 {
   "geolocations": [
     {
@@ -31,19 +30,162 @@ This method requires a JSON object containing an array of geolocation objects to
     {
       "longitude": -1.12935802905177,
       "latitude": 50.7186356978817,
-      "limit": 100,
-      "radius": 500
+      "radius": 500,
+      "limit": 5
     }
   ]
 }
 ```
 
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": [
+    {
+      "query": {
+        "longitude": -3.15807731271522,
+        "latitude": 51.4799900627036
+      },
+      "result": [
+        {
+          "postcode": "CF24 4NP",
+          "quality": 1,
+          "eastings": 319509,
+          "northings": 176396,
+          "country": "Wales",
+          "nhs_ha": "Cardiff and Vale University Health Board",
+          "longitude": -3.15807731271522,
+          "latitude": 51.4799900627036,
+          "european_electoral_region": "Wales",
+          "primary_care_trust": "Cardiff",
+          "region": null,
+          "lsoa": "Cardiff 037D",
+          "msoa": "Cardiff 037",
+          "incode": "4NP",
+          "outcode": "CF24",
+          "parliamentary_constituency": "Cardiff Central",
+          "parliamentary_constituency_2024": "Cardiff Central",
+          "admin_district": "Cardiff",
+          "parish": null,
+          "admin_county": null,
+          "date_of_introduction": "198001",
+          "admin_ward": "Cathays",
+          "distance": 0,
+          "codes": {
+            "admin_district": "W06000015",
+            "admin_ward": "W05001958",
+            "parliamentary_constituency": "W07000023",
+            "parliamentary_constituency_2024": "W07000023",
+            "ccg": "W11000029",
+            "nuts": "TLL23",
+            "lsoa": "W01001770",
+            "msoa": "W02000489",
+            "lau2": "W06000015"
+          }
+        },
+        {
+          "postcode": "CF24 4NY",
+          "quality": 1,
+          "eastings": 319585,
+          "northings": 176479,
+          "country": "Wales",
+          "distance": 110.2
+          // Additional fields omitted for brevity
+        }
+        // Additional results omitted for brevity
+      ]
+    },
+    {
+      "query": {
+        "longitude": -1.12935802905177,
+        "latitude": 50.7186356978817,
+        "radius": 500,
+        "limit": 5
+      },
+      "result": [
+        {
+          "postcode": "PO31 7HB",
+          "quality": 1,
+          "eastings": 447671,
+          "northings": 95255,
+          "country": "England",
+          "nhs_ha": "South Central",
+          "longitude": -1.12935802905177,
+          "latitude": 50.7186356978817,
+          "distance": 0
+          // Additional fields omitted for brevity
+        }
+        // Additional results omitted for brevity
+      ]
+    }
+  ]
+}
+```
+
+## Request Parameters
+
+This endpoint requires a JSON object containing an array of geolocation objects:
+
+| Parameter      | Description                  | Required | Constraints           |
+| -------------- | ---------------------------- | -------- | --------------------- |
+| `geolocations` | Array of geolocation objects | Yes      | Maximum 100 objects   |
+| `longitude`    | Longitude coordinate         | Yes      | Valid longitude value |
+| `latitude`     | Latitude coordinate          | Yes      | Valid latitude value  |
+
+You can include up to 100 geolocation objects in a single request.
+
+Example JSON body:
+
+```json
+{
+  "geolocations": [
+    {
+      "longitude": -0.32824866,
+      "latitude": 51.44344409
+    },
+    {
+      "longitude": -0.20864309,
+      "latitude": 51.42001847
+    }
+  ]
+}
+```
+
+## Optional Query Parameters
+
+These parameters can be applied globally to all geolocations in the request:
+
+| Parameter    | Description                                             | Default | Constraints                   |
+| ------------ | ------------------------------------------------------- | ------- | ----------------------------- |
+| `limit`      | Maximum number of postcodes to return for each location | 10      | Must be less than 100         |
+| `radius`     | Search radius in metres                                 | 100     | Must be less than 2,000m      |
+| `widesearch` | When true, extends search radius up to 20km             | false   | Returns maximum of 10 results |
+
+Example with global parameters:
+
+```
+POST https://api.postcodes.io/postcodes?radius=200&limit=5
+```
+
 ## Optional Geolocation Object Parameters
 
-`filter=` (not required) A comma separated whitelist of attributes to be returned in the result object(s). e.g. `filter=postcode,longitude,latitude`. `null` responses will continue to return null. If no attributes match the result object, an empty object is returned
+These parameters can be specified for individual geolocation objects:
 
-`widesearch=` (not required) Search up to 20km radius, but subject to a maximum of 10 results
+| Parameter    | Description                                             | Default    | Constraints                        |
+| ------------ | ------------------------------------------------------- | ---------- | ---------------------------------- |
+| `limit`      | Maximum number of postcodes to return for this location | 10         | Must be less than 100              |
+| `radius`     | Search radius in metres for this location               | 100        | Must be less than 2,000m           |
+| `widesearch` | When true, extends search radius up to 20km             | false      | Returns maximum of 10 results      |
+| `filter`     | Comma-separated list of fields to return                | All fields | e.g. `postcode,longitude,latitude` |
 
-## Additional Response Attributes
+Individual parameters override global parameters for the specific geolocation object.
 
-`distance` Distance in metres from specified postode
+## Response Details
+
+- Each geolocation query returns an array of matching postcodes
+- Results are sorted by distance (nearest first)
+- Each result includes a `distance` field showing meters from the query point
+- If no postcodes are found within the radius, `result` will be an empty array
+- If a geolocation is invalid, `result` will be null
