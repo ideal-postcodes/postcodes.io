@@ -5,11 +5,28 @@ title: "Scottish Postcode Schema"
 
 Data Returned by the `/scotland/*` APIs
 
-This section outlines the structure and details of the data returned by the `/scotland/*` APIs, focusing on information related to Scottish Parliamentary Constituencies.
+This section outlines the structure and details of the data returned by the `/scotland/*` APIs, focusing on information related to Scottish parliamentary constituencies.
 
-| Field                                       | Type   | Description                                                                                                                     |
-| ------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| `postcode`                                  | string | Postcode. Royal Mail postcode.                                                                                                  |
-| `scottish_parliamentary_constituency`       | string | Scottish Parliamentary Constituency. Represents the 2014 Scottish Parliamentary Constituency to which the postcode is assigned. |
-| `codes`                                     | Object | Returns an ID or Code associated with the postcode. Typically, these are a 9 character code known as an ONS Code or GSS Code.   |
-| `codes.scottish_parliamentary_constituency` | string | Scottish Parliamentary Constituency GSS Code. A code that identifies a 2014 Scottish Parliamentary Constituency.                |
+## Example
+
+```json
+{
+  "status": 200,
+  "result": {
+    "postcode": "AB10 7EU",
+    "scottish_parliamentary_constituency": "Aberdeen South and North Kincardine",
+    "codes": {
+      "scottish_parliamentary_constituency": "S16000076"
+    }
+  }
+}
+```
+
+## Reference
+
+| Field                                       | Type   | Description                                                                                                                     | Example                                                |
+| ------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `postcode`                                  | string | Postcode. Royal Mail postcode.                                                                                                  | "EH1 1BB"                                              |
+| `scottish_parliamentary_constituency`       | string | Scottish Parliamentary Constituency. Represents the 2014 Scottish Parliamentary Constituency to which the postcode is assigned. | "Edinburgh Central"                                    |
+| `codes`                                     | Object | Returns an ID or Code associated with the postcode. Typically, these are a 9 character code known as an ONS Code or GSS Code.   | `{"scottish_parliamentary_constituency": "S16000093"}` |
+| `codes.scottish_parliamentary_constituency` | string | Scottish Parliamentary Constituency GSS Code. A code that identifies a 2014 Scottish Parliamentary Constituency.                | "S16000093"                                            |

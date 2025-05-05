@@ -30,9 +30,6 @@ const sidebars: SidebarsConfig = {
   // But you can create a sidebar manually
   docsSidebar: [
     "overview",
-    "self-host",
-    "libraries",
-    "about",
     {
       type: "category",
       label: "Postcodes",
@@ -44,6 +41,7 @@ const sidebars: SidebarsConfig = {
         "postcode/bulk",
         "postcode/random",
         "postcode/autocomplete",
+        "postcode/nearest",
         "postcode/reverse-geocode",
         "postcode/bulk-reverse-geocode",
       ],
@@ -77,6 +75,9 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       items: ["scottish-postcode/schema", "scottish-postcode/lookup"],
     },
+    "libraries",
+    "self-host",
+    "licences",
   ],
 };
 

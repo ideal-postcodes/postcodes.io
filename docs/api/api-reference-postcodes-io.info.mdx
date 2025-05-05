@@ -1,0 +1,92 @@
+---
+id: api-reference-postcodes-io
+title: "API Reference - Postcodes.io"
+description: "# Overview"
+sidebar_label: Introduction
+sidebar_position: 0
+hide_title: true
+custom_edit_url: null
+---
+
+import ApiLogo from "@theme/ApiLogo";
+import Heading from "@theme/Heading";
+import SchemaTabs from "@theme/SchemaTabs";
+import TabItem from "@theme/TabItem";
+import Export from "@theme/ApiExplorer/Export";
+
+<span
+  className={"theme-doc-version-badge badge badge--secondary"}
+  children={"Version: 3.5.1"}
+>
+</span>
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"API Reference - Postcodes.io"}
+>
+</Heading>
+
+
+
+# Overview
+
+Postcodes.io is a free postcode lookup API and geocoder for the UK.
+
+## Endpoint
+
+All services can be accessed from the following endpoint.
+
+```
+https://api.postcodes.io
+```
+
+The API accepts GET and POST requests. POST methods use content type `application/json`.
+
+## Responses
+
+Each response comes with an appropriate HTTP Status code (except for JSONP requests). These include 200 for success, 400 for a bad request, 404 for not found and 500 for server error. The HTTP Status code is also included in the response body.
+
+## Authentication
+
+Postcodes.io does not require authentication.
+
+
+<div
+  style={{"display":"flex","flexDirection":"column","marginBottom":"var(--ifm-paragraph-margin-bottom)"}}
+>
+  <h3
+    style={{"marginBottom":"0.25rem"}}
+  >
+    Contact
+  </h3><span>
+    Support: [support@ideal-postcodes.co.uk](mailto:support@ideal-postcodes.co.uk)
+  </span><span>
+    URL: [https://ideal-postcodes.co.uk/support](https://ideal-postcodes.co.uk/support)
+  </span>
+</div><div
+  style={{"marginBottom":"var(--ifm-paragraph-margin-bottom)"}}
+>
+  <h3
+    style={{"marginBottom":"0.25rem"}}
+  >
+    Terms of Service
+  </h3><a
+    href={"https://postcodes.io/about"}
+  >
+    {'https://postcodes.io/about'}
+  </a>
+</div><div
+  style={{"marginBottom":"var(--ifm-paragraph-margin-bottom)"}}
+>
+  <h3
+    style={{"marginBottom":"0.25rem"}}
+  >
+    License
+  </h3><a
+    href={"https://opensource.org/licenses/MIT"}
+  >
+    MIT
+  </a>
+</div>
+      

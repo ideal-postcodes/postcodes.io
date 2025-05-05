@@ -3,28 +3,89 @@ sidebar_label: "Reverse Geocode"
 title: "Reverse Geocode a Postcode"
 ---
 
-Returns nearest postcodes for a given longitude and latitude.
+This endpoint returns the nearest postcodes for a given longitude and latitude coordinate pair.
+
+Each postcode in the results includes a `distance` field that indicates the distance in meters from the specified coordinates to the postcode.
+
+## Endpoint
 
 ```javascript
-GET https://api.postcodes.io/postcodes?lon=:longitude&lat=:latitude
+GET https://api.postcodes.io/postcodes?lon=[longitude]&lat=[latitude]
 ```
+
+## Example Request
+
+```http
+https://api.postcodes.io/postcodes?lon=-0.127&lat=51.507
+```
+
+## Example Response
+
+```javascript
+{
+  "status": 200,
+  "result": [
+    {
+      "postcode": "SW1A 2DD",
+      "quality": 1,
+      "eastings": 530075,
+      "northings": 180339,
+      "country": "England",
+      "nhs_ha": "London",
+      "longitude": -0.127149,
+      "latitude": 51.50702,
+      "european_electoral_region": "London",
+      "primary_care_trust": "Westminster",
+      "region": "London",
+      "lsoa": "Westminster 018C",
+      "msoa": "Westminster 018",
+      "incode": "2DD",
+      "outcode": "SW1A",
+      "parliamentary_constituency": "Cities of London and Westminster",
+      "parliamentary_constituency_2024": "Cities of London and Westminster",
+      "admin_district": "Westminster",
+      "parish": "Westminster, unparished area",
+      "admin_county": null,
+      "date_of_introduction": "198001",
+      "admin_ward": "St James's",
+      "ced": null,
+      "ccg": "NHS North West London",
+      "nuts": "Westminster",
+      "pfa": "Metropolitan Police",
+      "codes": {
+        "admin_district": "E09000033",
+        "admin_county": "E99999999",
+        "admin_ward": "E05013806",
+        "parish": "E43000236",
+        "parliamentary_constituency": "E14001172",
+        "parliamentary_constituency_2024": "E14001172",
+        "ccg": "E38000256",
+        "ccg_id": "W2U3Z",
+        "ced": "E99999999",
+        "nuts": "TLI35",
+        "lsoa": "E01004736",
+        "msoa": "E02000977",
+        "lau2": "E09000033",
+        "pfa": "E23000001"
+      },
+      "distance": 10.58165325
+    }
+    // Truncated for brevity
+  ]
+}
+```
+
+## Request Parameters
+
+| Parameter | Required | Description                                                                           |
+| --------- | -------- | ------------------------------------------------------------------------------------- |
+| `lon`     | Yes      | The longitude coordinate. Must be a valid WGS84 longitude value between -180 and 180. |
+| `lat`     | Yes      | The latitude coordinate. Must be a valid WGS84 latitude value between -90 and 90.     |
 
 ## Optional Query Parameters
 
-`limit=` (not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
-
-`radius=` (not required) Limits number of postcodes matches to return. Defaults to 100m. Needs to be less than 2,000m.
-
-`widesearch=` (not required) Search up to 20km radius, but subject to a maximum of 10 results. Since lookups over a wide area can be very expensive, we've created this method to allow you choose to make the trade off between search radius and number of results. Defaults to false. When enabled, radius and limits over 10 are ignored.
-
-## Additional Response Attributes
-
-`distance` Distance in metres from specified postode
-
-## Legacy
-
-Note that the old style of reverse geocoding (including optional headers above) will still be supported. Namely,
-
-```get
-GET https://api.postcodes.io/postcodes/lon/:longitude/lat/:latitude
-```
+| Parameter    | Description                                                                                                                                                    | Default | Constraints             | Example            |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ----------------------- | ------------------ |
+| `limit`      | Limits number of postcode matches to return                                                                                                                    | 10      | Maximum value is 100    | `&limit=5`         |
+| `radius`     | Sets search radius in meters                                                                                                                                   | 100m    | Maximum value is 2,000m | `&radius=500`      |
+| `widesearch` | Enables a wide area search up to 20km radius, but returns a maximum of 10 results. When set to `true`, any `radius` over 10 and `limit` parameters are ignored | `false` | -                       | `&widesearch=true` |

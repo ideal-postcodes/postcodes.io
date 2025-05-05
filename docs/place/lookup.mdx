@@ -3,8 +3,47 @@ sidebar_label: "Lookup"
 title: "Lookup a GB Place"
 ---
 
-Find a place by OSGB code (e.g. "osgb4000000074564391"). Returns all available data if found. Returns 404 if place does not exist.
+This endpoint allows you to retrieve detailed information about a GB place using its OSGB code.
 
-```javascript
+A successful request returns HTTP status code 200 and a JSON object containing comprehensive place data.
+
+If the place is not found, the API returns a 404 response.
+
+For more details, see the [API Documentation](/docs/api/find-place)
+
+## Endpoint
+
+```http
 GET https://api.postcodes.io/places/:code
+```
+
+## Example Request
+
+```http
+GET https://api.postcodes.io/places/osgb4000000074564391
+```
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": {
+    "code": "osgb4000000074564391",
+    "name_1": "London",
+    "name_1_lang": null,
+    "name_2": null,
+    "name_2_lang": null,
+    "local_type": "Capital City",
+    "outcode": "SW1A",
+    "county_unitary": "Greater London",
+    "county_unitary_type": "GB/GLA",
+    "district_borough": "Westminster",
+    "district_borough_type": "GB/LBO",
+    "region": "London",
+    "country": "England",
+    "longitude": -0.124669,
+    "latitude": 51.50092
+  }
+}
 ```

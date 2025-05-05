@@ -53,7 +53,7 @@ const config: Config = {
       title: "Postcodes.io",
       logo: {
         alt: "Postcodes.io Logo",
-        src: "img/favicon.png",
+        src: "img/house.png",
       },
       items: [
         {
@@ -105,8 +105,8 @@ const config: Config = {
               to: "/docs/self-host",
             },
             {
-              label: "About",
-              to: "/docs/about",
+              label: "Licences",
+              to: "/docs/licences",
             },
           ],
         },

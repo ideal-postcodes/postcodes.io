@@ -1,5 +1,3 @@
-# Overview
-
 Postcodes.io is a free postcode lookup API and geocoder for the UK.
 
 ## Endpoint

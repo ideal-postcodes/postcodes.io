@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Code } from "../Code";
 import styles from "./styles.module.css";
 
 interface PostcodeLookupProps {
@@ -6,6 +7,7 @@ interface PostcodeLookupProps {
   linkEnd: string;
   headingText: string;
   placeholder: string;
+  defaultPostcode?: string;
 }
 
 const GetPostcode: React.FC<PostcodeLookupProps> = ({
@@ -13,11 +15,11 @@ const GetPostcode: React.FC<PostcodeLookupProps> = ({
   linkEnd,
   headingText,
   placeholder,
+  defaultPostcode = "",
 }) => {
-  const [postcode, setPostcode] = useState<string>("");
+  const [postcode, setPostcode] = useState<string>(defaultPostcode);
   const [apiResult, setApiResult] = useState<string>("");
   const [hasSearched, setHasSearched] = useState(false);
-  const [fullEndpoint, setFullEndpoint] = useState<string>("");
 
   const handlePostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostcode(e.target.value);
@@ -26,7 +28,6 @@ const GetPostcode: React.FC<PostcodeLookupProps> = ({
   const fetchPostcodeData = async () => {
     const encodedPostcode = encodeURIComponent(postcode);
     const endpoint = `https://${endpointTemplate}${encodedPostcode}${linkEnd}`;
-    setFullEndpoint(endpoint);
     try {
       const response = await fetch(endpoint);
       const data = await response.json();
@@ -54,11 +55,7 @@ const GetPostcode: React.FC<PostcodeLookupProps> = ({
           <p className={styles.request}>{linkEnd}</p>
           <button onClick={fetchPostcodeData}>Request</button>
         </div>
-        {hasSearched && (
-          <div className={styles.result}>
-            <pre>{apiResult}</pre>
-          </div>
-        )}
+        {hasSearched && <Code language="json" code={apiResult} />}
       </div>
     </div>
   );

@@ -1,16 +1,108 @@
 ---
 sidebar_label: "Query"
-title: "Query for GB place"
+title: "Query for a Place"
 ---
 
-Submit a place query and receive a complete list of places matches and associated data.
+Search for places that match a given query string. This endpoint returns a list of matching places with their associated data.
+
+The search performs prefix matching and returns results in sorted order (case insensitive).
+
+Returns a 200 response with either an empty array or up to 100 matching place entities.
+
+## Endpoint
 
 ```javascript
 GET https://api.postcodes.io/places?q=[query]
 ```
 
+## Example Request
+
+```
+https://api.postcodes.io/places?q=London&limit=3
+```
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": [
+    {
+      "place_name": "London",
+      "country": "England",
+      "region": "London",
+      "longitude": -0.1245,
+      "latitude": 51.508,
+      "eastings": 530856,
+      "northings": 180392,
+      "admin_district": "Westminster",
+      "admin_county": null,
+      "admin_ward": "St James's",
+      "parish": "Westminster, unparished area",
+      "type": "City",
+      "population": 8961989,
+      "codes": {
+        "admin_district": "E09000033",
+        "admin_county": "E99999999",
+        "admin_ward": "E05013806",
+        "parish": "E43000236"
+      }
+    },
+    {
+      "place_name": "London Colney",
+      "country": "England",
+      "region": "East of England",
+      "longitude": -0.2956,
+      "latitude": 51.724,
+      "eastings": 519047,
+      "northings": 204037,
+      "admin_district": "St Albans",
+      "admin_county": "Hertfordshire",
+      "admin_ward": "London Colney",
+      "parish": "London Colney",
+      "type": "Village",
+      "population": 10192,
+      "codes": {
+        "admin_district": "E07000240",
+        "admin_county": "E10000015",
+        "admin_ward": "E05004782",
+        "parish": "E04012147"
+      }
+    },
+    {
+      "place_name": "Londonthorpe",
+      "country": "England",
+      "region": "East Midlands",
+      "longitude": -0.5726,
+      "latitude": 52.9464,
+      "eastings": 495078,
+      "northings": 338752,
+      "admin_district": "South Kesteven",
+      "admin_county": "Lincolnshire",
+      "admin_ward": "Belmont",
+      "parish": "Londonthorpe and Harrowby Without",
+      "type": "Hamlet",
+      "population": 257,
+      "codes": {
+        "admin_district": "E07000141",
+        "admin_county": "E10000019",
+        "admin_ward": "E05005527",
+        "parish": "E04005618"
+      }
+    }
+  ]
+}
+```
+
+## Query Parameters
+
+| Parameter | Description             | Default  | Constraints |
+| --------- | ----------------------- | -------- | ----------- |
+| `q=`      | The search query string | Required | String      |
+| `query=`  | Alias for `q=`          | -        | String      |
+
 ## Optional Query Parameters
 
-`query=` (not required) aliases `toq=`
-
-`limit=` (not required) Limits number of places matches to return. Defaults to 10. Needs to be less than 100.
+| Parameter | Description                         | Default | Constraints      |
+| --------- | ----------------------------------- | ------- | ---------------- |
+| `limit=`  | Maximum number of results to return | 10      | Integer, max 100 |

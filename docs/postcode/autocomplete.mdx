@@ -5,8 +5,36 @@ title: "Autocomplete a Postcode"
 
 Convenient method to return an list of matching postcodes.
 
+## Endpoint
+
 ```javascript
 GET https://api.postcodes.io/postcodes/:postcode/autocomplete
+```
+
+## Example Request
+
+```
+https://api.postcodes.io/postcodes/BR87R/autocomplete
+```
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": [
+    "BR8 7RA",
+    "BR8 7RB",
+    "BR8 7RD",
+    "BR8 7RE",
+    "BR8 7RF",
+    "BR8 7RG",
+    "BR8 7RH",
+    "BR8 7RJ",
+    "BR8 7RL",
+    "BR8 7RP"
+  ]
+}
 ```
 
 ## Optional Query Parameters

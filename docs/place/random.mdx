@@ -3,8 +3,47 @@ sidebar_label: "Random"
 title: "Retrieve a Random Place"
 ---
 
-Returns a random place and all associated data
+This endpoint returns a random place and all available data for that place from the database.
+
+## Endpoint
 
 ```javascript
 GET https://api.postcodes.io/random/places
+```
+
+## Example Request
+
+```
+https://api.postcodes.io/random/places
+```
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": {
+    "code": "osgb4000000074544700",
+    "name_1": "Hatton",
+    "name_1_lang": null,
+    "name_2": null,
+    "name_2_lang": null,
+    "local_type": "Village",
+    "outcode": "CV35",
+    "county_unitary": "Warwickshire",
+    "county_unitary_type": "County",
+    "district_borough": "Stratford-on-Avon",
+    "district_borough_type": "District",
+    "region": "West Midlands",
+    "country": "England",
+    "longitude": -1.656147,
+    "latitude": 52.283079,
+    "eastings": 421447,
+    "northings": 258890,
+    "min_eastings": 421000,
+    "min_northings": 258000,
+    "max_eastings": 422000,
+    "max_northings": 259000
+  }
+}
 ```

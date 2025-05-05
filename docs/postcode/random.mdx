@@ -3,12 +3,80 @@ sidebar_label: "Random"
 title: "Retrieve a Random Postcode"
 ---
 
-Returns a random postcode and all available data for that postcode.
+This endpoint returns a random postcode and all available data for that postcode from the database.
+
+## Endpoint
 
 ```javascript
 GET https://api.postcodes.io/random/postcodes
 ```
 
+## Example Request
+
+```
+https://api.postcodes.io/random/postcodes
+```
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": {
+    "postcode": "CM8 3ET",
+    "quality": 1,
+    "eastings": 581513,
+    "northings": 213555,
+    "country": "England",
+    "nhs_ha": "East of England",
+    "longitude": 0.635575,
+    "latitude": 51.810886,
+    "european_electoral_region": "Eastern",
+    "primary_care_trust": "Mid Essex",
+    "region": "East of England",
+    "lsoa": "Braintree 017C",
+    "msoa": "Braintree 017",
+    "incode": "3ET",
+    "outcode": "CM8",
+    "parliamentary_constituency": "Witham",
+    "parliamentary_constituency_2024": "Witham",
+    "admin_district": "Braintree",
+    "parish": "Witham",
+    "admin_county": "Essex",
+    "date_of_introduction": "198001",
+    "admin_ward": "Witham South",
+    "ced": "Witham Southern",
+    "ccg": "NHS Mid and South Essex",
+    "nuts": "Essex Haven Gateway",
+    "pfa": "Essex",
+    "codes": {
+      "admin_district": "E07000067",
+      "admin_county": "E10000012",
+      "admin_ward": "E05012480",
+      "parish": "E04012935",
+      "parliamentary_constituency": "E14000951",
+      "parliamentary_constituency_2024": "E14000951",
+      "ccg": "E38000106",
+      "ccg_id": "06Q",
+      "ced": "E58000295",
+      "nuts": "TLH33",
+      "lsoa": "E01033460",
+      "msoa": "E02004470",
+      "lau2": "E07000067",
+      "pfa": "E23000028"
+    }
+  }
+}
+```
+
 ## Optional Query Parameters
 
-`outcode=` (not required) Filters random postcodes by outcode. Returns null if invalid outcode.
+| Parameter | Required | Description                                                                                               |
+| --------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `outcode` | No       | Filters random postcodes by outcode (e.g., "CM8", "SW1"). Returns null if an invalid outcode is provided. |
+
+## Example Request With Optional Parameter
+
+```
+https://api.postcodes.io/random/postcodes?outcode=SW1
+```

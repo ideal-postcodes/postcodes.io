@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Code } from "../Code";
 import styles from "./styles.module.css";
 
 interface PostcodeLookupProps {
@@ -70,7 +71,7 @@ const GetGeocode: React.FC<PostcodeLookupProps> = ({
         </div>
         {hasSearched && (
           <div className={styles.result}>
-            <pre>{apiResult}</pre>
+            <Code language="json" code={apiResult} />
           </div>
         )}
       </div>

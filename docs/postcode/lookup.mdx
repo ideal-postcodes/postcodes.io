@@ -3,12 +3,76 @@ sidebar_label: "Lookup"
 title: "Lookup a Postcode"
 ---
 
-This uniquely identifies a postcode.
+This endpoint allows you to retrieve detailed information about a UK postcode.
 
-Returns a single postcode entity for a given postcode (case, space insensitive).
+A successful request returns HTTP status code 200 and a JSON object containing comprehensive postcode data.
 
-If no postcode is found it returns "404" response code.
+If the postcode is not found, the API returns a 404 response.
 
-```javascript
+For more details, see the [API Documentation](/docs/api/lookup-postcode)
+
+## Endpoint
+
+```http
 GET https://api.postcodes.io/postcodes/:postcode
+```
+
+## Example Request
+
+```http
+GET https://api.postcodes.io/postcodes/BR87RE
+```
+
+The above would match any of these inputs: "BR8 7RE", "br87re", "Br8 7rE", etc.
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": {
+    "postcode": "BR8 7RE",
+    "quality": 1,
+    "eastings": 551626,
+    "northings": 170342,
+    "country": "England",
+    "nhs_ha": "South East Coast",
+    "longitude": 0.178871,
+    "latitude": 51.411831,
+    "european_electoral_region": "South East",
+    "primary_care_trust": "West Kent",
+    "region": "South East",
+    "lsoa": "Sevenoaks 001A",
+    "msoa": "Sevenoaks 001",
+    "incode": "7RE",
+    "outcode": "BR8",
+    "parliamentary_constituency": "Sevenoaks",
+    "parliamentary_constituency_2024": "Sevenoaks",
+    "admin_district": "Sevenoaks",
+    "parish": "Hextable",
+    "admin_county": "Kent",
+    "date_of_introduction": "198001",
+    "admin_ward": "Hextable",
+    "ced": "Swanley",
+    "ccg": "NHS Kent and Medway",
+    "nuts": "Sevenoaks",
+    "pfa": "Kent",
+    "codes": {
+      "admin_district": "E07000111",
+      "admin_county": "E10000016",
+      "admin_ward": "E05009960",
+      "parish": "E04012394",
+      "parliamentary_constituency": "E14001465",
+      "parliamentary_constituency_2024": "E14001465",
+      "ccg": "E38000237",
+      "ccg_id": "91Q",
+      "ced": "E58000739",
+      "nuts": "TLJ46",
+      "lsoa": "E01024445",
+      "msoa": "E02005087",
+      "lau2": "E07000111",
+      "pfa": "E23000032"
+    }
+  }
+}
 ```

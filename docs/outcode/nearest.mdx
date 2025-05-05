@@ -1,16 +1,124 @@
 ---
 sidebar_label: "Nearest"
-title: "Retrieve Nearest Outward Code"
+title: "Find Nearest Outcode"
 ---
 
-Returns nearest outcodes for a given outcode.
+Returns a list of outcodes nearest to the specified outcode, ordered by distance.
+
+All standard outcode fields are returned for each result, plus a `distance` attribute (in metres from the specified outcode); if the input outcode is not found, the API returns a 404 response code.
+
+## Endpoint
 
 ```javascript
 GET https://api.postcodes.io/outcodes/:outcode/nearest
 ```
 
+## Example Request
+
+```
+https://api.postcodes.io/outcodes/NW1/nearest
+```
+
+## Example Response
+
+```json
+{
+  "status": 200,
+  "result": [
+    {
+      "outcode": "NW1",
+      "longitude": -0.139926,
+      "latitude": 51.52825,
+      "northings": 182304,
+      "eastings": 529158,
+      "admin_district": [
+        "Camden",
+        "Westminster",
+        "City of London"
+      ],
+      "parish": [
+        "Camden, unparished area",
+        "Westminster, unparished area",
+        "City of London, unparished area"
+      ],
+      "admin_county": [],
+      "admin_ward": [
+        "Camden Town with Primrose Hill",
+        "Regent's Park",
+        "Marylebone High Street",
+        "Hyde Park",
+        "West End",
+        "Holborn and Covent Garden"
+      ],
+      "country": [
+        "England"
+      ],
+      "distance": 0
+    },
+    {
+      "outcode": "WC1",
+      "longitude": -0.118548,
+      "latitude": 51.519358,
+      "northings": 181819,
+      "eastings": 530724,
+      "admin_district": [
+        "Camden",
+        "Islington",
+        "Westminster",
+        "City of London"
+      ],
+      "parish": [
+        "Camden, unparished area",
+        "Islington, unparished area",
+        "Westminster, unparished area",
+        "City of London, unparished area"
+      ],
+      "admin_county": [],
+      "admin_ward": [
+        "King's Cross",
+        "Holborn and Covent Garden",
+        "Bloomsbury",
+        "Clerkenwell",
+        "St Pancras and Somers Town",
+        "West End"
+      ],
+      "country": [
+        "England"
+      ],
+      "distance": 1598.694782
+    },
+    {
+      "outcode": "W1",
+      "longitude": -0.14224,
+      "latitude": 51.516759,
+      "northings": 181125,
+      "eastings": 528997,
+      "admin_district": [
+        "Westminster",
+        "Camden"
+      ],
+      "parish": [
+        "Westminster, unparished area",
+        "Camden, unparished area"
+      ],
+      "admin_county": [],
+      "admin_ward": [
+        "Marylebone High Street",
+        "West End",
+        "Bloomsbury"
+      ],
+      "country": [
+        "England"
+      ],
+      "distance": 1750.348773
+    }
+  ]
+}
+```
+
 ## Optional Query Parameters
 
-`limit= `(not required) Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
-
-`radius=` (not required) Limits number of postcodes matches to return. Defaults to 5,000m. Needs to be less than 25,000m.
+| Parameter | Description                                                                   |
+| --------- | ----------------------------------------------------------------------------- |
+| `limit`   | Limits number of outcodes to return. Defaults to 10. Maximum allowed is 100.  |
+| `radius`  | Sets search radius in metres. Defaults to 5,000m. Maximum allowed is 25,000m. |
