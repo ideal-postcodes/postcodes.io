@@ -1,7 +1,7 @@
 {
-  "extends": "@docusaurus/tsconfig", // Enable for editing documentation
+  // "extends": "@docusaurus/tsconfig", // Enable for editing documentation
   "compilerOptions": {
-    "jsx": "react-jsx", // Enable for editing documentation
+    // "jsx": "react-jsx", // Enable for editing documentation
     "module": "commonjs",
     "resolveJsonModule": true,
     "esModuleInterop": true,
