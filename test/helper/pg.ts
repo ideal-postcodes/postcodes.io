@@ -1,7 +1,7 @@
 /**
  * PG helper methods
  */
-import * as Base from "../../src/app/models/base";
+import * as Base from "../../api/app/models/base";
 
 const query = Base.query;
 

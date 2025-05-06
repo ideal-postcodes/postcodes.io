@@ -11,11 +11,11 @@ describe("Pages routes", () => {
   });
 
   describe("/docs", () => {
-    it("should return 200", async () => {
+    it("should return 301", async () => {
       await request(app)
         .get("/docs")
         .expect("Content-Type", /html/)
-        .expect(200);
+        .expect(301);
     });
   });
 });
@@ -31,11 +31,6 @@ describe("Errors", () => {
   });
 });
 
-describe("Misc", () => {
-  it("should return a favicon", async () => {
-    await request(app).get("/favicon.ico").expect(200);
-  });
-});
 
 describe("Utils", () => {
   describe("Health", () => {
@@ -55,21 +50,6 @@ describe("Utils", () => {
         .expect("Content-Type", /json/);
       assert.equal(body.result, "pong");
     });
-  });
-});
-
-describe("Serve static assets", () => {
-  it("serves public/ when enabled", async () => {
-    const config = configFactory();
-    config.serveStaticAssets = true;
-    const newApp = postcodesioApplication(config);
-    await request(newApp).get("/js/app.js").expect(200);
-  });
-  it("does not serve public/ when disabled", async () => {
-    const config = configFactory();
-    config.serveStaticAssets = false;
-    const newApp = postcodesioApplication(config);
-    const response = await request(newApp).get("/js/app.ts").expect(404);
   });
 });
 

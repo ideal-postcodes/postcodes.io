@@ -17,7 +17,7 @@ import {
   Lsoa,
   Msoa,
   PoliceForceArea,
-} from "../../src/app/models/index";
+} from "../../api/app/models/index";
 import { QueryResult } from "pg";
 
 const NO_RELOAD_DB = !!process.env.NO_RELOAD_DB;
