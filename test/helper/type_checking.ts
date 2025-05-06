@@ -1,4 +1,4 @@
-import { Postcode, TerminatedPostcode } from "../../src/app/models/index";
+import { Postcode, TerminatedPostcode } from "../../api/app/models/index";
 import { assert } from "chai";
 
 // Retrieve object size

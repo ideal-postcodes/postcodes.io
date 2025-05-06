@@ -1,4 +1,4 @@
-import { Relation, query } from "../../src/app/models/base";
+import { Relation, query } from "../../api/app/models/base";
 import { assert } from "chai";
 
 const getCount = (o: any) => Object.keys(o).length;

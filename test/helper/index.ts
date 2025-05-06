@@ -1,17 +1,17 @@
 import { join } from "path";
-import { generateMethods, query } from "../../src/app/models/base";
-import { getConfig as configFactory } from "../../src/config/config";
+import { generateMethods, query } from "../../api/app/models/base";
+import { getConfig as configFactory } from "../../api/config/config";
 import * as AttributeBaseSuite from "./attribute_base.suite";
-import * as Base from "../../src/app/models/base";
-import { Postcode } from "../../src/app/models/postcode";
+import * as Base from "../../api/app/models/base";
+import { Postcode } from "../../api/app/models/postcode";
 import removeDiacritics from "./remove_diacritics";
 
-import { unaccent } from "../../src/app/lib/unaccent";
-import * as errors from "../../src/app/lib/errors";
-import * as string from "../../src/app/lib/string";
-import * as timeout from "../../src/app/lib/timeout";
+import { unaccent } from "../../api/app/lib/unaccent";
+import * as errors from "../../api/app/lib/errors";
+import * as string from "../../api/app/lib/string";
+import * as timeout from "../../api/app/lib/timeout";
 
-import app from "../../src/app";
+import app from "../../api/app";
 
 const config = configFactory();
 
@@ -164,7 +164,7 @@ export * from "./type_checking";
 // PG helper methods
 export * from "./pg";
 //Models
-export * from "../../src/app/models/index";
+export * from "../../api/app/models/index";
 
 export {
   // Data
