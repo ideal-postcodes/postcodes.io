@@ -22,7 +22,7 @@
     "docs:start": "docusaurus start",
     "docs:openapi": "docusaurus gen-api-docs all",
     "openapi:start": "openapi preview-docs",
-    "openapi:build": "openapi bundle openapi/openapi.yaml -o public/openapi.json --ext json && openapi bundle openapi/openapi.yaml -o public/openapi.yaml"
+    "openapi:build": "openapi bundle openapi/openapi.yaml -o static/openapi.json --ext json && openapi bundle openapi/openapi.yaml -o static/openapi.yaml"
   },
   "mocha": {
     "extension": [
