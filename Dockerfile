@@ -18,7 +18,7 @@ EXPOSE $PORT
 
 USER node
 
-COPY ./public ./dist/public
+COPY ./build ./dist/build
 
 WORKDIR /app/dist
 
