@@ -40,7 +40,6 @@ const GetPostcode: React.FC<PostcodeLookupProps> = ({
   return (
     <div className={styles.container}>
       <div className={styles.endpointContainer}>
-        <h3 className={styles.endpointLabel}>{headingText}</h3>
         <div className={styles.requestContainer}>
           <span className={styles.httpMethod}>GET</span>
           <p className={styles.request}>{endpointTemplate}</p>

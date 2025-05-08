@@ -37,7 +37,6 @@ const PostMethod: React.FC<PostMethodProps> = ({
   return (
     <div className={styles.container}>
       <div className={styles.endpointContainer}>
-        <h3 className={styles.endpointLabel}>{headerText}</h3>
         <div className={styles.requestContainer}>
           <span className={styles.httpMethod}>POST</span>
           <p className={styles.request}>{endpoint}</p>

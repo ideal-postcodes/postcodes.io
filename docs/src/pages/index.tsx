@@ -110,6 +110,69 @@ export default function Home(): JSX.Element {
             </div>
           </div>
         </section>
+        <section className={styles.section}>
+          <div className="container">
+            <div className="row">
+              <div className="col">
+                <h2 className="text--center">
+                  Here&apos;s why developers upgrade
+                </h2>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <table className={styles.comparisonTable}>
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Postcodes.io</th>
+                      <th>Ideal Postcodes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Coverage</td>
+                      <td>Mainland UK</td>
+                      <td>Mainland UK + additional British Isles coverage</td>
+                    </tr>
+                    <tr>
+                      <td>Data Updates</td>
+                      <td>Updated periodically as Ordnance Survey & ONS data becomes public</td>
+                      <td>Licensed partner of royal mail and other data sources with daily updates</td>
+                    </tr>
+                    <tr>
+                      <td>Scale</td>
+                      <td>No rate limits. Great for prototypes, small/medium projects</td>
+                      <td>Capacity for high-volume lookups and critical applications</td>
+                    </tr>
+                    <tr>
+                      <td>Reliability</td>
+                      <td>Sporadically maintained</td>
+                      <td>High availability, and 99.99% uptime guarantee</td>
+                    </tr>
+                    <tr>
+                      <td>Support</td>
+                      <td>Self-serve docs and community support</td>
+                      <td>Account access, priority technical support and SLAs available</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="row" style={{ marginTop: '3rem' }}>
+              <div className="col text--center">
+                <a
+                  className="button button--primary button--lg"
+                  href="https://ideal-postcodes.co.uk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Explore Ideal Postcodes
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </Layout>
   );
