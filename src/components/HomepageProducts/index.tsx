@@ -47,12 +47,18 @@ export default function HomepageProducts(): JSX.Element {
         </div>
         <div className="row margin-top--xl">
           <div className="col col--12 text--center gap-4">
-            <button className="button button--primary button--lg margin-right--md">
+            <a
+              href="/products"
+              className="button button--primary button--lg margin-right--md"
+            >
               Try it now
-            </button>
-            <button className="button button--secondary button--lg">
+            </a>
+            <a
+              href="/docs/overview"
+              className="button button--secondary button--lg"
+            >
               Documentation
-            </button>
+            </a>
           </div>
         </div>
       </div>

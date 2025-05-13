@@ -63,9 +63,14 @@ export default function CallToAction(): JSX.Element {
         </div>
         <div className="row">
           <div className="col col--12 text--center">
-            <button className="button button--primary button--lg">
+            <a
+              href="https://ideal-postcodes.co.uk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button button--primary button--lg"
+            >
               Explore Ideal Postcodes
-            </button>
+            </a>
           </div>
         </div>
       </div>
