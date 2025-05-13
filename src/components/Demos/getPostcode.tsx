@@ -53,7 +53,12 @@ const GetPostcode: React.FC<PostcodeLookupProps> = ({
             placeholder={placeholder}
           />
           <p className={styles.request}>{linkEnd}</p>
-          <button onClick={fetchPostcodeData}>Request</button>
+          <button
+            className="button button--primary button--lg"
+            onClick={fetchPostcodeData}
+          >
+            Request
+          </button>
         </div>
         {hasSearched && <Code language="json" code={apiResult} />}
       </div>

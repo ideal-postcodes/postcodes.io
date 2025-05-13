@@ -42,7 +42,12 @@ const PostMethod: React.FC<PostMethodProps> = ({
         <div className={styles.requestContainer}>
           <span className={styles.httpMethod}>POST</span>
           <p className={styles.request}>{endpoint}</p>
-          <button onClick={fetchPostcodeData}>Request</button>
+          <button
+            className="button button--primary button--lg"
+            onClick={fetchPostcodeData}
+          >
+            Request
+          </button>
         </div>
         <Code language="json" code={JSON.stringify(payload, null, 2)} />
         {hasSearched && (

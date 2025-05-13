@@ -67,7 +67,12 @@ const GetGeocode: React.FC<PostcodeLookupProps> = ({
             onChange={handleLatitudeChange}
             placeholder={latPlaceholder}
           />
-          <button onClick={fetchPostcodeData}>Request</button>
+          <button
+            className="button button--primary button--lg"
+            onClick={fetchPostcodeData}
+          >
+            Request
+          </button>
         </div>
         {hasSearched && (
           <div className={styles.result}>
