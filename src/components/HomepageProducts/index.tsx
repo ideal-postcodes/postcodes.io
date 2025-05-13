@@ -45,12 +45,14 @@ export default function HomepageProducts(): JSX.Element {
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col col--6 text--center">
-            <button>Try it now</button>
-          </div>
-          <div className="col col--6 text--center">
-            <button>Documentation</button>
+        <div className="row margin-top--xl">
+          <div className="col col--12 text--center gap-4">
+            <button className="button button--primary button--lg margin-right--md">
+              Try it now
+            </button>
+            <button className="button button--secondary button--lg">
+              Documentation
+            </button>
           </div>
         </div>
       </div>

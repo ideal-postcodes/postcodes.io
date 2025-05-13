@@ -63,7 +63,9 @@ export default function CallToAction(): JSX.Element {
         </div>
         <div className="row">
           <div className="col col--12 text--center">
-            <button>Explore Ideal Postcodes</button>
+            <button className="button button--primary button--lg">
+              Explore Ideal Postcodes
+            </button>
           </div>
         </div>
       </div>
