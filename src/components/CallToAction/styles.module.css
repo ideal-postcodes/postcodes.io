@@ -1,0 +1,9 @@
+.section {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+  margin-top: 100px;
+  padding: 180px 0;
+  background-color: #dde6f3;
+}
