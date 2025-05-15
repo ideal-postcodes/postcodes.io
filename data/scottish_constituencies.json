@@ -16,7 +16,6 @@
   "S16000088": "Clackmannanshire and Dunblane",
   "S16000089": "Clydebank and Milngavie",
   "S16000090": "Clydesdale",
-  "S16000091": "Coatbridge and Chryston",
   "S16000092": "Cowdenbeath",
   "S16000093": "Cumbernauld and Kilsyth",
   "S16000094": "Cunninghame North",
@@ -70,6 +69,7 @@
   "S16000143": "Skye, Lochaber and Badenoch",
   "S16000144": "Stirling",
   "S16000146": "Uddingston and Bellshill",
-  "S16000147": "Glasgow Provan",
-  "S16000148": "Strathkelvin and Bearsden"
+  "S16000148": "Strathkelvin and Bearsden",
+  "S16000149": "Coatbridge and Chryston",
+  "S16000150": "Glasgow Provan"
 }
