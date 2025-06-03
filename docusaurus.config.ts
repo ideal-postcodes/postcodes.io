@@ -79,6 +79,12 @@ const config: Config = {
           target: "_blank",
           position: "right",
         },
+        {
+          href: "https://github.com/ideal-postcodes/postcodes.io",
+          label: "GitHub",
+          position: "right",
+          target: "_blank",
+        },
       ],
     },
     footer: {
