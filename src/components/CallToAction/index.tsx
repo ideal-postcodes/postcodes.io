@@ -13,50 +13,62 @@ export default function CallToAction(): JSX.Element {
           <div className="col col--12 d-flex align-items-center justify-content-center">
             <div className="text--center">
               <Heading as="h2" className="margin-bottom--md">
-                When You Need More Than Open Data
+                When Your Project Demands More
               </Heading>
               <p>
-                Some projects outgrow what free data alone can offer. While our
-                free service is robust, your project might benefit <br />
-                from a more comprehensive solution. Ideal Postcodes offers
-                several key advantages.
+                Postcodes.io is our free and reliable tool for UK postcode
+                lookup and geocoding. When you need broader coverage, fresher{" "}
+                <br />
+                and more detailed address data, and expert support, Ideal
+                Postcodes is built for high-demand applications
               </p>
             </div>
           </div>
         </div>
         <div className="row margin-bottom--xl">
           <div className={clsx("col col--6 margin-bottom--xl")}>
-            <div className="text--center padding-horiz--md">
-              <Heading as="h3">Broader Coverage</Heading>
-              <p>
-                Includes mainland UK plus additional territories such as the
-                Channel Islands and Isle of Man
+            <div className={clsx(styles.card, "text--center")}>
+              <Heading as="h3" className={styles.cardTitle}>
+                Broad Coverage
+              </Heading>
+              <p className={styles.cardContent}>
+                Ideal Postcodes includes more than mainland UK, with additional
+                territories such as the Channel Islands and Isle of Man, plus
+                international datasets
               </p>
             </div>
           </div>
           <div className={clsx("col col--6 margin-bottom--xl")}>
-            <div className="text--center padding-horiz--md">
-              <Heading as="h3">Daily Data Updates</Heading>
-              <p>
-                Licensed partner of Royal mail and other authoritative data
-                sources with daily updates
+            <div className={clsx(styles.card, "text--center")}>
+              <Heading as="h3" className={styles.cardTitle}>
+                Daily Data Updates
+              </Heading>
+              <p className={styles.cardContent}>
+                As a licensed partner of Royal Mail and other authoritative
+                sources, Ideal Postcodes delivers daily updates for the most
+                current address and postcode data
               </p>
             </div>
           </div>
           <div className={clsx("col col--6 margin-bottom--xl")}>
-            <div className="text--center padding-horiz--md">
-              <Heading as="h3">Enhanced Address Data</Heading>
-              <p>
-                Access UK rooftop geocodes, UPRNs and more unique property
-                datasets
+            <div className={clsx(styles.card, "text--center")}>
+              <Heading as="h3" className={styles.cardTitle}>
+                Rich Address Data
+              </Heading>
+              <p className={styles.cardContent}>
+                Access UK rooftop geocodes, UPRNs, and unique property datasets
+                for precise, property-level information
               </p>
             </div>
           </div>
           <div className={clsx("col col--6 margin-bottom--xl")}>
-            <div className="text--center padding-horiz--md">
-              <Heading as="h3">Dedicated Support</Heading>
-              <p>
-                Includes account access, technical support, and optional SLAs
+            <div className={clsx(styles.card, "text--center")}>
+              <Heading as="h3" className={styles.cardTitle}>
+                Dedicated Support
+              </Heading>
+              <p className={styles.cardContent}>
+                Enjoy technical support, account access and optional SLAs, ideal
+                for business-critical applications
               </p>
             </div>
           </div>

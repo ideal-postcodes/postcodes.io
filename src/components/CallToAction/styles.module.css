@@ -5,5 +5,30 @@
   width: 100%;
   margin-top: 100px;
   padding: 180px 0;
-  background-color: #dde6f3;
 }
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+.card {
+  border-radius: 16px;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  padding: 24px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 16px rgba(0, 0, 0, 0.15);
+}
+
+.cardTitle {
+  margin-bottom: 16px;
+}
+

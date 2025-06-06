@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Code } from "../Code";
+// @ts-ignore
 import styles from "./styles.module.css";
 
 interface PostcodeLookupProps {

@@ -1,3 +1,4 @@
+// @ts-ignore
 import styles from "./styles.module.css";
 import React from "react";
 import GetPostcode from "./getPostcode";
@@ -14,7 +15,7 @@ export default function HomepageDemos(): JSX.Element {
 
         {/* Postcode Validation */}
         <div className={styles.category}>
-          <h3>Postcode Validation</h3>
+          <h3 className={styles.categoryLabel}>Postcode Validation</h3>
           <div className={styles.demoGroup}>
             <GetPostcode
               endpointTemplate="api.postcodes.io/postcodes/"
@@ -23,18 +24,21 @@ export default function HomepageDemos(): JSX.Element {
               placeholder=":postcode"
               defaultPostcode="BR8 7RE"
             />
+            <hr />
             <GetPostcode
               endpointTemplate="api.postcodes.io/terminated_postcodes/"
               linkEnd=""
               headingText="Lookup Terminated Postcode"
               placeholder=":postcode"
             />
+            <hr />
             <GetPostcode
               endpointTemplate="api.postcodes.io/outcodes/"
               linkEnd=""
               headingText="Lookup an Outward Code"
               placeholder=":outcode"
             />
+            <hr />
             <PostMethod
               headerText="Bulk Postcode Lookup"
               payload={{ postcodes: ["OX49 5NU", "M32 0JG", "NE30 1DP"] }}
@@ -45,7 +49,7 @@ export default function HomepageDemos(): JSX.Element {
 
         {/* Bulk Reverse Geocoding */}
         <div className={styles.category}>
-          <h3>Bulk Reverse Geocoding</h3>
+          <h3 className={styles.categoryLabel}>Reverse Geocoding</h3>
           <div className={styles.demoGroup}>
             <GetGeocode
               endpointTemplate="api.postcodes.io/postcodes"
@@ -53,6 +57,7 @@ export default function HomepageDemos(): JSX.Element {
               longPlaceholder=":longitude"
               latPlaceholder=":latitude"
             />
+            <hr />
             <PostMethod
               headerText="Bulk Reverse Geocoding"
               payload={{
@@ -76,7 +81,9 @@ export default function HomepageDemos(): JSX.Element {
 
         {/* Geographical & Demographic Data */}
         <div className={styles.category}>
-          <h3>Geographical & Demographic Data</h3>
+          <h3 className={styles.categoryLabel}>
+            Geographical & Demographic Data
+          </h3>
           <div className={styles.demoGroup}>
             <GetPostcode
               endpointTemplate="api.postcodes.io/postcodes/"
@@ -85,12 +92,14 @@ export default function HomepageDemos(): JSX.Element {
               placeholder=":postcode"
               defaultPostcode="BR8 7RE"
             />
+            <hr />
             <GetPostcode
               endpointTemplate="api.postcodes.io/postcodes/"
               linkEnd="/nearest"
               headingText="Nearest Postcodes around a Postcode"
               placeholder=":postcode"
             />
+            <hr />
             <GetPostcode
               endpointTemplate="api.postcodes.io/outcodes/"
               linkEnd="/nearest"

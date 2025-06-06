@@ -1,3 +1,11 @@
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
 .features {
   padding: 2rem 0;
   width: 100%;
@@ -36,41 +44,45 @@
 
 .requestContainer {
   display: flex;
-  margin-bottom: 20px;
   align-items: center;
   flex-grow: 1;
-}
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  height: 47px;
+  margin-bottom: 20px;
+  }
 
 .httpMethod {
-  font-size: 1.5em;
+  font-size: 1.3em;
   margin-right: 1em;
   text-decoration: none;
   background-color: #435e67;
   border-radius: 5px;
   padding: 10px 15px;
   color: #eee;
-  display: inline-block;
+  height: 47px;
+  display: flex;
+  align-items: center;
 }
 
 .request {
-  font-size: 1.5em;
+  font-size: 1.3em;
   margin: 0;
   padding-right: 8px;
 }
 
 .postcodeInput {
   border: none;
-  border-bottom: 1px solid #000;
   outline: none;
-  font-size: 1.5em;
+  font-size: 1.3em;
   width: 110px;
-  background-color: transparent;
   color: #888;
+  background-color: transparent;
 }
 
 @media (prefers-color-scheme: dark) {
   .postcodeInput {
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid #ccc;
   }
 }
 
@@ -108,4 +120,47 @@ button:active {
 
 [data-theme="dark"] button:hover {
   background-color: var(--ifm-color-primary-lighter);
+}
+
+.categoryLabel {
+  margin-top: 80px;
+}
+
+.payloadContainer {
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.payloadHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.payloadHeader h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.jsonEditor {
+  width: 100%;
+  padding: 15px;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  border: none;
+  resize: vertical;
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+.result h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1rem;
 }
