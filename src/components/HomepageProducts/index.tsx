@@ -1,7 +1,5 @@
 import clsx from "clsx";
 //@ts-ignore
-import Heading from "@theme/Heading";
-//@ts-ignore
 import styles from "./styles.module.css";
 import React from "react";
 
@@ -11,15 +9,13 @@ export default function HomepageProducts(): JSX.Element {
       <div className="container">
         <div className="row">
           <div className="col col--12 text--center">
-            <Heading as="h2" className="margin-bottom--xl">
-              API Endpoints and methods
-            </Heading>
+            <h2 className={styles.header}>API Endpoints and methods</h2>
           </div>
         </div>
         <div className="row margin-bottom--xl">
           <div className={clsx("col col--4")}>
             <div className="text--center padding-horiz--md">
-              <Heading as="h3">Postcode Validation</Heading>
+              <h3 className={styles.pointLabel}>Postcode Validation</h3>
               <p>
                 Quickly confirm if a UK postcode is valid, find nearest
                 postcodes or lookup outward codes
@@ -28,7 +24,7 @@ export default function HomepageProducts(): JSX.Element {
           </div>
           <div className={clsx("col col--4")}>
             <div className="text--center padding-horiz--md">
-              <Heading as="h3">Bulk Reverse Geocoding</Heading>
+              <h3 className={styles.pointLabel}>Bulk Reverse Geocoding</h3>
               <p>
                 Convert large sets of lat/long coordinates into their nearest
                 postcode areas
@@ -37,7 +33,9 @@ export default function HomepageProducts(): JSX.Element {
           </div>
           <div className={clsx("col col--4")}>
             <div className="text--center padding-horiz--md">
-              <Heading as="h3">Geographical & Demographic Data</Heading>
+              <h3 className={styles.pointLabel}>
+                Geographical & Demographic Data
+              </h3>
               <p>
                 Retrieve region, boundary, and administrative details for any
                 given postcode

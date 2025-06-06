@@ -1,9 +1,10 @@
-h2 {
-  font-size: 2.5rem;
+.header {
+  font-size: 2rem;
+  margin-bottom: 4rem;
 }
 
-h3 {
-  font-size: 2rem;
+.pointLabel {
+  font-size: 1.5rem;
 }
 
 .features {

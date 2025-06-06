@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import Heading from "@theme/Heading";
+// @ts-ignore
 import styles from "./styles.module.css";
 import React from "react";
 
@@ -13,7 +13,7 @@ export default function HomepageFeatures(): JSX.Element {
               <img src="img/opensource.png" className={styles.featureSvg} />
             </div>
             <div className="text--center padding-horiz--md">
-              <Heading as="h3">Open Source</Heading>
+              <h3 className={styles.pointLabel}>Open Source</h3>
               <p>
                 MIT licensed. Maintained and freely available on{" "}
                 <a
@@ -31,7 +31,7 @@ export default function HomepageFeatures(): JSX.Element {
               <img src="img/database.png" className={styles.featureSvg} />
             </div>
             <div className="text--center padding-horiz--md">
-              <Heading as="h3">Regularly Updated</Heading>
+              <h3 className={styles.pointLabel}>Regularly Updated</h3>
               <p>
                 Updated with the latest data from Ordnance Survey and Office for
                 National Statistics when it becomes available
@@ -43,7 +43,7 @@ export default function HomepageFeatures(): JSX.Element {
               <img src="img/code.png" className={styles.featureSvg} />
             </div>
             <div className="text--center padding-horiz--md">
-              <Heading as="h3">Convenient Methods</Heading>
+              <h3 className={styles.pointLabel}>Convenient Methods</h3>
               <p>
                 Simple, useful and self-explanatory API methods like bulk
                 reverse geocoding, autocomplete and validation

@@ -7,11 +7,12 @@
   padding: 180px 0;
 }
 
-h2 {
+.header {
   font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
-h3 {
+.cardTitle {
   font-size: 1.5rem;
 }
 
