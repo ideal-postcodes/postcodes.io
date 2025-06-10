@@ -94,9 +94,19 @@ const PostMethod: React.FC<PostMethodProps> = ({
         </div>
 
         {hasSearched && (
-          <div className={styles.result}>
-            <Code language="json" code={apiResult} />
-          </div>
+          <>
+            <button 
+              className={styles.viewResultsButton}
+              onClick={() => setResultsVisible(!resultsVisible)}
+            >
+              {resultsVisible ? 'Hide Results' : 'View Results'}
+            </button>
+            {resultsVisible && (
+              <div className={styles.result}>
+                <Code language="json" code={apiResult} />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

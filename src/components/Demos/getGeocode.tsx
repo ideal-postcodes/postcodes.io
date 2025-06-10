@@ -20,6 +20,7 @@ const GetGeocode: React.FC<PostcodeLookupProps> = ({
   const [apiResult, setApiResult] = useState<string>("");
   const [hasSearched, setHasSearched] = useState(false);
   const [fullEndpoint, setFullEndpoint] = useState<string>("");
+  const [resultsVisible, setResultsVisible] = useState(true);
 
   const handleLongitudeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLongitude(e.target.value);
@@ -75,9 +76,19 @@ const GetGeocode: React.FC<PostcodeLookupProps> = ({
           </button>
         </div>
         {hasSearched && (
-          <div className={styles.result}>
-            <Code language="json" code={apiResult} />
-          </div>
+          <>
+            <button 
+              className={styles.viewResultsButton}
+              onClick={() => setResultsVisible(!resultsVisible)}
+            >
+              {resultsVisible ? 'Hide Results' : 'View Results'}
+            </button>
+            {resultsVisible && (
+              <div className={styles.result}>
+                <Code language="json" code={apiResult} />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

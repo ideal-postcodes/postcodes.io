@@ -37,6 +37,7 @@ export default function ProductDemo(): JSX.Element {
               linkEnd=""
               headingText="Lookup an Outward Code"
               placeholder=":outcode"
+              defaultPostcode="BR8"
             />
             <div className={styles.mobileDivider}></div>
             <PostMethod
