@@ -286,4 +286,45 @@ button:active {
     display: block;
   }
 }
-  
+
+/* Dark theme styles */
+[data-theme='dark'] .requestContainer {
+  background-color: #2d2d3a;
+  border-color: #444;
+}
+
+[data-theme='dark'] .httpMethod {
+  background-color: #1e3a46;
+}
+
+[data-theme='dark'] .postcodeInput {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .payloadContainer {
+  border-color: #444;
+}
+
+[data-theme='dark'] .payloadHeader {
+  background-color: #2d2d3a;
+  border-color: #444;
+}
+
+[data-theme='dark'] .jsonEditor {
+  background-color: #1e1e2e;
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .mobileDivider {
+  background-color: #444;
+}
+
+[data-theme='dark'] .viewResultsButton {
+  background-color: #2d2d3a;
+  color: #e0e0e0;
+  border: 1px solid #444;
+}
+
+[data-theme='dark'] .viewResultsButton:hover {
+  background-color: #3a3a4a;
+}
