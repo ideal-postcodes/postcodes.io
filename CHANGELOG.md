@@ -1,3 +1,11 @@
+## [17.3.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.3.0...17.3.1) (2025-05-15)
+
+
+### Bug Fixes
+
+* **Scottish Postcodes:** Add missing scottish cons ([b8f252b](https://github.com/ideal-postcodes/postcodes.io/commit/b8f252be3841aaaecbfc7370cfefb5d8e6e7d287)), closes [#122](https://github.com/ideal-postcodes/postcodes.io/issues/122)
+* **SPD:** Update database for scottish constituencies ([4dcc573](https://github.com/ideal-postcodes/postcodes.io/commit/4dcc573e297c46362f135a1a7aa2751ddeadcce5))
+
 # [17.3.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.2.1...17.3.0) (2025-05-08)
 
 
