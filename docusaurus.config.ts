@@ -57,6 +57,11 @@ const config: Config = {
       },
       items: [
         {
+          position: "left",
+          label: "Products",
+          to: "/products",
+        },
+        {
           type: "docSidebar",
           sidebarId: "docsSidebar",
           position: "left",

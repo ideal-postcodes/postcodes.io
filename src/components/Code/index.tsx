@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Prism from "prismjs";
 import "prismjs";
 import "prismjs/components/prism-json";
-// import "prismjs/themes/prism-okaidia.css";
 
 export interface Props {
   code: string;
@@ -15,8 +14,8 @@ export const Code = ({ code, language }: Props) => {
   }, []);
 
   return (
-    <pre>
-      <code className={`language-${language}`}>{code}</code>
+    <pre style={{ maxWidth: '100%', display: 'block' }}>
+      <code className={`language-${language}`} style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap', display: 'block' }}>{code}</code>
     </pre>
   );
 };

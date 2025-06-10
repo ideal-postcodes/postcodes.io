@@ -1,3 +1,8 @@
+.header {
+  font-size: 2rem;
+  margin-bottom: 4rem;
+}
+
 .pointLabel {
   font-size: 1.5rem;
 }
@@ -8,9 +13,5 @@
   padding: 2rem 0;
   width: 100%;
   margin-top: 100px;
-}
-
-.featureSvg {
-  height: 100px;
-  width: 100px;
+  padding: 100px 0
 }
