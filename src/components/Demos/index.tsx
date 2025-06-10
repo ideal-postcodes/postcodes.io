@@ -5,9 +5,9 @@ import GetPostcode from "./getPostcode";
 import PostMethod from "./postMethod";
 import GetGeocode from "./getGeocode";
 
-export default function HomepageDemos(): JSX.Element {
+export default function ProductDemo(): JSX.Element {
   return (
-    <section className={styles.features}>
+    <section className={styles.mobileFeatures}>
       <div className={styles.container}>
         <div className={styles.header}>
           <h2>API Endpoints</h2>
@@ -24,21 +24,21 @@ export default function HomepageDemos(): JSX.Element {
               placeholder=":postcode"
               defaultPostcode="BR8 7RE"
             />
-            <hr />
+            <div className={styles.mobileDivider}></div>
             <GetPostcode
               endpointTemplate="api.postcodes.io/terminated_postcodes/"
               linkEnd=""
               headingText="Lookup Terminated Postcode"
               placeholder=":postcode"
             />
-            <hr />
+            <div className={styles.mobileDivider}></div>
             <GetPostcode
               endpointTemplate="api.postcodes.io/outcodes/"
               linkEnd=""
               headingText="Lookup an Outward Code"
               placeholder=":outcode"
             />
-            <hr />
+            <div className={styles.mobileDivider}></div>
             <PostMethod
               headerText="Bulk Postcode Lookup"
               payload={{ postcodes: ["OX49 5NU", "M32 0JG", "NE30 1DP"] }}
@@ -57,7 +57,7 @@ export default function HomepageDemos(): JSX.Element {
               longPlaceholder=":longitude"
               latPlaceholder=":latitude"
             />
-            <hr />
+            <div className={styles.mobileDivider}></div>
             <PostMethod
               headerText="Bulk Reverse Geocoding"
               payload={{
@@ -90,16 +90,16 @@ export default function HomepageDemos(): JSX.Element {
               linkEnd="/nearest"
               headingText="Find Nearest Postcodes"
               placeholder=":postcode"
-              defaultPostcode="BR8 7RE"
+              defaultPostcode="BR87RE"
             />
-            <hr />
+            <div className={styles.mobileDivider}></div>
             <GetPostcode
               endpointTemplate="api.postcodes.io/postcodes/"
               linkEnd="/nearest"
               headingText="Nearest Postcodes around a Postcode"
               placeholder=":postcode"
             />
-            <hr />
+            <div className={styles.mobileDivider}></div>
             <GetPostcode
               endpointTemplate="api.postcodes.io/outcodes/"
               linkEnd="/nearest"

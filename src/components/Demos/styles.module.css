@@ -6,12 +6,6 @@ h3 {
   font-size: 2rem;
 }
 
-.features {
-  padding: 2rem 0;
-  width: 100%;
-  margin-top: 100px;
-}
-
 .header {
   display: flex;
   justify-content: center;
@@ -164,3 +158,116 @@ button:active {
   margin-bottom: 10px;
   font-size: 1rem;
 }
+
+.mobileDivider {
+  height: 1px;
+  background-color: #e0e0e0;
+  width: 100%;
+  margin: 20px 0;
+}
+
+/* Mobile responsive styles */
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 0 10px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .mobileFeatures {
+    padding: 1rem 0;
+  }
+  
+  .endpointContainer {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .demoGroup {
+    padding: 10px;
+  }
+  
+  .category {
+    margin-bottom: 20px;
+  }
+  
+  .categoryLabel {
+    margin-top: 40px;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .requestContainer {
+    flex-direction: column;
+    height: auto;
+    align-items: stretch;
+  }
+  
+  .httpMethod {
+    width: 100%;
+    margin-right: 0;
+    display: flex;
+    justify-content: center;
+    height: auto;
+  }
+  
+  .request {
+    padding: 10px;
+    text-align: center;
+    word-break: break-all;
+  }
+  
+  .postcodeInput {
+    width: 100%;
+    text-align: center;
+    padding: 5px 0;
+  }
+  
+  .demoContainer {
+    flex-direction: column;
+  }
+  
+  .tryButton {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  
+  .jsonEditor {
+    max-height: 200px;
+    font-size: 12px;
+  }
+
+  .payloadContainer {
+    margin-bottom: 15px;
+    border-radius: 3px;
+  }
+
+  .payloadHeader {
+    padding: 8px 10px;
+  }
+
+  .result {
+    margin-top: 15px;
+    overflow-x: auto;
+  }
+
+  /* Make code blocks scroll horizontally on mobile */
+  :global(.prism-code) {
+    font-size: 12px !important;
+    max-height: 200px !important;
+    overflow-x: auto !important;
+  }
+}
+
+@media screen and (max-width: 996px) {
+  .desktopFeatures {
+    display: none;
+  }
+
+  .mobileFeatures {
+    display: block;
+  }
+}
+  

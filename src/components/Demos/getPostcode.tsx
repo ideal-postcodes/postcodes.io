@@ -21,6 +21,7 @@ const GetPostcode: React.FC<PostcodeLookupProps> = ({
   const [postcode, setPostcode] = useState<string>(defaultPostcode);
   const [apiResult, setApiResult] = useState<string>("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [resultsVisible, setResultsVisible] = useState(true);
 
   const handlePostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostcode(e.target.value);
@@ -61,7 +62,21 @@ const GetPostcode: React.FC<PostcodeLookupProps> = ({
             Request
           </button>
         </div>
-        {hasSearched && <Code language="json" code={apiResult} />}
+        {hasSearched && (
+          <>
+            <button 
+              className={styles.viewResultsButton}
+              onClick={() => setResultsVisible(!resultsVisible)}
+            >
+              {resultsVisible ? 'Hide Results' : 'View Results'}
+            </button>
+            {resultsVisible && (
+              <div className={styles.result}>
+                <Code language="json" code={apiResult} />
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

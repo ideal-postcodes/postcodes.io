@@ -16,6 +16,7 @@ const PostMethod: React.FC<PostMethodProps> = ({
 }) => {
   const [apiResult, setApiResult] = useState<string>("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [resultsVisible, setResultsVisible] = useState(true);
   const [editablePayload, setEditablePayload] = useState<string>("");
   const [isEditing, setIsEditing] = useState(false);
 
@@ -94,7 +95,6 @@ const PostMethod: React.FC<PostMethodProps> = ({
 
         {hasSearched && (
           <div className={styles.result}>
-            <h4>Response</h4>
             <Code language="json" code={apiResult} />
           </div>
         )}

@@ -1,27 +1,34 @@
 .section {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
   width: 100%;
-  margin-top: 100px;
-  padding: 180px 0;
+  padding: 180px 0 100px 0;
+  background-color: #F8F9FF;
 }
 
 .header {
   font-size: 2rem;
   margin-bottom: 2rem;
+  margin-top: 3rem;
 }
 
 .cardTitle {
   font-size: 1.5rem;
+  margin-top: 1rem;
 }
 
 .card {
+  background-color: rgba(154, 192, 241, 0.4); /* Made more transparent */
   border-radius: 16px;
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
   height: 100%;
-  padding: 24px;
+  padding: 24px 40px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
 }
 
 .card:hover {
@@ -33,3 +40,52 @@
   margin-bottom: 16px;
 }
 
+.ctaButton, .ctaMobileButton {
+  margin-top: 1rem;
+  display: inline-block;
+}
+
+.ctaMobileButton {
+  display: none;
+}
+
+@media (max-width: 996px) {
+  .card {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+    .ctaButton {
+      display: none;
+  }
+
+    .ctaMobileButton {
+      display: inline-block;
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .section {
+      padding: 100px 0;
+    }
+}
+
+.tickList {
+  list-style: none;
+  padding-left: 0;
+}
+
+.tickList li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 12px;
+}
+
+.tickList li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #4285f4;
+  font-weight: bold;
+}
