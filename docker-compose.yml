@@ -1,4 +1,3 @@
----
 services:
   api:
     image: idealpostcodes/postcodes.io:latest

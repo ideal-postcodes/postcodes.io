@@ -1,4 +1,4 @@
-const { access, F_OK } = require("fs");
+const { access, constants: { F_OK } } = require("fs");
 const { resolve } = require("path");
 
 const exec = (path) => {

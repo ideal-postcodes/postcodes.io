@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:24-alpine AS base
 
 RUN apk update && \
   apk upgrade && \
@@ -25,5 +25,8 @@ COPY package-lock.json .
 RUN npm install
 
 ADD . /app
+
+# Build TypeScript files
+RUN mkdir -p dist/bin && npm run build && ls -la dist/
 
 CMD tail

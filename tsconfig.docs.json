@@ -1,0 +1,12 @@
+{
+  "extends": "@docusaurus/tsconfig",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "target": "es2015",
+    "lib": ["DOM", "es6"],
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*", "docs/**/*", "docusaurus.config.ts", "sidebars.ts"]
+}

@@ -1,6 +1,10 @@
 import { assert } from "chai";
 import { unaccent } from "../api/app/lib/unaccent";
-const testData = require("./seed/accent_tests.json");
+import * as fs from "fs";
+import * as path from "path";
+
+const testDataPath = path.resolve(__dirname, "./seed/accent_tests.json");
+const testData = JSON.parse(fs.readFileSync(testDataPath, 'utf8'));
 
 describe("unaccent", () => {
   it("removes diacritics the same way as postgres", () => {

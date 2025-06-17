@@ -1,6 +1,6 @@
 import fs from "fs";
 import { assert } from "chai";
-import parse from "csv-parse/lib/sync";
+import { parse } from "csv-parse/sync";
 import * as helper from "./helper/index";
 import { query } from "../api/app/models/base";
 const seedPathDirectory = `${__dirname}/seed/places/`;
@@ -175,6 +175,7 @@ describe("Place Model", () => {
         longitude: validPlace.longitude,
         latitude: validPlace.latitude,
       });
+      assert.isNotNull(places);
       assert.isTrue(places.length > 0);
       helper.isRawPlaceObject(places[0]);
       assert.isTrue(places.some((place) => place.code === validPlace.code));
@@ -184,6 +185,7 @@ describe("Place Model", () => {
         longitude: "-3.2137291",
         latitude: "58.96804",
       });
+      assert.isNotNull(places);
       places
         .map((p) => p.distance)
         .reduce((acc, curr) => {
@@ -197,6 +199,7 @@ describe("Place Model", () => {
         latitude: "58.96804",
         limit: "1",
       });
+      assert.isNotNull(places);
       assert.equal(places.length, 1);
       const result = places[0];
       helper.isRawPlaceObject(result);
@@ -248,6 +251,7 @@ describe("Place Model", () => {
         longitude: validPlace.longitude,
         latitude: validPlace.latitude,
       });
+      assert.isNotNull(places);
       assert.isTrue(places.length > 0);
       assert.isTrue(places.length > 0);
       helper.isRawPlaceObject(places[0]);
@@ -258,6 +262,7 @@ describe("Place Model", () => {
         longitude: "-3.2137291",
         latitude: "58.96804",
       });
+      assert.isNotNull(places);
       places
         .map((p) => p.distance)
         .reduce((acc, curr) => {
@@ -271,6 +276,7 @@ describe("Place Model", () => {
         latitude: "58.96804",
         limit: "1",
       });
+      assert.isNotNull(places);
       assert.equal(places.length, 1);
       const result = places[0];
       helper.isRawPlaceObject(result);
@@ -330,6 +336,7 @@ describe("Place Model", () => {
       const testCode = "osgb4000000074559125";
       const place = await Place.findByCode(testCode);
       helper.isRawPlaceObject(place);
+      assert.isNotNull(place);
       const formatted = Place.toJson(place);
       helper.isPlaceObject(formatted);
     });
