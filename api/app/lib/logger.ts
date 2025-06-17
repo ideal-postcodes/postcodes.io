@@ -6,7 +6,7 @@ const { destination } = pino;
 const selectTarget = (file?: string) => {
   if (file === undefined) return destination();
   const output = file.toLowerCase();
-  if (output === "stdout") return destination();
+  if (output === "stdout") return destination({ sync: true });
   if (output === "perf") return destination({ sync: false });
   return destination(file);
 };

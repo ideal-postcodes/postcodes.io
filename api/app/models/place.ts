@@ -483,7 +483,7 @@ const seedData = async (directory: string) => {
   };
 
   const transform = (row: string[]) => {
-    // Skip if not a "place"
+    // Only process populated places
     if (row[typeIndex] !== "populatedPlace") return null;
     const northings = row[csvColumns.northings];
     const eastings = row[csvColumns.eastings];
@@ -508,9 +508,15 @@ const seedData = async (directory: string) => {
     });
   };
 
-  const files = readdirSync(directory)
+  const allFiles = readdirSync(directory);
+  
+  const files = allFiles
     .filter((f: string) => f.match(/\.csv$/))
-    .map((f: string) => `${directory}${f}`);
+    .map((f: string) => {
+      // Ensure proper path joining with path separator
+      const filePath = directory.endsWith('/') ? `${directory}${f}` : `${directory}/${f}`;
+      return filePath;
+    });
   return methods.csvSeed({ filepath: files, transform, columns });
 };
 

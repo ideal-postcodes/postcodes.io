@@ -1,9 +1,14 @@
 import { Relation, query } from "../../api/app/models/base";
 import { assert } from "chai";
+import * as fs from "fs";
+import * as path from "path";
 
 const getCount = (o: any) => Object.keys(o).length;
-const loadData = (relation: Relation) =>
-  require(`../../data/${relation.relation}.json`);
+const loadData = (relation: Relation) => {
+  const filePath = path.resolve(__dirname, `../../data/${relation.relation}.json`);
+  const fileContent = fs.readFileSync(filePath, 'utf8');
+  return JSON.parse(fileContent);
+};
 
 export const rigCoreSpecs = (model: any) => {
   const { relation } = model;

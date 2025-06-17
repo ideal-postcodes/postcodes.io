@@ -1,11 +1,9 @@
 {
-  // "extends": "@docusaurus/tsconfig", // Enable for editing documentation
   "compilerOptions": {
-    // "jsx": "react-jsx", // Enable for editing documentation
     "module": "commonjs",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "target": "es5",
+    "target": "es2015",
     "lib": ["DOM", "es6"],
     "noImplicitAny": true,
     "moduleResolution": "node",
@@ -13,9 +11,13 @@
     "sourceMap": false,
     "outDir": "dist",
     "baseUrl": ".",
+    "rootDir": "api",
+    "noEmit": false,
+    "skipLibCheck": true,
     "paths": {
       "*": ["node_modules/*"]
     }
   },
-  "include": ["api/**/*"]
+  "include": ["api/**/*"],
+  "exclude": ["node_modules/@types/mdx", "node_modules/@docusaurus"]
 }
