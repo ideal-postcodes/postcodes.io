@@ -1,3 +1,10 @@
+## [17.3.2](https://github.com/ideal-postcodes/postcodes.io/compare/17.3.1...17.3.2) (2025-06-18)
+
+
+### Bug Fixes
+
+* correct path formatting for terminated postcodes endpoint ([7762537](https://github.com/ideal-postcodes/postcodes.io/commit/77625379ca027b6403571df531e0432e6c7766ac))
+
 ## [17.3.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.3.0...17.3.1) (2025-05-15)
 
 
