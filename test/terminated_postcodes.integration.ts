@@ -94,7 +94,7 @@ describe("Terminated postcode route", () => {
       const secondSlice = testTerminatedPostcode.slice(2, 4);
       const thirdSlice = testTerminatedPostcode.slice(4);
       testTerminatedPostcode = ` ${firstSlice} ${secondSlice} ${thirdSlice}`;
-      path = `"/terminated_postcodes/"${encodeURI(testTerminatedPostcode)}`;
+      path = `/terminated_postcodes/${encodeURI(testTerminatedPostcode)}`;
       //TODO check if change is correct with result
       assert.isTrue(!parse(testTerminatedPostcode).valid);
       request(app)
