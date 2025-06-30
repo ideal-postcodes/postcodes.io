@@ -99,8 +99,8 @@ const config: Config = {
         alt: "Ideal Postcodes",
         src: "img/iddqd-logo-white.svg",
         href: "https://ideal-postcodes.co.uk",
-        width: 240,
-        height: 160,
+        width: 120,
+        height: 80,
       },
 
       links: [
