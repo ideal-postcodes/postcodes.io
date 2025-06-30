@@ -125,7 +125,7 @@ const config: Config = {
           title: "API",
           items: [
             {
-              label: "API",
+              label: "API Reference",
               to: "/docs/api",
             },
           ],
@@ -165,7 +165,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} IDDQD Ltd`,
+      copyright: `Copyright © ${new Date().getFullYear()}`,
     },
     prism: {
       theme: prismThemes.github,
