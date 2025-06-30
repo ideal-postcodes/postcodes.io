@@ -5,7 +5,8 @@ import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import Heading from "@theme/Heading";
 import React from "react";
 import styles from "./index.module.css";
-import HomepageDemos from "../components/Demos";
+import HomepageEndpoints from "../components/HomepageEndpoints";
+import CallToAction from "../components/CallToAction";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -62,7 +63,8 @@ export default function Home(): React.JSX.Element {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
-        <HomepageDemos />
+        <HomepageEndpoints />
+        <CallToAction />
       </main>
     </Layout>
   );

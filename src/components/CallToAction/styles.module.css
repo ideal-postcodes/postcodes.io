@@ -1,0 +1,162 @@
+.section {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 120px 0;
+  background-color: #F8F9FF;
+}
+
+.header {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  line-height: 1.2;
+  color: #1a1a2e;
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+.card {
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.1), rgba(154, 192, 241, 0.15));
+  border-radius: 20px;
+  border: 1px solid rgba(66, 133, 244, 0.2);
+  box-shadow: 0 4px 20px rgba(66, 133, 244, 0.1);
+  height: 100%;
+  padding: 2rem 2.5rem;
+  transition: all 0.3s ease;
+  color: #1a1a2e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  backdrop-filter: blur(10px);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(66, 133, 244, 0.2);
+  border-color: rgba(66, 133, 244, 0.3);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  color: #1a1a2e;
+}
+
+.ctaButton, .ctaMobileButton {
+  margin-top: 2rem;
+  display: inline-block;
+}
+
+.ctaButton a, .ctaMobileButton a {
+  padding: 1rem 2rem;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+}
+
+.ctaButton a:hover, .ctaMobileButton a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+}
+
+.ctaMobileButton {
+  display: none;
+}
+
+@media (max-width: 996px) {
+  .card {
+    width: 100%;
+    margin-top: 3rem;
+    padding: 1.5rem 2rem;
+  }
+
+  .ctaButton {
+    display: none;
+  }
+
+  .ctaMobileButton {
+    display: inline-block;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .section {
+    padding: 80px 0;
+  }
+
+  .header {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .cardTitle {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+}
+
+.tickList {
+  list-style: none;
+  padding-left: 0;
+}
+
+.tickList li {
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #444;
+}
+
+.tickList li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  color: #4285f4;
+  font-weight: bold;
+  font-size: 1.1rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(66, 133, 244, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dark theme styles */
+[data-theme='dark'] .section {
+  background-color: #1a1a2e;
+}
+
+[data-theme='dark'] .card {
+  background-color: rgba(66, 133, 244, 0.15);
+  color: #ffffff;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .card:hover {
+  box-shadow: 0 12px 16px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .header {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .tickList li::before {
+  color: #5c9eff;
+}

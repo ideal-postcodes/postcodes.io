@@ -1,9 +1,12 @@
+.pointLabel {
+  font-size: 1.5rem;
+}
+
 .features {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
+  padding: 100px 0;
   width: 100%;
-  margin-top: 100px;
 }
 
 .featureSvg {

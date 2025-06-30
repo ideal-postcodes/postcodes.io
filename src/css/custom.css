@@ -61,6 +61,60 @@
   --z-index-tooltip: 1070;
 }
 
+/* Footer improvements */
+.footer {
+  padding: 3rem 0 2rem 0;
+}
+
+.footer__logo {
+  margin-bottom: 2rem;
+}
+
+.footer__links {
+  margin-bottom: 2rem;
+}
+
+.footer__col {
+  margin-bottom: 1.5rem;
+}
+
+.footer__title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer__item {
+  margin: 0.5rem 0;
+}
+
+.footer__link-item {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footer__copyright {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.875rem;
+}
+
+/* Responsive footer adjustments */
+@media (max-width: 768px) {
+  .footer {
+    padding: 2rem 0 1.5rem 0;
+  }
+  
+  .footer__logo {
+    margin-bottom: 1.5rem;
+  }
+  
+  .footer__col {
+    margin-bottom: 2rem;
+  }
+}
+
 /* Dark mode adjustments */
 [data-theme="dark"] {
   --ifm-color-primary: #4c8ea0;

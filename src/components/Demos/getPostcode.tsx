@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Code } from "../Code";
+// @ts-ignore
 import styles from "./styles.module.css";
 
 interface PostcodeLookupProps {
@@ -20,6 +21,7 @@ const GetPostcode: React.FC<PostcodeLookupProps> = ({
   const [postcode, setPostcode] = useState<string>(defaultPostcode);
   const [apiResult, setApiResult] = useState<string>("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [resultsVisible, setResultsVisible] = useState(true);
 
   const handlePostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostcode(e.target.value);
@@ -53,9 +55,28 @@ const GetPostcode: React.FC<PostcodeLookupProps> = ({
             placeholder={placeholder}
           />
           <p className={styles.request}>{linkEnd}</p>
-          <button onClick={fetchPostcodeData}>Request</button>
+          <button
+            className="button button--primary button--lg"
+            onClick={fetchPostcodeData}
+          >
+            Request
+          </button>
         </div>
-        {hasSearched && <Code language="json" code={apiResult} />}
+        {hasSearched && (
+          <>
+            <button 
+              className={styles.viewResultsButton}
+              onClick={() => setResultsVisible(!resultsVisible)}
+            >
+              {resultsVisible ? 'Hide Results' : 'View Results'}
+            </button>
+            {resultsVisible && (
+              <div className={styles.result}>
+                <Code language="json" code={apiResult} />
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

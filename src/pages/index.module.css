@@ -3,6 +3,42 @@
  * and scoped locally.
  */
 
+button {
+  margin-left: auto;
+  font-size: 1em;
+  background-color: var(--ifm-color-primary);
+  color: white;
+  padding: 10px 20px;
+  border-radius: var(--border-radius-md);
+  border: none;
+  font-weight: var(--font-weight-medium);
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: var(--ifm-color-primary-lighter);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+button:active {
+  background-color: var(--ifm-color-primary-darker);
+  transform: translateY(1px);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] button {
+  background-color: var(--ifm-color-primary);
+}
+
+[data-theme="dark"] button:hover {
+  background-color: var(--ifm-color-primary-lighter);
+}
+
 .heroBanner {
   text-align: center;
   position: relative;

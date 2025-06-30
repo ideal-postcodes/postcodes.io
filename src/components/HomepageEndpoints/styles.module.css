@@ -1,0 +1,198 @@
+.header {
+  font-size: 2rem;
+  margin-bottom: 4rem;
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+}
+
+.pointLabel {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: inherit;
+}
+
+.features {
+  display: flex;
+  align-items: center;
+  padding: 100px 0;
+  width: 100%;
+  background: linear-gradient(135deg, rgba(43, 75, 90, 0.15) 0%, rgba(67, 94, 103, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%);
+}
+
+/* Dark mode background adjustments */
+[data-theme="dark"] .features {
+  background: linear-gradient(135deg, rgba(76, 142, 160, 0.1) 0%, rgba(92, 158, 175, 0.08) 50%, rgba(107, 182, 201, 0.05) 100%);
+}
+
+.splitContainer {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  align-items: stretch;
+}
+
+.featureCard {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  transition: var(--transition-medium);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.featureCard:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+  background: rgba(255, 255, 255, 1);
+}
+
+/* Dark mode card adjustments */
+[data-theme="dark"] .featureCard {
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme="dark"] .featureCard:hover {
+  background: rgba(40, 40, 40, 0.95);
+}
+
+.featuredCard {
+  flex: 2;
+  padding: 3rem;
+  min-height: 300px;
+}
+
+.smallCardsContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.smallCard {
+  flex: 1;
+  padding: 2rem;
+  text-align: center;
+}
+
+.featuredContent {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.featuredIcon {
+  flex-shrink: 0;
+}
+
+.cardIcon {
+  width: 80px;
+  height: 80px;
+}
+
+.featuredText {
+  flex: 1;
+}
+
+.featuredLabel {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: inherit;
+}
+
+.featuredDescription {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: inherit;
+}
+
+.featuredCta {
+  margin-top: auto;
+}
+
+.learnMore {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition-fast);
+}
+
+.learnMore:hover {
+  color: var(--ifm-color-primary-dark);
+  text-decoration: none;
+}
+
+.featureSvg {
+  height: 100px;
+  width: 100px;
+  margin-bottom: 2rem;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 996px) {
+  .splitContainer {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .featuredContent {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  
+  .smallCardsContainer {
+    flex-direction: row;
+  }
+  
+  .smallCard {
+    flex: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .splitContainer {
+    padding: 0 0.5rem;
+    gap: 1.5rem;
+  }
+  
+  .featuredCard {
+    padding: 2rem;
+    min-height: auto;
+  }
+  
+  .smallCardsContainer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .smallCard {
+    padding: 1.5rem;
+  }
+  
+  .cardIcon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .featuredLabel {
+    font-size: 1.75rem;
+  }
+}

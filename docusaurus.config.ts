@@ -57,6 +57,11 @@ const config: Config = {
       },
       items: [
         {
+          position: "left",
+          label: "Endpoints",
+          to: "/endpoints",
+        },
+        {
           type: "docSidebar",
           sidebarId: "docsSidebar",
           position: "left",
@@ -94,8 +99,8 @@ const config: Config = {
         alt: "Ideal Postcodes",
         src: "img/iddqd-logo-white.svg",
         href: "https://ideal-postcodes.co.uk",
-        width: 240,
-        height: 160,
+        width: 120,
+        height: 80,
       },
 
       links: [
@@ -120,7 +125,7 @@ const config: Config = {
           title: "API",
           items: [
             {
-              label: "API",
+              label: "API Reference",
               to: "/docs/api",
             },
           ],
@@ -160,7 +165,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} IDDQD Ltd`,
+      copyright: `Copyright © ${new Date().getFullYear()}`,
     },
     prism: {
       theme: prismThemes.github,
