@@ -2,7 +2,7 @@ import clsx from "clsx";
 import styles from "./styles.module.css";
 import React from "react";
 
-export default function HomepageProducts(): React.JSX.Element {
+export default function HomepageEndpoints(): React.JSX.Element {
   return (
     <section className={styles.features}>
       <div className="container">
@@ -56,7 +56,7 @@ export default function HomepageProducts(): React.JSX.Element {
           <div className="col col--12 text--center">
             <div className={styles.buttonContainer}>
               <a
-                href="/products"
+                href="/endpoints"
                 className="button button--primary button--lg"
               >
                 Try it now

@@ -5,7 +5,7 @@ import GetPostcode from "./getPostcode";
 import PostMethod from "./postMethod";
 import GetGeocode from "./getGeocode";
 
-export default function ProductDemo(): React.JSX.Element {
+export default function EndpointsDemo(): React.JSX.Element {
   return (
     <section className={styles.mobileFeatures}>
       <div className={styles.container}>

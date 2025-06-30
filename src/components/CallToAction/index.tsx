@@ -38,10 +38,10 @@ export default function CallToAction(): React.JSX.Element {
                 <p className={styles.cardTitle}>
                   What you get with Ideal Postcodes
                 </p>
-                <li>Whole UK + territores, international datasets</li>
+                <li>Whole United Kingdom &amp; territories, international datasets</li>
                 <li>Rooftop Geocodes and UPRNs on every search</li>
                 <li>Property level precision</li>
-                <li>Updated daily from Royal Mail</li>
+                <li>Updated daily from Royal Mail, Ordnance Survey and other UK data providers</li>
                 <li>Dedicated Support</li>
               </ul>
             </div>

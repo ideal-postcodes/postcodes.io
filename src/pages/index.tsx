@@ -5,7 +5,7 @@ import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import Heading from "@theme/Heading";
 import React from "react";
 import styles from "./index.module.css";
-import HomepageProducts from "../components/HomepageProducts";
+import HomepageEndpoints from "../components/HomepageEndpoints";
 import CallToAction from "../components/CallToAction";
 
 function HomepageHeader() {
@@ -63,7 +63,7 @@ export default function Home(): React.JSX.Element {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
-        <HomepageProducts />
+        <HomepageEndpoints />
         <CallToAction />
       </main>
     </Layout>

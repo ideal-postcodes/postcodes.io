@@ -1,15 +1,15 @@
 import React from "react";
 import Layout from "@theme/Layout";
-import ProductsDemo from "../components/Demos";
+import EndpointsDemo from "../components/Demos";
 
-export default function Products(): React.JSX.Element {
+export default function Endpoints(): React.JSX.Element {
   return (
     <Layout
-      title="Products"
+      title="Endpoints"
       description="Interactive demos of the Postcodes.io API endpoints"
     >
       <main>
-        <ProductsDemo />
+        <EndpointsDemo />
       </main>
     </Layout>
   );

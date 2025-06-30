@@ -58,8 +58,8 @@ const config: Config = {
       items: [
         {
           position: "left",
-          label: "Products",
-          to: "/products",
+          label: "Endpoints",
+          to: "/endpoints",
         },
         {
           type: "docSidebar",
