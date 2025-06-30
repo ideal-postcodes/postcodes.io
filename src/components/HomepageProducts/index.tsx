@@ -3,7 +3,7 @@ import clsx from "clsx";
 import styles from "./styles.module.css";
 import React from "react";
 
-export default function HomepageProducts(): JSX.Element {
+export default function HomepageProducts(): React.JSX.Element {
   return (
     <section className={styles.features}>
       <div className="container">

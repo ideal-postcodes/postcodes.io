@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "@theme/Layout";
 import ProductsDemo from "../components/Demos";
 
-export default function Products(): JSX.Element {
+export default function Products(): React.JSX.Element {
   return (
     <Layout
       title="Products"

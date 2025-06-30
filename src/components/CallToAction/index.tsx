@@ -3,7 +3,7 @@ import clsx from "clsx";
 import styles from "./styles.module.css";
 import React from "react";
 
-export default function CallToAction(): JSX.Element {
+export default function CallToAction(): React.JSX.Element {
   return (
     <section className={styles.section}>
       <div className="container">
