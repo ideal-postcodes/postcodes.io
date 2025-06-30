@@ -7,18 +7,18 @@ export default function CallToAction(): React.JSX.Element {
   return (
     <section className={styles.section}>
       <div className="container">
-        <div className="row margin-bottom--xl">
-          <div className="col col--6 d-flex align-items-center justify-content-center">
+        <div className="row">
+          <div className="col col--6 d-flex align-items-center">
             <div>
               <h2 className={styles.header}>When Your Project Demands More</h2>
-              <p>
+              <p style={{ fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '1rem', color: '#666' }}>
                 Postcodes.io is our free and reliable tool for UK postcode
-                lookup and geocoding
+                lookup and geocoding.
               </p>
-              <p>
+              <p style={{ fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '2rem', color: '#666' }}>
                 When you need broader coverage, fresher and more detailed
                 address data, and expert support, Ideal Postcodes is built for
-                high-demand applications
+                high-demand applications.
               </p>
               <div className={styles.ctaButton}>
                 <a

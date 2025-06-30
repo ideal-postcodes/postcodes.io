@@ -2,14 +2,17 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 180px 0 100px 0;
+  padding: 120px 0;
   background-color: #F8F9FF;
 }
 
 .header {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  margin-top: 3rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  line-height: 1.2;
+  color: #1a1a2e;
 }
 
 .cardTitle {
@@ -18,31 +21,52 @@
 }
 
 .card {
-  background-color: rgba(154, 192, 241, 0.4);
-  border-radius: 16px;
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.1), rgba(154, 192, 241, 0.15));
+  border-radius: 20px;
+  border: 1px solid rgba(66, 133, 244, 0.2);
+  box-shadow: 0 4px 20px rgba(66, 133, 244, 0.1);
   height: 100%;
-  padding: 24px 40px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  color: black;
+  padding: 2rem 2.5rem;
+  transition: all 0.3s ease;
+  color: #1a1a2e;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 80%;
+  width: 100%;
+  backdrop-filter: blur(10px);
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(66, 133, 244, 0.2);
+  border-color: rgba(66, 133, 244, 0.3);
 }
 
 .cardTitle {
-  margin-bottom: 16px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  color: #1a1a2e;
 }
 
 .ctaButton, .ctaMobileButton {
-  margin-top: 1rem;
+  margin-top: 2rem;
   display: inline-block;
+}
+
+.ctaButton a, .ctaMobileButton a {
+  padding: 1rem 2rem;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+}
+
+.ctaButton a:hover, .ctaMobileButton a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
 }
 
 .ctaMobileButton {
@@ -52,23 +76,35 @@
 @media (max-width: 996px) {
   .card {
     width: 100%;
+    margin-top: 3rem;
+    padding: 1.5rem 2rem;
+  }
+
+  .ctaButton {
+    display: none;
+  }
+
+  .ctaMobileButton {
+    display: inline-block;
     margin-top: 2rem;
+    display: flex;
+    justify-content: center;
   }
 
-    .ctaButton {
-      display: none;
+  .section {
+    padding: 80px 0;
   }
 
-    .ctaMobileButton {
-      display: inline-block;
-      margin-top: 2rem;
-      display: flex;
-      justify-content: center;
-    }
+  .header {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
 
-    .section {
-      padding: 100px 0;
-    }
+  .cardTitle {
+    font-size: 1.1rem;
+    text-align: center;
+  }
 }
 
 .tickList {
@@ -78,16 +114,28 @@
 
 .tickList li {
   position: relative;
-  padding-left: 28px;
-  margin-bottom: 12px;
+  padding-left: 32px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #444;
 }
 
 .tickList li::before {
   content: "✓";
   position: absolute;
   left: 0;
+  top: 2px;
   color: #4285f4;
   font-weight: bold;
+  font-size: 1.1rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(66, 133, 244, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Dark theme styles */
