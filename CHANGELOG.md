@@ -1,3 +1,12 @@
+## [17.4.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.4.0...17.4.1) (2025-06-30)
+
+
+### Bug Fixes
+
+* **ui:** Balance vertical padding in homepage features section ([c57e6d3](https://github.com/ideal-postcodes/postcodes.io/commit/c57e6d3014293d6e01ccb7436bf70410c5135416))
+* **ui:** Improve footer spacing and resize logo ([25ebf07](https://github.com/ideal-postcodes/postcodes.io/commit/25ebf0749dadab69ccdcbf138dd3a7460925860c))
+* **UI:** Rebuild docs ([7fa434e](https://github.com/ideal-postcodes/postcodes.io/commit/7fa434eda1f4069edca361104e39a8cf72d74f04))
+
 # [17.4.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.3.2...17.4.0) (2025-06-30)
 
 
