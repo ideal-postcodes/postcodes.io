@@ -9,7 +9,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "skipLibCheck": true,
-    "noEmit": false,
+    "noEmit": true,
     "types": ["node", "@docusaurus/module-type-aliases", "@docusaurus/theme-classic"],
     "baseUrl": ".",
     "paths": {
