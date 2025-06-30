@@ -1,0 +1,95 @@
+/* Code container styling */
+.codeContainer {
+  margin: 0;
+  border-radius: 0;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+}
+
+/* Code block styling */
+.codeBlock {
+  margin: 0;
+  padding: 0.75rem 0;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  border: none;
+  border-radius: 0;
+}
+
+/* Override prism-react-renderer background to ensure theme background is used */
+.codeBlock[style] {
+  background: var(--prism-background-color) !important;
+}
+
+/* Line styling */
+.codeBlock > div {
+  display: flex;
+  min-height: 1.5rem;
+  align-items: center;
+}
+
+/* Line numbers */
+.lineNumber {
+  display: inline-block;
+  width: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-align: right;
+  color: var(--ifm-color-emphasis-500);
+  font-size: 0.75rem;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.lineContent {
+  flex: 1;
+  min-width: 0;
+  padding-right: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .codeBlock {
+    font-size: 0.8rem;
+    padding: 0.75rem;
+  }
+  
+  .lineNumber {
+    width: 2rem;
+    padding-right: 0.5rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .codeContainer {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced scrollbar for code blocks */
+.codeBlock::-webkit-scrollbar {
+  height: 8px;
+}
+
+.codeBlock::-webkit-scrollbar-track {
+  background: var(--ifm-color-emphasis-200);
+  border-radius: 4px;
+}
+
+.codeBlock::-webkit-scrollbar-thumb {
+  background: var(--ifm-color-emphasis-400);
+  border-radius: 4px;
+}
+
+.codeBlock::-webkit-scrollbar-thumb:hover {
+  background: var(--ifm-color-emphasis-600);
+}
+
+/* Firefox scrollbar */
+.codeBlock {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ifm-color-emphasis-400) var(--ifm-color-emphasis-200);
+}

@@ -7,15 +7,22 @@ import GetGeocode from "./getGeocode";
 
 export default function EndpointsDemo(): React.JSX.Element {
   return (
-    <section className={styles.mobileFeatures}>
+    <section className={styles.endpointsSection}>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h2>API Endpoints</h2>
-        </div>
 
         {/* Postcode Validation */}
-        <div className={styles.category}>
-          <h3 className={styles.categoryLabel}>Postcode Validation</h3>
+        <div className={styles.categoryCard}>
+          <div className={styles.categoryHeader}>
+            <div className={styles.categoryIcon}>
+              <img src="img/verification.png" alt="Verification" />
+            </div>
+            <div>
+              <h2 className={styles.categoryTitle}>Postcode Validation</h2>
+              <p className={styles.categoryDescription}>
+                Validate, lookup, and search UK postcodes with comprehensive geographic data
+              </p>
+            </div>
+          </div>
           <div className={styles.demoGroup}>
             <GetPostcode
               endpointTemplate="api.postcodes.io/postcodes/"
@@ -49,8 +56,18 @@ export default function EndpointsDemo(): React.JSX.Element {
         </div>
 
         {/* Bulk Reverse Geocoding */}
-        <div className={styles.category}>
-          <h3 className={styles.categoryLabel}>Reverse Geocoding</h3>
+        <div className={styles.categoryCard}>
+          <div className={styles.categoryHeader}>
+            <div className={styles.categoryIcon}>
+              <img src="img/reverse_geocoding.png" alt="Reverse Geocoding" />
+            </div>
+            <div>
+              <h2 className={styles.categoryTitle}>Reverse Geocoding</h2>
+              <p className={styles.categoryDescription}>
+                Convert coordinates to postcodes and find nearest locations
+              </p>
+            </div>
+          </div>
           <div className={styles.demoGroup}>
             <GetGeocode
               endpointTemplate="api.postcodes.io/postcodes"
@@ -81,10 +98,18 @@ export default function EndpointsDemo(): React.JSX.Element {
         </div>
 
         {/* Geographical & Demographic Data */}
-        <div className={styles.category}>
-          <h3 className={styles.categoryLabel}>
-            Geographical & Demographic Data
-          </h3>
+        <div className={styles.categoryCard}>
+          <div className={styles.categoryHeader}>
+            <div className={styles.categoryIcon}>
+              <img src="img/data.png" alt="Data" />
+            </div>
+            <div>
+              <h2 className={styles.categoryTitle}>Geographical & Demographic Data</h2>
+              <p className={styles.categoryDescription}>
+                Access detailed administrative boundaries and demographic information
+              </p>
+            </div>
+          </div>
           <div className={styles.demoGroup}>
             <GetPostcode
               endpointTemplate="api.postcodes.io/postcodes/"
