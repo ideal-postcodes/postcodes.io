@@ -1,7 +1,12 @@
 import { assert } from "chai";
 import { filter } from "../api/config/filter";
-import bulkPostcodeResult = require("./seed/bulk_postcode.json");
-import bulkGeocodingResult = require("./seed/bulk_geocoding.json");
+import * as fs from "fs";
+import * as path from "path";
+
+const bulkPostcodePath = path.resolve(__dirname, "./seed/bulk_postcode.json");
+const bulkGeocodingPath = path.resolve(__dirname, "./seed/bulk_geocoding.json");
+const bulkPostcodeResult = JSON.parse(fs.readFileSync(bulkPostcodePath, 'utf8'));
+const bulkGeocodingResult = JSON.parse(fs.readFileSync(bulkGeocodingPath, 'utf8'));
 const cloneObject = (o: any) => JSON.parse(JSON.stringify(o));
 
 describe("Filter middleware", () => {

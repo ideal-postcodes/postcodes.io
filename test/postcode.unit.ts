@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { assert } from "chai";
-import parse from "csv-parse/lib/sync";
+import { parse } from "csv-parse/sync";
 import * as helper from "./helper/index";
 import { PostcodesioHttpError } from "../api/app/lib/errors";
 const seedFilePath = path.resolve(__dirname, "./seed/postcode.csv");

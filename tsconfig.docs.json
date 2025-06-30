@@ -1,0 +1,20 @@
+{
+  "extends": "@tsconfig/docusaurus",
+  "compilerOptions": {
+    "jsx": "react",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "target": "es2017",
+    "lib": ["dom", "es2017"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["node", "@docusaurus/module-type-aliases", "@docusaurus/theme-classic"],
+    "baseUrl": ".",
+    "paths": {
+      "@site/*": ["./*"]
+    }
+  },
+  "include": ["src/**/*", "docs/**/*", "docusaurus.config.ts", "sidebars.ts"]
+}

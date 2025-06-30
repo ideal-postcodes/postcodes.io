@@ -1,5 +1,6 @@
 import request from "supertest";
 import { assert } from "chai";
+import { join } from "path";
 import {
   config,
   clearPostcodeDb,
@@ -8,24 +9,33 @@ import {
   allowsCORS,
   isPlaceObject,
   validCorsOptions,
+  Place
 } from "./helper/index";
+
 const { defaults } = config;
 const app = postcodesioApplication();
+const seedPathDirectory = join(__dirname, "seed/places/");
 
 const DEFAULT_LIMIT = defaults.placesSearch.limit.DEFAULT;
 
 describe("Places Routes", () => {
   before(async function () {
     this.timeout(0);
-    await clearPostcodeDb();
+    await clearPostcodeDb(); 
     await seedPostcodeDb();
   });
 
-  after(async () => clearPostcodeDb);
+  after(async () => await clearPostcodeDb());
 
   describe("/places/:id", () => {
+    before(async function() {
+      // Explicitly set up the Places table to ensure it's properly seeded
+      await Place.destroyRelation();
+      await Place.setupTable(seedPathDirectory);
+    });
+    
     it("returns a place by id", (done) => {
-      const code = "osgb4000000074559490";
+      const code = "osgb4000000074558362";
       request(app)
         .get(`/places/${code}`)
         .expect(200)
@@ -40,7 +50,7 @@ describe("Places Routes", () => {
         });
     });
     it("is case insensitive", (done) => {
-      const code = "osgb4000000074559490";
+      const code = "osgb4000000074558362";
       request(app)
         .get(`/places/${code.toUpperCase()}`)
         .expect(200)
@@ -69,7 +79,7 @@ describe("Places Routes", () => {
         });
     });
     it("responds to options", (done) => {
-      const code = "osgb4000000074559490";
+      const code = "osgb4000000074558362";
       request(app)
         .options(`/places/${code}`)
         .expect(204)

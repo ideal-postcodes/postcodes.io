@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpostcodes_io=self.webpackChunkpostcodes_io||[]).push([[9647],{18122:(e,s,r)=>{r.r(s),r.d(s,{default:()=>n});r(96540);var c=r(34164),o=r(59144),t=r(204),u=r(22831),a=r(36668),d=r(74848);function n(e){return(0,d.jsx)(o.e3,{className:(0,c.A)(t.G.wrapper.docsPages),children:(0,d.jsx)(a.A,{children:(0,u.v)(e.route.routes)})})}}}]);

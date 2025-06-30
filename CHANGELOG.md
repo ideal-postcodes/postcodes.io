@@ -1,3 +1,22 @@
+# [17.4.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.3.2...17.4.0) (2025-06-30)
+
+
+### Bug Fixes
+
+* downgrade escape-string-regexp to v4 for CommonJS compatibility ([d898bfa](https://github.com/ideal-postcodes/postcodes.io/commit/d898bfadd6c5e4fae761537b26febc2b2d5eca94))
+
+
+### Features
+
+* **ONSPD:** Update to May 2025 ([e88a8d7](https://github.com/ideal-postcodes/postcodes.io/commit/e88a8d73317c0a2b4d609443599ee6900a5d6e0f))
+
+## [17.3.2](https://github.com/ideal-postcodes/postcodes.io/compare/17.3.1...17.3.2) (2025-06-18)
+
+
+### Bug Fixes
+
+* correct path formatting for terminated postcodes endpoint ([7762537](https://github.com/ideal-postcodes/postcodes.io/commit/77625379ca027b6403571df531e0432e6c7766ac))
+
 ## [17.3.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.3.0...17.3.1) (2025-05-15)
 
 

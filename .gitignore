@@ -17,3 +17,6 @@ dist
 coverage
 .*.csv
 .docusaurus
+CLAUDE.md
+missing.json
+.claude

@@ -1,9 +1,16 @@
 import * as helper from "./helper";
 import { assert } from "chai";
 import { query, csvExtractor } from "../api/app/models/base";
-import spdSchemaLarge from "../data/spd_large_schema.json";
-import spdSchemaSmall from "../data/spd_small_schema.json";
-import onspdSchema from "../data/onspd_schema.json";
+import * as fs from "fs";
+import * as path from "path";
+
+const spdLargePath = path.resolve(__dirname, "../data/spd_large_schema.json");
+const spdSmallPath = path.resolve(__dirname, "../data/spd_small_schema.json");
+const onspdPath = path.resolve(__dirname, "../data/onspd_schema.json");
+
+const spdSchemaLarge = JSON.parse(fs.readFileSync(spdLargePath, 'utf8'));
+const spdSchemaSmall = JSON.parse(fs.readFileSync(spdSmallPath, 'utf8'));
+const onspdSchema = JSON.parse(fs.readFileSync(onspdPath, 'utf8'));
 
 describe("Base model", function () {
   describe("Base model instance methods", function () {
