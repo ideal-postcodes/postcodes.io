@@ -4,7 +4,7 @@ import GetPostcode from "./getPostcode";
 import PostMethod from "./postMethod";
 import GetGeocode from "./getGeocode";
 
-export default function HomepageDemos(): JSX.Element {
+export default function HomepageDemos(): React.JSX.Element {
   return (
     <section className={styles.features}>
       <div className={styles.container}>
