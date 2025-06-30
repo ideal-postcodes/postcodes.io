@@ -1,5 +1,4 @@
 import clsx from "clsx";
-// @ts-ignore
 import styles from "./styles.module.css";
 import React from "react";
 
