@@ -142,7 +142,7 @@
 
 [data-theme='dark'] .card {
   background-color: rgba(66, 133, 244, 0.15);
-  color: #ffffff;
+  color: #e0e0e0;
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -156,4 +156,30 @@
 
 [data-theme='dark'] .tickList li::before {
   color: #5c9eff;
+}
+
+[data-theme='dark'] .tickList li {
+  color: #b8b8b8;
+}
+
+[data-theme='dark'] .cardTitle {
+  color: #e0e0e0;
+}
+
+.description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+.description.first {
+  margin-bottom: 1rem;
+}
+
+.description.second {
+  margin-bottom: 2rem;
+}
+
+[data-theme='dark'] .description {
+  color: #b8b8b8;
 }
