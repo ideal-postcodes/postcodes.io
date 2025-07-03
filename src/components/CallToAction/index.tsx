@@ -11,11 +11,11 @@ export default function CallToAction(): React.JSX.Element {
           <div className="col col--6 d-flex align-items-center">
             <div>
               <h2 className={styles.header}>When Your Project Demands More</h2>
-              <p style={{ fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '1rem', color: '#666' }}>
+              <p className={`${styles.description} ${styles.first}`}>
                 Postcodes.io is our free and reliable tool for UK postcode
                 lookup and geocoding.
               </p>
-              <p style={{ fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '2rem', color: '#666' }}>
+              <p className={`${styles.description} ${styles.second}`}>
                 When you need broader coverage, fresher and more detailed
                 address data, and expert support, Ideal Postcodes is built for
                 high-demand applications.
@@ -38,10 +38,15 @@ export default function CallToAction(): React.JSX.Element {
                 <p className={styles.cardTitle}>
                   What you get with Ideal Postcodes
                 </p>
-                <li>Whole United Kingdom &amp; territories, international datasets</li>
+                <li>
+                  Whole United Kingdom &amp; territories, international datasets
+                </li>
                 <li>Rooftop Geocodes and UPRNs on every search</li>
                 <li>Property level precision</li>
-                <li>Updated daily from Royal Mail, Ordnance Survey and other UK data providers</li>
+                <li>
+                  Updated daily from Royal Mail, Ordnance Survey and other UK
+                  data providers
+                </li>
                 <li>Dedicated Support</li>
               </ul>
             </div>

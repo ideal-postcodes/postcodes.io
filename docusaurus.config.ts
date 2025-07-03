@@ -37,7 +37,6 @@ const config: Config = {
         docs: {
           sidebarPath: require.resolve("./sidebars"),
           docItemComponent: "@theme/ApiItem", // Fix for docusaurus-openapi-docs
-          editUrl: "https://github.com/ideal-postcodes/postcodes.io",
         },
         theme: {
           customCss: "./src/css/custom.css",
