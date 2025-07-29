@@ -112,7 +112,7 @@
     "@types/minimist": "~1.2.5",
     "@types/mocha": "~10.0.10",
     "@types/morgan": "~1.9.10",
-    "@types/node": "~24.0.3",
+    "@types/node": "~24.1.0",
     "@types/pg": "~8.15.4",
     "@types/pg-copy-streams": "~1.2.5",
     "@types/react": "~19.1.8",
