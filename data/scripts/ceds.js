@@ -25,7 +25,7 @@ const transform = (row) => {
 
 const configs = [
   {
-    file: "County Electoral Division names and codes EN as at 05_21.csv",
+    file: "CED County Electoral Division names and codes EN as at 05_25.csv",
     delimiter: ",",
     transform,
   },
