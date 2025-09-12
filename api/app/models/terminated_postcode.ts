@@ -121,7 +121,7 @@ export const seedPostcodes = async (filepath: string) => {
   return methods.csvSeed({
     filepath: [filepath],
     transform: (row: RowExtract) => {
-      if (row[0] === "pcd") return null; //ignore header
+      if (row[0] === "pcd7") return null; //ignore header
       if (row[4].length === 0) return null; // Skip if not terminated
       row.extract = (code: string) => extractOnspdVal(row, code); // Append extraction
       return ONSPD_COL_MAPPINGS.map((elem) => elem.method(row));
