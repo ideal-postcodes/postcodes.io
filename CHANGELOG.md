@@ -1,3 +1,17 @@
+# [17.5.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.4.1...17.5.0) (2025-09-12)
+
+
+### Bug Fixes
+
+* **import:** Update CSV header check for ONSPD AUG 2025 format ([da9d96b](https://github.com/ideal-postcodes/postcodes.io/commit/da9d96bf08ff8cb7347db6d21d07b8864d7efccc))
+* **Seed Data:** Update for new labels ([cacbc7f](https://github.com/ideal-postcodes/postcodes.io/commit/cacbc7f065b0b1f6f66dfb7b946aa27590702bc4))
+
+
+### Features
+
+* **data:** Update County Electoral Divisions to May 2025 release ([0e653bb](https://github.com/ideal-postcodes/postcodes.io/commit/0e653bbf0d82a0d93a571af794e7aaf7690d9a2f))
+* **data:** Update Parish/Non-Civil Parish codes to April 2025 v2 ([caf17e8](https://github.com/ideal-postcodes/postcodes.io/commit/caf17e8ec2fb3b5e8c993d47620297d0c544b2d0))
+
 ## [17.4.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.4.0...17.4.1) (2025-06-30)
 
 
