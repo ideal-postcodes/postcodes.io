@@ -1,3 +1,10 @@
+# [17.6.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.5.0...17.6.0) (2025-12-10)
+
+
+### Features
+
+* **ONSPD:** Update to Nov 2025 ([8936a4b](https://github.com/ideal-postcodes/postcodes.io/commit/8936a4bc04b3c07f9fc28378c2a05ea880c37192))
+
 # [17.5.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.4.1...17.5.0) (2025-09-12)
 
 
