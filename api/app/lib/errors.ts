@@ -64,9 +64,44 @@ export class InvalidPostcodeError extends PostcodesioHttpError {
   }
 }
 
+interface TerminatedPostcodeTuple {
+  id: number;
+  postcode: string;
+  pc_compact: string;
+  year_terminated: number;
+  month_terminated: number;
+  eastings: number;
+  northings: number;
+  longitude: number;
+  latitude: number;
+  location: string;
+}
+
 export class PostcodeNotFoundError extends PostcodesioHttpError {
-  constructor() {
+  public terminatedPostcode: TerminatedPostcodeTuple | null;
+
+  constructor(terminatedPostcode: TerminatedPostcodeTuple | null = null) {
     super(404, "Postcode not found");
+    Object.setPrototypeOf(this, PostcodeNotFoundError.prototype);
+    this.terminatedPostcode = terminatedPostcode;
+  }
+
+  toJSON() {
+    const terminated = this.terminatedPostcode
+      ? {
+          postcode: this.terminatedPostcode.postcode,
+          year_terminated: this.terminatedPostcode.year_terminated,
+          month_terminated: this.terminatedPostcode.month_terminated,
+          longitude: this.terminatedPostcode.longitude,
+          latitude: this.terminatedPostcode.latitude,
+        }
+      : null;
+
+    return {
+      status: this.status,
+      error: this.humanMessage,
+      ...(terminated !== null && { terminated }),
+    };
   }
 }
 
