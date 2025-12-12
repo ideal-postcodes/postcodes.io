@@ -471,7 +471,9 @@ const seedData = async (directory: string) => {
 
   const typeRegex = /^.*\//;
   const parseOsgb = (val: string) => parseInt(val, 10) || "";
+  const stripBom = (val: string) => val.replace(/^\uFEFF/, "");
   const transformExceptions = {
+    code: stripBom,
     northings: parseOsgb,
     eastings: parseOsgb,
     min_eastings: parseOsgb,
