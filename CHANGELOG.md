@@ -1,3 +1,10 @@
+## [17.6.2](https://github.com/ideal-postcodes/postcodes.io/compare/17.6.1...17.6.2) (2025-12-12)
+
+
+### Bug Fixes
+
+* **places:** Strip BOM character from code field during import ([d4cae31](https://github.com/ideal-postcodes/postcodes.io/commit/d4cae317339489bdc30eba2925cc00f3664b0553))
+
 ## [17.6.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.6.0...17.6.1) (2025-12-12)
 
 
