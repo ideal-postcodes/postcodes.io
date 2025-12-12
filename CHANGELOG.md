@@ -1,3 +1,10 @@
+# [17.7.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.6.2...17.7.0) (2025-12-12)
+
+
+### Features
+
+* **postcode:** Return terminated postcode data in 404 response ([afb7d73](https://github.com/ideal-postcodes/postcodes.io/commit/afb7d732a1bcadadbf83171b81bf6fb913bce2f5)), closes [#1295](https://github.com/ideal-postcodes/postcodes.io/issues/1295)
+
 ## [17.6.2](https://github.com/ideal-postcodes/postcodes.io/compare/17.6.1...17.6.2) (2025-12-12)
 
 
