@@ -82,6 +82,7 @@ export class PostcodeNotFoundError extends PostcodesioHttpError {
 
   constructor(terminatedPostcode: TerminatedPostcodeTuple | null = null) {
     super(404, "Postcode not found");
+    Object.setPrototypeOf(this, PostcodeNotFoundError.prototype);
     this.terminatedPostcode = terminatedPostcode;
   }
 

@@ -10,6 +10,8 @@ describe("Postcodes routes", function () {
     this.timeout(0);
     await helper.clearPostcodeDb();
     await helper.seedPostcodeDb();
+    await helper.clearTerminatedPostcodesDb();
+    await helper.seedTerminatedPostcodeDb();
   });
 
   beforeEach(async () => {
@@ -216,7 +218,7 @@ describe("Postcodes routes", function () {
           done();
         });
     });
-    it.only("returns terminated postcode data if postcode is terminated", function (done) {
+    it("returns terminated postcode data if postcode is terminated", function (done) {
       // AB1 0AA is a terminated postcode in the seed data
       const terminatedPostcode = "AB1 0AA";
       const path = ["/postcodes/", encodeURI(terminatedPostcode)].join("");
