@@ -58,6 +58,18 @@ describe("Place Model", () => {
         const result = await query(q);
         assert.equal(result.rows[0].count, placesEntriesCount);
       });
+
+      it("strips BOM characters from code field", async () => {
+        // BOM (U+FEFF) can appear at start of CSV files and pollute first field
+        const q = `SELECT code FROM ${Place.relation.relation}`;
+        const result = await query(q);
+        result.rows.forEach((row) => {
+          assert.isFalse(
+            row.code.startsWith("\uFEFF"),
+            `code "${row.code}" should not start with BOM character`
+          );
+        });
+      });
     });
 
     describe("#populateLocation", () => {

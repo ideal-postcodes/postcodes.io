@@ -155,7 +155,7 @@ describe("Postcode data regression testing", function () {
         admin_district: "Channel Islands",
         parish: null,
         admin_county: null,
-        admin_ward: null,
+        admin_ward: "Channel Islands (pseudo)",
         ccg: null,
         ccg_code: null,
         nuts: null,
