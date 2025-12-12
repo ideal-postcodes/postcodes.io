@@ -1,3 +1,10 @@
+## [17.6.1](https://github.com/ideal-postcodes/postcodes.io/compare/17.6.0...17.6.1) (2025-12-12)
+
+
+### Bug Fixes
+
+* **Places:** Fix broken places table ([98d2802](https://github.com/ideal-postcodes/postcodes.io/commit/98d2802a436281f178d3c3e746af6fc3b470d413))
+
 # [17.6.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.5.0...17.6.0) (2025-12-10)
 
 
