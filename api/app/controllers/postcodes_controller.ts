@@ -1,5 +1,6 @@
 import { isEmpty, qToString } from "../lib/string";
 import { Postcode } from "../models/postcode";
+import { TerminatedPostcode } from "../models/terminated_postcode";
 import { isValid } from "postcode";
 import { chunk } from "../lib/chunk";
 import { getConfig } from "../../config/config";
@@ -29,7 +30,11 @@ export const show: Handler = async (request, response, next) => {
     if (!isValid(postcode.trim())) throw new InvalidPostcodeError();
 
     const result = await Postcode.find(postcode);
-    if (!result) throw new PostcodeNotFoundError();
+    if (!result) {
+      // Check if postcode has been terminated
+      const terminated = await TerminatedPostcode.find(postcode);
+      throw new PostcodeNotFoundError(terminated);
+    }
     response.jsonApiResponse = { status: 200, result: Postcode.toJson(result) };
     next();
   } catch (error) {

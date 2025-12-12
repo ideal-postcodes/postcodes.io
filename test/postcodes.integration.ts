@@ -216,6 +216,52 @@ describe("Postcodes routes", function () {
           done();
         });
     });
+    it.only("returns terminated postcode data if postcode is terminated", function (done) {
+      // AB1 0AA is a terminated postcode in the seed data
+      const terminatedPostcode = "AB1 0AA";
+      const path = ["/postcodes/", encodeURI(terminatedPostcode)].join("");
+      request(app)
+        .get(path)
+        .expect("Content-Type", /json/)
+        .expect(404)
+        .end(function (error, response) {
+          if (error) return done(error);
+          assert.equal(response.body.status, 404);
+          assert.match(response.body.error, /postcode not found/i);
+          // Should include terminated postcode data
+          assert.property(response.body, "terminated");
+          assert.isObject(response.body.terminated);
+          // Verify terminated object structure
+          assert.property(response.body.terminated, "postcode");
+          assert.property(response.body.terminated, "year_terminated");
+          assert.property(response.body.terminated, "month_terminated");
+          assert.property(response.body.terminated, "longitude");
+          assert.property(response.body.terminated, "latitude");
+          // Verify the postcode matches
+          assert.equal(
+            response.body.terminated.postcode.replace(/\s/g, ""),
+            terminatedPostcode.replace(/\s/g, "")
+          );
+          done();
+        });
+    });
+    it("does not include terminated field if postcode is not found and not terminated", function (done) {
+      // ID1 1QE is a valid format but doesn't exist in either table
+      testPostcode = "ID11QE";
+      const path = ["/postcodes/", encodeURI(testPostcode)].join("");
+      request(app)
+        .get(path)
+        .expect("Content-Type", /json/)
+        .expect(404)
+        .end(function (error, response) {
+          if (error) return done(error);
+          assert.equal(response.body.status, 404);
+          assert.match(response.body.error, /postcode not found/i);
+          // Should NOT include terminated field
+          assert.notProperty(response.body, "terminated");
+          done();
+        });
+    });
     it("should respond to options", function (done) {
       const path = ["/postcodes/", encodeURI(testPostcode)].join("");
       request(app)

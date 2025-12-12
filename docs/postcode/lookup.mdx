@@ -7,7 +7,7 @@ This endpoint allows you to retrieve detailed information about a UK postcode.
 
 A successful request returns HTTP status code 200 and a JSON object containing comprehensive postcode data.
 
-If the postcode is not found, the API returns a 404 response.
+If the postcode is not found, the API returns a 404 response. If the postcode was previously active but has since been terminated, the error response will include a `terminated` property with details about the terminated postcode.
 
 For more details, see the [API Documentation](/docs/api/lookup-postcode)
 
@@ -74,5 +74,32 @@ The above would match any of these inputs: "BR8 7RE", "br87re", "Br8 7rE", etc.
       "pfa": "E23000032"
     }
   }
+}
+```
+
+## Terminated Postcode Response
+
+If a postcode is not found but exists in the terminated postcodes dataset (i.e., it was previously a valid postcode but has since been deactivated), the 404 response will include a `terminated` property:
+
+```json
+{
+  "status": 404,
+  "error": "Postcode not found",
+  "terminated": {
+    "postcode": "AB1 0AA",
+    "year_terminated": 1996,
+    "month_terminated": 6,
+    "longitude": -2.242851,
+    "latitude": 57.101474
+  }
+}
+```
+
+If the postcode is not found and was never a valid postcode (i.e., not in the terminated dataset), the response will not include the `terminated` property:
+
+```json
+{
+  "status": 404,
+  "error": "Postcode not found"
 }
 ```
