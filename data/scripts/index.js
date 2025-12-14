@@ -149,6 +149,8 @@ exports.extract = (options) => {
         .on("error", next)
         .on("data", (row) => {
           if (row.join("").trim().length === 0) return;
+          // Strip BOM from first cell if present
+          if (row.length > 0) row[0] = stripBom(row[0]);
           const parsedRow = transform(row);
           if (parsedRow.length) {
             output.set(parsedRow[0], parsedRow[1]);
@@ -173,6 +175,14 @@ const toIterable = (source) => {
 };
 
 const pseudocodeRegex = /^\w99999999$/;
+
+/**
+ * Strips BOM (Byte Order Mark) from string
+ * BOM appears as \uFEFF in UTF-8 or as literal bytes when read as binary
+ * @param {string} str - String to strip BOM from
+ * @return {string}
+ */
+const stripBom = (str) => str.replace(/^\uFEFF/, "").replace(/^\xEF\xBB\xBF/, "");
 
 /**
  * Returns true if string matches pseudocode (e.g. `S99999999`)
