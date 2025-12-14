@@ -17,3 +17,15 @@ export * from "./ced";
 export * from "./lsoa";
 export * from "./msoa";
 export * from "./police_force_area";
+// New models (Nov 2025)
+export * from "./nhs_region";
+export * from "./ttwa";
+export * from "./national_park";
+export * from "./bua";
+export * from "./icb";
+export * from "./cancer_alliance";
+export * from "./lsoa21";
+export * from "./msoa21";
+export * from "./ruc11";
+export * from "./ruc21";
+export * from "./lep";
