@@ -53,6 +53,13 @@ make test
 make test-up
 make test-shell
 $api-container> npm test
+
+# Fast iteration: create DB once, then run tests without rebuilding
+npm run test:create   # Run once
+npm run mocha         # Reuse existing DB (sets NO_RELOAD_DB=true)
+
+# Execute command in test container
+make test-exec npm run mocha
 ```
 
 ## License
