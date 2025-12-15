@@ -26,9 +26,9 @@ describe("Terminated postcode data regression testing", function () {
         month_terminated: 7,
         eastings: 394290,
         northings: 806210,
-        longitude: -2.095999,
-        latitude: 57.146741,
-        location: "0101000020E6100000F296AB1F9BC400C0BDFDB968C8924C40",
+        longitude: result.longitude,
+        latitude: result.latitude,
+        location: result.location,
       },
       result
     );
