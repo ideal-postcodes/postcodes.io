@@ -16,6 +16,18 @@ import {
   Ced,
   Lsoa,
   Msoa,
+  // New models (Nov 2025)
+  NhsRegion,
+  Ttwa,
+  NationalPark,
+  Bua,
+  Icb,
+  CancerAlliance,
+  Lsoa21,
+  Msoa21,
+  Ruc11,
+  Ruc21,
+  Lep,
 } from "../app/models/index";
 
 const handleError = (error?: any) => {
@@ -52,10 +64,34 @@ const clear = async (): Promise<unknown> => {
   await PoliceForceArea.destroyRelation();
   await Outcode.destroyRelation();
   await Ced.destroyRelation();
+  // New models (Nov 2025)
+  await NhsRegion.destroyRelation();
+  await Ttwa.destroyRelation();
+  await NationalPark.destroyRelation();
+  await Bua.destroyRelation();
+  await Icb.destroyRelation();
+  await CancerAlliance.destroyRelation();
+  await Lsoa21.destroyRelation();
+  await Msoa21.destroyRelation();
+  await Ruc11.destroyRelation();
+  await Ruc21.destroyRelation();
+  await Lep.destroyRelation();
 };
 
 const seed = async (): Promise<unknown> => {
   if (NO_RELOAD_DB) return null;
+  // Setup new lookup tables first (before postcodes references them)
+  await NhsRegion.setupTable();
+  await Ttwa.setupTable();
+  await NationalPark.setupTable();
+  await Bua.setupTable();
+  await Icb.setupTable();
+  await CancerAlliance.setupTable();
+  await Lsoa21.setupTable();
+  await Msoa21.setupTable();
+  await Ruc11.setupTable();
+  await Ruc21.setupTable();
+  await Lep.setupTable();
   console.log("Creating postcodes relation");
   await Postcode.setupTable(seedPostcodePath);
   await TerminatedPostcode.setupTable(seedPostcodePath);
