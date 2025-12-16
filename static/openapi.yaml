@@ -711,6 +711,102 @@ components:
           nullable: true
           description: NHS Clinical Commissioning Group responsible for planning healthcare services in England.
           example: NHS North West London
+        pfa:
+          title: Police Force Area
+          type: string
+          nullable: true
+          description: The police force area for this postcode.
+          example: Metropolitan Police
+        date_of_introduction:
+          title: Date of Introduction
+          type: string
+          nullable: true
+          description: The date the postcode was introduced in YYYYMM format.
+          example: '198001'
+        parliamentary_constituency_2024:
+          title: Westminster Parliamentary Constituency (2024)
+          type: string
+          nullable: true
+          description: The UK Parliamentary constituency for this postcode based on July 2024 boundaries.
+          example: Cities of London and Westminster
+        nhs_region:
+          title: NHS England Region
+          type: string
+          nullable: true
+          description: The NHS England Region for this postcode. Only applicable to English postcodes.
+          example: London
+        ttwa:
+          title: Travel to Work Area
+          type: string
+          nullable: true
+          description: The Travel to Work Area for this postcode. TTWAs are areas where most people both live and work.
+          example: London
+        national_park:
+          title: National Park
+          type: string
+          nullable: true
+          description: The National Park this postcode falls within, if any.
+          example: null
+        bua:
+          title: Built-up Area
+          type: string
+          nullable: true
+          description: The Built-up Area (2022) for this postcode. Built-up areas are land which has been 'irreversibly urbanised'.
+          example: Greater London
+        icb:
+          title: Integrated Care Board
+          type: string
+          nullable: true
+          description: The NHS Integrated Care Board responsible for healthcare planning in this area.
+          example: NHS North West London Integrated Care Board
+        cancer_alliance:
+          title: Cancer Alliance
+          type: string
+          nullable: true
+          description: The Cancer Alliance for this postcode. Cancer Alliances bring together NHS providers and commissioners to improve cancer care.
+          example: RM Partners (West London)
+        lsoa21:
+          title: Lower Layer Super Output Area (2021)
+          type: string
+          nullable: true
+          description: 2021 Census LSOA code. In Scotland this is the Data Zone, in Northern Ireland the Small Area.
+          example: Westminster 018C
+        msoa21:
+          title: Middle Layer Super Output Area (2021)
+          type: string
+          nullable: true
+          description: 2021 Census MSOA code. In Scotland this is the Intermediate Zone.
+          example: Westminster 018
+        oa21:
+          title: Output Area (2021)
+          type: string
+          nullable: true
+          description: 2021 Census Output Area code - the smallest census geography.
+          example: E00004185
+        ruc11:
+          title: Rural-Urban Classification (2011)
+          type: string
+          nullable: true
+          description: The 2011 Census Rural-Urban Classification for this postcode.
+          example: Urban major conurbation
+        ruc21:
+          title: Rural-Urban Classification (2021)
+          type: string
+          nullable: true
+          description: The 2021 Census Rural-Urban Classification for this postcode.
+          example: Urban major conurbation
+        lep1:
+          title: Local Enterprise Partnership (Primary)
+          type: string
+          nullable: true
+          description: The primary Local Enterprise Partnership for this postcode. LEPs are partnerships between local authorities and businesses.
+          example: London
+        lep2:
+          title: Local Enterprise Partnership (Secondary)
+          type: string
+          nullable: true
+          description: The secondary Local Enterprise Partnership for this postcode, if it falls within overlapping LEP areas.
+          example: null
         nuts:
           title: International Territorial Levels (ITL)
           type: string
@@ -792,6 +888,96 @@ components:
               nullable: true
               description: Official 9-character GSS code for this Middle Layer Super Output Area.
               example: E02000977
+            pfa:
+              title: PFA GSS Code
+              type: string
+              nullable: true
+              description: Official 9-character GSS code for this Police Force Area.
+              example: E23000001
+            parliamentary_constituency_2024:
+              title: Parliamentary Constituency GSS Code (2024)
+              type: string
+              nullable: true
+              description: Official 9-character GSS code for this Parliamentary Constituency based on July 2024 boundaries.
+              example: E14000639
+            nhs_region:
+              title: NHS Region GSS Code
+              type: string
+              nullable: true
+              description: Official 9-character GSS code for this NHS England Region.
+              example: E40000003
+            ttwa:
+              title: TTWA Code
+              type: string
+              nullable: true
+              description: Travel to Work Area code.
+              example: E30000234
+            national_park:
+              title: National Park GSS Code
+              type: string
+              nullable: true
+              description: Official 9-character GSS code for this National Park.
+              example: null
+            bua:
+              title: Built-up Area Code
+              type: string
+              nullable: true
+              description: Built-up Area (2022) code.
+              example: E34004786
+            icb:
+              title: ICB GSS Code
+              type: string
+              nullable: true
+              description: Official 9-character GSS code for this Integrated Care Board.
+              example: E54000027
+            cancer_alliance:
+              title: Cancer Alliance GSS Code
+              type: string
+              nullable: true
+              description: Official 9-character GSS code for this Cancer Alliance.
+              example: E56000009
+            lsoa21:
+              title: LSOA 2021 GSS Code
+              type: string
+              nullable: true
+              description: Official 9-character GSS code for this 2021 Census LSOA.
+              example: E01004736
+            msoa21:
+              title: MSOA 2021 GSS Code
+              type: string
+              nullable: true
+              description: Official 9-character GSS code for this 2021 Census MSOA.
+              example: E02000977
+            oa21:
+              title: Output Area 2021 Code
+              type: string
+              nullable: true
+              description: 2021 Census Output Area code.
+              example: E00004185
+            ruc11:
+              title: Rural-Urban Classification 2011 Code
+              type: string
+              nullable: true
+              description: 2011 Census Rural-Urban Classification code.
+              example: A1
+            ruc21:
+              title: Rural-Urban Classification 2021 Code
+              type: string
+              nullable: true
+              description: 2021 Census Rural-Urban Classification code.
+              example: A1
+            lep1:
+              title: LEP (Primary) GSS Code
+              type: string
+              nullable: true
+              description: Official 9-character GSS code for the primary Local Enterprise Partnership.
+              example: E37000051
+            lep2:
+              title: LEP (Secondary) GSS Code
+              type: string
+              nullable: true
+              description: Official 9-character GSS code for the secondary Local Enterprise Partnership.
+              example: null
     PostcodeResponse:
       title: Postcode Response
       type: object

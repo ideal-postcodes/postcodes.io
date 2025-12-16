@@ -35,6 +35,19 @@ The Postcode schema represents all geographical and administrative information a
   "ccg": "NHS Kent and Medway",
   "nuts": "Sevenoaks",
   "pfa": "Kent",
+  "nhs_region": "South East",
+  "ttwa": "Maidstone and North Kent",
+  "national_park": null,
+  "bua": "Swanley",
+  "icb": "NHS Kent and Medway Integrated Care Board",
+  "cancer_alliance": "Kent and Medway Cancer Alliance",
+  "lsoa21": "Sevenoaks 001A",
+  "msoa21": "Sevenoaks 001",
+  "oa21": "E00058164",
+  "ruc11": "Urban city and town",
+  "ruc21": "Urban city and town",
+  "lep1": "South East",
+  "lep2": null,
   "codes": {
     "admin_district": "E07000111",
     "admin_county": "E10000016",
@@ -49,7 +62,20 @@ The Postcode schema represents all geographical and administrative information a
     "lsoa": "E01024445",
     "msoa": "E02005087",
     "lau2": "E07000111",
-    "pfa": "E23000032"
+    "pfa": "E23000032",
+    "nhs_region": "E40000005",
+    "ttwa": "E30000188",
+    "national_park": null,
+    "bua": "E34001422",
+    "icb": "E54000032",
+    "cancer_alliance": "E56000004",
+    "lsoa21": "E01024445",
+    "msoa21": "E02005087",
+    "oa21": "E00058164",
+    "ruc11": "C1",
+    "ruc21": "C1",
+    "lep1": "E37000025",
+    "lep2": null
   }
 }
 ```
@@ -93,6 +119,37 @@ The Postcode schema represents all geographical and administrative information a
 | `codes.lau2`                 | string \| null  | Local Administrative Unit level 2 code for this area.                                                                                     | "E09000033"                        |
 | `codes.lsoa`                 | string \| null  | Official 9-character GSS code for this Lower Layer Super Output Area.                                                                     | "E01004736"                        |
 | `codes.msoa`                 | string \| null  | Official 9-character GSS code for this Middle Layer Super Output Area.                                                                    | "E02000977"                        |
+| `codes.pfa`                  | string \| null  | Official 9-character GSS code for this Police Force Area.                                                                                 | "E23000001"                        |
+| `pfa`                        | string \| null  | The police force area for this postcode.                                                                                                  | "Metropolitan Police"              |
+| `date_of_introduction`       | string \| null  | The date the postcode was introduced in YYYYMM format.                                                                                    | "198001"                           |
+| `parliamentary_constituency_2024` | string \| null | The UK Parliamentary constituency for this postcode based on July 2024 boundaries.                                                       | "Cities of London and Westminster" |
+| `nhs_region`                 | string \| null  | The NHS England Region for this postcode. Only applicable to English postcodes.                                                           | "London"                           |
+| `ttwa`                       | string \| null  | The Travel to Work Area for this postcode. TTWAs are areas where most people both live and work.                                          | "London"                           |
+| `national_park`              | string \| null  | The National Park this postcode falls within, if any.                                                                                     | null                               |
+| `bua`                        | string \| null  | The Built-up Area (2022) for this postcode.                                                                                               | "Greater London"                   |
+| `icb`                        | string \| null  | The NHS Integrated Care Board responsible for healthcare planning in this area.                                                           | "NHS North West London ICB"        |
+| `cancer_alliance`            | string \| null  | The Cancer Alliance for this postcode.                                                                                                    | "RM Partners (West London)"        |
+| `lsoa21`                     | string \| null  | 2021 Census LSOA code. In Scotland this is the Data Zone, in Northern Ireland the Small Area.                                             | "Westminster 018C"                 |
+| `msoa21`                     | string \| null  | 2021 Census MSOA code. In Scotland this is the Intermediate Zone.                                                                         | "Westminster 018"                  |
+| `oa21`                       | string \| null  | 2021 Census Output Area code - the smallest census geography.                                                                             | "E00004185"                        |
+| `ruc11`                      | string \| null  | The 2011 Census Rural-Urban Classification for this postcode.                                                                             | "Urban major conurbation"          |
+| `ruc21`                      | string \| null  | The 2021 Census Rural-Urban Classification for this postcode.                                                                             | "Urban major conurbation"          |
+| `lep1`                       | string \| null  | The primary Local Enterprise Partnership for this postcode.                                                                               | "London"                           |
+| `lep2`                       | string \| null  | The secondary Local Enterprise Partnership for this postcode, if it falls within overlapping LEP areas.                                   | null                               |
+| `codes.nhs_region`           | string \| null  | Official 9-character GSS code for this NHS England Region.                                                                                | "E40000003"                        |
+| `codes.ttwa`                 | string \| null  | Travel to Work Area code.                                                                                                                 | "E30000234"                        |
+| `codes.national_park`        | string \| null  | Official 9-character GSS code for this National Park.                                                                                     | null                               |
+| `codes.bua`                  | string \| null  | Built-up Area (2022) code.                                                                                                                | "E34004786"                        |
+| `codes.icb`                  | string \| null  | Official 9-character GSS code for this Integrated Care Board.                                                                             | "E54000027"                        |
+| `codes.cancer_alliance`      | string \| null  | Official 9-character GSS code for this Cancer Alliance.                                                                                   | "E56000009"                        |
+| `codes.lsoa21`               | string \| null  | Official 9-character GSS code for this 2021 Census LSOA.                                                                                  | "E01004736"                        |
+| `codes.msoa21`               | string \| null  | Official 9-character GSS code for this 2021 Census MSOA.                                                                                  | "E02000977"                        |
+| `codes.oa21`                 | string \| null  | 2021 Census Output Area code.                                                                                                             | "E00004185"                        |
+| `codes.ruc11`                | string \| null  | 2011 Census Rural-Urban Classification code.                                                                                              | "A1"                               |
+| `codes.ruc21`                | string \| null  | 2021 Census Rural-Urban Classification code.                                                                                              | "A1"                               |
+| `codes.lep1`                 | string \| null  | Official 9-character GSS code for the primary Local Enterprise Partnership.                                                               | "E37000051"                        |
+| `codes.lep2`                 | string \| null  | Official 9-character GSS code for the secondary Local Enterprise Partnership.                                                             | null                               |
+| `codes.parliamentary_constituency_2024` | string \| null | Official 9-character GSS code for this Parliamentary Constituency based on July 2024 boundaries.                                  | "E14000639"                        |
 
 ## Positional Quality
 
