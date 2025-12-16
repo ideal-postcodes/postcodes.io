@@ -1111,7 +1111,7 @@ const seedPostcodes = async (filepath: string) => {
     filepath: [filepath],
     transform: (row: RowExtract) => {
       row.extract = (code: string) => extractOnspdVal(row, code); // Append csv extraction logic
-      if (row.extract("pcd") === "pcd") return null; // Skip if header
+      if (row.extract("pcds") === "pcds") return null; // Skip if header
       if (row.extract("doterm") && row.extract("doterm").length !== 0)
         return null; // Skip row if terminated
       return ONSPD_COL_MAPPINGS.map((elem) => elem.method(row));
