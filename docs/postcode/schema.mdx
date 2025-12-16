@@ -41,6 +41,8 @@ The Postcode schema represents all geographical and administrative information a
   "bua": "Swanley",
   "icb": "NHS Kent and Medway Integrated Care Board",
   "cancer_alliance": "Kent and Medway Cancer Alliance",
+  "lsoa11": "Sevenoaks 001A",
+  "msoa11": "Sevenoaks 001",
   "lsoa21": "Sevenoaks 001A",
   "msoa21": "Sevenoaks 001",
   "oa21": "E00058164",
@@ -69,6 +71,8 @@ The Postcode schema represents all geographical and administrative information a
     "bua": "E34001422",
     "icb": "E54000032",
     "cancer_alliance": "E56000004",
+    "lsoa11": "E01024445",
+    "msoa11": "E02005087",
     "lsoa21": "E01024445",
     "msoa21": "E02005087",
     "oa21": "E00058164",
@@ -129,6 +133,8 @@ The Postcode schema represents all geographical and administrative information a
 | `bua`                        | string \| null  | The Built-up Area (2022) for this postcode.                                                                                               | "Greater London"                   |
 | `icb`                        | string \| null  | The NHS Integrated Care Board responsible for healthcare planning in this area.                                                           | "NHS North West London ICB"        |
 | `cancer_alliance`            | string \| null  | The Cancer Alliance for this postcode.                                                                                                    | "RM Partners (West London)"        |
+| `lsoa11`                     | string \| null  | 2011 Census LSOA code. Alias for the 'lsoa' field.                                                                                        | "Westminster 018C"                 |
+| `msoa11`                     | string \| null  | 2011 Census MSOA code. Alias for the 'msoa' field.                                                                                        | "Westminster 018"                  |
 | `lsoa21`                     | string \| null  | 2021 Census LSOA code. In Scotland this is the Data Zone, in Northern Ireland the Small Area.                                             | "Westminster 018C"                 |
 | `msoa21`                     | string \| null  | 2021 Census MSOA code. In Scotland this is the Intermediate Zone.                                                                         | "Westminster 018"                  |
 | `oa21`                       | string \| null  | 2021 Census Output Area code - the smallest census geography.                                                                             | "E00004185"                        |
@@ -142,6 +148,8 @@ The Postcode schema represents all geographical and administrative information a
 | `codes.bua`                  | string \| null  | Built-up Area (2022) code.                                                                                                                | "E34004786"                        |
 | `codes.icb`                  | string \| null  | Official 9-character GSS code for this Integrated Care Board.                                                                             | "E54000027"                        |
 | `codes.cancer_alliance`      | string \| null  | Official 9-character GSS code for this Cancer Alliance.                                                                                   | "E56000009"                        |
+| `codes.lsoa11`               | string \| null  | Official 9-character GSS code for this 2011 Census LSOA. Alias for codes.lsoa.                                                            | "E01004736"                        |
+| `codes.msoa11`               | string \| null  | Official 9-character GSS code for this 2011 Census MSOA. Alias for codes.msoa.                                                            | "E02000977"                        |
 | `codes.lsoa21`               | string \| null  | Official 9-character GSS code for this 2021 Census LSOA.                                                                                  | "E01004736"                        |
 | `codes.msoa21`               | string \| null  | Official 9-character GSS code for this 2021 Census MSOA.                                                                                  | "E02000977"                        |
 | `codes.oa21`                 | string \| null  | 2021 Census Output Area code.                                                                                                             | "E00004185"                        |

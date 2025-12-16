@@ -220,6 +220,18 @@ properties:
     nullable: true
     description: "The Cancer Alliance for this postcode. Cancer Alliances bring together NHS providers and commissioners to improve cancer care."
     example: "RM Partners (West London)"
+  lsoa11:
+    title: Lower Layer Super Output Area (2011)
+    type: string
+    nullable: true
+    description: "2011 Census LSOA code. Alias for the 'lsoa' field. In Scotland this is the Data Zone, in Northern Ireland the Small Area."
+    example: "Westminster 018C"
+  msoa11:
+    title: Middle Layer Super Output Area (2011)
+    type: string
+    nullable: true
+    description: "2011 Census MSOA code. Alias for the 'msoa' field. In Scotland this is the Intermediate Zone."
+    example: "Westminster 018"
   lsoa21:
     title: Lower Layer Super Output Area (2021)
     type: string
@@ -391,6 +403,18 @@ properties:
         nullable: true
         description: "Official 9-character GSS code for this Cancer Alliance."
         example: "E56000009"
+      lsoa11:
+        title: "LSOA 2011 GSS Code"
+        type: string
+        nullable: true
+        description: "Official 9-character GSS code for this 2011 Census LSOA. Alias for codes.lsoa."
+        example: "E01004736"
+      msoa11:
+        title: "MSOA 2011 GSS Code"
+        type: string
+        nullable: true
+        description: "Official 9-character GSS code for this 2011 Census MSOA. Alias for codes.msoa."
+        example: "E02000977"
       lsoa21:
         title: "LSOA 2021 GSS Code"
         type: string

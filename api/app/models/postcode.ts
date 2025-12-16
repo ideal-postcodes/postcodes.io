@@ -58,6 +58,8 @@ export interface PostcodeInterface {
   bua: string | null;
   icb: string | null;
   cancer_alliance: string | null;
+  lsoa11: string | null;
+  msoa11: string | null;
   lsoa21: string | null;
   msoa21: string | null;
   oa21: string | null;
@@ -87,6 +89,8 @@ export interface PostcodeInterface {
     bua: string | null;
     icb: string | null;
     cancer_alliance: string | null;
+    lsoa11: string | null;
+    msoa11: string | null;
     lsoa21: string | null;
     msoa21: string | null;
     oa21: string | null;
@@ -988,6 +992,8 @@ const toJson = function (
     bua: p.bua,
     icb: p.icb,
     cancer_alliance: p.cancer_alliance,
+    lsoa11: p.lsoa,
+    msoa11: p.msoa,
     lsoa21: p.lsoa21,
     msoa21: p.msoa21,
     oa21: p.oa21_id,
@@ -1017,6 +1023,8 @@ const toJson = function (
       bua: p.bua_id,
       icb: p.icb_id,
       cancer_alliance: p.cancer_alliance_id,
+      lsoa11: p.lsoa_id,
+      msoa11: p.msoa_id,
       lsoa21: p.lsoa21_id,
       msoa21: p.msoa21_id,
       oa21: p.oa21_id,

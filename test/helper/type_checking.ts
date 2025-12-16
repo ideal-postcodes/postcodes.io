@@ -130,6 +130,8 @@ const postcodeAttributes = [
   "bua",
   "icb",
   "cancer_alliance",
+  "lsoa11",
+  "msoa11",
   "lsoa21",
   "msoa21",
   "oa21",
