@@ -691,13 +691,13 @@ components:
           title: Lower Layer Super Output Area
           type: string
           nullable: true
-          description: 2011 Census LSOA code (smaller statistical area, typically 1,000-1,500 residents).
+          description: 2021 Census LSOA code (smaller statistical area, typically 1,000-1,500 residents). Now points to 2021 data.
           example: Westminster 018C
         msoa:
           title: Middle Layer Super Output Area
           type: string
           nullable: true
-          description: 2011 Census MSOA code (mid-size statistical area, typically 5,000-7,000 residents).
+          description: 2021 Census MSOA code (mid-size statistical area, typically 5,000-7,000 residents). Now points to 2021 data.
           example: Westminster 018
         ced:
           title: County Electoral District
@@ -892,13 +892,13 @@ components:
               title: LSOA GSS Code
               type: string
               nullable: true
-              description: Official 9-character GSS code for this Lower Layer Super Output Area.
+              description: Official 9-character GSS code for this 2021 Census LSOA.
               example: E01004736
             msoa:
               title: MSOA GSS Code
               type: string
               nullable: true
-              description: Official 9-character GSS code for this Middle Layer Super Output Area.
+              description: Official 9-character GSS code for this 2021 Census MSOA.
               example: E02000977
             pfa:
               title: PFA GSS Code
