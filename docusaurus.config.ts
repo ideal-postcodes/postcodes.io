@@ -181,7 +181,7 @@ const config: Config = {
         docsPluginId: "classic",
         config: {
           ideal: {
-            specPath: "public/openapi.yaml",
+            specPath: "static/openapi.yaml",
             outputDir: "docs/api",
             sidebarOptions: {
               groupPathsBy: "tag",
