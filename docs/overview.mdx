@@ -53,6 +53,21 @@ GET https://api.postcodes.io/postcodes/BR87RE
     "ccg": "NHS Kent and Medway",
     "nuts": "Sevenoaks",
     "pfa": "Kent",
+    "nhs_region": "South East",
+    "ttwa": "Maidstone and North Kent",
+    "national_park": null,
+    "bua": "Swanley",
+    "icb": "NHS Kent and Medway Integrated Care Board",
+    "cancer_alliance": "Kent and Medway Cancer Alliance",
+    "lsoa11": "Sevenoaks 001A",
+    "msoa11": "Sevenoaks 001",
+    "lsoa21": "Sevenoaks 001A",
+    "msoa21": "Sevenoaks 001",
+    "oa21": "E00058164",
+    "ruc11": "Urban city and town",
+    "ruc21": "Urban city and town",
+    "lep1": "South East",
+    "lep2": null,
     "codes": {
       "admin_district": "E07000111",
       "admin_county": "E10000016",
@@ -67,7 +82,22 @@ GET https://api.postcodes.io/postcodes/BR87RE
       "lsoa": "E01024445",
       "msoa": "E02005087",
       "lau2": "E07000111",
-      "pfa": "E23000032"
+      "pfa": "E23000032",
+      "nhs_region": "E40000005",
+      "ttwa": "E30000188",
+      "national_park": null,
+      "bua": "E34001422",
+      "icb": "E54000032",
+      "cancer_alliance": "E56000004",
+      "lsoa11": "E01024445",
+      "msoa11": "E02005087",
+      "lsoa21": "E01024445",
+      "msoa21": "E02005087",
+      "oa21": "E00058164",
+      "ruc11": "C1",
+      "ruc21": "C1",
+      "lep1": "E37000025",
+      "lep2": null
     }
   }
 }
@@ -85,6 +115,32 @@ GET https://api.postcodes.io/postcodes/BR87RE
 
 Beyond the dates listed above, please be aware that the real-world dataset may change. Existing postcodes and places may be amended or discontinued. This information will not be captured until the next available update.
 :::
+
+## Data Accuracy & Limitations
+
+### Coordinate Systems
+
+The API provides coordinates in two distinct systems depending on the location:
+
+- **Great Britain:** Grid references (`eastings`, `northings`) use the **British National Grid**.
+- **Northern Ireland:** Grid references use the **Irish National Grid**.
+- **Channel Islands & Isle of Man:** These records do not possess grid references. The `eastings`, `northings`, `latitude`, and `longitude` fields will be `null` or blank.
+
+Latitude and longitude are derived from these grid references using specific transformations (`OSGB_1936_to_WGS_1984_Petroleum` for GB and `TM75_to_WGS_1984_2` for NI).
+
+### Boundary "Straddling"
+
+Postcodes are assigned to administrative areas (like Wards or Constituencies) based on a single "centroid" coordinate—the mean location of all addresses in that postcode.
+
+- **Limitation:** If a postcode physically straddles a boundary (e.g., a street split between two councils), the entire postcode is assigned to the area where the centroid falls.
+- **Impact:** This means addresses at the edge of a postcode may appear to be assigned to the "wrong" administrative area compared to their physical location.
+
+### Pseudo Codes
+
+In the `codes` object, you may encounter "pseudo codes" instead of standard GSS codes. These are used when a specific geography does not strictly apply to the region (e.g., Scotland does not use standard "County" definitions).
+
+- **Format:** Typically `L99999999` (Channel Islands), `M99999999` (Isle of Man), `N99999999` (Northern Ireland), or `S99999999` (Scotland).
+- **Recommendation:** Client logic should handle these specific codes as "Not Applicable" rather than treating them as valid IDs.
 
 ## Endpoint
 

@@ -1,0 +1,21 @@
+{
+  "1": "(Scotland) Large Urban Area",
+  "2": "(Scotland) Other Urban Area",
+  "3": "(Scotland) Accessible Small Town",
+  "4": "(Scotland) Remote Small Town",
+  "5": "(Scotland) Very Remote Small Town",
+  "6": "(Scotland) Accessible Rural",
+  "7": "(Scotland) Remote Rural",
+  "8": "(Scotland) Very Remote Rural",
+  "A1": "(England/Wales) Urban major conurbation",
+  "B1": "(England/Wales) Urban minor conurbation",
+  "C1": "(England/Wales) Urban city and town",
+  "C2": "(England/Wales) Urban city and town in a sparse setting",
+  "D1": "(England/Wales) Rural town and fringe",
+  "D2": "(England/Wales) Rural town and fringe in a sparse setting",
+  "E1": "(England/Wales) Rural village",
+  "E2": "(England/Wales) Rural village in a sparse setting",
+  "F1": "(England/Wales) Rural hamlet and isolated dwellings",
+  "F2": "(England/Wales) Rural hamlet and isolated dwellings in a sparse setting",
+  "Z9": "(pseudo) Channel Islands/Isle of Man"
+}

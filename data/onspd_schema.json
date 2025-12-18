@@ -3,7 +3,7 @@
   { "code": "pcd2", "description": "Unit Postcode (8 Char)" },
   { "code": "pcds", "description": "Unit Postcode (Variable)" },
   { "code": "dointr", "description": "Date of Introduction" },
-  { "code": "doterm", "description": "Date of Termnation" },
+  { "code": "doterm", "description": "Date of Termination" },
   { "code": "oscty", "description": "County" },
   { "code": "ced", "description": "County Electoral Division" },
   { "code": "oslaua", "description": "Local Authority District (LAD)" },
@@ -14,7 +14,7 @@
   { "code": "osnrth1m", "description": "Northings" },
   { "code": "osgrdind", "description": "Positional Quality Indicator" },
   { "code": "oshlthau", "description": "Strategic Health Authority" },
-  { "code": "nhser", "description": "NHS England (Region) (NHS ER)" },
+  { "code": "nhser", "description": "NHS England Region" },
   { "code": "ctry", "description": "Country" },
   { "code": "rgn", "description": "Region (former GOR)" },
   { "code": "streg", "description": "Standard Region (SSR)" },
@@ -36,28 +36,20 @@
   { "code": "lsoa11", "description": "2011 LSOA" },
   { "code": "msoa11", "description": "2011 MSOA" },
   { "code": "wz11", "description": "Census Workplace Zone" },
-  { "code": "ccg", "description": "Clinical Commissioning Group" },
-  { "code": "bua11", "description": "Built-up Area" },
-  { "code": "ru11ind", "description": "Census Rural Urban Classification" },
-  { "code": "oac11", "description": "2011 Census Output Area (OAC)" },
+  { "code": "ccg", "description": "Sub-ICB Location (formerly CCG)" },
+  { "code": "bua22", "description": "Built-up Area (2022/2024)" },
+  { "code": "ru11ind", "description": "2011 Rural Urban Classification" },
+  { "code": "oac11", "description": "2011 Census Output Area Classification" },
   { "code": "lat", "description": "Decimal degrees latitude" },
   { "code": "long", "description": "Decimal degrees longitude" },
-  {
-    "code": "lep1",
-    "description": "Local Enterprise Partnership (First instance)"
-  },
-  {
-    "code": "lep2",
-    "description": "Local Enterprise Partnership (Second instance)"
-  },
+  { "code": "lep1", "description": "Local Enterprise Partnership (First instance)" },
+  { "code": "lep2", "description": "Local Enterprise Partnership (Second instance)" },
   { "code": "pfa", "description": "Police Force Area" },
   { "code": "imd", "description": "Index of Multiple Deprivation" },
-  {
-    "code": "calncv",
-    "description": "Cancer Alliance / National Cancer Vanguard"
-  },
-  {
-    "code": "stp",
-    "description": "Sustainability and Transformation Partnership"
-  }
+  { "code": "calncv", "description": "Cancer Alliance" },
+  { "code": "icb", "description": "Integrated Care Board" },
+  { "code": "oa21", "description": "2021 Census Output Area" },
+  { "code": "lsoa21", "description": "2021 LSOA / Data Zone (Scotland)" },
+  { "code": "msoa21", "description": "2021 MSOA / Intermediate Zone (Scotland)" },
+  { "code": "ru21ind", "description": "2021 Rural Urban Classification" }
 ]

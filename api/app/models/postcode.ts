@@ -51,6 +51,22 @@ export interface PostcodeInterface {
   ccg: string | null;
   nuts: string | null;
   pfa: string | null;
+  // New fields (Nov 2025)
+  nhs_region: string | null;
+  ttwa: string | null;
+  national_park: string | null;
+  bua: string | null;
+  icb: string | null;
+  cancer_alliance: string | null;
+  lsoa11: string | null;
+  msoa11: string | null;
+  lsoa21: string | null;
+  msoa21: string | null;
+  oa21: string | null;
+  ruc11: string | null;
+  ruc21: string | null;
+  lep1: string | null;
+  lep2: string | null;
   codes: {
     admin_district: string;
     admin_county: string;
@@ -66,6 +82,22 @@ export interface PostcodeInterface {
     msoa: string | null;
     lau2: string | null;
     pfa: string | null;
+    // New codes (Nov 2025)
+    nhs_region: string | null;
+    ttwa: string | null;
+    national_park: string | null;
+    bua: string | null;
+    icb: string | null;
+    cancer_alliance: string | null;
+    lsoa11: string | null;
+    msoa11: string | null;
+    lsoa21: string | null;
+    msoa21: string | null;
+    oa21: string | null;
+    ruc11: string | null;
+    ruc21: string | null;
+    lep1: string | null;
+    lep2: string | null;
   };
 }
 
@@ -111,6 +143,32 @@ export interface PostcodeTuple {
   nuts: string | null;
   pfa_id: string | null;
   pfa: string | null;
+  // New fields (Nov 2025)
+  nhs_region_id: string | null;
+  nhs_region: string | null;
+  ttwa_id: string | null;
+  ttwa: string | null;
+  national_park_id: string | null;
+  national_park: string | null;
+  bua_id: string | null;
+  bua: string | null;
+  icb_id: string | null;
+  icb: string | null;
+  cancer_alliance_id: string | null;
+  cancer_alliance: string | null;
+  lsoa21_id: string | null;
+  lsoa21: string | null;
+  msoa21_id: string | null;
+  msoa21: string | null;
+  oa21_id: string | null;
+  ruc11_id: string | null;
+  ruc11: string | null;
+  ruc21_id: string | null;
+  ruc21: string | null;
+  lep1_id: string | null;
+  lep1: string | null;
+  lep2_id: string | null;
+  lep2: string | null;
 }
 
 const relation: Relation = {
@@ -144,6 +202,20 @@ const relation: Relation = {
     constituency_id: "VARCHAR(32)",
     date_of_introduction: "VARCHAR(6)",
     pfa_id: "VARCHAR(32)",
+    // New ONSPD fields (Nov 2025)
+    nhs_region_id: "VARCHAR(32)",
+    ttwa_id: "VARCHAR(32)",
+    national_park_id: "VARCHAR(32)",
+    bua_id: "VARCHAR(32)",
+    icb_id: "VARCHAR(32)",
+    cancer_alliance_id: "VARCHAR(32)",
+    lsoa21_id: "VARCHAR(32)",
+    msoa21_id: "VARCHAR(32)",
+    oa21_id: "VARCHAR(32)",
+    ruc11_id: "VARCHAR(32)",
+    ruc21_id: "VARCHAR(32)",
+    lep1_id: "VARCHAR(32)",
+    lep2_id: "VARCHAR(32)",
   },
   indexes: [
     {
@@ -227,6 +299,69 @@ const relationships: Relationship[] = [
     key: "pfa_id",
     foreignKey: "code",
   },
+  // New relationships (Nov 2025)
+  {
+    table: "nhs_regions",
+    key: "nhs_region_id",
+    foreignKey: "code",
+  },
+  {
+    table: "ttwa",
+    key: "ttwa_id",
+    foreignKey: "code",
+  },
+  {
+    table: "national_parks",
+    key: "national_park_id",
+    foreignKey: "code",
+  },
+  {
+    table: "bua",
+    key: "bua_id",
+    foreignKey: "code",
+  },
+  {
+    table: "icb",
+    key: "icb_id",
+    foreignKey: "code",
+  },
+  {
+    table: "cancer_alliances",
+    key: "cancer_alliance_id",
+    foreignKey: "code",
+  },
+  {
+    table: "lsoa21",
+    key: "lsoa21_id",
+    foreignKey: "code",
+  },
+  {
+    table: "msoa21",
+    key: "msoa21_id",
+    foreignKey: "code",
+  },
+  {
+    table: "ruc11",
+    key: "ruc11_id",
+    foreignKey: "code",
+  },
+  {
+    table: "ruc21",
+    key: "ruc21_id",
+    foreignKey: "code",
+  },
+  {
+    table: "lep",
+    key: "lep1_id",
+    foreignKey: "code",
+    alt: "lep1",
+  },
+  {
+    table: "lep",
+    key: "lep2_id",
+    foreignKey: "code",
+    alt: "lep2",
+  },
 ];
 
 const joinString: string = Object.freeze(
@@ -292,6 +427,55 @@ const foreignColumns: ForeignColumn[] = [
   {
     field: "police_force_areas.name",
     as: "pfa",
+  },
+  // New foreign columns (Nov 2025)
+  {
+    field: "nhs_regions.name",
+    as: "nhs_region",
+  },
+  {
+    field: "ttwa.name",
+    as: "ttwa",
+  },
+  {
+    field: "national_parks.name",
+    as: "national_park",
+  },
+  {
+    field: "bua.name",
+    as: "bua",
+  },
+  {
+    field: "icb.name",
+    as: "icb",
+  },
+  {
+    field: "cancer_alliances.name",
+    as: "cancer_alliance",
+  },
+  {
+    field: "lsoa21.name",
+    as: "lsoa21",
+  },
+  {
+    field: "msoa21.name",
+    as: "msoa21",
+  },
+  {
+    field: "ruc11.name",
+    as: "ruc11",
+  },
+  {
+    field: "ruc21.name",
+    as: "ruc21",
+  },
+  {
+    field: "lep1.name",
+    as: "lep1",
+  },
+  {
+    field: "lep2.name",
+    as: "lep2",
   },
 ];
 
@@ -786,8 +970,8 @@ const toJson = function (
     european_electoral_region: p.european_electoral_region,
     primary_care_trust: p.primary_care_trust,
     region: p.region,
-    lsoa: p.lsoa,
-    msoa: p.msoa,
+    lsoa: p.lsoa21,
+    msoa: p.msoa21,
     incode: p.incode,
     outcode: p.outcode,
     parliamentary_constituency: p.parliamentary_constituency,
@@ -801,6 +985,22 @@ const toJson = function (
     ccg: p.ccg,
     nuts: p.nuts,
     pfa: p.pfa,
+    // New fields (Nov 2025)
+    nhs_region: p.nhs_region,
+    ttwa: p.ttwa,
+    national_park: p.national_park,
+    bua: p.bua,
+    icb: p.icb,
+    cancer_alliance: p.cancer_alliance,
+    lsoa11: p.lsoa,
+    msoa11: p.msoa,
+    lsoa21: p.lsoa21,
+    msoa21: p.msoa21,
+    oa21: p.oa21_id,
+    ruc11: p.ruc11,
+    ruc21: p.ruc21,
+    lep1: p.lep1,
+    lep2: p.lep2,
     codes: {
       admin_district: p.admin_district_id,
       admin_county: p.admin_county_id,
@@ -812,10 +1012,26 @@ const toJson = function (
       ccg_id: p.ccg_code,
       ced: p.ced_id,
       nuts: p.nuts_code,
-      lsoa: p.lsoa_id,
-      msoa: p.msoa_id,
+      lsoa: p.lsoa21_id,
+      msoa: p.msoa21_id,
       lau2: p.nuts_id,
       pfa: p.pfa_id,
+      // New codes (Nov 2025)
+      nhs_region: p.nhs_region_id,
+      ttwa: p.ttwa_id,
+      national_park: p.national_park_id,
+      bua: p.bua_id,
+      icb: p.icb_id,
+      cancer_alliance: p.cancer_alliance_id,
+      lsoa11: p.lsoa_id,
+      msoa11: p.msoa_id,
+      lsoa21: p.lsoa21_id,
+      msoa21: p.msoa21_id,
+      oa21: p.oa21_id,
+      ruc11: p.ruc11_id,
+      ruc21: p.ruc21_id,
+      lep1: p.lep1_id,
+      lep2: p.lep2_id,
     },
     // Insert distance if present
     //@ts-ignore
@@ -883,13 +1099,27 @@ const seedPostcodes = async (filepath: string) => {
     { column: "ccg_id", method: (row) => row.extract("ccg") },
     { column: "date_of_introduction", method: (row) => row.extract("dointr") },
     { column: "pfa_id", method: (row) => row.extract("pfa") },
+    // New mappings (Nov 2025)
+    { column: "nhs_region_id", method: (row) => row.extract("nhser") },
+    { column: "ttwa_id", method: (row) => row.extract("ttwa") },
+    { column: "national_park_id", method: (row) => row.extract("park") },
+    { column: "bua_id", method: (row) => row.extract("bua22") },
+    { column: "icb_id", method: (row) => row.extract("icb") },
+    { column: "cancer_alliance_id", method: (row) => row.extract("calncv") },
+    { column: "lsoa21_id", method: (row) => row.extract("lsoa21") },
+    { column: "msoa21_id", method: (row) => row.extract("msoa21") },
+    { column: "oa21_id", method: (row) => row.extract("oa21") },
+    { column: "ruc11_id", method: (row) => row.extract("ru11ind") },
+    { column: "ruc21_id", method: (row) => row.extract("ru21ind") },
+    { column: "lep1_id", method: (row) => row.extract("lep1") },
+    { column: "lep2_id", method: (row) => row.extract("lep2") },
   ]);
 
   await methods.csvSeed({
     filepath: [filepath],
     transform: (row: RowExtract) => {
       row.extract = (code: string) => extractOnspdVal(row, code); // Append csv extraction logic
-      if (row.extract("pcd") === "pcd") return null; // Skip if header
+      if (row.extract("pcds") === "pcds") return null; // Skip if header
       if (row.extract("doterm") && row.extract("doterm").length !== 0)
         return null; // Skip row if terminated
       return ONSPD_COL_MAPPINGS.map((elem) => elem.method(row));

@@ -12,6 +12,18 @@ import {
   ScottishConstituency,
   Outcode,
   PoliceForceArea,
+  // New models (Nov 2025)
+  NhsRegion,
+  Ttwa,
+  NationalPark,
+  Bua,
+  Icb,
+  CancerAlliance,
+  Lsoa21,
+  Msoa21,
+  Ruc11,
+  Ruc21,
+  Lep,
 } from "../models/index";
 
 // List of support tables generated from data/ directory
@@ -28,6 +40,18 @@ export const SUPPORT_TABLES = [
   Ward,
   ScottishConstituency,
   PoliceForceArea,
+  // New models (Nov 2025)
+  NhsRegion,
+  Ttwa,
+  NationalPark,
+  Bua,
+  Icb,
+  CancerAlliance,
+  Lsoa21,
+  Msoa21,
+  Ruc11,
+  Ruc21,
+  Lep,
 ];
 
 /**

@@ -51,6 +51,11 @@ test-down:
 test-shell:
 	docker compose -f docker/test/docker-compose.yml exec api /bin/bash
 
+## Execute command in test container
+.PHONY: test-exec
+test-exec:
+	docker compose -f docker/test/docker-compose.yml exec api $(filter-out $@,$(MAKECMDGOALS))
+
 ## Tail test service logs
 .PHONY: test-logs
 test-logs:
