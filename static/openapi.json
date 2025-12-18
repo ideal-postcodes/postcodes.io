@@ -695,9 +695,9 @@
             "example": "1AA"
           },
           "quality": {
-            "title": "Positional Quality",
+            "title": "Positional Quality Indicator",
             "type": "integer",
-            "description": "Indicates accuracy of the grid reference location:\n\n* 1: Within the actual building (most accurate)\n* 2: Same as 1, but verified by Landline maps (Scotland only)\n* 3: Approximate location within 50m\n* 4: Postcode unit mean (averaged from addresses with same postcode)\n* 5: Estimated by ONS using surrounding postcodes\n* 6: Postcode sector mean (mainly PO Boxes)\n* 8: Historical postcode (pre-Gridlink®)\n* 9: No grid reference available\n",
+            "description": "Positional Quality Indicator (1-9). Shows the status of the assigned grid reference:\n\n* 1: Within the building of the matched address closest to the postcode mean\n* 2: As for 1, except by visual inspection of Landline maps (Scotland only)\n* 3: Approximate to within 50 metres\n* 4: Postcode unit mean (averaged from addresses with same postcode)\n* 5: Estimated by ONS using surrounding postcodes\n* 6: Postcode sector mean (mainly PO Boxes)\n* 8: Terminated postcode (last known ONS grid reference)\n* 9: No coordinates available\n",
             "example": 1
           },
           "eastings": {
@@ -705,7 +705,7 @@
             "type": "integer",
             "format": "int32",
             "nullable": true,
-            "description": "Ordnance Survey grid reference easting (X-coordinate) with 1-meter resolution. May be null if geolocation unavailable.",
+            "description": "The OS grid reference easting (X-coordinate) to 1 metre resolution. Relates to the British National Grid for GB and the Irish National Grid for Northern Ireland. Will be null for Channel Islands and Isle of Man.",
             "example": 530047
           },
           "northings": {
@@ -713,7 +713,7 @@
             "type": "integer",
             "format": "int32",
             "nullable": true,
-            "description": "Ordnance Survey grid reference northing (Y-coordinate) with 1-meter resolution. May be null if geolocation unavailable.",
+            "description": "The OS grid reference northing (Y-coordinate) to 1 metre resolution. Relates to the British National Grid for GB and the Irish National Grid for Northern Ireland. Will be null for Channel Islands and Isle of Man.",
             "example": 179951
           },
           "country": {
@@ -965,7 +965,7 @@
           "codes": {
             "title": "Administrative Codes",
             "type": "object",
-            "description": "Standard 9-character codes (ONS/GSS) for various administrative boundaries. Useful for data linking with official statistics.",
+            "description": "Contains the GSS (Government Statistical Service) codes for administrative areas. Note: Returns 'Pseudo codes' (e.g., L99999999 for Channel Islands, M99999999 for Isle of Man, N99999999 for Northern Ireland, S99999999 for Scotland) for areas where a statutory geography does not exist. Client logic should handle these codes as 'Not Applicable' rather than treating them as valid IDs.",
             "properties": {
               "admin_district": {
                 "title": "District GSS Code",
