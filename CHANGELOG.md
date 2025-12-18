@@ -1,3 +1,29 @@
+# [18.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.7.0...18.0.0) (2025-12-18)
+
+
+### Features
+
+* **api:** Update LSOA and MSOA to 2021 Census data ([fd4426a](https://github.com/ideal-postcodes/postcodes.io/commit/fd4426a00fc73a053f1e23c03ad33a49352722d6)), closes [#1181](https://github.com/ideal-postcodes/postcodes.io/issues/1181) [#1053](https://github.com/ideal-postcodes/postcodes.io/issues/1053) [#898](https://github.com/ideal-postcodes/postcodes.io/issues/898)
+* **models:** Add lookup table models for new ONSPD fields ([b89ec32](https://github.com/ideal-postcodes/postcodes.io/commit/b89ec326c1380cedede1a7dd7f03c04ca21531d1))
+* **ONSPD:** Add extraction scripts and lookup data for new fields ([2cb312a](https://github.com/ideal-postcodes/postcodes.io/commit/2cb312a3546103f0365af282f94bdd29b1a20727))
+* **postcode:** Add lsoa11 and msoa11 as explicit aliases ([326ec47](https://github.com/ideal-postcodes/postcodes.io/commit/326ec472de16fd6eb75e765fc7b5bbd8bd63a7c7))
+* **postcode:** Add schema, mappings and API response for new fields ([afa64cb](https://github.com/ideal-postcodes/postcodes.io/commit/afa64cb5503b8a00b1b5f264ae7f89ad36937316))
+* **postcode:** Change lsoa/msoa to point to 2021 census data ([cfa7cd0](https://github.com/ideal-postcodes/postcodes.io/commit/cfa7cd028b44c1bb267db4cabfe0a333622e26f1))
+* **setup:** Add new ONSPD lookup tables to support tables array ([36e9822](https://github.com/ideal-postcodes/postcodes.io/commit/36e9822eb932700a8c142f9402b2639d75bf2130))
+
+
+### BREAKING CHANGES
+
+* **api:** lsoa and msoa fields now return 2021 Census values instead of 2011
+* **postcode:** lsoa and msoa fields now return 2021 census data
+instead of 2011 census data.
+
+- lsoa/msoa now return 2021 LSOA/MSOA names
+- codes.lsoa/codes.msoa now return 2021 GSS codes
+- lsoa11/msoa11 added as aliases for 2011 data
+- codes.lsoa11/codes.msoa11 added for 2011 codes
+- Updated OpenAPI spec and documentation
+
 # [17.7.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.6.2...17.7.0) (2025-12-12)
 
 
