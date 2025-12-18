@@ -21,7 +21,7 @@
     "test:clear": "NODE_ENV=test bin/clear_test_db",
     "docs:build": "npm run build:docs && docusaurus build",
     "docs:start": "npm run build:docs && docusaurus start",
-    "docs:openapi": "docusaurus gen-api-docs all",
+    "docs:openapi": "docusaurus clean-api-docs all && docusaurus gen-api-docs all",
     "openapi:start": "openapi preview-docs",
     "openapi:build": "openapi bundle openapi/openapi.yaml -o static/openapi.json --ext json && openapi bundle openapi/openapi.yaml -o static/openapi.yaml"
   },
