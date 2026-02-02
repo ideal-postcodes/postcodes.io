@@ -39,6 +39,7 @@ export interface Config {
   googleAnalyticsKey: string;
   postgres: PostgresConfig;
   log: LogConfig;
+  host: string;
   port: number;
   urlPrefix: string;
   defaults: any;
@@ -61,6 +62,7 @@ const config: Record<Env, Config> = {
       name: "postcodes.io",
       file: "stdout",
     },
+    host: "0.0.0.0",
     port: 8000,
     urlPrefix: "",
     defaults,
@@ -79,6 +81,7 @@ const config: Record<Env, Config> = {
       name: "postcodes.io",
       file: join(__dirname, "../test.log"),
     },
+    host: "0.0.0.0",
     port: 8000,
     urlPrefix: "",
     defaults,
@@ -97,6 +100,7 @@ const config: Record<Env, Config> = {
       name: "postcodes.io",
       file: "perf", // Use pino.extreme
     },
+    host: "0.0.0.0",
     port: 8000,
     urlPrefix: "",
     defaults,
@@ -109,6 +113,7 @@ export const getConfig = (env?: Env): Config => {
   const cfg = config[environment as Env];
 
   const {
+    HOST,
     PORT,
     POSTGRES_USER,
     POSTGRES_PASSWORD,
@@ -124,6 +129,7 @@ export const getConfig = (env?: Env): Config => {
     URL_PREFIX,
   } = process.env;
 
+  if (HOST !== undefined) cfg.host = HOST;
   if (PORT !== undefined) cfg.port = parseInt(PORT, 10);
 
   if (POSTGRES_USER !== undefined) cfg.postgres.user = POSTGRES_USER;

@@ -4,9 +4,10 @@ const config = getConfig();
 import App from "./app";
 const app = App(config);
 import { logger } from "./app/lib/logger";
+const { host } = config;
 const { port } = config;
 
-const server = app.listen(port);
+const server = app.listen(port, host);
 
 const closeSocket = (_: unknown, socket: any) => {
   if (!socket.destroyed) socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
@@ -19,6 +20,6 @@ process.on("SIGTERM", () => {
   process.exit(0);
 });
 
-logger.info(`Postcode API listening on port ${port}`);
+logger.info(`Postcode API listening on ${host} port ${port}`);
 
 module.exports = app;
