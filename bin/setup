@@ -5,7 +5,10 @@ set -o errtrace
 set -o nounset 
 set -o pipefail
 
+# Read the URL from the 'latest' file
 LATEST=`cat latest`
+# Extract the filename from the URL (e.g., postcodesio-2023.tar.gz)
+LATEST_FILENAME=$(basename "$LATEST")
 
 echo "Postcodes.io Database Setup Script"
 echo "----------------------------------"
@@ -18,26 +21,53 @@ echo "- Stream the latest pg_dump (at $LATEST) to your newly created database"
 echo "- Apply read-only privileges for the new user to the new database"
 echo ""
 
+# --- Configuration Section (Updated for Non-Interactive Mode) ---
 
-read -p "Postgresql Superuser (for database creation) [default: postgres]:" POSTGRES_SUPERUSER
+# 1. Postgres Superuser
+if [ -z "${POSTGRES_SUPERUSER:-}" ]; then
+    read -p "Postgresql Superuser (for database creation) [default: postgres]:" POSTGRES_SUPERUSER
+fi
 POSTGRES_SUPERUSER=${POSTGRES_SUPERUSER:-postgres}
 
-read -p "New Database Username (for readonly access) [default: postcodesio]:" POSTGRES_USER
+# 2. App User
+if [ -z "${POSTGRES_USER:-}" ]; then
+    read -p "New Database Username (for readonly access) [default: postcodesio]:" POSTGRES_USER
+fi
 POSTGRES_USER=${POSTGRES_USER:-postcodesio}
 
-read -p "Password for new user [default: secret]:" POSTGRES_PASSWORD
+# 3. App Password
+if [ -z "${POSTGRES_PASSWORD:-}" ]; then
+    read -p "Password for new user [default: secret]:" POSTGRES_PASSWORD
+fi
 POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-secret}
 
-read -p "Postgresql Host [default: localhost]:" POSTGRES_HOST
+# 4. Host
+if [ -z "${POSTGRES_HOST:-}" ]; then
+    read -p "Postgresql Host [default: localhost]:" POSTGRES_HOST
+fi
 POSTGRES_HOST=${POSTGRES_HOST:-localhost}
 
-read -p "Database Name [default: postcodesiodb]:" POSTGRES_DB
+# 5. Database Name
+# Handle mismatch: user might set POSTGRES_DATABASE, script expects POSTGRES_DB
+if [ -z "${POSTGRES_DB:-}" ]; then
+    # Fallback to POSTGRES_DATABASE if set, otherwise prompt
+    if [ -n "${POSTGRES_DATABASE:-}" ]; then
+        POSTGRES_DB="$POSTGRES_DATABASE"
+    else
+        read -p "Database Name [default: postcodesiodb]:" POSTGRES_DB
+    fi
+fi
 POSTGRES_DB=${POSTGRES_DB:-postcodesiodb}
 
-read -p "Postgresql Port: [default: 5432]:" POSTGRES_PORT
+# 6. Port
+if [ -z "${POSTGRES_PORT:-}" ]; then
+    read -p "Postgresql Port: [default: 5432]:" POSTGRES_PORT
+fi
 POSTGRES_PORT=${POSTGRES_PORT:-5432}
 
 PSQL="psql --username=$POSTGRES_SUPERUSER --host=$POSTGRES_HOST --port=$POSTGRES_PORT"
+
+# --- Database Logic ---
 
 # Create postgres user
 # With thanks to Erwin Brandstetter (http://stackoverflow.com/questions/8092086/create-postgresql-role-user-if-it-doesnt-exist)
@@ -72,10 +102,27 @@ fi
 
 sleep 1
 
-# Download and install
-echo "Dowloading latest dataset and importing to Postgresql\n"
-echo "Please wait a few minutes for this operation to finish...\n"
-wget -O - $LATEST | gunzip -c | $PSQL --dbname=$POSTGRES_DB -v ON_ERROR_STOP=1 --quiet
+# --- Import Logic (Updated for Local File Check) ---
+
+echo "Preparing to import dataset..."
+
+if [ -f "$LATEST_FILENAME" ]; then
+    # Case A: Local file exists
+    echo "Found local file: $LATEST_FILENAME"
+    echo "Importing from local file...\n"
+    echo "Please wait a few minutes for this operation to finish...\n"
+
+    # Check if the file is gzipped based on extension or just try gunzip
+    cat "$LATEST_FILENAME" | gunzip -c | $PSQL --dbname=$POSTGRES_DB -v ON_ERROR_STOP=1 --quiet
+else
+    # Case B: Local file not found, use original streaming download
+    echo "Local file '$LATEST_FILENAME' not found."
+    echo "Downloading latest dataset from $LATEST and importing to Postgresql (Streaming)...\n"
+    echo "Please wait a few minutes for this operation to finish...\n"
+
+    wget -O - $LATEST | gunzip -c | $PSQL --dbname=$POSTGRES_DB -v ON_ERROR_STOP=1 --quiet
+fi
+
 echo "Done\n"
 
 # Grant Permissions on App User
@@ -84,6 +131,7 @@ echo "Granting read (SELECT) permissions on new user..."
 COMMAND="GRANT CONNECT ON DATABASE $POSTGRES_DB TO $POSTGRES_USER; \
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO $POSTGRES_USER; \
 "
+
 if echo $COMMAND | $PSQL --dbname=$POSTGRES_DB
 then
 	echo "Done\n"
