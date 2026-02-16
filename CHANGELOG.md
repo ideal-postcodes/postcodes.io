@@ -1,3 +1,10 @@
+## [18.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/18.0.0...18.0.1) (2026-02-16)
+
+
+### Bug Fixes
+
+* **Release:** Trigger fixed DB build ([955c43f](https://github.com/ideal-postcodes/postcodes.io/commit/955c43f2f7eead5bf9205165f2d8f51dcbd440e3))
+
 # [18.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/17.7.0...18.0.0) (2025-12-18)
 
 
