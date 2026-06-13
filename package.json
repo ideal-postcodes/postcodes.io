@@ -67,7 +67,7 @@
     "@docusaurus/module-type-aliases": "~3.9.2",
     "@docusaurus/preset-classic": "~3.9.2",
     "@docusaurus/theme-classic": "~3.9.2",
-    "@docusaurus/theme-common": "~3.9.2",
+    "@docusaurus/theme-common": "~3.10.1",
     "@docusaurus/tsconfig": "~3.9.2",
     "@docusaurus/types": "~3.9.2",
     "@ideal-postcodes/openapi": "~4.18.1",
