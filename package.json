@@ -96,7 +96,7 @@
     "prism-react-renderer": "~2.4.1",
     "process": "~0.11.10",
     "react": "~19.2.6",
-    "react-dom": "~19.2.6",
+    "react-dom": "~19.2.7",
     "react-markdown": "~10.1.0",
     "react-redux": "~9.2.0",
     "semantic-release": "~25.0.3",
