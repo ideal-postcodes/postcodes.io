@@ -34,8 +34,8 @@ importers:
         specifier: ~1.2.8
         version: 1.2.8
       morgan:
-        specifier: ~1.10.1
-        version: 1.10.1
+        specifier: ~1.11.0
+        version: 1.11.0
       pg:
         specifier: ~8.16.3
         version: 8.16.3
@@ -1613,8 +1613,8 @@ packages:
       '@types/react': '>=16'
       react: '>=16'
 
-  '@napi-rs/wasm-runtime@1.1.5':
-    resolution: {integrity: sha512-AWPoBRJ9tsnVhor4sjO7rkni+7p+2IAEFj6cx06UgP10jkQHqay/36uRV/bFkgrh18D9vb4cr8Q0Pthskgzy+Q==}
+  '@napi-rs/wasm-runtime@1.1.6':
+    resolution: {integrity: sha512-ZLv/JdUfkvOy9eCnnBaGfiO+XimbjebAeO+MRQqD/B+FR1tnRN0tpKSJHRbE8sFfS6aqsXZ67TQjfwfsxULVbg==}
     peerDependencies:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
@@ -2333,8 +2333,8 @@ packages:
   '@tsconfig/docusaurus@2.0.9':
     resolution: {integrity: sha512-0jVxZCgy2v7TnJrW9kVNikNwJHeiWb68Zhiiw2vHw4tzBFSP5vS2zn3O5EY2oPEVz5dXZRkK7MnWG3Ay5q0mIg==}
 
-  '@tybys/wasm-util@0.10.2':
-    resolution: {integrity: sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==}
+  '@tybys/wasm-util@0.10.3':
+    resolution: {integrity: sha512-F3fo1MYrRJYL3zER0OUOmkutjr1Vp23m7OsSgp7nq4SP6OqX6C/56XFIPAl5bt3zaBRjmW7SGz3u/6LwFpYcOg==}
 
   '@types/async@3.2.25':
     resolution: {integrity: sha512-O6Th/DI18XjrL9TX8LO9F/g26qAz5vynmQqlXt/qLGrskvzCKXKc5/tATz3G2N6lM8eOf3M8/StB14FncAmocg==}
@@ -5508,8 +5508,8 @@ packages:
   mobx@6.12.3:
     resolution: {integrity: sha512-c8NKkO4R2lShkSXZ2Ongj1ycjugjzFFo/UswHBnS62y07DMcTc9Rvo03/3nRyszIvwPNljlkd4S828zIBv/piw==}
 
-  morgan@1.10.1:
-    resolution: {integrity: sha512-223dMRJtI/l25dJKWpgij2cMtywuG/WiUKXdvwfbhGKBhy1puASqXwFzmWZ7+K73vUPoR7SS2Qz2cI/g9MKw0A==}
+  morgan@1.11.0:
+    resolution: {integrity: sha512-zSkVu3t18r39pw4ixfBKvfZi3y2UOqr7d4WYwcj3m8nXpEQK4rPO6GLzs/CExoRgmX3y9EjmmcXqv6jq0SK46g==}
     engines: {node: '>= 0.8.0'}
 
   mri@1.2.0:
@@ -5539,6 +5539,11 @@ packages:
 
   nanoid@3.3.12:
     resolution: {integrity: sha512-ZB9RH/39qpq5Vu6Y+NmUaFhQR6pp+M2Xt76XBnEwDaGcVAqhlvxrl3B2bKS5D3NH3QR76v3aSrKaF/Kiy7lEtQ==}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
+  nanoid@3.3.15:
+    resolution: {integrity: sha512-y7Wygv/7mEOvxTuEQDB8StXdMRBWf1kR/tlhAzBRUFkB2jfcLOAxO/SHmOO2zgz1pVgK29/kyupn059/bCHdjA==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
@@ -5832,10 +5837,6 @@ packages:
   on-exit-leak-free@2.1.2:
     resolution: {integrity: sha512-0eJJY6hXLGf1udHwfNftBqH+g73EU4B504nZeKpz1sYRKafAghwxEJunB2O7rDZkL4PGfsMVnTXZ2EjibbqcsA==}
     engines: {node: '>=14.0.0'}
-
-  on-finished@2.3.0:
-    resolution: {integrity: sha512-ikqdkGAAyf/X/gPhXGvfgAytDZtDbr+bkNUJ0N9h5MI/dmdgCs3l6hoHrcUv41sRKew3jIwrp4qQDXiK99Utww==}
-    engines: {node: '>= 0.8'}
 
   on-finished@2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
@@ -6131,6 +6132,10 @@ packages:
 
   picomatch@4.0.4:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
+    engines: {node: '>=12'}
+
+  picomatch@4.0.5:
+    resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
     engines: {node: '>=12'}
 
   pify@3.0.0:
@@ -6568,6 +6573,10 @@ packages:
 
   postcss@8.5.15:
     resolution: {integrity: sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==}
+    engines: {node: ^10 || ^12 || >=14}
+
+  postcss@8.5.16:
+    resolution: {integrity: sha512-vuwillviilfKZsg0VGj5R/YwwcHx4SLsIOI/7K6mQkWx+l5cUHTjj5g0AasTBcyXsbfTgrwsUNmVUb5xVwyPwg==}
     engines: {node: ^10 || ^12 || >=14}
 
   postgres-array@2.0.0:
@@ -10734,11 +10743,11 @@ snapshots:
       '@types/react': 19.1.17
       react: 19.2.6
 
-  '@napi-rs/wasm-runtime@1.1.5(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)':
+  '@napi-rs/wasm-runtime@1.1.6(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)':
     dependencies:
       '@emnapi/core': 1.10.0
       '@emnapi/runtime': 1.10.0
-      '@tybys/wasm-util': 0.10.2
+      '@tybys/wasm-util': 0.10.3
     optional: true
 
   '@noble/hashes@1.4.0': {}
@@ -11309,7 +11318,7 @@ snapshots:
     dependencies:
       '@emnapi/core': 1.10.0
       '@emnapi/runtime': 1.10.0
-      '@napi-rs/wasm-runtime': 1.1.5(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
+      '@napi-rs/wasm-runtime': 1.1.6(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
     optional: true
 
   '@rolldown/binding-win32-arm64-msvc@1.0.0':
@@ -11610,7 +11619,7 @@ snapshots:
 
   '@tsconfig/docusaurus@2.0.9': {}
 
-  '@tybys/wasm-util@0.10.2':
+  '@tybys/wasm-util@0.10.3':
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -13492,6 +13501,10 @@ snapshots:
   fdir@6.5.0(picomatch@4.0.4):
     optionalDependencies:
       picomatch: 4.0.4
+
+  fdir@6.5.0(picomatch@4.0.5):
+    optionalDependencies:
+      picomatch: 4.0.5
 
   feed@4.2.2:
     dependencies:
@@ -15494,12 +15507,12 @@ snapshots:
 
   mobx@6.12.3: {}
 
-  morgan@1.10.1:
+  morgan@1.11.0:
     dependencies:
       basic-auth: 2.0.1
       debug: 2.6.9
       depd: 2.0.0
-      on-finished: 2.3.0
+      on-finished: 2.4.1
       on-headers: 1.1.0
     transitivePeerDependencies:
       - supports-color
@@ -15526,6 +15539,8 @@ snapshots:
       thenify-all: 1.6.0
 
   nanoid@3.3.12: {}
+
+  nanoid@3.3.15: {}
 
   negotiator@0.6.3: {}
 
@@ -15677,10 +15692,6 @@ snapshots:
   obug@2.1.1: {}
 
   on-exit-leak-free@2.1.2: {}
-
-  on-finished@2.3.0:
-    dependencies:
-      ee-first: 1.1.1
 
   on-finished@2.4.1:
     dependencies:
@@ -15980,6 +15991,8 @@ snapshots:
   picomatch@2.3.2: {}
 
   picomatch@4.0.4: {}
+
+  picomatch@4.0.5: {}
 
   pify@3.0.0: {}
 
@@ -16475,6 +16488,12 @@ snapshots:
   postcss@8.5.15:
     dependencies:
       nanoid: 3.3.12
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
+
+  postcss@8.5.16:
+    dependencies:
+      nanoid: 3.3.15
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
@@ -17838,8 +17857,8 @@ snapshots:
 
   tinyglobby@0.2.17:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
+      fdir: 6.5.0(picomatch@4.0.5)
+      picomatch: 4.0.5
 
   tinypool@1.1.1: {}
 
@@ -18155,8 +18174,8 @@ snapshots:
   vite@8.0.12(@types/node@25.9.3)(jiti@1.21.7)(sass@1.99.0)(terser@5.48.0):
     dependencies:
       lightningcss: 1.32.0
-      picomatch: 4.0.4
-      postcss: 8.5.15
+      picomatch: 4.0.5
+      postcss: 8.5.16
       rolldown: 1.0.0
       tinyglobby: 0.2.17
     optionalDependencies:
