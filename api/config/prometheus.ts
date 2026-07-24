@@ -30,7 +30,7 @@ const paths: [RegExp, string][] = [
  *
  * e.g. /postcodes/sw1a2aa -> /postcodes/:postcode
  */
-const normalizePath = (request: Request): string => {
+export const normalizePath = (request: Request): string => {
   for (const [regex, path] of paths) {
     if (regex.test(request.path)) return path;
   }
