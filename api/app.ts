@@ -3,6 +3,7 @@ import { Config } from "./config/config";
 import logger from "./config/logger";
 import { expressConfig } from "./config/express";
 import { prometheusConfig } from "./config/prometheus";
+import { posthogConfig } from "./config/posthog";
 import { routes } from "./config/routes";
 import { rendererConfig } from "./config/renderer";
 
@@ -11,6 +12,7 @@ export default (config: Config): express.Express => {
   logger(app, config);
   expressConfig(app, config);
   prometheusConfig(app, config);
+  posthogConfig(app, config);
   routes(app);
   rendererConfig(app);
   return app;

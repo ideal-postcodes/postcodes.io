@@ -46,6 +46,8 @@ export interface Config {
   httpHeaders?: Record<string, string>;
   prometheusUsername?: string;
   prometheusPassword?: string;
+  posthogApiKey?: string;
+  posthogHost?: string;
 }
 
 const config: Record<Env, Config> = {
@@ -125,6 +127,8 @@ export const getConfig = (env?: Env): Config => {
     LOG_DESTINATION,
     PROMETHEUS_USERNAME,
     PROMETHEUS_PASSWORD,
+    POSTHOG_API_KEY,
+    POSTHOG_HOST,
     HTTP_HEADERS,
     URL_PREFIX,
   } = process.env;
@@ -150,6 +154,9 @@ export const getConfig = (env?: Env): Config => {
     cfg.prometheusUsername = PROMETHEUS_USERNAME;
   if (PROMETHEUS_PASSWORD !== undefined)
     cfg.prometheusPassword = PROMETHEUS_PASSWORD;
+
+  if (POSTHOG_API_KEY !== undefined) cfg.posthogApiKey = POSTHOG_API_KEY;
+  if (POSTHOG_HOST !== undefined) cfg.posthogHost = POSTHOG_HOST;
 
   if (URL_PREFIX !== undefined) cfg.urlPrefix = URL_PREFIX;
 

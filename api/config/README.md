@@ -40,6 +40,11 @@ GA_KEY
 PROMETHEUS_USERNAME
 PROMETHEUS_PASSWORD
 
+# Inserts optional PostHog monitoring middleware
+# Captures an `api_request` event per request (normalized path, method, status, duration)
+POSTHOG_API_KEY # PostHog project API key. Monitoring is disabled if unset
+POSTHOG_HOST # Optional PostHog instance host, e.g. https://eu.i.posthog.com
+
 # Application defaults configuration
 NEAREST_RADIUS_DEFAULT       # /postcodes?lon=&lat= radius default (metres, default 100)
 NEAREST_RADIUS_MAX           # /postcodes?lon=&lat= radius cap (metres, default 2000)

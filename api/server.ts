@@ -3,6 +3,7 @@ const config = getConfig();
 import App from "./app";
 const app = App(config);
 import { logger } from "./app/lib/logger";
+import { shutdownPosthog } from "./config/posthog";
 const { host } = config;
 const { port } = config;
 
@@ -14,8 +15,9 @@ const closeSocket = (_: unknown, socket: any) => {
 server.on("clientError", closeSocket);
 server.on("connect", closeSocket);
 
-process.on("SIGTERM", () => {
+process.on("SIGTERM", async () => {
   logger.info("Quitting Postcode API");
+  await shutdownPosthog();
   process.exit(0);
 });
 
