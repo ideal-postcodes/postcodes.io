@@ -179,6 +179,19 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   plugins: [
+    // Optional PostHog monitoring, enabled at build time by POSTHOG_API_KEY
+    ...(process.env.POSTHOG_API_KEY
+      ? [
+          [
+            "posthog-docusaurus",
+            {
+              apiKey: process.env.POSTHOG_API_KEY,
+              appUrl: process.env.POSTHOG_HOST || "https://eu.i.posthog.com",
+              enableInDevelopment: false,
+            },
+          ],
+        ]
+      : []),
     [
       "docusaurus-plugin-openapi-docs",
       {
