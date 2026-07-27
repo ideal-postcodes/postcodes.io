@@ -151,6 +151,9 @@ importers:
       path-browserify:
         specifier: ~1.0.1
         version: 1.0.1
+      posthog-docusaurus:
+        specifier: ~2.0.5
+        version: 2.0.5
       prettier:
         specifier: ~3.8.3
         version: 3.8.3
@@ -6585,6 +6588,10 @@ packages:
   postgres-interval@1.2.0:
     resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
     engines: {node: '>=0.10.0'}
+
+  posthog-docusaurus@2.0.5:
+    resolution: {integrity: sha512-Ray65LYEJrMMqDtsBUBXunEVP/g4wtATvq/xz9rchUoLy/9mSkkFgUko/8DVtGxgiP3vivpFMgfb9HpCuDrBHg==}
+    engines: {node: '>=10.15.1'}
 
   postman-code-generators@1.14.2:
     resolution: {integrity: sha512-qZAyyowfQAFE4MSCu2KtMGGQE/+oG1JhMZMJNMdZHYCSfQiVVeKxgk3oI4+KJ3d1y5rrm2D6C6x+Z+7iyqm+fA==}
@@ -16487,6 +16494,8 @@ snapshots:
   postgres-interval@1.2.0:
     dependencies:
       xtend: 4.0.2
+
+  posthog-docusaurus@2.0.5: {}
 
   postman-code-generators@1.14.2:
     dependencies:
