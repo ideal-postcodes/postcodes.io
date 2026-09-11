@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  version: 18.0.0
+  version: 20.0.0
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
@@ -1421,28 +1421,16 @@ components:
           description: 2024 UK Parliamentary constituency name.
           example: Aberdeen South
         scottish_parliamentary_region:
-          title: Scottish Parliamentary Region (2025)
+          title: Scottish Parliamentary Region (2026)
           type: string
           nullable: true
-          description: 2025 Scottish Parliamentary region name (Second Review of Scottish Parliament Boundaries, SSI 2025/285, effective at the 7 May 2026 Holyrood election). This is the current designation.
-          example: North East Scotland
-        scottish_parliamentary_region_2021:
-          title: Scottish Parliamentary Region (2021)
-          type: string
-          nullable: true
-          description: 2021 Scottish Parliamentary region name (superseded by the 2025 designation).
+          description: 2026 Scottish Parliamentary region name (Second Review of Scottish Parliament Boundaries, SSI 2025/285, in effect since the 7 May 2026 Holyrood election). This is the current designation.
           example: North East Scotland
         scottish_parliamentary_constituency:
-          title: Scottish Parliamentary Constituency (2025)
+          title: Scottish Parliamentary Constituency (2026)
           type: string
           nullable: true
-          description: 2025 Scottish Parliamentary constituency name (Second Review of Scottish Parliament Boundaries, SSI 2025/285, effective at the 7 May 2026 Holyrood election). This is the current designation.
-          example: Aberdeen Central
-        scottish_parliamentary_constituency_2021:
-          title: Scottish Parliamentary Constituency (2021)
-          type: string
-          nullable: true
-          description: 2021 Scottish Parliamentary constituency name (superseded by the 2025 designation).
+          description: 2026 Scottish Parliamentary constituency name (Second Review of Scottish Parliament Boundaries, SSI 2025/285, in effect since the 7 May 2026 Holyrood election). This is the current designation.
           example: Aberdeen Central
         health_board_area:
           title: Health Board Area (2019)
@@ -1754,30 +1742,17 @@ components:
               description: 9-character GSS code for the 2024 UK Parliamentary constituency.
               example: S14000061
             scottish_parliamentary_region:
-              title: Scottish Parliamentary Region Code (2025)
+              title: Scottish Parliamentary Region Code (2026)
               type: string
               nullable: true
-              description: 9-character GSS code for the 2025 Scottish Parliamentary region (current designation).
+              description: 9-character GSS code for the 2026 Scottish Parliamentary region (current designation).
               example: S17000026
-            scottish_parliamentary_region_2021:
-              title: Scottish Parliamentary Region Code (2021)
-              type: string
-              nullable: true
-              description: 9-character GSS code for the superseded 2021 Scottish Parliamentary region.
-              example: S17000014
             scottish_parliamentary_constituency:
-              title: Scottish Parliamentary Constituency Code (2025)
+              title: Scottish Parliamentary Constituency Code (2026)
               type: string
               nullable: true
-              description: 9-character GSS code for the 2025 Scottish Parliamentary constituency (current designation).
+              description: 9-character GSS code for the 2026 Scottish Parliamentary constituency (current designation).
               example: S16000151
-              pattern: ^S[0-9]{8}$
-            scottish_parliamentary_constituency_2021:
-              title: Scottish Parliamentary Constituency Code (2021)
-              type: string
-              nullable: true
-              description: 9-character GSS code for the superseded 2021 Scottish Parliamentary constituency.
-              example: S16000074
               pattern: ^S[0-9]{8}$
             health_board_area:
               title: Health Board Area Code (2019)

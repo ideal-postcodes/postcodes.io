@@ -29,9 +29,7 @@ export interface ScottishPostcodeRow {
   local_government_district_1991: string | null;
   uk_parliamentary_constituency: string | null;
   scottish_parliamentary_region: string | null;
-  scottish_parliamentary_region_2021: string | null;
   scottish_parliamentary_constituency: string | null;
-  scottish_parliamentary_constituency_2021: string | null;
   health_board_area: string | null;
   health_board_area_2006: string | null;
   health_board_area_1995: string | null;
@@ -85,9 +83,7 @@ export interface ScottishPostcodeRow {
   local_government_district_1991_code: string | null;
   uk_parliamentary_constituency_code: string | null;
   scottish_parliamentary_region_code: string | null;
-  scottish_parliamentary_region_2021_code: string | null;
   scottish_parliamentary_constituency_code: string | null;
-  scottish_parliamentary_constituency_2021_code: string | null;
   health_board_area_code: string | null;
   health_board_area_2006_code: string | null;
   health_board_area_1995_code: string | null;
@@ -127,10 +123,8 @@ const SELECT_COLUMNS = `
   local_government_district_1995_name AS local_government_district,
   local_government_district_1991_name AS local_government_district_1991,
   uk_parliamentary_constituency_2024_name AS uk_parliamentary_constituency,
-  scottish_parliamentary_region_2025_name AS scottish_parliamentary_region,
-  scottish_parliamentary_region_2021_name AS scottish_parliamentary_region_2021,
-  scottish_parliamentary_constituency_2025_name AS scottish_parliamentary_constituency,
-  scottish_parliamentary_constituency_2021_name AS scottish_parliamentary_constituency_2021,
+  scottish_parliamentary_region_2026_name AS scottish_parliamentary_region,
+  scottish_parliamentary_constituency_2026_name AS scottish_parliamentary_constituency,
   health_board_area_2019_name AS health_board_area,
   health_board_area_2006_name AS health_board_area_2006,
   health_board_area_1995_name AS health_board_area_1995,
@@ -183,10 +177,8 @@ const SELECT_COLUMNS = `
   local_government_district_1995_code AS local_government_district_code,
   local_government_district_1991_code AS local_government_district_1991_code,
   uk_parliamentary_constituency_2024_code AS uk_parliamentary_constituency_code,
-  scottish_parliamentary_region_2025_code AS scottish_parliamentary_region_code,
-  scottish_parliamentary_region_2021_code AS scottish_parliamentary_region_2021_code,
-  scottish_parliamentary_constituency_2025_code AS scottish_parliamentary_constituency_code,
-  scottish_parliamentary_constituency_2021_code AS scottish_parliamentary_constituency_2021_code,
+  scottish_parliamentary_region_2026_code AS scottish_parliamentary_region_code,
+  scottish_parliamentary_constituency_2026_code AS scottish_parliamentary_constituency_code,
   health_board_area_2019_code AS health_board_area_code,
   health_board_area_2006_code AS health_board_area_2006_code,
   health_board_area_1995_code AS health_board_area_1995_code,
@@ -259,9 +251,7 @@ export const toJson = (row: ScottishPostcodeRow) => ({
   local_government_district_1991: row.local_government_district_1991,
   uk_parliamentary_constituency: row.uk_parliamentary_constituency,
   scottish_parliamentary_region: row.scottish_parliamentary_region,
-  scottish_parliamentary_region_2021: row.scottish_parliamentary_region_2021,
   scottish_parliamentary_constituency: row.scottish_parliamentary_constituency,
-  scottish_parliamentary_constituency_2021: row.scottish_parliamentary_constituency_2021,
   health_board_area: row.health_board_area,
   health_board_area_2006: row.health_board_area_2006,
   health_board_area_1995: row.health_board_area_1995,
@@ -312,9 +302,7 @@ export const toJson = (row: ScottishPostcodeRow) => ({
     local_government_district_1991: row.local_government_district_1991_code,
     uk_parliamentary_constituency: row.uk_parliamentary_constituency_code,
     scottish_parliamentary_region: row.scottish_parliamentary_region_code,
-    scottish_parliamentary_region_2021: row.scottish_parliamentary_region_2021_code,
     scottish_parliamentary_constituency: row.scottish_parliamentary_constituency_code,
-    scottish_parliamentary_constituency_2021: row.scottish_parliamentary_constituency_2021_code,
     health_board_area: row.health_board_area_code,
     health_board_area_2006: row.health_board_area_2006_code,
     health_board_area_1995: row.health_board_area_1995_code,

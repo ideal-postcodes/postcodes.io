@@ -7,9 +7,9 @@ The Scottish Postcode schema represents the full set of geographies the Scottish
 
 Top-level fields hold the **canonical (latest)** value for each datapoint. Year-suffixed fields surface prior versions where SPD publishes them (e.g. `data_zone` is the 2022 Data Zone; `data_zone_2011` and `data_zone_2001` are historical baselines). The `codes` object mirrors the same datapoints with their GSS / official codes.
 
-:::note Scottish Parliament 2025 boundaries
+:::note Scottish Parliament 2026 boundaries
 
-`scottish_parliamentary_constituency` and `scottish_parliamentary_region` now hold the **2025** designation (Second Review of Scottish Parliament Boundaries, SSI 2025/285), which took effect at the 7 May 2026 Holyrood election - boundaries **and** names changed. The superseded 2021 values moved to `scottish_parliamentary_constituency_2021` and `scottish_parliamentary_region_2021`. Consumers pinned to the 2021 boundaries should read the `_2021` fields.
+`scottish_parliamentary_constituency` and `scottish_parliamentary_region` hold the **2026** designation (Second Review of Scottish Parliament Boundaries, SSI 2025/285, in effect since the 7 May 2026 Holyrood election). SPD 2026/2 no longer publishes the superseded 2021 boundaries, so the `scottish_parliamentary_constituency_2021` and `scottish_parliamentary_region_2021` fields have been removed.
 
 :::
 
@@ -35,9 +35,7 @@ Top-level fields hold the **canonical (latest)** value for each datapoint. Year-
     "electoral_ward": "Midstocket/Rosemount",
     "uk_parliamentary_constituency": "Aberdeen South",
     "scottish_parliamentary_region": "North East Scotland",
-    "scottish_parliamentary_region_2021": "North East Scotland",
     "scottish_parliamentary_constituency": "Aberdeen Central",
-    "scottish_parliamentary_constituency_2021": "Aberdeen Central",
     "health_board_area": "Grampian",
     "integration_authority": "Aberdeen City",
     "data_zone": "West End North - 01",
@@ -63,9 +61,7 @@ Top-level fields hold the **canonical (latest)** value for each datapoint. Year-
       "electoral_ward": "S13002841",
       "uk_parliamentary_constituency": "S14000061",
       "scottish_parliamentary_region": "S17000026",
-      "scottish_parliamentary_region_2021": "S17000014",
       "scottish_parliamentary_constituency": "S16000151",
-      "scottish_parliamentary_constituency_2021": "S16000074",
       "health_board_area": "S08000020",
       "integration_authority": "S37000002",
       "data_zone": "S01013550",
@@ -122,10 +118,8 @@ Top-level fields hold the **canonical (latest)** value for each datapoint. Year-
 | Field                                       | Type           | Description                                                                                 | Example               |
 | ------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------- | --------------------- |
 | `uk_parliamentary_constituency`             | string \| null | 2024 UK Parliamentary constituency.                                                         | "Aberdeen South"      |
-| `scottish_parliamentary_region`             | string \| null | **2025** Scottish Parliamentary region (current; SSI 2025/285, 7 May 2026 election).        | "North East Scotland" |
-| `scottish_parliamentary_region_2021`        | string \| null | 2021 Scottish Parliamentary region (superseded).                                            | "North East Scotland" |
-| `scottish_parliamentary_constituency`       | string \| null | **2025** Scottish Parliamentary constituency (current; SSI 2025/285, 7 May 2026 election).  | "Aberdeen Central"    |
-| `scottish_parliamentary_constituency_2021`  | string \| null | 2021 Scottish Parliamentary constituency (superseded).                                      | "Aberdeen Central"    |
+| `scottish_parliamentary_region`             | string \| null | **2026** Scottish Parliamentary region (current; SSI 2025/285, 7 May 2026 election).        | "North East Scotland" |
+| `scottish_parliamentary_constituency`       | string \| null | **2026** Scottish Parliamentary constituency (current; SSI 2025/285, 7 May 2026 election).  | "Aberdeen Central"    |
 
 ### Health
 
