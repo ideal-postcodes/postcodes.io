@@ -1,3 +1,20 @@
+# [20.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/19.1.0...20.0.0) (2026-09-11)
+
+
+* feat(scotland)!: move to Scottish Parliament 2026 designation, drop 2021 fields ([e94251c](https://github.com/ideal-postcodes/postcodes.io/commit/e94251cd55c1189c44f0a2f6e820c56fc4f5b964))
+
+
+### Features
+
+* **ONSPD:** Update to Aug 2026 ([6660009](https://github.com/ideal-postcodes/postcodes.io/commit/666000949a10b8c8683fe3428272ef80b02a1d5e)), closes [#1352](https://github.com/ideal-postcodes/postcodes.io/issues/1352) [#1330](https://github.com/ideal-postcodes/postcodes.io/issues/1330)
+
+
+### BREAKING CHANGES
+
+* scottish_parliamentary_region_2021, scottish_parliamentary_constituency_2021 and their codes counterparts are removed from /scotland/postcodes/:postcode.
+
+Claude-Session: https://claude.ai/code/session_0195FWjQNKqsSSeZuRyu8Lzi
+
 # [19.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/19.0.2...19.1.0) (2026-06-10)
 
 
