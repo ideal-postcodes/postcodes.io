@@ -1,18 +1,19 @@
-FROM postgis/postgis:17-3.5
+FROM buildpack-deps:curl AS dump
 
 COPY latest /tmp/latest
-COPY docker/postgresql.conf /etc/postgresql/postgresql.conf
-COPY docker/postgis.sql /docker-entrypoint-initdb.d/00-postgis.sql
-COPY docker/prewarm.sql /docker-entrypoint-initdb.d/02-prewarm.sql
 
 # Strip \restrict/\unrestrict — pg_dump 17.6+ emits them but postgis/postgis:17-3.5 still ships psql 17.5. Remove once upstream image bumps to psql >= 17.6.
-RUN mkdir -p /docker-entrypoint-initdb.d/ && \
-    apt-get update && apt-get install -y curl && \
+RUN mkdir -p /out && \
     curl -o /tmp/dump.sql.gz $(cat /tmp/latest) && \
     gunzip -c /tmp/dump.sql.gz \
       | grep -vE '^\\(restrict|unrestrict) ' \
-      | gzip > /docker-entrypoint-initdb.d/01-postcodesiodata.sql.gz && \
-    rm /tmp/dump.sql.gz && \
-    rm -rf /var/lib/apt/lists/*
+      | gzip > /out/01-postcodesiodata.sql.gz
+
+FROM postgis/postgis:17-3.5
+
+COPY docker/postgresql.conf /etc/postgresql/postgresql.conf
+COPY docker/postgis.sql /docker-entrypoint-initdb.d/00-postgis.sql
+COPY --from=dump /out/01-postcodesiodata.sql.gz /docker-entrypoint-initdb.d/01-postcodesiodata.sql.gz
+COPY docker/prewarm.sql /docker-entrypoint-initdb.d/02-prewarm.sql
 
 CMD ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
