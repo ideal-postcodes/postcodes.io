@@ -2,14 +2,10 @@ FROM buildpack-deps:curl AS dump
 
 COPY latest /tmp/latest
 
-# Strip \restrict/\unrestrict — pg_dump 17.6+ emits them but postgis/postgis:17-3.5 still ships psql 17.5. Remove once upstream image bumps to psql >= 17.6.
 RUN mkdir -p /out && \
-    curl -o /tmp/dump.sql.gz $(cat /tmp/latest) && \
-    gunzip -c /tmp/dump.sql.gz \
-      | grep -vE '^\\(restrict|unrestrict) ' \
-      | gzip > /out/01-postcodesiodata.sql.gz
+    curl -o /out/01-postcodesiodata.sql.gz $(cat /tmp/latest)
 
-FROM postgis/postgis:17-3.5
+FROM postgis/postgis:18-3.6
 
 COPY docker/postgresql.conf /etc/postgresql/postgresql.conf
 COPY docker/postgis.sql /docker-entrypoint-initdb.d/00-postgis.sql
