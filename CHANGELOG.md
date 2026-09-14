@@ -1,3 +1,10 @@
+## [20.0.2](https://github.com/ideal-postcodes/postcodes.io/compare/20.0.1...20.0.2) (2026-09-14)
+
+
+### Bug Fixes
+
+* **docker:** move to postgis/postgis:18-3.6 ([4f8369b](https://github.com/ideal-postcodes/postcodes.io/commit/4f8369b232de16afbb04bec961680772a6c2df04))
+
 ## [20.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/20.0.0...20.0.1) (2026-09-14)
 
 
