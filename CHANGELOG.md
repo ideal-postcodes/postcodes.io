@@ -1,3 +1,10 @@
+## [20.0.1](https://github.com/ideal-postcodes/postcodes.io/compare/20.0.0...20.0.1) (2026-09-14)
+
+
+### Bug Fixes
+
+* **docker:** fetch dump in a build stage ([d980ec4](https://github.com/ideal-postcodes/postcodes.io/commit/d980ec48f091463de937047c021fb00fe0aa42d9))
+
 # [20.0.0](https://github.com/ideal-postcodes/postcodes.io/compare/19.1.0...20.0.0) (2026-09-11)
 
 
