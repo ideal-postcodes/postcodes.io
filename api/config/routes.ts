@@ -8,6 +8,7 @@ import * as postcodes from "../app/controllers/postcodes_controller";
 import * as scottishPostcodes from "../app/controllers/scottish_postcodes_controller";
 import * as terminatedPostcodes from "../app/controllers/terminated_postcodes_controller";
 import { getConfig } from "./config";
+import { apiCatalog, homepageLink } from "./well_known";
 
 export const routes = (app: Express): void => {
   const router = express.Router();
@@ -39,6 +40,8 @@ export const routes = (app: Express): void => {
 
   const docsBuildPath = join(__dirname, "../../build");
 
+  router.get("/.well-known/api-catalog", apiCatalog);
+  router.get("/", homepageLink);
   router.use(express.static(docsBuildPath));
 
   const { urlPrefix } = getConfig();
