@@ -1,3 +1,10 @@
+# [20.1.0](https://github.com/ideal-postcodes/postcodes.io/compare/20.0.3...20.1.0) (2026-09-29)
+
+
+### Features
+
+* publish RFC 9727 api-catalog and homepage Link headers ([cd2b876](https://github.com/ideal-postcodes/postcodes.io/commit/cd2b8761098901d849b1fa3a71b500d0092dc584))
+
 ## [20.0.3](https://github.com/ideal-postcodes/postcodes.io/compare/20.0.2...20.0.3) (2026-09-29)
 
 
