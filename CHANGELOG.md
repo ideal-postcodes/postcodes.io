@@ -1,3 +1,10 @@
+## [20.0.3](https://github.com/ideal-postcodes/postcodes.io/compare/20.0.2...20.0.3) (2026-09-29)
+
+
+### Bug Fixes
+
+* serve robots.txt with Content-Signal ([715678e](https://github.com/ideal-postcodes/postcodes.io/commit/715678e80d5d9ba7b8206116013efc7c6a70b3e4))
+
 ## [20.0.2](https://github.com/ideal-postcodes/postcodes.io/compare/20.0.1...20.0.2) (2026-09-14)
 
 
