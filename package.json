@@ -105,7 +105,7 @@
     "typescript": "~5.8.3",
     "url": "~0.11.4",
     "url-loader": "~4.1.1",
-    "vitest": "~4.1.7"
+    "vitest": "~4.1.11"
   },
   "browserslist": {
     "production": [
