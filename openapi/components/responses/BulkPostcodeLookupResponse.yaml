@@ -1,0 +1,29 @@
+title: Bulk Postcode Lookup Response
+type: object
+required:
+  - status
+  - result
+properties:
+  status:
+    type: integer
+    format: int32
+    enum:
+      - 200
+  result:
+    type: array
+    description: "One entry per queried postcode, in the order submitted"
+    items:
+      type: object
+      required:
+        - query
+        - result
+      properties:
+        query:
+          type: string
+          description: "The postcode as submitted"
+          example: PR3 0SG
+        result:
+          description: "Location data for the queried postcode, or null if the postcode was not found"
+          oneOf:
+            - $ref: "../schemas/Postcode.yaml"
+            - type: "null"

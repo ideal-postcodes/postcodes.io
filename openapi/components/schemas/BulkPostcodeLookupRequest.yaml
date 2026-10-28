@@ -1,0 +1,16 @@
+title: Bulk Postcode Lookup Request
+type: object
+required:
+  - postcodes
+properties:
+  postcodes:
+    type: array
+    maxItems: 100
+    items:
+      type: string
+      example: PR3 0SG
+    description: "Postcodes to look up. Accepts up to 100 postcodes"
+    example:
+      - PR3 0SG
+      - M45 6GN
+      - EX16 5BL

@@ -1,0 +1,43 @@
+title: Geolocation
+type: object
+required:
+  - longitude
+  - latitude
+properties:
+  longitude:
+    title: Longitude
+    type: number
+    format: double
+    description: Geographic coordinate that specifies the east-west position of a point
+    example: 0.629834723775309
+    maximum: 180
+    minimum: -180
+  latitude:
+    title: Latitude
+    type: number
+    format: double
+    description: Geographic coordinate that specifies the north-south position of a point
+    example: 51.7923246977375
+    maximum: 90
+    minimum: -90
+  radius:
+    title: Radius
+    type: integer
+    description: Limits the search radius in metres. Defaults to 100m. Needs to be less than 2,000m.
+    example: 1000
+    default: 100
+    maximum: 2000
+    minimum: 1
+  limit:
+    title: Limit
+    type: integer
+    description: Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+    example: 5
+    default: 10
+    maximum: 100
+    minimum: 1
+  widesearch:
+    title: Widesearch
+    type: boolean
+    description: Search up to 20km radius, but subject to a maximum of 10 results. When enabled, radius and limits over 10 are ignored.
+    default: false

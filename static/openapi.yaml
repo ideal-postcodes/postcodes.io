@@ -235,14 +235,33 @@ paths:
         ## Bulk Reverse Geocoding
 
         Bulk translates geolocations into Postcodes. Accepts up to 100 geolocations.
-      parameters: []
+      parameters:
+        - name: filter
+          in: query
+          style: form
+          explode: false
+          schema:
+            title: Filter
+            type: string
+            description: A comma separated whitelist of attributes to be returned in the result object(s), e.g. filter=postcode,longitude,latitude. null responses will continue to return null. If no attributes match the result object, an empty object is returned
+            example: postcode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/BulkPostcodeLookupRequest'
+                - $ref: '#/components/schemas/BulkReverseGeocodingRequest'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostcodeResponse'
+                oneOf:
+                  - $ref: '#/components/schemas/BulkPostcodeLookupResponse'
+                  - $ref: '#/components/schemas/BulkReverseGeocodingResponse'
       x-codeSamples:
         - lang: http
           label: Query URL
@@ -1125,6 +1144,156 @@ components:
             oneOf:
               - $ref: '#/components/schemas/Postcode'
           description: Array containing detailed location information for the requested postcode or nearest postcodes
+    BulkPostcodeLookupRequest:
+      title: Bulk Postcode Lookup Request
+      type: object
+      required:
+        - postcodes
+      properties:
+        postcodes:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            example: PR3 0SG
+          description: Postcodes to look up. Accepts up to 100 postcodes
+          example:
+            - PR3 0SG
+            - M45 6GN
+            - EX16 5BL
+    Geolocation:
+      title: Geolocation
+      type: object
+      required:
+        - longitude
+        - latitude
+      properties:
+        longitude:
+          title: Longitude
+          type: number
+          format: double
+          description: Geographic coordinate that specifies the east-west position of a point
+          example: 0.629834723775309
+          maximum: 180
+          minimum: -180
+        latitude:
+          title: Latitude
+          type: number
+          format: double
+          description: Geographic coordinate that specifies the north-south position of a point
+          example: 51.7923246977375
+          maximum: 90
+          minimum: -90
+        radius:
+          title: Radius
+          type: integer
+          description: Limits the search radius in metres. Defaults to 100m. Needs to be less than 2,000m.
+          example: 1000
+          default: 100
+          maximum: 2000
+          minimum: 1
+        limit:
+          title: Limit
+          type: integer
+          description: Limits number of postcodes matches to return. Defaults to 10. Needs to be less than 100.
+          example: 5
+          default: 10
+          maximum: 100
+          minimum: 1
+        widesearch:
+          title: Widesearch
+          type: boolean
+          description: Search up to 20km radius, but subject to a maximum of 10 results. When enabled, radius and limits over 10 are ignored.
+          default: false
+    BulkReverseGeocodingRequest:
+      title: Bulk Reverse Geocoding Request
+      type: object
+      required:
+        - geolocations
+      properties:
+        geolocations:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/Geolocation'
+          description: Geolocations to translate into postcodes. Accepts up to 100 geolocations
+    BulkPostcodeLookupResponse:
+      title: Bulk Postcode Lookup Response
+      type: object
+      required:
+        - status
+        - result
+      properties:
+        status:
+          type: integer
+          format: int32
+          enum:
+            - 200
+        result:
+          type: array
+          description: One entry per queried postcode, in the order submitted
+          items:
+            type: object
+            required:
+              - query
+              - result
+            properties:
+              query:
+                type: string
+                description: The postcode as submitted
+                example: PR3 0SG
+              result:
+                description: Location data for the queried postcode, or null if the postcode was not found
+                oneOf:
+                  - $ref: '#/components/schemas/Postcode'
+                  - type: 'null'
+    ReverseGeocoding:
+      title: Geolocated Postcode
+      description: Enhanced postcode object that includes distance information from a specified geolocation. This extends the standard Postcode object with additional distance metrics.
+      allOf:
+        - $ref: '#/components/schemas/Postcode'
+        - type: object
+          required:
+            - distance
+          properties:
+            distance:
+              title: Distance from Geolocation
+              type: number
+              format: double
+              description: The direct distance (as the crow flies) in metres between the supplied coordinates and this postcode's location. Calculated using the Haversine formula.
+              minimum: 0
+              example: 1250.5
+    BulkReverseGeocodingResponse:
+      title: Bulk Reverse Geocoding Response
+      type: object
+      required:
+        - status
+        - result
+      properties:
+        status:
+          type: integer
+          format: int32
+          enum:
+            - 200
+        result:
+          type: array
+          description: One entry per queried geolocation, in the order submitted
+          items:
+            type: object
+            required:
+              - query
+              - result
+            properties:
+              query:
+                description: The geolocation as submitted
+                $ref: '#/components/schemas/Geolocation'
+              result:
+                description: Postcodes near the queried geolocation, or null if none were found
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/ReverseGeocoding'
+                  - type: 'null'
     NearestPostcode:
       title: Geolocated Postcode
       description: Standard postcode object extended with a distance attribute, indicating how far the postcode is from a supplied geolocation.

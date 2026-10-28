@@ -111,14 +111,33 @@ post:
   operationId: Bulk Postcode Lookup
   description:
     $ref: ../md/bulk-postcode-lookup.md
-  parameters: []
+  parameters:
+    - name: filter
+      in: query
+      style: form
+      explode: false
+      schema:
+        title: Filter
+        type: string
+        description: A comma separated whitelist of attributes to be returned in the result object(s), e.g. filter=postcode,longitude,latitude. null responses will continue to return null. If no attributes match the result object, an empty object is returned
+        example: "postcode"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          oneOf:
+            - $ref: "../components/schemas/BulkPostcodeLookupRequest.yaml"
+            - $ref: "../components/schemas/BulkReverseGeocodingRequest.yaml"
   responses:
     "200":
       description: "Success"
       content:
         application/json:
           schema:
-            $ref: "../components/responses/PostcodeResponse.yaml"
+            oneOf:
+              - $ref: "../components/responses/BulkPostcodeLookupResponse.yaml"
+              - $ref: "../components/responses/BulkReverseGeocodingResponse.yaml"
   x-codeSamples:
     - lang: "http"
       label: "Query URL"

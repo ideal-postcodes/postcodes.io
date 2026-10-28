@@ -1,0 +1,11 @@
+title: Bulk Reverse Geocoding Request
+type: object
+required:
+  - geolocations
+properties:
+  geolocations:
+    type: array
+    maxItems: 100
+    items:
+      $ref: "./Geolocation.yaml"
+    description: "Geolocations to translate into postcodes. Accepts up to 100 geolocations"

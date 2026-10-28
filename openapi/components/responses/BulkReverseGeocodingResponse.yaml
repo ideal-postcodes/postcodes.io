@@ -1,0 +1,30 @@
+title: Bulk Reverse Geocoding Response
+type: object
+required:
+  - status
+  - result
+properties:
+  status:
+    type: integer
+    format: int32
+    enum:
+      - 200
+  result:
+    type: array
+    description: "One entry per queried geolocation, in the order submitted"
+    items:
+      type: object
+      required:
+        - query
+        - result
+      properties:
+        query:
+          description: "The geolocation as submitted"
+          $ref: "../schemas/Geolocation.yaml"
+        result:
+          description: "Postcodes near the queried geolocation, or null if none were found"
+          oneOf:
+            - type: array
+              items:
+                $ref: "../schemas/ReverseGeocoding.yaml"
+            - type: "null"
