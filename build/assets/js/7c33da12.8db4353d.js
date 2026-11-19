@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkpostcodes_io=globalThis.webpackChunkpostcodes_io||[]).push([[7103],{45015(e){e.exports=JSON.parse('{"categoryGeneratedIndex":{"title":"API","slug":"/api","permalink":"/docs/api","sidebar":"openApiSidebar","navigation":{"next":{"title":"Introduction","permalink":"/docs/api/api-reference-postcodes-io"}}}}')}}]);

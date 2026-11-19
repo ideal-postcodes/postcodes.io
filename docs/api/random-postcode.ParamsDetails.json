@@ -1,0 +1,1 @@
+{"parameters":[{"name":"outcode","in":"query","description":"Filters random postcodes by outcode. Returns null if invalid outcode.","style":"form","explode":false,"schema":{"title":"Outward code","type":"string","example":"SW1A"}}]}

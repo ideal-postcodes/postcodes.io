@@ -1,0 +1,1 @@
+{"parameters":[{"name":"postcode","in":"path","description":"Postcode to query","required":true,"style":"simple","explode":false,"schema":{"type":"string"}}]}

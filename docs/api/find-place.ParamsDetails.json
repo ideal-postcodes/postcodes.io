@@ -1,0 +1,1 @@
+{"parameters":[{"name":"code","in":"path","description":"Specifies the place you wish to query","required":true,"style":"simple","explode":false,"schema":{"type":"string"}}]}

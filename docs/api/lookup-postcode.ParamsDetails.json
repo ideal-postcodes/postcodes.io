@@ -1,0 +1,1 @@
+{"parameters":[{"name":"postcode","in":"path","description":"Postcode to retrieve","required":true,"style":"simple","explode":false,"schema":{"title":"Postcode","description":"Postcode to query","example":"SW1A 2AA"}}]}
