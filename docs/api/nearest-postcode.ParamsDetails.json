@@ -1,0 +1,1 @@
+{"parameters":[{"name":"postcode","in":"path","description":"Valid UK postcode to use as the geographic center point for the proximity search","required":true,"style":"simple","explode":false,"schema":{"title":"Postcode","example":"SW1A 2AA"}}]}

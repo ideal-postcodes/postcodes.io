@@ -43,6 +43,7 @@ const config: Config = {
           sidebarPath: "./sidebars.ts",
           docItemComponent: "@theme/ApiItem", // Fix for docusaurus-openapi-docs
         },
+        blog: false,
         theme: {
           customCss: "./src/css/custom.css",
         },

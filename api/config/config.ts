@@ -13,7 +13,7 @@
 // Load .env into environment variables
 
 import { config as dotenv } from "dotenv";
-dotenv();
+dotenv({ quiet: true });
 
 import { join } from "node:path";
 import { defaults } from "./defaults";

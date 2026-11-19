@@ -5,18 +5,14 @@
     "esModuleInterop": true,
     "target": "es2015",
     "lib": ["DOM", "es6"],
+    "strict": false,
     "noImplicitAny": true,
-    "moduleResolution": "node",
     "allowJs": true,
     "sourceMap": false,
     "outDir": "dist",
-    "baseUrl": ".",
     "rootDir": "api",
     "noEmit": false,
-    "skipLibCheck": true,
-    "paths": {
-      "*": ["node_modules/*"]
-    }
+    "skipLibCheck": true
   },
   "include": ["api/**/*"],
   "exclude": ["node_modules/@types/mdx", "node_modules/@docusaurus"]

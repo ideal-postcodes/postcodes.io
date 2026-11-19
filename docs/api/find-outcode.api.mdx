@@ -18,6 +18,7 @@ import StatusCodes from "@theme/StatusCodes";
 import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
 
 <Heading
   as={"h1"}
@@ -45,27 +46,24 @@ The outward code is the first half of any postcode (3-4 characters and followed 
   id={"request"}
   as={"h2"}
   className={"openapi-tabs__heading"}
-  children={"Request"}
 >
+  <Translate id="theme.openapi.request.title">Request</Translate>
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"outcode","in":"path","description":"Specifies the outward code you wish to query.","required":true,"example":"SW1A","style":"simple","explode":false,"schema":{"type":"string"}}]}
+  {...require("./find-outcode.ParamsDetails.json")}
 >
   
 </ParamsDetails>
 
 <RequestSchema
-  title={"Body"}
-  body={undefined}
+  {...require("./find-outcode.RequestSchema.json")}
 >
   
 </RequestSchema>
 
 <StatusCodes
-  id={undefined}
-  label={undefined}
-  responses={{"200":{"description":"Success","content":{"application/json":{"schema":{"title":"Outcode Response","type":"object","required":["status","result"],"properties":{"status":{"type":"integer","format":"int32","enum":[200]},"result":{"description":"Comprehensive geographical and administrative data for the specified outcode, including location coordinates, administrative boundaries, and related postal information","oneOf":[{"required":["outcode","eastings","northings","admin_county","admin_district","admin_ward","longitude","latitude","country","parish","parliamentary_constituency"],"properties":{"outcode":{"title":"Outcode","type":"string","description":"First part of the postcode before the space (e.g., \"SW1A\" in \"SW1A 1AA\"). Usually 2-4 characters.","example":"SW1A"},"eastings":{"title":"Eastings","type":"number","format":"int32","nullable":true,"description":"Ordnance Survey eastings coordinate (1m resolution). Returns 0 if location unavailable.","example":529740},"northings":{"title":"Northings","type":"number","format":"int32","nullable":true,"description":"Ordnance Survey northings coordinate (1m resolution). Returns 0 if location unavailable.","example":180066},"admin_county":{"title":"Administrative County","type":"array","items":{"type":"string"},"description":"Administrative counties within this outcode.","example":["(pseudo) England (UA/MD/LB)"]},"admin_district":{"title":"District","type":"array","items":{"type":"string"},"description":"District/unitary authorities within this outcode.","example":["Westminster","Wandsworth"]},"admin_ward":{"title":"Ward","type":"array","items":{"type":"string"},"description":"Administrative/electoral wards within this outcode.","example":["Nine Elms","St. James's"]},"longitude":{"title":"Longitude","type":"number","format":"double","nullable":true,"description":"WGS84 longitude coordinate. May be null if location unavailable.","example":-0.132066},"latitude":{"title":"Latitude","type":"number","format":"double","nullable":true,"description":"WGS84 latitude coordinate. May be null if location unavailable.","example":51.50464},"country":{"title":"Country","type":"array","items":{"type":"string"},"description":"Countries within this outcode.","example":["England"]},"parish":{"title":"Parish","type":"array","items":{"type":"string"},"description":"Parishes (England) or communities (Wales) within this outcode.","example":["Wandsworth, unparished area","Westminster, unparished area"]},"parliamentary_constituency":{"title":"Parliamentary Constituency","type":"array","items":{"type":"string"},"description":"UK Parliamentary constituencies (July 2024 boundaries) that intersect this outcode.","example":["Cities of London and Westminster","Battersea"]}},"title":"Outcode"}]}}}}}}}}
+  {...require("./find-outcode.StatusCodes.json")}
 >
   
 </StatusCodes>

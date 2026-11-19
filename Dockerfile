@@ -1,8 +1,9 @@
-FROM node:24-alpine AS base
+FROM node:26-alpine AS base
 
 RUN apk update && apk upgrade && apk add --no-cache bash
 
-RUN corepack enable
+# Node 25+ no longer bundles corepack
+RUN npm install -g corepack && corepack enable
 
 WORKDIR /app
 

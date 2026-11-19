@@ -18,6 +18,7 @@ import StatusCodes from "@theme/StatusCodes";
 import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
 
 <Heading
   as={"h1"}
@@ -49,27 +50,24 @@ Source: ONS Postcode Directory (ONSPD). Live and terminated postcodes share the 
   id={"request"}
   as={"h2"}
   className={"openapi-tabs__heading"}
-  children={"Request"}
 >
+  <Translate id="theme.openapi.request.title">Request</Translate>
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"postcode","in":"path","description":"Postcode to query","required":true,"style":"simple","explode":false,"schema":{"type":"string"}}]}
+  {...require("./lookup-terminated-postcode.ParamsDetails.json")}
 >
   
 </ParamsDetails>
 
 <RequestSchema
-  title={"Body"}
-  body={undefined}
+  {...require("./lookup-terminated-postcode.RequestSchema.json")}
 >
   
 </RequestSchema>
 
 <StatusCodes
-  id={undefined}
-  label={undefined}
-  responses={{"200":{"description":"Success","content":{"application/json":{"schema":{"title":"Terminated Postcode Response","type":"object","required":["status","result"],"properties":{"status":{"type":"integer","format":"int32","enum":[200]},"result":{"description":"Data for the requested terminated postcode.","type":"object","required":["postcode","year_terminated","month_terminated","eastings","northings","longitude","latitude"],"properties":{"postcode":{"title":"Postcode","type":"string","description":"UK postal code format that has been terminated. Follows the standard format of 2-4 character outward code, a space, then 3-character inward code.","example":"SW1A 2AA","pattern":"^[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][A-Z]{2}$"},"year_terminated":{"title":"Termination year","type":"integer","format":"int32","description":"The year when the postcode was terminated (YYYY format).","example":2019,"minimum":1900},"month_terminated":{"title":"Termination month","type":"integer","format":"int32","description":"Month when the postcode was terminated (1-12, where 1=January, 12=December).","example":1,"minimum":1,"maximum":12,"enum":[1,2,3,4,5,6,7,8,9,10,11,12]},"eastings":{"title":"Eastings","type":"integer","format":"int32","nullable":true,"description":"OS National Grid easting (1m resolution). Null for postcodes without a grid reference (e.g. Channel Islands, Isle of Man) or that were terminated before a reference was assigned.","example":530047},"northings":{"title":"Northings","type":"integer","format":"int32","nullable":true,"description":"OS National Grid northing (1m resolution). Null for postcodes without a grid reference (e.g. Channel Islands, Isle of Man) or that were terminated before a reference was assigned.","example":179951},"longitude":{"title":"Longitude","type":"number","format":"double","nullable":true,"description":"WGS84 longitude coordinate of the postcode location. Null if no grid reference is available.","example":-2.496903,"minimum":-180,"maximum":180},"latitude":{"title":"Latitude","type":"number","format":"double","nullable":true,"description":"WGS84 latitude coordinate of the postcode location. Null if no grid reference is available.","example":53.53513,"minimum":-90,"maximum":90}},"title":"TerminatedPostcode"}}}}}},"404":{"description":"Postcode not found"}}}
+  {...require("./lookup-terminated-postcode.StatusCodes.json")}
 >
   
 </StatusCodes>
