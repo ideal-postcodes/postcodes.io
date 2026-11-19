@@ -1,11 +1,12 @@
-FROM node:24-slim
+FROM node:26-slim
 
 RUN apt-get update && \
   apt-get install -y --no-install-recommends openssl bash git postgresql-client ca-certificates wget && \
   rm -rf /var/lib/apt/lists/* && \
+  npm install -g corepack && \
   corepack enable
 
-ENV DOCKERIZE_VERSION=v0.6.1
+ENV DOCKERIZE_VERSION=v0.16.0
 RUN wget -q https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && tar -C /usr/local/bin -xzf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz

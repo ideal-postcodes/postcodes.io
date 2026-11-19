@@ -5,7 +5,7 @@ COPY latest /tmp/latest
 RUN mkdir -p /out && \
     curl -o /out/01-postcodesiodata.sql.gz $(cat /tmp/latest)
 
-FROM postgis/postgis:18-3.6
+FROM postgis/postgis:18-3.7
 
 COPY docker/postgresql.conf /etc/postgresql/postgresql.conf
 COPY docker/postgis.sql /docker-entrypoint-initdb.d/00-postgis.sql
